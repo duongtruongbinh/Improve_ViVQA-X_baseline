@@ -54,7 +54,7 @@ class QueryVLM:
         _, buffer = cv2.imencode('.jpg', image)
         image_bytes = np.array(buffer).tobytes()
         # gpt4 need decode to base64, but gemini need raw byte
-        if self.vlm_type == "gpt4":
+        if self.vlm_type == "Qwen2-VL-2B":
             image_bytes = base64.b64encode(image_bytes).decode('utf-8')
 
         return image_bytes
