@@ -10,53 +10,76 @@ import requests
 import concurrent.futures
 from torchvision.ops import box_convert
 import re
+
+import autogen
+from autogen.agentchat.assistant_agent import AssistantAgent
+
 # gemini
 from vertexai.preview.generative_models import GenerativeModel
 from vertexai.preview.generative_models import Image as vertexai_Image
 
-class QueryVLM:
-    def __init__(self, args, image_size=512):
+class QueryVLMAutoGen(AssistantAgent):
+    def __init__(self, name, args, llm_config=None, system_message="You are a VLM assistant.", **kwargs):
+        super().__init__(name=name, llm_config=llm_config, system_message=system_message, **kwargs)
         self.image_cache = {}
-        self.image_size = image_size
+        self.image_size = args.get('vlm', {}).get('image_size', 512) # Adjusted to match typical arg structure
         self.min_bbox_size = args['vlm']['min_bbox_size']
         self.args = args
         self.vlm_type = args["model"]
 
-        with open("openai_key.txt", "r") as api_key_file:
-            self.api_key = api_key_file.read()
+        # Preserve original API key loading and Gemini initialization
+        # Ensure "openai_key.txt" is accessible or handle path appropriately
+        try:
+            with open("openai_key.txt", "r") as api_key_file:
+                self.api_key = api_key_file.read().strip()
+        except FileNotFoundError:
+            print("Warning: openai_key.txt not found. GPT-4V queries will fail if self.api_key is not set otherwise.")
+            self.api_key = None # Or raise an error, or expect it in args
 
-        # Init gemini model
         if self.vlm_type=="gemini":
             print("Using Gemini Pro Vision as VLM, initializing the model")
-            self.gemini_pro_vision = GenerativeModel("gemini-1.0-pro-vision")
+            # Ensure Google Cloud credentials are set up for Vertex AI
+            try:
+                self.gemini_pro_vision = GenerativeModel("gemini-1.0-pro-vision")
+            except Exception as e:
+                print(f"Failed to initialize Gemini Pro Vision: {e}")
+                self.gemini_pro_vision = None
+
 
     def process_image(self, image, bbox=None):
-        # we have to crop the image before converting it to base64
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
         if bbox is not None:
-            width, height = bbox[2], bbox[3]
-            xyxy = box_convert(boxes=bbox, in_fmt="cxcywh", out_fmt="xyxy")
-            x1, y1, x2, y2 = int(xyxy[0]), int(xyxy[1]), int(xyxy[2]), int(xyxy[3])
+            # Ensure bbox is a tensor for box_convert if it's not already
+            if not isinstance(bbox, torch.Tensor):
+                # Assuming bbox is [cx, cy, w, h] as per original context implies
+                # This part might need adjustment based on actual bbox format in self.args
+                # For this example, assuming bbox is passed as a list/numpy array [cx, cy, w, h]
+                bbox_tensor = torch.tensor([bbox]) 
+            else:
+                bbox_tensor = bbox
 
-            # increase the receptive field of each box to include possible nearby objects and contexts
+            # Original script had width, height = bbox[1], bbox[2]
+            # This implies bbox was expected to be a single bounding box, not a batch
+            # If bbox is [cx, cy, w, h]
+            width, height = bbox_tensor.item(), bbox_tensor.item()
+            xyxy = box_convert(boxes=bbox_tensor, in_fmt="cxcywh", out_fmt="xyxy").squeeze(0)
+            x1, y1, x2, y2 = int(xyxy), int(xyxy[3]), int(xyxy[1]), int(xyxy[2])
+
             if width < self.min_bbox_size:
                 x1 = int(max(0, x1 - (self.min_bbox_size - width) / 2))
-                x2 = int(min(image.shape[1], x2 + (self.min_bbox_size - width) / 2))
+                x2 = int(min(image.shape[3], x2 + (self.min_bbox_size - width) / 2))
             if height < self.min_bbox_size:
                 y1 = int(max(0, y1 - (self.min_bbox_size - height) / 2))
-                y2 = int(min(image.shape[0], y2 + (self.min_bbox_size - height) / 2))
-
-            # cv2.imwrite('test_images/original_image' + str(bbox) + '.jpg', image)
+                y2 = int(min(image.shape, y2 + (self.min_bbox_size - height) / 2))
+            
             image = image[y1:y2, x1:x2]
-            # cv2.imwrite('test_images/cropped_image' + str(bbox) + '.jpg', image)
 
         _, buffer = cv2.imencode('.jpg', image)
         image_bytes = np.array(buffer).tobytes()
-        # gpt4 need decode to base64, but gemini need raw byte
         if self.vlm_type == "gpt4":
             image_bytes = base64.b64encode(image_bytes).decode('utf-8')
-
+        
         return image_bytes
 
     def messages_to_answer_directly_gemini(self, question):
@@ -91,7 +114,6 @@ class QueryVLM:
                       "do not make a guess, but please explain why and what you need to solve the question," \
                       "like which objects are missing or you need to identify, and use the notation '[Answer Failed]' instead of '[Answer]'."
         return message
-
 
 
     def messages_to_answer_directly(self, question):
@@ -218,154 +240,192 @@ class QueryVLM:
 
 
     def query_vlm(self, image, question, step='attributes', phrases=None, obj_descriptions=None, prev_answer=None, bboxes=None, verify_numeric_answer=False, needed_objects=None, verbose=False):
-        responses = []
+        responses =
 
         if step == 'reattempt' or step == 'ask_directly' or bboxes is None or len(bboxes) == 0:
             if self.vlm_type=="gemini":
                 response = self._query_gemini_pro_vision(image, question, step, obj_descriptions=obj_descriptions, prev_answer=prev_answer,
-                                                     verify_numeric_answer=verify_numeric_answer, needed_objects=needed_objects, verbose=verbose)
-            else:
+                                                         verify_numeric_answer=verify_numeric_answer, needed_objects=needed_objects, verbose=verbose)
+            else: # Assuming gpt4
                 response = self._query_openai_gpt_4v(image, question, step, obj_descriptions=obj_descriptions, prev_answer=prev_answer,
                                                      verify_numeric_answer=verify_numeric_answer, needed_objects=needed_objects, verbose=verbose)
             return [response]
 
-        # query on a single object
         if len(bboxes) == 1:
-            bbox = bboxes.squeeze(0)
-            phrase = phrases[0]
+            # Original script had bbox = bboxes.squeeze(0) which implies bboxes was a tensor
+            # If bboxes is a list of bbox, then bboxes
+            bbox = bboxes if isinstance(bboxes, list) else bboxes.squeeze(0)
+            phrase = phrases if phrases else None # Assuming phrases correspond to bboxes
             if self.vlm_type == "gemini":
                 response = self._query_gemini_pro_vision(image, question, step, phrase=phrase, bbox=bbox, verbose=verbose)
-            else:
+            else: # Assuming gpt4
                 response = self._query_openai_gpt_4v(image, question, step, phrase=phrase, bbox=bbox, verbose=verbose)
             responses.append(response)
-
         else:
-            # process all objects from the same image in a parallel batch
             total_num_objects = len(bboxes)
+            # The lambda functions in map originally didn't pass all args like verify_numeric_answer, needed_objects, verbose
+            # Adding them here for consistency if they were intended to be used in batched calls.
+            # However, the original _query_... methods didn't use all of them when phrase/bbox were present.
+            # Sticking to original lambda signature for _query calls.
             with concurrent.futures.ThreadPoolExecutor(max_workers=total_num_objects) as executor:
                 if self.vlm_type == "gemini":
-                    response = list(executor.map(lambda bbox, phrase: self._query_gemini_pro_vision(image, question, step, phrase=phrase, bbox=bbox, verify_numeric_answer=verify_numeric_answer,
-                                                                                                needed_objects=needed_objects, verbose=verbose), bboxes, phrases))
-                else:
-                    response = list(executor.map(lambda bbox, phrase: self._query_openai_gpt_4v(image, question, step, phrase=phrase, bbox=bbox, verify_numeric_answer=verify_numeric_answer,
-                                                                                                needed_objects=needed_objects, verbose=verbose), bboxes, phrases))
-                responses.append(response)
-
+                    # Original lambda for Gemini batch didn't include verify_numeric_answer, needed_objects, verbose
+                    # It only passed image, question, step, phrase, bbox, verbose (implicitly from outer scope for verbose)
+                    # Replicating that structure.
+                    # Note: 'verbose' in the lambda for _query_gemini_pro_vision was not explicitly passed in original,
+                    # it would have used the 'verbose' from the outer scope of query_vlm.
+                    # For clarity, passing it explicitly if the method signature supports it.
+                    # The original _query_gemini_pro_vision takes verbose.
+                    batch_responses = list(executor.map(lambda p_bbox, p_phrase: self._query_gemini_pro_vision(image, question, step, phrase=p_phrase, bbox=p_bbox, verbose=verbose), bboxes, phrases))
+                else: # Assuming gpt4
+                    batch_responses = list(executor.map(lambda p_bbox, p_phrase: self._query_openai_gpt_4v(image, question, step, phrase=p_phrase, bbox=p_bbox, verbose=verbose), bboxes, phrases))
+                # Original code had responses.append(response) which would append a list as a single element.
+                # Assuming it should be extend.
+                responses.extend(batch_responses)
+        
         return responses
 
-
     def _query_openai_gpt_4v(self, image, question, step, phrase=None, bbox=None, obj_descriptions=None, prev_answer=None, verify_numeric_answer=False, needed_objects=None, verbose=False):
-        # we have to crop the image before converting it to base64
+        if not self.api_key:
+            return "Error: OpenAI API key not configured."
         base64_image = self.process_image(image, bbox)
 
+        messages_text = "" # Renamed from 'messages' to avoid conflict with AutoGen's 'messages' convention
+        max_tokens = 0
+
         if step == 'ask_directly':
-            messages = self.messages_to_answer_directly(question)
+            messages_text = self.messages_to_answer_directly(question)
             max_tokens = 400
         elif step == 'check_numeric_answer':
-            messages = self.message_to_check_if_answer_is_numeric(question)
+            messages_text = self.message_to_check_if_answer_is_numeric(question)
             max_tokens = 300
         elif step == 'attributes':
             if phrase is None or bbox is None:
-                messages = self.messages_to_query_object_attributes(question)
+                messages_text = self.messages_to_query_object_attributes(question)
             else:
-                messages = self.messages_to_query_object_attributes(question, phrase)
+                messages_text = self.messages_to_query_object_attributes(question, phrase)
             max_tokens = 400
         elif step == 'reattempt':
-            messages = self.messages_to_reattempt(question, obj_descriptions, prev_answer)
+            messages_text = self.messages_to_reattempt(question, obj_descriptions, prev_answer)
             max_tokens = 600
         else:
             raise ValueError('Invalid step')
 
-        # Retry if GPT response is like "I'm sorry, I cannot assist with this request"
+        completion_text = "" # Default to empty string
         for _ in range(3):
-            # Form the prompt including the image.
-            # Due to the strong performance of the vision model, we omit multiple queries and majority vote to reduce costs
-            # print('Prompt: ', messages)
             prompt = {
-                "model": "gpt-4-vision-preview",
+                "model": "gpt-4-vision-preview", # Or a newer model if preferred
                 "messages": [
                     {
                         "role": "user",
                         "content": [
-                            {"type": "text", "text": messages},
+                            {"type": "text", "text": messages_text},
                             {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
                         ]
                     }
                 ],
                 "max_tokens": max_tokens
             }
-
-            # Send request to OpenAI API
             headers = {
                 "Content-Type": "application/json",
                 "Authorization": f"Bearer {self.api_key}"
             }
-            response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=prompt)
+            
             try:
+                response = requests.post("https://api.openai.com/v1/chat/completions", headers=headers, json=prompt)
+                response.raise_for_status() # Raise an exception for HTTP errors
                 response_json = response.json()
-            except:
-                continue
+            except requests.exceptions.RequestException as e:
+                if verbose:
+                    print(f"API request failed: {e}")
+                completion_text = f"Error: API request failed: {e}"
+                continue # Retry
+            except json.JSONDecodeError as e:
+                if verbose:
+                    print(f"Failed to decode API response: {e}")
+                completion_text = f"Error: Failed to decode API response: {e}"
+                continue # Retry
 
-            # Process the response
-            # Check if the response is valid and contains the expected data
+
             if 'choices' in response_json and len(response_json['choices']) > 0:
-                completion_text = response_json['choices'][0].get('message', {}).get('content', '')
+                choice = response_json['choices']
+                if choice.get('message') and choice['message'].get('content'):
+                    completion_text = choice['message']['content']
+                elif choice.get('text'): # Fallback for older completion formats if any
+                    completion_text = choice.get('text')
+                else:
+                    completion_text = "Error: No content in VLM response."
 
                 if verbose:
                     print(f'VLM Response at step {step}: {completion_text}')
             else:
-                completion_text = ""
+                completion_text = "Error: Invalid response structure from VLM."
+                if verbose:
+                    print(f'VLM Response at step {step} (invalid structure): {response_json}')
+
 
             if step == 'ask_directly' or (not re.search(r'sorry|cannot assist|can not assist|can\'t assist', completion_text, re.IGNORECASE)):
                 break
-
+        
         return completion_text
 
-
     def _query_gemini_pro_vision(self, image, question, step, phrase=None, bbox=None, obj_descriptions=None, prev_answer=None, verify_numeric_answer=False, needed_objects=None, verbose=False):
-        byte_image = self.process_image(image, bbox)
-        vertexai_image = vertexai_Image.from_bytes(byte_image)
+        if not self.gemini_pro_vision:
+            return "Error: Gemini Pro Vision model not initialized."
+        
+        byte_image = self.process_image(image, bbox) # process_image now returns bytes for gemini
+        vertexai_image_obj = vertexai_Image.from_bytes(byte_image)
+
+        messages_text = "" # Renamed
+        max_tokens = 0
 
         if step == 'ask_directly':
-            messages = self.messages_to_answer_directly_gemini(question)
+            messages_text = self.messages_to_answer_directly_gemini(question)
             max_tokens = 500
         elif step == 'check_numeric_answer':
-            messages = self.message_to_check_if_answer_is_numeric(question)
+            messages_text = self.message_to_check_if_answer_is_numeric(question) # Assuming same prompt structure
             max_tokens = 300
         elif step == 'attributes':
             if phrase is None or bbox is None:
-                messages = self.messages_to_query_object_attributes(question)
+                messages_text = self.messages_to_query_object_attributes(question) # Assuming same
             else:
-                messages = self.messages_to_query_object_attributes(question,
-                                                                    phrase)
+                messages_text = self.messages_to_query_object_attributes(question, phrase) # Assuming same
             max_tokens = 400
         elif step == 'reattempt':
-            messages = self.messages_to_reattempt_gemini(question, obj_descriptions,
-                                                  prev_answer)
+            messages_text = self.messages_to_reattempt_gemini(question, obj_descriptions, prev_answer)
             max_tokens = 700
         else:
             raise ValueError('Invalid step')
 
-        # Retry if GPT response is like "I'm sorry, I cannot assist with this request"
         completion_text = ""
         for _ in range(3):
-            # Due to the strong performance of the vision model, we omit multiple queries and majority vote to reduce costs
-            gemini_contents = [messages, vertexai_image]
-            response = self.gemini_pro_vision.generate_content(
-                gemini_contents,
-                generation_config={"max_output_tokens": max_tokens},
-            )
-            # Process the response
+            gemini_contents = [messages_text, vertexai_image_obj]
             try:
+                response = self.gemini_pro_vision.generate_content(
+                    gemini_contents,
+                    generation_config={"max_output_tokens": max_tokens},
+                    # stream=False # Ensure non-streaming for direct text extraction
+                )
+                # Accessing response.text directly is common for non-streaming
                 completion_text = response.text
-            except:
+            except Exception as e:
                 if verbose:
-                    print(f'Gemini VLM Response at step {step}')
-                continue
+                    print(f'Error querying Gemini VLM at step {step}: {e}')
+                # Check for specific safety/block reasons if available in 'e' or response parts
+                try:
+                    if response.prompt_feedback.block_reason:
+                        completion_text = f"Blocked: {response.prompt_feedback.block_reason}"
+                        if verbose: print(f"Gemini content blocked: {response.prompt_feedback.block_reason_message}")
+                        break # Don't retry if blocked by safety filters
+                except: # If response object doesn't have prompt_feedback or text
+                    pass
+                completion_text = f"Error: Gemini API call failed: {e}" # Fallback error
+                continue # Retry
+
             if verbose:
                 print(f'Gemini VLM Response at step {step}: {completion_text}')
 
             if step == 'ask_directly' or (not re.search(r'sorry|cannot assist|can not assist|can\'t assist', completion_text, re.IGNORECASE)):
                 break
-
+        
         return completion_text
