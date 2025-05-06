@@ -114,21 +114,21 @@ class QueryLLM:
             ]
         return messages
 
-
+    
     def query_llm(self, prompts, previous_response=None, target_answer=None, model_answer=None, grader_id=0, llm_model='gpt-3.5-turbo', step='related_objects', max_batch_size=4,
-                  verify_numeric_answer=False, verbose=False):
+                    verify_numeric_answer=False, verbose=False):
         # query on a single image
         if len(prompts) == 1:
             if llm_model == 'gpt-4':
-                response = self._query_openai_gpt_4(prompts[0], step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
+                response = self._query_openai_gpt_4(prompts, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
                                                     grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose)
             else:
-                response = self._query_openai_gpt_3p5(prompts[0], step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
-                                                      grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose)
+                response = self._query_openai_gpt_3p5(prompts, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
+                                                        grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose)
             return response
 
         # query on a batch of images in parallel
-        responses = []
+        responses =
         total_num_prompts = len(prompts)
 
         # process images in batches to avoid exceeding OpenAI API limits
@@ -138,17 +138,17 @@ class QueryLLM:
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_batch_size) as executor:
                 if llm_model == 'gpt-4':
-                    batch_responses = list(executor.map(lambda prompt: self._query_openai_gpt_4(prompt, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
+                    batch_responses = list(executor.map(lambda prompt_item: self._query_openai_gpt_4(prompt_item, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
                                                                                                 grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose), batch_prompts))
                 else:
-                    batch_responses = list(executor.map(lambda prompt: self._query_openai_gpt_3p5(prompt, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
-                                                                                                  grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose), batch_prompts))
-            responses.extend(batch_responses)
+                    batch_responses = list(executor.map(lambda prompt_item: self._query_openai_gpt_3p5(prompt_item, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
+                                                                                                    grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose), batch_prompts))
+                responses.extend(batch_responses)
 
         return responses
 
 
-    def _query_openai_gpt_3p5(self, prompt, step, previous_response=None, target_answer=None, model_answer=None, grader_id=0, verify_numeric_answer=False, verbose=False):
+    def _query_openai_gpt_4(self, prompt, step, previous_response=None, target_answer=None, model_answer=None, grader_id=0, verify_numeric_answer=False, verbose=False):
         client = OpenAI(api_key=self.api_key)
 
         if step == 'check_numeric_answer':
@@ -164,14 +164,13 @@ class QueryLLM:
 
         try:
             response = client.chat.completions.create(
-                model="gpt-3.5-turbo",
+                model="gpt-4",
                 messages=messages,
             )
-
-            response = response.choices[0].message.content
+            response = response.choices.message.content
         except:
-            response = "Invalid response. "
+            response = "Invalid response. " # Kept bare except to match style of _query_openai_gpt_3p5
         if verbose:
-            print(f'LLM Response at step {step}: {response}')
+            print(f'LLM Response (GPT-4) at step {step}: {response}')
 
         return response

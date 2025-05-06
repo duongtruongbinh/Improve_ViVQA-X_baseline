@@ -8,30 +8,27 @@ import os
 import json
 import argparse
 import vertexai
+import autogen
 
 from utils import *
 from inference import inference
-from dataloader import * #, VisualGenomeDataset, SNLIVEDataset, CLEVRobotDataset, AI2THORDataset
+from dataloader import *
 
 import sys
 sys.path.append('./Grounded-Segment-Anything')
 sys.path.append('./CLIP_Count')
 
-########## Environment Variable for Gemini Pro Vision #############
 credential_path = "/raid0/docker-raid/bwjiang/vlm4sgg/LLM_api_keys/multi-agent-vqa-gemini-eb6d477d5c97.json"
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
-########## Environment Variable for Gemini Pro Vision #############
 
 if __name__ == "__main__":
     print('Torch', torch.__version__, 'Torchvision', torchvision.__version__)
-    # Load hyperparameters
     try:
         with open('config.yaml', 'r') as file:
             args = yaml.safe_load(file)
     except Exception as e:
         print('Error reading the config file')
 
-    # Command-line argument parsing
     parser = argparse.ArgumentParser(description='Command line arguments')
     parser.add_argument('--vlm_model', type=str, default="gpt4", help='Set VLM model (gpt4, gemini)')
     parser.add_argument('--dataset', type=str, default=None, help='Set dataset (gqa, vqa-v2)')
@@ -39,7 +36,6 @@ if __name__ == "__main__":
     parser.add_argument('--verbose', dest='verbose', action='store_true', help='Set verbose to True')
     cmd_args = parser.parse_args()
 
-    # Override args from config.yaml with command-line arguments if provided
     args['model'] = cmd_args.vlm_model
     if args['model'] == 'gemini':
         print("Using Gemini Pro Vision as VLM, initializing the Google Cloud Certificate")
@@ -64,7 +60,6 @@ if __name__ == "__main__":
     print('torch.distributed.is_available', torch.distributed.is_available())
     print('Using %d GPUs' % (torch.cuda.device_count()))
 
-    # Prepare datasets
     print("Loading the datasets...")
     if args['datasets']['dataset'] == 'gqa':
         test_dataset = GQADataset(args)
@@ -74,17 +69,13 @@ if __name__ == "__main__":
         raise ValueError('Invalid dataset name')
 
     torch.manual_seed(0)
-    # [zhijunz] TEMP, set for debug
-    # args['datasets']['use_num_test_data'] = 3
     if args['datasets']['use_num_test_data']:
         test_subset_idx = torch.randperm(len(test_dataset))[:int(args['datasets']['num_test_data'])]
     else:
-        # test_subset_idx = torch.randperm(len(test_dataset))[3600:]
         test_subset_idx = torch.randperm(len(test_dataset))[:int(args['datasets']['percent_test'] * len(test_dataset))]
     test_subset = Subset(test_dataset, test_subset_idx)
     test_loader = DataLoader(test_subset, batch_size=1, shuffle=True, num_workers=0, drop_last=True)
     print('num of train, test:', 0, len(test_subset))
 
-    # Start inference
     print(args)
     inference(device, args, test_loader)
