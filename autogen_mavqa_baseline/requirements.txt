@@ -186,6 +186,7 @@ tzdata==2023.4
 uc-micro-py==1.0.3
 urllib3==1.26.18
 uvicorn==0.27.1
+vllm
 wcwidth==0.2.13
 websockets==11.0.3
 Werkzeug==3.0.1
@@ -193,3 +194,7 @@ xtcocotools==1.14.3
 yapf==0.40.2
 yarl==1.9.4
 zipp==3.17.0
+"autogen-core"
+"autogen-ext"
+"autogen-ext[openai]"
+"autogen-ext[web-surfer]"
