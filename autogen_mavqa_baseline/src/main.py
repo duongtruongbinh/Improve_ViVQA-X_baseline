@@ -3,18 +3,15 @@
 import asyncio
 import argparse
 import os
-import torch # For DataLoader and dataset selection logic
+import torch 
 from torch.utils.data import Subset, DataLoader
-import json # Needed for final stats saving logic potentially
+import json
 
 # --- AutoGen VQA System Imports ---
-# Assuming all .py files are in the same directory or accessible via PYTHONPATH
 try:
-    from config_loader import app_config # app_config is loaded when config_loader is imported
-    from main_vqa_flow import run_vqa_pipeline # Import the core pipeline function
-    # Import actual dataloaders provided by user
+    from config_loader import app_config 
+    from main_vqa_flow import run_vqa_pipeline
     from dataloader import VQAv2Dataset, GQADataset
-    # Try importing utilities needed at the end
     from utils import Grader, write_response_to_json, record_final_accuracy, Colors
 except ImportError as e:
     print(f"Import Error in main.py: {e}. Please ensure all required .py files "
@@ -29,7 +26,7 @@ async def main_logic_entry_point():
     Main logic for argument parsing, dataset loading, and orchestrating VQA runs.
     Integrates Grader from utils.py for final accuracy calculation.
     """
-    current_config = app_config # Use the globally loaded config
+    current_config = app_config 
 
     print(f"Torch version: {torch.__version__}")
     try:
@@ -96,8 +93,6 @@ async def main_logic_entry_point():
             effective_split_name = "unknown"
 
     # --- Update global config with effective values ---
-    # This ensures consistency if any module re-imports app_config, although it's generally
-    # better practice to pass specific needed values down if possible.
     current_config["datasets"]["dataset_name"] = effective_dataset_name
     current_config["inference_settings"]["verbose"] = effective_verbose
     current_config["datasets"]["use_num_test_data"] = effective_use_num
@@ -178,17 +173,17 @@ async def main_logic_entry_point():
 
     # --- Initialize Grader and Results Storage ---
     grader_instance = Grader() # Instantiate the grader from utils.py
-    all_results_dict = {} # Store results keyed by question_id for final JSON saving
-    output_filename = inference_settings.get("output_response_filename", "outputs/autogen_vqa_default.jsonl")
+    all_results_dict = {}
+    output_filename = inference_s_config.get("output_response_filename", "outputs/autogen_vqa_default.jsonl")
     # Ensure output directory exists
     output_dir = os.path.dirname(output_filename)
-    if inference_settings.get("save_output_response") and output_dir and not os.path.exists(output_dir):
+    if inference_s_config.get("save_output_response") and output_dir and not os.path.exists(output_dir):
         try:
             os.makedirs(output_dir)
             print(f"Created output directory: {output_dir}")
         except OSError as e:
             print(f"Warning: Could not create output directory {output_dir}: {e}. Individual results might not be saved correctly by external utils if needed.")
-            # Saving the final JSON might still work if the directory can be created later.
+
 
     # --- Start AutoGen VQA Inference Loop ---
     print(f"\nStarting AutoGen VQA processing loop...")
@@ -205,7 +200,7 @@ async def main_logic_entry_point():
         # Log progress
         if effective_verbose:
             print(f"\n[Main Loop] Processing item {i+1}/{len(test_loader)}: QID {current_question_id}")
-        elif (i + 1) % inference_settings.get("print_every", 10) == 0 or i == len(test_loader) - 1 :
+        elif (i + 1) % inference_s_config.get("print_every", 10) == 0 or i == len(test_loader) - 1 :
             print(f"[Main Loop] Processing item {i + 1}/{len(test_loader)}: QID {current_question_id}")
 
         # Check image existence
@@ -226,15 +221,13 @@ async def main_logic_entry_point():
             )
 
             # Accumulate grades using the Grader instance
-            # Need to extract grades and match_baseline_failed from the result
             grades = pipeline_result_data.get("grades", [])
             match_failed = pipeline_result_data.get("match_baseline_failed", False) # Default to False if missing
 
             # Call accumulate_grades which also calculates majority vote
-            # It requires the config ('args' in its definition)
-            if grades: # Only accumulate if grading was actually performed
+            if grades:
                  majority_vote_str = grader_instance.accumulate_grades(current_config, grades, match_failed)
-                 pipeline_result_data["majority_vote"] = majority_vote_str # Add majority vote to results
+                 pipeline_result_data["majority_vote"] = majority_vote_str
             else:
                  pipeline_result_data["majority_vote"] = "Grading Skipped"
 
@@ -269,43 +262,37 @@ async def main_logic_entry_point():
     # --- Final Accuracy Calculation & Saving ---
     print("\nCalculating final accuracy and saving results...")
     try:
-        # Use the Grader instance which has accumulated results throughout the loop
         baseline_accuracy, final_accuracy, stats = grader_instance.average_score()
 
         print(f"Final Accuracy (Overall): {final_accuracy * 100:.2f}%")
         print(f"Baseline Accuracy (if applicable): {baseline_accuracy * 100:.2f}%")
         print(f"Stats: {stats}")
 
-        # Save the final dictionary with all results to JSON
-        # Add accuracy stats to the dictionary before saving
         all_results_dict['overall_baseline_accuracy'] = baseline_accuracy
         all_results_dict['overall_final_accuracy'] = final_accuracy
         all_results_dict['overall_stats'] = stats
 
-        if inference_settings.get("save_output_response"):
-            # Use the write_response_to_json logic (or adapt your function)
-            # This function writes the entire dict keyed by qid
+        if inference_s_config.get("save_output_response"):
             try:
                  # Ensure directory exists one last time
                  output_dir = os.path.dirname(output_filename)
                  if output_dir and not os.path.exists(output_dir): os.makedirs(output_dir, exist_ok=True)
                  
                  with open(output_filename, 'w', encoding='utf-8') as f:
-                     json.dump(all_results_dict, f, indent=4) # Use indent for readability
+                     json.dump(all_results_dict, f, indent=4)
                  print(f"Final results saved to: {output_filename}")
             except Exception as e_save:
                  print(f"ERROR saving final JSON results to {output_filename}: {e_save}")
         else:
              print("Skipping saving final results file as per configuration.")
 
-    except NameError as e: # Catch if Grader wasn't defined due to utils import failure
+    except NameError as e:
          if 'Grader' in str(e): print("Could not calculate final accuracy because 'Grader' class from 'utils.py' was not available.")
          else: print(f"An unexpected NameError occurred during final processing: {e}")
     except Exception as e_final:
         print(f"Error during final accuracy calculation or saving: {e_final}")
 
 if __name__ == "__main__":
-    # Removed Gemini/VertexAI specific setup
     try:
         asyncio.run(main_logic_entry_point())
     except FileNotFoundError as e:
