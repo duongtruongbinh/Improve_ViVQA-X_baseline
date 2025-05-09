@@ -60,11 +60,11 @@ class Grader:
 
         if match_correct:
             majority_vote = 'Majority vote is [Correct] with a score of ' + str(count_match_correct)
-            if args['inference']['verbose']:
+            if args['inference_settings']['verbose']:
                 print(f'{Colors.OKBLUE}{majority_vote}{Colors.ENDC}')
         else:
             majority_vote = 'Majority vote is [Incorrect] with a score of ' + str(count_match_correct)
-            if args['inference']['verbose']:
+            if args['inference_settings']['verbose']:
                 print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
 
         self.count_total += 1
@@ -94,11 +94,11 @@ class Grader:
 
         if match_correct:
             majority_vote = 'Majority vote is [Correct] with a score of ' + str(count_match_correct)
-            if args['inference']['verbose']:
+            if args['inference_settings']['verbose']:
                 print(f'{Colors.OKBLUE}{majority_vote}{Colors.ENDC}')
         else:
             majority_vote = 'Majority vote is [Incorrect] with a score of ' + str(count_match_correct)
-            if args['inference']['verbose']:
+            if args['inference_settings']['verbose']:
                 print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
 
         self.count_total += 1
