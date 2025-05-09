@@ -198,3 +198,6 @@ zipp==3.17.0
 "autogen-ext"
 "autogen-ext[openai]"
 "autogen-ext[web-surfer]"
+"autogen-agentchat"
+pyautogen
+matplotlib
