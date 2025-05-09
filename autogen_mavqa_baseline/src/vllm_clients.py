@@ -20,10 +20,10 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient # Ensure autoge
 # --- vLLM Client Configuration ---
 VLLM_CONFIG = app_config.get("vllm_details", {})
 VLM_MODEL_NAME = VLLM_CONFIG.get("vlm_model_name", "Qwen/Qwen2.5-VL-3B-Instruct") # Defaults added
-LLM_MODEL_NAME = VLLM_CONFIG.get("llm_model_name", "Qwen/Qwen3-1.7B-Base")
+LLM_MODEL_NAME = VLLM_CONFIG.get("llm_model_name", "Qwen/Qwen2.5-VL-3B-Instruct")
 API_KEY = VLLM_CONFIG.get("api_key", "EMPTY")
 VLM_URL = VLLM_CONFIG.get("vlm_url", "http://localhost:8000/v1")
-LLM_URL = VLLM_CONFIG.get("llm_url", "http://localhost:8001/v1")
+LLM_URL = VLLM_CONFIG.get("llm_url", "http://localhost:8000/v1")
 
 print(f"--- Initializing AutoGen Clients for vLLM ---")
 print(f"VLM Client: Model='{VLM_MODEL_NAME}', Base URL='{VLM_URL}'")
@@ -34,17 +34,15 @@ vlm_client_vllm = None
 llm_client_vllm = None
 
 try:
-    # Client for Vision-Language Models (VLM) on vLLM
     vlm_client_vllm = OpenAIChatCompletionClient(
         model=VLM_MODEL_NAME,
         api_key=API_KEY,
-        base_url=VLM_URL_URL,
+        base_url=VLM_URL,
         model_info={
-            # Context window values are examples, verify for your specific Qwen models
             "context_window": 32768,
             "vision": True,
-            "function_calling": False, # Generally False for vLLM OpenAI endpoint unless customized
-            "json_output": False, # Safer default unless model guarantees JSON format
+            "function_calling": False,
+            "json_output": False,
             "family": "Qwen-VL",
         }
     )
@@ -53,13 +51,12 @@ except Exception as e:
     print(f"ERROR initializing VLM client: {e}. Check model name, vLLM server status, and connection.")
 
 try:
-    # Client for Language Models (LLM) on vLLM (for text-only tasks)
     llm_client_vllm = OpenAIChatCompletionClient(
         model=LLM_MODEL_NAME,
         api_key=API_KEY,
         base_url=LLM_URL,
         model_info={
-            "context_window": 32768, # Example, verify for Qwen3-1.7B
+            "context_window": 32768, 
             "vision": False,
             "function_calling": False,
             "json_output": False,
@@ -70,7 +67,6 @@ try:
 except Exception as e:
     print(f"ERROR initializing LLM client: {e}. Check model name, vLLM server status, and connection.")
 
-# Optional check to alert if initialization failed before agents try to use them
 if vlm_client_vllm is None:
     print("WARNING: VLM client (vlm_client_vllm) is None due to initialization error.")
 if llm_client_vllm is None:
