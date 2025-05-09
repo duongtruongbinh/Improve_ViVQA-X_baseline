@@ -40,7 +40,7 @@ class GQADataset(Dataset):
         question = annot['question']
         answer = annot['answer']
 
-        if self.args['inference']['verbose']:
+        if self.args['inference_settings']['verbose']:
             curr_data = 'image_path: ' + image_path + ' question: ' + question + ' answer: ' + answer
             print(f'{Colors.HEADER}{curr_data}{Colors.ENDC}')
 
@@ -117,7 +117,7 @@ class VQAv2Dataset(Dataset):
         else:
             answer = ""
 
-        if self.args['inference']['verbose']:
+        if self.args['inference_settings']['verbose']:
             curr_data = 'image_id: ' + str(image_id) + ' image_path: ' + image_path + ' question: ' + question + \
                         ' question_id: ' + str(question_id) + ' answer: ' + answer
             print(f'{Colors.HEADER}{curr_data}{Colors.ENDC}')
