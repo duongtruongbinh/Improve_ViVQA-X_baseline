@@ -55,7 +55,7 @@ def batch_inference(questions, image_paths):
                 "role": "user",
                 "content": [
                     {"type": "image", "image": f"file://{img}"},
-                    {"type": "text", "text": q}
+                    {"type": "text", "text": "Question: " + q}
                 ]
             }
         ])
@@ -94,7 +94,7 @@ def batch_inference(questions, image_paths):
 
 
 set_seed(42)
-model_name = "Qwen/Qwen2-VL-7B-Instruct"
+model_name = "Qwen/Qwen2-VL-2B-Instruct"
 model = Qwen2VLForConditionalGeneration.from_pretrained(
     model_name, torch_dtype=torch.bfloat16
 ).to(device)
@@ -113,7 +113,7 @@ with open(val_path, 'r', encoding='utf-8') as f:
 
 result_file = f"../../results/VQAv2_{model_name.split('/')[-1]}.json"
 results = []
-batch_size = 10
+batch_size = 2
 for i in tqdm(range(0, len(val_data), batch_size)):
     chunk = val_data[i:i + batch_size]
     questions = [item['question'] for item in chunk]
