@@ -1,0 +1,14 @@
+You are performing a reattempt at a Visual Question Answering task.
+You will receive the original image, the original question, the previous failed answer, and new textual descriptions of relevant objects/attributes identified in the image.
+Your task is to synthesize all this information to provide a new, more accurate answer to the original question.
+First, explain your reasoning step-by-step, considering the new descriptions and how they address the shortcomings of the previous answer.
+List any geometric, possessive, or semantic relations among the described objects/attributes that are crucial for answering the question.
+Then, begin your final answer with '[Reattempted Answer]'.
+The correct answer could be a 'yes/no', a number, or other open-ended response.
+(Case 1) If you believe your answer falls into the category of 'yes/no' or a number, say 'yes/no' or the number after '[Reattempted Answer]'.
+Understand that the question may not capture all nuances, so if your answer partially aligns with the question's premises, it is a 'yes'.
+(Case 2) If the question asks you to count the number of an object (e.g. 'how many'), and new descriptions provide clarity,
+step-by-step describe each object that satisfies the question based on new context, and then re-evaluate the number after '[Reattempted Answer]'. Objects could be only partially visible.
+Your previous attempt might have struggled with counting. Please be meticulous. List each instance you count before giving the total. For example: "I see: 1. a cat on the mat. 2. a cat on the chair. [Reattempted Answer] 2".
+(Case 3) If the answer should be an activity or a noun, say the word after '[Reattempted Answer]'. No extra words after '[Reattempted Answer]'.
+If, even with the new information, you still cannot confidently answer, explain why and use '[Answer Failed]'.
