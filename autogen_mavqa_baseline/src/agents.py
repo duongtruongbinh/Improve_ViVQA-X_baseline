@@ -1,9 +1,18 @@
 import sys
 import os
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-from autogen_agentchat.agents import AssistantAgent, UserProxyAgent
 
-# --- Constants & Environment Setup ---
+try:
+    from autogen.agentchat.conversable_agent import ConversableAgent
+except ImportError:
+    print("ERROR: Could not import ConversableAgent from autogen.agentchat.conversable_agent.")
+    print("Ensure your AutoGen version (expected 0.5.6 or compatible) has this class or adjust the import path.")
+    raise
+
+# AssistantAgent from autogen_agentchat.agents is no longer used for the specialized agents
+# from autogen_agentchat.agents import AssistantAgent 
+
+
 CURRENT_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROMPTS_DIR = os.path.join(CURRENT_SCRIPT_DIR, '..', 'prompts')
 
@@ -14,7 +23,7 @@ if not os.path.isdir(PROMPTS_DIR):
 try:
     jinja_env = Environment(
         loader=FileSystemLoader(PROMPTS_DIR),
-        autoescape=select_autoescape(['j2']), # Autoescape for .j2 files
+        autoescape=select_autoescape(['j2']), 
         trim_blocks=True,
         lstrip_blocks=True
     )
@@ -22,9 +31,7 @@ except Exception as e:
     print(f"ERROR: Failed to initialize Jinja2 environment: {e}")
     sys.exit(1)
 
-# --- Prompt Utilities ---
 def load_static_prompt(template_name: str) -> str:
-    """Loads and renders a Jinja2 template without dynamic variables."""
     try:
         template = jinja_env.get_template(template_name)
         return template.render()
@@ -33,7 +40,6 @@ def load_static_prompt(template_name: str) -> str:
         raise
 
 def render_dynamic_prompt(template_name: str, **kwargs) -> str:
-    """Loads and renders a Jinja2 template with dynamic variables."""
     try:
         template = jinja_env.get_template(template_name)
         return template.render(**kwargs)
@@ -41,66 +47,89 @@ def render_dynamic_prompt(template_name: str, **kwargs) -> str:
         print(f"ERROR: Failed to load/render dynamic template '{template_name}' with {kwargs}: {e}")
         raise
 
-# --- Core Imports ---
 try:
-    from vllm_clients import vlm_client_vllm, llm_client_vllm
-    from config_loader import app_config
+    # These should now be llm_config dictionaries, not client instances
+    from vllm_clients import llm_config_vlm, llm_config_llm 
 except ImportError as e:
-    print(f"ERROR: Failed to import required modules: {e}. Check paths and dependencies.")
-    sys.exit(1)
-except NameError as e_name:
-    print(f"ERROR: A required object (likely app_config) was not loaded: {e_name}. Check config_loader.py.")
+    print(f"ERROR: Failed to import llm_config_vlm or llm_config_llm from vllm_clients.py: {e}.")
+    print("Ensure vllm_clients.py provides these llm_config dictionaries.")
     sys.exit(1)
 
-# --- Agent Definitions ---
-class VQAOrchestratorAgent(UserProxyAgent):
-    def __init__(self, name: str = "VQA_Orchestrator", description: str = "Orchestrates the VQA agent workflow.", **kwargs):
-        super().__init__(name=name, description=description)
-        # Note: human_input_mode, code_execution_config etc. removed if not standard UserProxyAgent args
 
-# --- Client Sanity Check ---
-if vlm_client_vllm is None or llm_client_vllm is None:
-    print("CRITICAL ERROR: One or both VLLM clients failed to initialize. Check vllm_clients.py and config.")
-    sys.exit(1)
+class VQAOrchestratorAgent(ConversableAgent):
+    def __init__(self, 
+                 name: str = "VQA_Orchestrator", 
+                 description: str = "Orchestrates the VQA agent workflow.",
+                 llm_config=None, 
+                 human_input_mode="NEVER",
+                 code_execution_config=False, 
+                 **kwargs):
+        super().__init__(
+            name=name, 
+            description=description, 
+            llm_config=llm_config,
+            human_input_mode=human_input_mode,
+            code_execution_config=code_execution_config,
+            **kwargs
+            )
+        # self.custom_description = description # description is a valid param for ConversableAgent
 
-# --- Agent Instantiation ---
+# Client sanity check is implicitly handled by agent instantiation using these configs
+# if llm_config_vlm is None or llm_config_llm is None:
+# print("CRITICAL ERROR: llm_config_vlm or llm_config_llm is not defined. Check vllm_clients.py.")
+# sys.exit(1)
+
 try:
-    initial_vlm_agent = AssistantAgent(
+    initial_vlm_agent = ConversableAgent(
         name="Initial_VLM_Agent",
-        model_client=vlm_client_vllm,
+        llm_config=llm_config_vlm, 
         system_message=load_static_prompt('vlm/initial_default.j2'),
-        description="Uses VLM for the first VQA attempt."
+        description="Uses VLM for the first VQA attempt.",
+        human_input_mode="NEVER",
+        code_execution_config=False 
     )
 
-    failure_analysis_agent = AssistantAgent(
+    failure_analysis_agent = ConversableAgent(
         name="Failure_Analysis_Agent",
-        model_client=llm_client_vllm,
+        llm_config=llm_config_llm,
         system_message=load_static_prompt('agents/failure_analysis_system.j2'),
-        description="Uses LLM to analyze VLM failures and suggest reattempt strategy."
+        description="Uses LLM to analyze VLM failures and suggest reattempt strategy.",
+        human_input_mode="NEVER",
+        code_execution_config=False
     )
 
-    object_attribute_agent = AssistantAgent(
+    object_attribute_agent = ConversableAgent(
         name="Object_Attribute_Agent",
-        model_client=vlm_client_vllm,
+        llm_config=llm_config_vlm, 
         system_message=load_static_prompt('agents/object_attribute_system_no_tools.j2'),
-        description="Uses VLM to describe textually specified items in the image for reattempts."
+        description="Uses VLM to describe textually specified items in the image for reattempts.",
+        human_input_mode="NEVER",
+        code_execution_config=False
     )
 
-    reattempt_vlm_agent = AssistantAgent(
+    reattempt_vlm_agent = ConversableAgent(
         name="Reattempt_VLM_Agent",
-        model_client=vlm_client_vllm,
+        llm_config=llm_config_vlm,
         system_message=load_static_prompt('vlm/reattempt_default_no_tools.j2'),
-        description="Uses VLM to reattempt VQA with additional textual context."
+        description="Uses VLM to reattempt VQA with additional textual context.",
+        human_input_mode="NEVER",
+        code_execution_config=False
     )
 
 except Exception as e_agent_init:
-    print(f"ERROR: Failed to initialize one or more AssistantAgents: {e_agent_init}")
+    print(f"ERROR: Failed to initialize one or more ConversableAgents: {e_agent_init}")
+    import traceback
+    traceback.print_exc()
     sys.exit(1)
 
 try:
-    vqa_orchestrator = VQAOrchestratorAgent()
+    vqa_orchestrator = VQAOrchestratorAgent(
+        llm_config=None # Orchestrator might not need its own LLM if it only delegates
+    )
 except Exception as e_orch_init:
     print(f"ERROR: Failed to initialize VQAOrchestratorAgent: {e_orch_init}")
+    import traceback
+    traceback.print_exc()
     sys.exit(1)
 
 print("AutoGen agents initialized successfully.")
