@@ -1,13 +1,33 @@
-# ---------------- VLLM AND MODEL DETAILS ----------------
+# # ---------------- VLLM AND MODEL DETAILS ----------------
 vllm_details:
-  base_url: "http://localhost:8000/v1"
-  api_key: "123" # Key
+  api_provider: "openai"  # or "openai" or"vllm"
+
+  # Config for vLLM (local)
   vlm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
   llm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
+  api_key: "EMPTY"
+  vlm_url: "http://localhost:8000/v1"
+  llm_url: "http://localhost:8000/v1"
+  vlm_family: "Qwen-VL"
+  llm_family: "Qwen"
+  temperature: 0.7
+
+  # Config for OpenAI API 
+  openai_api_key: "sk-làlálala" # << THAY BẰNG KHÓA API THẬT CỦA BẠN
+  openai_vlm_model_name: "gpt-4o" 
+  openai_llm_model_name: "gpt-4o"
+  openai_base_url: "https://api.openai.com/v1"
+  openai_vlm_family: "openai"
+  openai_llm_family: "openai"
+  # Giá ví dụ cho gpt-4o (prompt, completion) - bạn có thể cập nhật
+  openai_vlm_price: [0.005, 0.015] # $5/1M input, $15/1M output cho gpt-4o vision
+  openai_llm_price: [0.005, 0.015] # $5/1M input, $15/1M output cho gpt-4o text
+
+
 
 # ---------------- INFERENCE SETTINGS ----------------
 inference_settings:
-  verbose: False
+  verbose: True
   find_nearby_objects: False
   force_multi_agents: False
   nearby_bbox_iou_threshold: 0.5
