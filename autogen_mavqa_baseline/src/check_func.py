@@ -33,12 +33,6 @@ try:
     print(f"UserProxyAgent INSTANCE has 'a_initiate_chat': {has_instance_a_initiate_chat}")
     print(f"UserProxyAgent INSTANCE has 'initiate_chat': {has_instance_initiate_chat}")
 
-    # In ra các phương thức liên quan đến chat để kiểm tra thêm nếu cần
-    # print("\nPotential chat-related methods on UserProxyAgent instance:")
-    # for attr in dir(test_agent_instance):
-    #    if "initiate" in attr.lower() or "chat" in attr.lower() or "send" in attr.lower() or "receive" in attr.lower():
-    #        print(f"  - {attr}")
-
 except ImportError as e:
     print(f"Failed to import autogen_agentchat.agents: {e}")
 except Exception as e_general:
