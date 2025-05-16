@@ -1,0 +1,411 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "dataset_split": null,
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 20,
+        "random_seed": 0,
+        "actual_items_in_loader": 20,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "564636000": {
+            "question_id": "564636000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg",
+            "question": "What color is his outfit?",
+            "target_answer": "red",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.23,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "361285004": {
+            "question_id": "361285004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000361285.jpg",
+            "question": "What is growing on the side of the clock tower?",
+            "target_answer": "trees",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.24,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "11241001": {
+            "question_id": "11241001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is the Tabasco sauce bottle full?",
+            "target_answer": "no",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.18,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "230884007": {
+            "question_id": "230884007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000230884.jpg",
+            "question": "What sport is played here?",
+            "target_answer": "skateboarding",
+            "initial_answer": "[Skateboarding]",
+            "final_answer": "[Skateboarding]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] Grader 0 [Correct]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "568863006": {
+            "question_id": "568863006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000568863.jpg",
+            "question": "What covers the ground?",
+            "target_answer": "water",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "278579001": {
+            "question_id": "278579001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278579.jpg",
+            "question": "Are these two people have beards?",
+            "target_answer": "yes",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.17,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "551018004": {
+            "question_id": "551018004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000551018.jpg",
+            "question": "What color is the car?",
+            "target_answer": "silver",
+            "initial_answer": "[White]",
+            "final_answer": "[White]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] Grader 0 [Incorrect]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "348854001": {
+            "question_id": "348854001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000348854.jpg",
+            "question": "What other vegetable besides carrots are in the picture?",
+            "target_answer": "broccoli",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.17,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "500175000": {
+            "question_id": "500175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500175.jpg",
+            "question": "What time of day does this picture depict?",
+            "target_answer": "evening",
+            "initial_answer": "[Answer] Afternoon",
+            "final_answer": "[Answer] Afternoon",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] Grader 0 [Incorrect]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "255630005": {
+            "question_id": "255630005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000255630.jpg",
+            "question": "What color is the water?",
+            "target_answer": "blue",
+            "initial_answer": "[White]",
+            "final_answer": "[White]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "267910001": {
+            "question_id": "267910001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "Might the electricity be out?",
+            "target_answer": "no",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.17,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "251888007": {
+            "question_id": "251888007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "What city is this?",
+            "target_answer": "new york",
+            "initial_answer": "[Answer] Hong Kong",
+            "final_answer": "[Answer] Hong Kong",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] Grader 0 [Incorrect]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "421231004": {
+            "question_id": "421231004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421231.jpg",
+            "question": "What kind of icing is on the cake?",
+            "target_answer": "chocolate",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.24,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "475195003": {
+            "question_id": "475195003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000475195.jpg",
+            "question": "How many bananas are there?",
+            "target_answer": "30",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.21,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "225751002": {
+            "question_id": "225751002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000225751.jpg",
+            "question": "Is there broccoli?",
+            "target_answer": "no",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "516415001": {
+            "question_id": "516415001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000516415.jpg",
+            "question": "Is he practicing?",
+            "target_answer": "yes",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.17,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "242246001": {
+            "question_id": "242246001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000242246.jpg",
+            "question": "Where is this market?",
+            "target_answer": "outside",
+            "initial_answer": "[Answer] No numeric answer",
+            "final_answer": "[Answer] No numeric answer",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.17,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "206838000": {
+            "question_id": "206838000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000206838.jpg",
+            "question": "What are the girls wearing?",
+            "target_answer": "bikinis",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "515682001": {
+            "question_id": "515682001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000515682.jpg",
+            "question": "Is the kite big?",
+            "target_answer": "yes",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        },
+        "123070002": {
+            "question_id": "123070002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000123070.jpg",
+            "question": "Is this a National Park?",
+            "target_answer": "no",
+            "initial_answer": "[Zero Numeric Answer]",
+            "final_answer": "[Zero Numeric Answer]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Grader 0] [Incorrect]"
+            ],
+            "processing_time_seconds": 0.17,
+            "error": null,
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        }
+    },
+    "overall_metrics": {
+        "baseline_accuracy": 0.05,
+        "final_accuracy": 0.05,
+        "detailed_stats": {
+            "count_correct": 1,
+            "count_incorrect": 19,
+            "count_correct_baseline": 1,
+            "count_incorrect_baseline": 19,
+            "count_total": 20
+        },
+        "total_processed_successfully": 20,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 0,
+        "total_attempted_in_loader": 20
+    }
+}

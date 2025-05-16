@@ -1,3 +1,4 @@
+# agents.py
 import sys
 import os
 from jinja2 import Environment, FileSystemLoader, select_autoescape
@@ -8,10 +9,6 @@ except ImportError:
     print("ERROR: Could not import ConversableAgent from autogen.agentchat.conversable_agent.")
     print("Ensure your AutoGen version (expected 0.5.6 or compatible) has this class or adjust the import path.")
     raise
-
-# AssistantAgent from autogen_agentchat.agents is no longer used for the specialized agents
-# from autogen_agentchat.agents import AssistantAgent 
-
 
 CURRENT_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROMPTS_DIR = os.path.join(CURRENT_SCRIPT_DIR, '..', 'prompts')
@@ -48,7 +45,6 @@ def render_dynamic_prompt(template_name: str, **kwargs) -> str:
         raise
 
 try:
-    # These should now be llm_config dictionaries, not client instances
     from vllm_clients import llm_config_vlm, llm_config_llm 
 except ImportError as e:
     print(f"ERROR: Failed to import llm_config_vlm or llm_config_llm from vllm_clients.py: {e}.")
@@ -60,7 +56,7 @@ class VQAOrchestratorAgent(ConversableAgent):
     def __init__(self, 
                  name: str = "VQA_Orchestrator", 
                  description: str = "Orchestrates the VQA agent workflow.",
-                 llm_config=None, 
+                 llm_config=None, # This will be overridden by the instance creation below
                  human_input_mode="NEVER",
                  code_execution_config=False, 
                  **kwargs):
@@ -72,12 +68,6 @@ class VQAOrchestratorAgent(ConversableAgent):
             code_execution_config=code_execution_config,
             **kwargs
             )
-        # self.custom_description = description # description is a valid param for ConversableAgent
-
-# Client sanity check is implicitly handled by agent instantiation using these configs
-# if llm_config_vlm is None or llm_config_llm is None:
-# print("CRITICAL ERROR: llm_config_vlm or llm_config_llm is not defined. Check vllm_clients.py.")
-# sys.exit(1)
 
 try:
     initial_vlm_agent = ConversableAgent(
@@ -123,8 +113,11 @@ except Exception as e_agent_init:
     sys.exit(1)
 
 try:
+    # Initialize VQAOrchestratorAgent with llm_config_llm.
+    # This ensures it has an internal client setup, even if it mainly delegates.
+    # llm_config_llm from vllm_clients.py should have cache_seed: None.
     vqa_orchestrator = VQAOrchestratorAgent(
-        llm_config=None # Orchestrator might not need its own LLM if it only delegates
+        llm_config=llm_config_llm 
     )
 except Exception as e_orch_init:
     print(f"ERROR: Failed to initialize VQAOrchestratorAgent: {e_orch_init}")

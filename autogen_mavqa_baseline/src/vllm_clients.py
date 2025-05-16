@@ -1,3 +1,4 @@
+# vllm_clients.py
 import sys
 try:
     from config_loader import app_config
@@ -12,7 +13,7 @@ if not app_config:
     print("Error: app_config is empty, cannot initialize clients. Check config.yaml and config_loader.py.")
     sys.exit(1)
 
-from autogen_ext.models.openai import OpenAIChatCompletionClient 
+from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 VLLM_CONFIG = app_config.get("vllm_details", {})
 VLM_MODEL_NAME = VLLM_CONFIG.get("vlm_model_name", "Qwen/Qwen2-VL-2B-Instruct")
@@ -26,6 +27,7 @@ config_list_vlm_definition = [
         "model": VLM_MODEL_NAME,
         "base_url": VLM_URL,
         "api_key": API_KEY,
+        "price": [0.0, 0.0]
     }
 ]
 
@@ -34,6 +36,7 @@ config_list_llm_definition = [
         "model": LLM_MODEL_NAME,
         "base_url": LLM_URL,
         "api_key": API_KEY,
+        "price": [0.0, 0.0]
     }
 ]
 
@@ -56,18 +59,19 @@ print(f"LLM Config: Model='{LLM_MODEL_NAME}', Base URL='{LLM_URL}'")
 vlm_client_vllm = None
 llm_client_vllm = None
 
+
 try:
     vlm_client_vllm = OpenAIChatCompletionClient(
         model=VLM_MODEL_NAME,
         api_key=API_KEY,
         base_url=VLM_URL,
-        model_info={ 
-            "context_window": VLLM_CONFIG.get("context_window", 32768), 
-            "vision": True, 
-            "function_calling": False, 
-            "json_output": False,      
-            "structured_output": False, 
-            "family": VLLM_CONFIG.get("vlm_family", "Qwen-VL"), 
+        model_info={
+            "vision": True,
+            "function_calling": False,
+            "json_output": False,
+            "structured_output": False,
+            "family": VLLM_CONFIG.get("vlm_family", "Qwen-VL"),
+            "multiple_system_messages": None,
         }
     )
     print("VLM client instance (vlm_client_vllm) initialized.")
@@ -80,12 +84,12 @@ try:
         api_key=API_KEY,
         base_url=LLM_URL,
         model_info={
-            "context_window": VLLM_CONFIG.get("context_window", 32768),
-            "vision": False, 
+            "vision": False,
             "function_calling": False,
             "json_output": False,
-            "structured_output": False, 
-            "family": VLLM_CONFIG.get("llm_family", "Qwen"), 
+            "structured_output": False,
+            "family": VLLM_CONFIG.get("llm_family", "Qwen"),
+            "multiple_system_messages": None,
         }
     )
     print("LLM client instance (llm_client_vllm) initialized.")

@@ -1,12 +1,11 @@
 # main_vqa_flow.py
-# update import and reset method for agent in autogen 0.5.6
-import asyncio
-import re
-import json
+from autogen_core import CancellationToken
 import os
 import time
+import json
+import re
 import sys
-from autogen_core import CancellationToken
+import traceback
 
 try:
     from config_loader import app_config
@@ -15,14 +14,15 @@ try:
         vqa_orchestrator, initial_vlm_agent, failure_analysis_agent,
         object_attribute_agent, reattempt_vlm_agent
     )
-    from vllm_clients import llm_client_vllm, vlm_client_vllm # Update: Import client instances here
+    from vllm_clients import llm_client_vllm, vlm_client_vllm 
     from prompts import (
         INITIAL_VLM_SYSTEM_PROMPT_VQA_V2, INITIAL_VLM_SYSTEM_PROMPT_DEFAULT,
         FAILURE_ANALYSIS_SYSTEM_PROMPT, OBJECT_ATTRIBUTE_SYSTEM_PROMPT_NO_TOOLS,
         REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS, REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS,
         GRADING_SYSTEM_PROMPT_TEMPLATE
     )
-    from autogen_agentchat.agents import AssistantAgent # For the temporary grader agent
+    # Change from AssistantAgent to ConversableAgent
+    from autogen.agentchat.conversable_agent import ConversableAgent
 except ImportError as e:
     print(f"ERROR: Error importing modules in main_vqa_flow.py: {e}.")
     print("Ensure all required files (config_loader, image_utils, agents, prompts, vllm_clients) exist and are accessible, and AutoGen packages are installed.")
@@ -62,7 +62,7 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
     inference_settings = current_config.get("inference_settings", {})
     dataset_s_config = current_config.get("datasets", {})
     verbose = inference_settings.get("verbose", True)
-    token = CancellationToken() 
+    token = CancellationToken()
 
     response_data = {
         "question_id": str(question_id), "image_path": image_path, "question": question,
@@ -73,7 +73,6 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
     }
 
     agent_instances_list = [vqa_orchestrator, initial_vlm_agent, failure_analysis_agent, object_attribute_agent, reattempt_vlm_agent]
-    # Client instances are now correctly sourced from vllm_clients.py
     client_instances_list = [vlm_client_vllm, llm_client_vllm] 
     if any(agent is None for agent in agent_instances_list) or any(client is None for client in client_instances_list):
         error_msg = "One or more core agents or clients are not initialized."
@@ -82,9 +81,32 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
         response_data["final_answer"] = "[Answer Failed]"
         return response_data
 
+    if question is None:
+        question = ""
+
+    valid_image_url_for_message = None
     try:
-        base64_image_url = process_image_for_vlm_agent(image_path, current_config)
-        if not base64_image_url: raise ValueError("Image processing returned empty result.")
+        processed_image_url = process_image_for_vlm_agent(image_path, current_config)
+        if isinstance(processed_image_url, str):
+            is_valid_data_uri = False
+            if processed_image_url.startswith("data:image/") and ";base64," in processed_image_url:
+                parts = processed_image_url.split("base64,")
+                if len(parts) == 2 and parts[1].strip(): 
+                    is_valid_data_uri = True
+            
+            is_valid_http_url = processed_image_url.startswith("http://") or processed_image_url.startswith("https://")
+
+            if is_valid_data_uri or is_valid_http_url:
+                valid_image_url_for_message = processed_image_url
+            elif processed_image_url: 
+                raise ValueError(f"Image processing returned a malformed or unsupported URL string: '{processed_image_url[:100]}...'")
+            else: 
+                 raise ValueError("Image processing returned an empty URL string.")
+        elif processed_image_url is not None: 
+            raise ValueError(f"Image processing returned an unexpected type for URL: {type(processed_image_url)}")
+        else: 
+            raise ValueError("Image processing returned None, and an image is required for VQA.")
+
     except Exception as e_img:
         if verbose: print(f"ERROR processing image {os.path.basename(image_path)} for QID {question_id}: {e_img}")
         response_data["error"] = f"ImageProcessingError: {str(e_img)}"
@@ -95,26 +117,37 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
     try:
         active_dataset_name = dataset_s_config.get("dataset_name", "default")
         if active_dataset_name == "vqa-v2":
-            initial_vlm_agent.system_message = INITIAL_VLM_SYSTEM_PROMPT_VQA_V2
+            initial_vlm_agent.update_system_message(INITIAL_VLM_SYSTEM_PROMPT_VQA_V2)
         else:
-            initial_vlm_agent.system_message = INITIAL_VLM_SYSTEM_PROMPT_DEFAULT
+            initial_vlm_agent.update_system_message(INITIAL_VLM_SYSTEM_PROMPT_DEFAULT)
 
-        initial_vlm_message_content = [{"type": "text", "text": question}, {"type": "image_url", "image_url": {"url": base64_image_url}}]
+        initial_vlm_message_parts = [{"type": "text", "text": question}]
+        if valid_image_url_for_message:
+            initial_vlm_message_parts.append({"type": "image_url", "image_url": {"url": valid_image_url_for_message}})
+        else:
+            error_msg = "MissingImageError: Valid image URL is required for VQA but was not available for the initial call."
+            if verbose: print(f"CRITICAL ERROR QID {question_id}: {error_msg}")
+            response_data["error"] = error_msg
+            response_data["final_answer"] = "[Answer Failed]"
+            return response_data
+
+        initial_user_message = {
+            "role": "user",
+            "content": initial_vlm_message_parts
+        }
         
         if verbose: print(f"   Orchestrator: Calling Initial_VLM_Agent...")
-        await initial_vlm_agent.on_reset(token)
-
+        initial_vlm_agent.reset()
 
         chat_result_initial = await vqa_orchestrator.a_initiate_chat(
             recipient=initial_vlm_agent,
-            message=initial_vlm_message_content, 
+            message=initial_user_message,
             max_turns=1,
-            summary_method="last_msg", 
+            summary_method="last_msg",
             silent=(not verbose)
         )
         initial_answer_text = get_message_content(chat_result_initial.chat_history[-1] if chat_result_initial and chat_result_initial.chat_history else {})
         if not initial_answer_text: initial_answer_text = "[Initial VLM Agent returned empty message]"
-
 
     except Exception as e_agent_call:
         print(f"ERROR during Initial_VLM_Agent call for QID {question_id}: {e_agent_call}")
@@ -154,16 +187,16 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
 
         analysis_output = "[Analysis Agent Communication Error]"
         try:
-            failure_analysis_agent.system_message = FAILURE_ANALYSIS_SYSTEM_PROMPT
-            failure_analysis_user_message = (
+            failure_analysis_agent.update_system_message(FAILURE_ANALYSIS_SYSTEM_PROMPT)
+            failure_analysis_user_message_str = ( 
                 f"Original Question: '{question}'\n"
                 f"Initial VLM Response: '{initial_answer_text}'\n"
                 f"Analyze failure. Suggest strategy: 'numeric reattempt needed for: [item]' OR 'general reattempt, focus on: [items]'.")
             if verbose: print(f"   Orchestrator: Calling Failure_Analysis_Agent...")
-            await failure_analysis_agent.on_reset(token)
+            failure_analysis_agent.reset()
 
             chat_result_analysis = await vqa_orchestrator.a_initiate_chat(
-                recipient=failure_analysis_agent, message=failure_analysis_user_message,
+                recipient=failure_analysis_agent, message=failure_analysis_user_message_str,
                 max_turns=1, summary_method="last_msg", silent=(not verbose)
             )
             analysis_output = get_message_content(chat_result_analysis.chat_history[-1] if chat_result_analysis and chat_result_analysis.chat_history else {})
@@ -190,9 +223,9 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
             try:
                 active_dataset_name = dataset_s_config.get("dataset_name", "default")
                 if active_dataset_name == "vqa-v2": 
-                    reattempt_vlm_agent.system_message = REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS
+                    reattempt_vlm_agent.update_system_message(REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS)
                 else: 
-                    reattempt_vlm_agent.system_message = REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS
+                    reattempt_vlm_agent.update_system_message(REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS)
             except Exception as e_sys_msg: print(f"Warning: Error updating system message for reattempt_vlm_agent: {e_sys_msg}")
 
             numeric_reattempt_user_prompt = (
@@ -201,89 +234,114 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
                 f"Analysis suggests issues with counting: '{item_to_count}'.\n"
                 f"INSTRUCTION: Look carefully. Count step-by-step how many '{item_to_count}' are present. List instances if possible. Respond starting with '[Reattempted Answer]' followed ONLY by the final number/answer."
             )
-            numeric_reattempt_message_content = [{"type": "text", "text": numeric_reattempt_user_prompt}, {"type": "image_url", "image_url": {"url": base64_image_url}}]
+            numeric_reattempt_message_parts = [{"type": "text", "text": numeric_reattempt_user_prompt}]
+            if valid_image_url_for_message:
+                numeric_reattempt_message_parts.append({"type": "image_url", "image_url": {"url": valid_image_url_for_message}})
+            else: 
+                if verbose: print("   WARNING: Valid image URL not available for reattempt.")
+
+            numeric_reattempt_user_message = {
+                "role": "user",
+                "content": numeric_reattempt_message_parts
+            }
 
             if verbose: print(f"   Orchestrator: Calling Reattempt_VLM_Agent for counting...")
             try:
-                await reattempt_vlm_agent.on_reset(token)
+                reattempt_vlm_agent.reset()
                 chat_result_num_reattempt = await vqa_orchestrator.a_initiate_chat(
-                    recipient=reattempt_vlm_agent, message=numeric_reattempt_message_content,
+                    recipient=reattempt_vlm_agent, message=numeric_reattempt_user_message,
                     max_turns=1, summary_method="last_msg", silent=(not verbose)
                 )
                 reattempt_answer_text = get_message_content(chat_result_num_reattempt.chat_history[-1] if chat_result_num_reattempt and chat_result_num_reattempt.chat_history else {})
-                if not reattempt_answer_text: reattempt_answer_text = "[Numeric Reattempt Agent returned empty message]"
+                if not reattempt_answer_text: reattempt_answer_text = "[Reattempt VLM Agent returned empty message]"
             except Exception as e_agent_call:
-                print(f"ERROR during numeric reattempt agent call for QID {question_id}: {e_agent_call}")
-                response_data["error"] = f"{response_data.get('error', '')}; NumericReattemptAgentError: {str(e_agent_call)}".strip("; ")
-                reattempt_answer_text = "[Numeric Reattempt Agent Call Failed]"
+                print(f"ERROR during Reattempt_VLM_Agent call for QID {question_id}: {e_agent_call}")
+                response_data["error"] = f"{response_data.get('error', '')}; ReattemptAgentCallError: {str(e_agent_call)}".strip("; ")
+                reattempt_answer_text = "[Reattempt Agent Call Failed]"
 
         elif "[Analysis Failed]" not in analysis_output:
-            if verbose: print("   Orchestrator: General reattempt. Step 1: Getting textual object descriptions...")
+            if verbose: print("   Orchestrator: General reattempt. Querying for specific object attributes...")
             textually_specified_objects = analysis_output 
             focus_match = re.search(r"general reattempt, focus on:\s*(.+)", analysis_output, re.IGNORECASE)
             if focus_match: textually_specified_objects = focus_match.group(1).strip()
             
             object_attributes_descriptions = "[Attribute Query Agent Error]"
             try:
-                object_attribute_agent.system_message = OBJECT_ATTRIBUTE_SYSTEM_PROMPT_NO_TOOLS
-                attribute_query_user_prompt = (
-                    f"Original VQA Question: '{question}'.\n"
-                    f"Analysis suggests focusing on: '{textually_specified_objects}'.\n"
-                    f"Describe these items visually based on the image, focusing on relevant details."
+                object_attribute_agent.update_system_message(OBJECT_ATTRIBUTE_SYSTEM_PROMPT_NO_TOOLS)
+                object_attribute_user_prompt = (
+                    f"Question: '{question}'\n"
+                    f"Focus on: '{textually_specified_objects}'\n"
+                    f"Describe these objects and their relevant attributes in detail. If not visible, state so clearly."
                 )
-                attribute_query_content = [{"type": "text", "text": attribute_query_user_prompt}, {"type": "image_url", "image_url": {"url": base64_image_url}}]
+                object_attribute_message_parts = [{"type": "text", "text": object_attribute_user_prompt}]
+                if valid_image_url_for_message:
+                    object_attribute_message_parts.append({"type": "image_url", "image_url": {"url": valid_image_url_for_message}})
+                else:
+                    if verbose: print("   WARNING: Valid image URL not available for object attribute query.")
                 
-                if verbose: print(f"   Orchestrator: Calling Object_Attribute_Agent for descriptions...")
-                await object_attribute_agent.on_reset(token)
-                chat_result_attr = await vqa_orchestrator.a_initiate_chat(
-                    recipient=object_attribute_agent, message=attribute_query_content,
+                object_attribute_user_message = {
+                    "role": "user", 
+                    "content": object_attribute_message_parts
+                }
+                
+                if verbose: print(f"   Orchestrator: Calling Object_Attribute_Agent...")
+                object_attribute_agent.reset()
+                chat_result_obj_attr = await vqa_orchestrator.a_initiate_chat(
+                    recipient=object_attribute_agent, message=object_attribute_user_message, 
                     max_turns=1, summary_method="last_msg", silent=(not verbose)
                 )
-                object_attributes_descriptions = get_message_content(chat_result_attr.chat_history[-1] if chat_result_attr and chat_result_attr.chat_history else {})
-                if not object_attributes_descriptions: object_attributes_descriptions = "[Attribute Agent returned empty message]"
-
+                object_attributes_descriptions = get_message_content(chat_result_obj_attr.chat_history[-1] if chat_result_obj_attr and chat_result_obj_attr.chat_history else {})
+                if not object_attributes_descriptions: object_attributes_descriptions = "[Attribute Query Agent returned empty message]"
             except Exception as e_agent_call:
-                print(f"ERROR during object attribute agent call for QID {question_id}: {e_agent_call}")
-                response_data["error"] = f"{response_data.get('error', '')}; AttributeQueryAgentError: {str(e_agent_call)}".strip("; ")
+                print(f"ERROR during Object_Attribute_Agent call for QID {question_id}: {e_agent_call}")
+                response_data["error"] = f"{response_data.get('error', '')}; AttributeAgentCallError: {str(e_agent_call)}".strip("; ")
                 object_attributes_descriptions = "[Attribute Query Agent Call Failed]"
 
             response_data["object_attributes_queried"] = object_attributes_descriptions
-            if verbose: print(f"   Object_Attribute_Agent response: <<< {object_attributes_descriptions} >>>")
+            if verbose: print(f"   Object_Attribute_Agent response: <<< {object_attributes_descriptions[:150]}... >>>")
 
             if "[Attribute Query Agent Error]" not in object_attributes_descriptions and "[Attribute Query Agent Call Failed]" not in object_attributes_descriptions:
+                if verbose: print("   Orchestrator: Calling Reattempt_VLM_Agent with new context...")
                 try:
                     active_dataset_name = dataset_s_config.get("dataset_name", "default")
                     if active_dataset_name == "vqa-v2": 
-                        reattempt_vlm_agent.system_message = REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS
+                        reattempt_vlm_agent.update_system_message(REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS)
                     else: 
-                        reattempt_vlm_agent.system_message = REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS
+                        reattempt_vlm_agent.update_system_message(REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS)
                 except Exception as e_sys_msg: print(f"Warning: Error updating system message for reattempt_vlm_agent: {e_sys_msg}")
-
-                general_reattempt_user_prompt = (
-                    f"Original question: '{question}'.\n"
-                    f"Previous Answer: '{initial_answer_text}'.\n"
-                    f"Analysis suggested focus on: '{textually_specified_objects}'.\n"
-                    f"Descriptions of focus items: '{object_attributes_descriptions}'.\n"
-                    f"INSTRUCTION: Using image and ALL text context, provide an improved answer. Reason first, then answer starting ONLY with '[Reattempted Answer]'."
-                )
-                general_reattempt_content = [{"type": "text", "text": general_reattempt_user_prompt}, {"type": "image_url", "image_url": {"url": base64_image_url}}]
                 
-                if verbose: print(f"   Orchestrator: Calling Reattempt_VLM_Agent with new context...")
+                final_reattempt_user_prompt = (
+                    f"Original question: '{question}'\n"
+                    f"Previous answer: '{initial_answer_text}'\n"
+                    f"Additional context about the image:\n{object_attributes_descriptions}\n"
+                    f"INSTRUCTION: Using this new information, answer the question. Start with '[Reattempted Answer]' followed by your answer."
+                )
+                final_reattempt_message_parts = [{"type": "text", "text": final_reattempt_user_prompt}]
+                if valid_image_url_for_message:
+                    final_reattempt_message_parts.append({"type": "image_url", "image_url": {"url": valid_image_url_for_message}})
+                else:
+                    if verbose: print("   WARNING: Valid image URL not available for final reattempt.")
+                
+                final_reattempt_user_message = {
+                    "role": "user",
+                    "content": final_reattempt_message_parts
+                }
+                
                 try:
-                    await reattempt_vlm_agent.on_reset(token)
-                    chat_result_gen_reattempt = await vqa_orchestrator.a_initiate_chat(
-                        recipient=reattempt_vlm_agent, message=general_reattempt_content,
+                    reattempt_vlm_agent.reset()
+                    chat_result_final_reattempt = await vqa_orchestrator.a_initiate_chat(
+                        recipient=reattempt_vlm_agent, message=final_reattempt_user_message,
                         max_turns=1, summary_method="last_msg", silent=(not verbose)
                     )
-                    reattempt_answer_text = get_message_content(chat_result_gen_reattempt.chat_history[-1] if chat_result_gen_reattempt and chat_result_gen_reattempt.chat_history else {})
-                    if not reattempt_answer_text: reattempt_answer_text = "[General Reattempt Agent returned empty message]"
+                    reattempt_answer_text = get_message_content(chat_result_final_reattempt.chat_history[-1] if chat_result_final_reattempt and chat_result_final_reattempt.chat_history else {})
+                    if not reattempt_answer_text: reattempt_answer_text = "[Final Reattempt VLM Agent returned empty message]"
                 except Exception as e_agent_call:
-                    print(f"ERROR during general reattempt agent call for QID {question_id}: {e_agent_call}")
-                    response_data["error"] = f"{response_data.get('error', '')}; GeneralReattemptAgentError: {str(e_agent_call)}".strip("; ")
-                    reattempt_answer_text = "[General Reattempt Agent Call Failed]"
+                    print(f"ERROR during final Reattempt_VLM_Agent call for QID {question_id}: {e_agent_call}")
+                    response_data["error"] = f"{response_data.get('error', '')}; FinalReattemptAgentCallError: {str(e_agent_call)}".strip("; ")
+                    reattempt_answer_text = "[Final Reattempt Agent Call Failed]"
             else:
-                if verbose: print("   Orchestrator: Skipping final reattempt due to attribute query failure.")
-                reattempt_answer_text = "[Reattempt Skipped Due to Attribute Query Failure]"
+                if verbose: print("   Orchestrator: Skipping reattempt due to object attribute query failure.")
+                reattempt_answer_text = "[Reattempt Skipped - Object Attribute Query Failed]"
         
         response_data["reattempt_answer"] = reattempt_answer_text
         possible_failure_markers = ["[Agent Communication Error]", "[Reattempt Not Performed or Failed]",
@@ -292,52 +350,72 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
             final_answer_text = reattempt_answer_text
         else:
             final_answer_text = initial_answer_text 
-            if verbose: print(f"   Note: Reattempt failed or produced invalid/error response, using initial answer as final.")
+            if verbose: print("   Orchestrator: Reattempt failed or was skipped. Using initial answer.")
 
     response_data["final_answer"] = final_answer_text
     if verbose: print(f"   Final Answer selected for QID {question_id}: <<< {final_answer_text} >>>")
 
+    # Updated grading section
     if target_answer and str(target_answer).strip() and response_data["error"] is None:
         if verbose: print(f"   Orchestrator: Performing grading against target: '{target_answer}'")
         
-        # Use llm_client_vllm (instance) for the temporary AssistantAgent grader
-        if llm_client_vllm: 
+        try:
+            # Skip creating a new agent and use the existing orchestrator agent
             grades = []
-            num_graders = inference_settings.get("num_grader_agents", 1) 
+            num_graders = inference_settings.get("num_grader_agents", 1)
+            
             for i in range(num_graders):
                 grader_id = i
-                temp_grader_agent = AssistantAgent(
-                    name=f"Temp_Grader_{question_id}_{grader_id}", 
-                    model_client=llm_client_vllm, # AssistantAgent takes model_client instance
-                    system_message=GRADING_SYSTEM_PROMPT_TEMPLATE.format(grader_id=grader_id)
-                )
-                
-                grading_user_message = (
+                grading_user_message_str = (
+                    f"You are a temporary grader identified as Grader {grader_id}.\n"
+                    f"System instruction: {GRADING_SYSTEM_PROMPT_TEMPLATE.format(grader_id=grader_id)}\n\n"
                     f"Question: '{question}'\n"
                     f"Target Answer: '{target_answer}'\n"
                     f"Model's Final Answer: '{final_answer_text}'\n"
                     f"Provide grade."
                 )
+                
                 grade_text = f"[Grader {grader_id}] [ErrorInGrading]"
+                
                 try:
-                    if verbose: print(f"     Orchestrator: Calling Grader {grader_id}...")
-                    await temp_grader_agent.on_reset(token) 
+                    if verbose: print(f"     Orchestrator: Using existing agent for Grader {grader_id}...")
+                    # Use the existing failure_analysis_agent which is already properly initialized
+                    failure_analysis_agent.reset()
                     grading_chat_result = await vqa_orchestrator.a_initiate_chat(
-                        recipient=temp_grader_agent, message=grading_user_message,
-                        max_turns=1, summary_method="last_msg", silent=(not verbose)
+                        recipient=failure_analysis_agent,
+                        message=grading_user_message_str,
+                        max_turns=1,
+                        summary_method="last_msg",
+                        silent=(not verbose)
                     )
-                    grade_text = get_message_content(grading_chat_result.chat_history[-1] if grading_chat_result and grading_chat_result.chat_history else {}, grade_text)
-                    if not grade_text.strip().startswith(f"[Grader {grader_id}]"):
-                        grade_text = f"[Grader {grader_id}] [Malformed Response] " + grade_text
+                    
+                    grade_response = get_message_content(
+                        grading_chat_result.chat_history[-1] 
+                        if grading_chat_result and grading_chat_result.chat_history 
+                        else {}, 
+                        grade_text
+                    )
+                    
+                    # Format the response properly
+                    if not grade_response.strip().startswith(f"[Grader {grader_id}]"):
+                        grade_text = f"[Grader {grader_id}] " + grade_response
+                    else:
+                        grade_text = grade_response
+                        
                 except Exception as e_agent_call:
                     print(f"ERROR during grading agent call (Grader {grader_id}) for QID {question_id}: {e_agent_call}")
                     response_data["error"] = f"{response_data.get('error', '')}; GradingAgentError{grader_id}: {str(e_agent_call)}".strip("; ")
+                
                 grades.append(grade_text)
+            
             response_data["grades"] = grades
-            if verbose: print(f"   Grading results: {grades}")
-        else:
-            if verbose: print("   Grading skipped: LLM client for grader not available (llm_client_vllm is None).")
-            response_data["grades"] = ["Grading Skipped - LLM Client Error"] * inference_settings.get("num_grader_agents", 1)
+            if verbose: print(f"   Grades: {grades}")
+            
+        except Exception as e_grading:
+            print(f"ERROR during grading setup for QID {question_id}: {e_grading}")
+            response_data["error"] = f"{response_data.get('error', '')}; GradingSetupError: {str(e_grading)}".strip("; ")
+            response_data["grades"] = ["[Grading Failed - Configuration Error]"] * inference_settings.get("num_grader_agents", 1)
+    
     elif response_data["error"]:
         if verbose: print("   Grading skipped due to earlier pipeline error.")
         response_data["grades"] = ["Grading Skipped - Pipeline Error"] * inference_settings.get("num_grader_agents", 1)
