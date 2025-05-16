@@ -2,8 +2,8 @@
 vllm_details:
   base_url: "http://localhost:8000/v1"
   api_key: "123" # Key
-  vlm_model_name: "Qwen/Qwen2.5-VL-3B-Instruct"
-  llm_model_name: "Qwen/Qwen2.5-VL-3B-Instruct"
+  vlm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
+  llm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
 
 # ---------------- INFERENCE SETTINGS ----------------
 inference_settings:
