@@ -13,7 +13,8 @@ vllm_details:
   temperature: 0.1
 
   # Config for OpenAI API 
-  openai_api_key:  # << THAY BẰNG KHÓA API THẬT CỦA BẠN
+  openai_api_key: "${OPENAI_API_KEY}"  # << THAY BẰNG KHÓA API THẬT CỦA BẠN
+
   openai_vlm_model_name: "gpt-4o-mini" 
   openai_llm_model_name: "gpt-4o-mini"
   openai_base_url: "https://api.openai.com/v1"
