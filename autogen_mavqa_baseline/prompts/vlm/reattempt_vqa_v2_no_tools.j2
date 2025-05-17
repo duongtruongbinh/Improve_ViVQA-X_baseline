@@ -1,14 +1,34 @@
-You are performing a reattempt at a Visual Question Answering task.
-You will receive the original image, the original question, the previous failed answer, and new textual descriptions of relevant objects/attributes identified in the image.
-Your task is to synthesize all this information to provide a new, more accurate answer to the original question.
-First, explain your reasoning step-by-step, considering the new descriptions and how they address the shortcomings of the previous answer.
-List any geometric, possessive, or semantic relations among the described objects/attributes that are crucial for answering the question.
-Then, begin your final answer with '[Reattempted Answer]'.
-The correct answer could be a 'yes/no', a number, or other open-ended response.
-(Case 1) If you believe your answer falls into the category of 'yes/no' or a number, say 'yes/no' or the number after '[Reattempted Answer]'.
-Understand that the question may not capture all nuances, so if your answer partially aligns with the question's premises, it is a 'yes'.
-(Case 2) If the question asks you to count the number of an object (e.g. 'how many'), and new descriptions provide clarity,
-step-by-step describe each object that satisfies the question based on new context, and then re-evaluate the number after '[Reattempted Answer]'. Objects could be only partially visible.
-Your previous attempt might have struggled with counting. Please be meticulous. List each instance you count before giving the total. For example: "I see: 1. a cat on the mat. 2. a cat on the chair. [Reattempted Answer] 2".
-(Case 3) If the answer should be an activity or a noun, say the word after '[Reattempted Answer]'. No extra words after '[Reattempted Answer]'.
-If, even with the new information, you still cannot confidently answer, explain why and use '[Answer Failed]'.
+You are performing a reattempt at a Visual Question Answering task. You have previously failed to answer this question. You will now receive the original image, the original question, your previous failed answer, and new textual descriptions of relevant objects/attributes that were identified to potentially help you.
+
+Your task is to synthesize all this information to provide a new, more accurate answer.
+
+**Reasoning and Re-evaluation Process:**
+
+1.  **Critique Previous Failure:** First, carefully review your `Previous Failed Answer`. Based on the `New Object Descriptions` and the `Original Question`, explain step-by-step *why* your previous answer was likely incorrect or incomplete. How do the new descriptions clarify aspects that might have been missed or misinterpreted?
+
+2.  **Synthesize New Information:** Consider the `New Object Descriptions`. List any geometric, possessive, or semantic relations among the described objects/attributes that are crucial for answering the `Original Question` now that you have this new context.
+
+3.  **Step-by-Step Re-Reasoning:** Based on your critique and the new information, re-attempt to answer the visual question step-by-step. Clearly articulate your new reasoning path.
+
+**Final Answer Formulation:**
+
+* Begin your final answer with `[Reattempted Answer]`.
+* The correct answer could be a 'yes/no', a number, or other open-ended response.
+
+    * **(Case 1) Yes/No or Open-Ended:** If you believe your answer falls into the category of 'yes/no' or a short textual response, say 'yes/no' or the text after `[Reattempted Answer]`. (e.g., `[Reattempted Answer] yes`, `[Reattempted Answer] on the table`).
+        * Understand that the question may not capture all nuances; if your answer partially aligns with the question's premises, it is 'yes'.
+
+    * **(Case 2) Numeric Answers:** If the question asks you to count (e.g., 'how many'), and the `New Object Descriptions` provide clarity:
+        * Your previous attempt might have struggled with counting. Be meticulous.
+        * Step-by-step, describe each object instance that satisfies the question's criteria based on the new context and your re-evaluation of the image. For example: "Based on the new descriptions, I now see: 1. a red apple on the plate. 2. a red apple in the bowl."
+        * Then, re-evaluate the number and provide it after `[Reattempted Answer]`. For example: `[Reattempted Answer] 2`. Objects could still be only partially visible.
+
+    * **(Case 3) Answer Failed (Still):** If, even with the new information, you still cannot confidently answer, explain why the new descriptions were not sufficient or what ambiguity remains. Then use `[Answer Failed]`.
+
+**Information Provided:**
+
+Original Question: '{{ question }}'
+Previous Failed Answer: '{{ previous_failed_answer }}'
+New Object Descriptions: '{{ new_object_descriptions }}'
+
+Begin your re-evaluation and response now.
