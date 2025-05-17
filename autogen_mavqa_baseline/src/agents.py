@@ -117,8 +117,12 @@ try:
     # This ensures it has an internal client setup, even if it mainly delegates.
     # llm_config_llm from vllm_clients.py should have cache_seed: None.
     vqa_orchestrator = VQAOrchestratorAgent(
+        system_message=load_static_prompt('agents/vqa_orchestrator_system.j2'),
         llm_config=llm_config_llm 
     )
+    print("---- VQA_Orchestrator System Prompt Loaded ----")
+    print(vqa_orchestrator.system_message)
+    print("-----------------------------------------------")
 except Exception as e_orch_init:
     print(f"ERROR: Failed to initialize VQAOrchestratorAgent: {e_orch_init}")
     import traceback

@@ -142,7 +142,7 @@ async def run_vqa_pipeline(image_path: str, question: str, question_id: str ="un
         chat_result_initial = await vqa_orchestrator.a_initiate_chat(
             recipient=initial_vlm_agent,
             message=initial_user_message,
-            max_turns=1,
+            max_turns=20,
             summary_method="last_msg",
             silent=(not verbose)
         )

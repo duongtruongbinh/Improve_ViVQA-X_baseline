@@ -1,3 +1,4 @@
+# vllm_clients.py
 import sys
 try:
     from config_loader import app_config
@@ -17,6 +18,8 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 VLLM_CONFIG = app_config.get("vllm_details", {})
 API_PROVIDER = VLLM_CONFIG.get("api_provider", "vllm").lower()
 
+REQUEST_TIMEOUT_SECONDS = VLLM_CONFIG.get("request_timeout", 180)
+MAX_TOKENS_GENERATION = VLLM_CONFIG.get("max_tokens", 2048)
 TEMPERATURE_CONFIG = VLLM_CONFIG.get("temperature", 0.7)
 
 if API_PROVIDER == "openai":
@@ -26,7 +29,7 @@ if API_PROVIDER == "openai":
     API_KEY_ACTUAL = VLLM_CONFIG.get("openai_api_key", "YOUR_OPENAI_API_KEY_NEEDS_TO_BE_SET_IN_CONFIG")
     VLM_URL_ACTUAL = VLLM_CONFIG.get("openai_base_url", "https://api.openai.com/v1")
     LLM_URL_ACTUAL = VLLM_CONFIG.get("openai_base_url", "https://api.openai.com/v1")
-    
+
     VLM_MODEL_FAMILY_ACTUAL = VLLM_CONFIG.get("openai_vlm_family", "openai")
     LLM_MODEL_FAMILY_ACTUAL = VLLM_CONFIG.get("openai_llm_family", "openai")
 
@@ -34,7 +37,7 @@ if API_PROVIDER == "openai":
         "vision": True,
         "function_calling": True,
         "json_output": True,
-        "structured_output": False, 
+        "structured_output": False,
         "family": VLM_MODEL_FAMILY_ACTUAL,
         "multiple_system_messages": True,
     }
@@ -63,7 +66,7 @@ else: # Default to vLLM (local)
     VLM_MODEL_INFO_ACTUAL = {
         "vision": True,
         "function_calling": False,
-        "json_output": VLLM_CONFIG.get("vlm_json_output", False), 
+        "json_output": VLLM_CONFIG.get("vlm_json_output", False),
         "structured_output": VLLM_CONFIG.get("vlm_structured_output", False),
         "family": VLM_MODEL_FAMILY_ACTUAL,
         "multiple_system_messages": None,
@@ -79,12 +82,16 @@ else: # Default to vLLM (local)
     VLM_PRICE_ACTUAL = [0.0, 0.0]
     LLM_PRICE_ACTUAL = [0.0, 0.0]
 
+# llm_config_vlm and llm_config_llm are not strictly needed if passing client objects directly
+# However, you might keep them for other agents or purposes, but they won't be the
+# primary config for agents using the pre-initialized clients below if you switch.
+# For now, we keep them simple as they were in your original snippet.
 config_list_vlm_definition = [
     {
         "model": VLM_MODEL_NAME_ACTUAL,
         "base_url": VLM_URL_ACTUAL,
         "api_key": API_KEY_ACTUAL,
-        "price": VLM_PRICE_ACTUAL
+        "price": VLM_PRICE_ACTUAL,
     }
 ]
 
@@ -93,14 +100,14 @@ config_list_llm_definition = [
         "model": LLM_MODEL_NAME_ACTUAL,
         "base_url": LLM_URL_ACTUAL,
         "api_key": API_KEY_ACTUAL,
-        "price": LLM_PRICE_ACTUAL
+        "price": LLM_PRICE_ACTUAL,
     }
 ]
 
 llm_config_vlm = {
     "config_list": config_list_vlm_definition,
     "cache_seed": None,
-    "temperature": TEMPERATURE_CONFIG,
+    "temperature": TEMPERATURE_CONFIG, # This top-level temperature might be used by LLMConfig if no temp in config_list
 }
 
 llm_config_llm = {
@@ -109,9 +116,11 @@ llm_config_llm = {
     "temperature": TEMPERATURE_CONFIG,
 }
 
+
 print(f"--- Initializing AutoGen Clients ({API_PROVIDER.upper()}) ---")
-print(f"VLM Config: Model='{VLM_MODEL_NAME_ACTUAL}', Base URL='{VLM_URL_ACTUAL}'")
-print(f"LLM Config: Model='{LLM_MODEL_NAME_ACTUAL}', Base URL='{LLM_URL_ACTUAL}'")
+# Adjusted print to reflect where parameters are now being set for the client objects
+print(f"Attempting to initialize VLM client: Model='{VLM_MODEL_NAME_ACTUAL}', Base URL='{VLM_URL_ACTUAL}', Timeout='{REQUEST_TIMEOUT_SECONDS}s', Max Tokens='{MAX_TOKENS_GENERATION}', Temperature='{TEMPERATURE_CONFIG}'")
+print(f"Attempting to initialize LLM client: Model='{LLM_MODEL_NAME_ACTUAL}', Base URL='{LLM_URL_ACTUAL}', Timeout='{REQUEST_TIMEOUT_SECONDS}s', Max Tokens='{MAX_TOKENS_GENERATION}', Temperature='{TEMPERATURE_CONFIG}'")
 
 vlm_client_vllm = None
 llm_client_vllm = None
@@ -121,22 +130,28 @@ try:
         model=VLM_MODEL_NAME_ACTUAL,
         api_key=API_KEY_ACTUAL,
         base_url=VLM_URL_ACTUAL,
-        model_info=VLM_MODEL_INFO_ACTUAL
+        model_info=VLM_MODEL_INFO_ACTUAL,
+        timeout=REQUEST_TIMEOUT_SECONDS,
+        max_tokens=MAX_TOKENS_GENERATION,
+        temperature=TEMPERATURE_CONFIG
     )
-    print(f"VLM client instance (vlm_client_vllm) for {API_PROVIDER.upper()} initialized.")
+    print(f"VLM client instance (vlm_client_vllm) for {API_PROVIDER.upper()} initialized with specified timeout, max_tokens, and temperature.")
 except Exception as e:
-    print(f"ERROR initializing VLM client instance (vlm_client_vllm) for {API_PROVIDER.upper()}: {e}. Check model name, server status, and connection.")
+    print(f"ERROR initializing VLM client instance (vlm_client_vllm) for {API_PROVIDER.upper()}: {e}.")
 
 try:
     llm_client_vllm = OpenAIChatCompletionClient(
         model=LLM_MODEL_NAME_ACTUAL,
         api_key=API_KEY_ACTUAL,
         base_url=LLM_URL_ACTUAL,
-        model_info=LLM_MODEL_INFO_ACTUAL
+        model_info=LLM_MODEL_INFO_ACTUAL,
+        timeout=REQUEST_TIMEOUT_SECONDS,
+        max_tokens=MAX_TOKENS_GENERATION,
+        temperature=TEMPERATURE_CONFIG
     )
-    print(f"LLM client instance (llm_client_vllm) for {API_PROVIDER.upper()} initialized.")
+    print(f"LLM client instance (llm_client_vllm) for {API_PROVIDER.upper()} initialized with specified timeout, max_tokens, and temperature.")
 except Exception as e:
-    print(f"ERROR initializing LLM client instance (llm_client_vllm) for {API_PROVIDER.upper()}: {e}. Check model name, server status, and connection.")
+    print(f"ERROR initializing LLM client instance (llm_client_vllm) for {API_PROVIDER.upper()}: {e}.")
 
 if vlm_client_vllm is None:
     print(f"WARNING: VLM client instance (vlm_client_vllm) for {API_PROVIDER.upper()} is None due to initialization error.")
