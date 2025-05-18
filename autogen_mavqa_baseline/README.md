@@ -1,33 +1,63 @@
-CUDA_VISIBLE_DEVICES=1 python3 -m vllm.entrypoints.openai.api_server \
-  --model Qwen/Qwen2-VL-2B-Instruct \
-  --host 0.0.0.0 \
-  --port 8000 \
-  --trust-remote-code \
-  --dtype bfloat16
+# Usage Instructions
 
-CUDA_VISIBLE_DEVICES=1 python3 -m vllm.entrypoints.openai.api_server \
-  --model Qwen/Qwen2-VL-7B-Instruct \
-  --host 0.0.0.0 \
-  --port 8000 \
-  --trust-remote-code \
-  --dtype bfloat16
+## Environment Setup
 
-CUDA_VISIBLE_DEVICES=2 vllm serve Qwen/Qwen2-VL-2B-Instruct
+```bash
+export VLLM_LOGGING_LEVEL=DEBUG
+export CUDA_LAUNCH_BLOCKING=1
+```
 
-CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-7B-Instruct
+## Model Name
 
-./vllm_host.sh
-conda install pytorch torchvision pytorch-cuda=11.8 -c pytorch -c nvidia
-nvtop
-gpustat (check gpu)
-kill -9 305879
+### Visual Language Models (VLMs)
 
+```bash
+Qwen/Qwen2-VL-2B-Instruct
+Qwen/Qwen2-VL-7B-Instruct
+Qwen/Qwen2.5-VL-3B-Instruct
+Qwen/Qwen2.5-VL-7B-Instruct
+```
 
+### Large Language Models (LLMs)
+
+```bash
+Qwen/Qwen3-0.6B
+Qwen/Qwen3-1.7B
+Qwen/Qwen3-4B
+Qwen/Qwen3-8B
+```
+
+```bash
+Qwen/Qwen3-4B
+```
+
+## Serve Visual Language Models
+
+```bash
+CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-2B-Instruct --dtype bfloat16 --port 8000
+CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-7B-Instruct --dtype bfloat16 --port 8001
+```
+
+## GPU Monitoring & Process Management
+
+- Monitor GPU usage:
+  - `nvtop`
+  - `gpustat`
+- Kill a process (replace `<PID>` with the actual process ID):
+  - `kill -9 <PID>`
+
+## Running Main Script
+
+```bash
 python3 main.py
-or
-python main.py --use_num_test_data --num_test_data 5
+# or with test data options
+python main.py --use_num_test_data --num_test_data 20
+```
 
+## Python Environment Checks
 
-pip check 
+```bash
+pip check
 pipdeptree
 pipdeptree -w silence
+```
