@@ -18,7 +18,7 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 VLLM_CONFIG = app_config.get("vllm_details", {})
 API_PROVIDER = VLLM_CONFIG.get("api_provider", "vllm").lower()
 
-REQUEST_TIMEOUT_SECONDS = VLLM_CONFIG.get("request_timeout", 180)
+REQUEST_TIMEOUT_SECONDS = VLLM_CONFIG.get("request_timeout", 600)
 MAX_TOKENS_GENERATION = VLLM_CONFIG.get("max_tokens", 2048)
 TEMPERATURE_CONFIG = VLLM_CONFIG.get("temperature", 0.7)
 
@@ -107,7 +107,7 @@ config_list_llm_definition = [
 llm_config_vlm = {
     "config_list": config_list_vlm_definition,
     "cache_seed": None,
-    "temperature": TEMPERATURE_CONFIG, # This top-level temperature might be used by LLMConfig if no temp in config_list
+    "temperature": TEMPERATURE_CONFIG,
 }
 
 llm_config_llm = {
