@@ -30,20 +30,9 @@ def batch_inference(questions, image_paths):
     system_instruction = (
         "You are a Visual Question Answering (VQA) system. "
         "Use only the information visible in the image. "
-        "Answer each question with a single word or short phrase whenever possible. "
-        "Always use exactly this output format, with no extra text:\n\n"
-        "Answer: <your concise answer>\n\n"
-        "Examples:\n"
-        "Question: What is the man doing?\n"
-        "Answer: skiing\n\n"
-        "Question: What material is the table made of?\n"
-        "Answer: wood\n\n"
-        "Question: Which animal is shown in the picture?\n"
-        "Answer: giraffe\n\n"
-        "Question: What color is the car?\n"
-        "Answer: red\n\n"
-        "Question: How many people are there?\n"
-        "Answer: two"
+        "Answer each question with one word or short phrase whenever possible. "
+        "Always use exactly this output format, with no extra text:\n"
+        "Answer: <your concise answer>"
     )
 
     messages_batch = []
@@ -76,7 +65,7 @@ def batch_inference(questions, image_paths):
     ).to(device)
 
     with torch.no_grad():
-        generated_ids = model.generate(**inputs, max_new_tokens=30)
+        generated_ids = model.generate(**inputs, max_new_tokens=20)
 
     generated_ids_trimmed = [
         out_ids[len(in_ids):]
@@ -94,7 +83,7 @@ def batch_inference(questions, image_paths):
 
 
 set_seed(42)
-model_name = "Qwen/Qwen2-VL-2B-Instruct"
+model_name = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2-VL-2B-Instruct"
 model = Qwen2VLForConditionalGeneration.from_pretrained(
     model_name, torch_dtype=torch.bfloat16
 ).to(device)
@@ -107,7 +96,7 @@ processor = AutoProcessor.from_pretrained(
 
 
 val_image = "/mnt/VLAI_data/COCO_Images/val2014"
-val_path = "/mnt/VLAI_data/VQAv2/minival.json"
+val_path = "/mnt/VLAI_data/VQAv2/rest_val.json"
 with open(val_path, 'r', encoding='utf-8') as f:
     val_data = json.load(f)
 

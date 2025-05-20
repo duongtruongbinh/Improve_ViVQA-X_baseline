@@ -1,1 +1,8 @@
 notebooks/test.ipynb
+
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.Python
+.python-version
