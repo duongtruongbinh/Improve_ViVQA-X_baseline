@@ -13,14 +13,14 @@ vllm_details:
   temperature: 0.1
 
   # Config for OpenAI API 
-  openai_api_key: "${OPENAI_API_KEY}"  # << THAY BẰNG KHÓA API THẬT CỦA BẠN
+  openai_api_key: "${OPENAI_API_KEY}"  
 
   openai_vlm_model_name: "gpt-4o-mini" 
   openai_llm_model_name: "gpt-4o-mini"
   openai_base_url: "https://api.openai.com/v1"
   openai_vlm_family: "openai"
   openai_llm_family: "openai"
-  # Giá ví dụ cho gpt-4o (prompt, completion) - bạn có thể cập nhật
+  # Giá ví dụ cho gpt-4o (prompt, completion)
   openai_vlm_price: [0.0025, 0.01]  # gpt-4o: $2.50 input, $10.00 output per 1M
   openai_llm_price: [0.00015, 0.0006]  # gpt-4o-mini: $0.15 input, $0.60 output per 1M
 
