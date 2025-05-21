@@ -83,7 +83,7 @@ def batch_inference(questions, image_paths):
 
 
 set_seed(42)
-model_name = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2-VL-2B-Instruct"
+model_name = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2-VL-7B-Instruct"
 model = Qwen2VLForConditionalGeneration.from_pretrained(
     model_name, torch_dtype=torch.bfloat16
 ).to(device)

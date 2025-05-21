@@ -189,7 +189,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Evaluate VQAv2 predictions from model output JSON")
     parser.add_argument(
-        "--preds", type=str, required=True,
+        "--predict", type=str, required=True,
         help="path to JSON file with model predictions and gt_ans")
     args = parser.parse_args()
-    main(args.preds)
+    main(args.predict)
