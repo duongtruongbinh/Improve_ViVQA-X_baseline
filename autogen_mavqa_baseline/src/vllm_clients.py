@@ -83,9 +83,7 @@ else: # Default to vLLM (local)
     LLM_PRICE_ACTUAL = [0.0, 0.0]
 
 # llm_config_vlm and llm_config_llm are not strictly needed if passing client objects directly
-# However, you might keep them for other agents or purposes, but they won't be the
-# primary config for agents using the pre-initialized clients below if you switch.
-# For now, we keep them simple as they were in your original snippet.
+
 config_list_vlm_definition = [
     {
         "model": VLM_MODEL_NAME_ACTUAL,
