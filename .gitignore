@@ -1,8 +1,61 @@
-notebooks/test.ipynb
-
+# ==== Python chung ====
 __pycache__/
 *.py[cod]
 *.so
 *.egg-info/
 .Python
 .python-version
+
+# ==== Virtual‑env / Conda ====
+.env/
+.venv/
+venv/
+env/
+ENV*/
+.conda/
+
+# ==== IDE & editor ====
+.vscode/
+
+# ==== Notebook & test cache ====
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+notebooks/*
+
+# ==== Build & dist ====
+build/
+dist/
+*.egg
+*.whl
+
+# ==== Báo cáo coverage ====
+htmlcov/
+.coverage
+coverage.xml
+
+# ==== Log & runtime ====
+*.log
+logs/
+wandb/
+runs/ # TensorBoard, Weights&Biases
+tensorboard/
+
+# ==== Checkpoint / model nặng ====
+*.ckpt
+*.pt
+*.pth
+*.h5
+*.onnx
+checkpoints/
+weights/
+
+# ==== Dữ liệu thô (COCO, VQA, v.v.) ====
+data/
+datasets/
+images/
+annotations/
+
+# ==== Hệ điều hành ====
+.DS_Store
+Thumbs.db

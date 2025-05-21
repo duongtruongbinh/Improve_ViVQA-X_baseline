@@ -1,0 +1,100 @@
+# # ---------------- VLLM AND MODEL DETAILS ----------------
+vllm_details:
+  api_provider: "vllm"  # or "openai" or"vllm"
+
+  # Config for vLLM (local)
+  vlm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
+  llm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
+  api_key: "EMPTY"
+  vlm_url: "http://localhost:8000/v1"
+  llm_url: "http://localhost:8000/v1"
+  vlm_family: "Qwen-VL"
+  llm_family: "Qwen"
+  temperature: 0.1
+
+  # Config for OpenAI API 
+  openai_api_key: "${OPENAI_API_KEY}"  # << THAY BẰNG KHÓA API THẬT CỦA BẠN
+
+  openai_vlm_model_name: "gpt-4o-mini" 
+  openai_llm_model_name: "gpt-4o-mini"
+  openai_base_url: "https://api.openai.com/v1"
+  openai_vlm_family: "openai"
+  openai_llm_family: "openai"
+  # Giá ví dụ cho gpt-4o (prompt, completion) - bạn có thể cập nhật
+  openai_vlm_price: [0.0025, 0.01]  # gpt-4o: $2.50 input, $10.00 output per 1M
+  openai_llm_price: [0.00015, 0.0006]  # gpt-4o-mini: $0.15 input, $0.60 output per 1M
+
+
+
+# ---------------- INFERENCE SETTINGS ----------------
+inference_settings:
+  verbose: True
+  find_nearby_objects: False
+  force_multi_agents: False
+  nearby_bbox_iou_threshold: 0.5
+  print_every: 50
+  output_response_filename: "outputs/autogen_vqa_results.jsonl"
+  save_output_response: True
+
+# ---------------- DATASET SETTINGS ----------------
+datasets:
+  dataset_name: "vqa-v2"
+  use_num_test_data: False
+  num_test_data: 10
+  percent_test: 1
+
+  # --- GQA Specific Settings ---
+  gqa_dataset_split: "val"
+  gqa_images_dir: "datasets/gqa/images"
+  gqa_val_questions_file: "datasets/gqa/val_balanced_questions.json"
+  gqa_val_subset_questions_file: "datasets/gqa/gqasubset1000.json"
+  gqa_test_questions_file: "datasets/gqa/testdev_balanced_questions.json"
+
+  # --- VQA-v2 / COCO Specific Settings ---
+  vqa_v2_dataset_split: "rest-val"
+  # Image folders
+  vqa_v2_train_images_dir: "/mnt/VLAI_data/COCO_Images/train2014"
+  vqa_v2_val_images_dir:   "/mnt/VLAI_data/COCO_Images/val2014"
+  vqa_v2_test_images_dir:  "/mnt/VLAI_data/COCO_Images/test2015"
+  # Question JSONs
+  vqa_v2_train_questions_file:      "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_train2014_questions.json"
+  vqa_v2_val_questions_file:        "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_questions.json"
+  vqa_v2_test_questions_file:       "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test2015_questions.json"
+  vqa_v2_test_dev_questions_file:   "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test-dev2015_questions.json"
+  vqa_v2_rest_val_questions_file:   "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_rest_val2014_questions.json"
+  # Annotation JSONs
+  vqa_v2_train_annotations_file:    "/mnt/VLAI_data/VQAv2/v2_mscoco_train2014_annotations.json"
+  vqa_v2_val_annotations_file:      "/mnt/VLAI_data/VQAv2/v2_mscoco_val2014_annotations.json"
+  vqa_v2_rest_val_annotations_file: "/mnt/VLAI_data/VQAv2/v2_mscoco_rest_val2014_annotations.json"
+  vqa_v2_answer2label_file:         "/mnt/VLAI_data/VQAv2/answer2label.txt"
+  vqa_v2_train_jsonl_file:          "/mnt/VLAI_data/VQAv2/vqa.train.jsonl"
+  vqa_v2_val_jsonl_file:            "/mnt/VLAI_data/VQAv2/vqa.val.jsonl"
+  vqa_v2_trainable_val_jsonl_file:  "/mnt/VLAI_data/VQAv2/vqa.trainable_val.jsonl"
+  vqa_v2_rest_val_jsonl_file:       "/mnt/VLAI_data/VQAv2/vqa.rest_val.jsonl"
+  vqa_v2_test_jsonl_file:           "/mnt/VLAI_data/VQAv2/vqa.test.jsonl"
+  vqa_v2_test_dev_jsonl_file:       "/mnt/VLAI_data/VQAv2/vqa.test-dev.jsonl"
+  vqa_v2_answer_list: "/mnt/VLAI_data/VQAv2/answer_list.json"
+
+# ---------------- VLM INTERACTION PARAMETERS ----------------
+vlm_interaction_params:
+  min_bbox_size: 32
+
+# ---------------- TOOL CONFIG (Paths from original sam/dino sections) ----------------
+tool_config:
+  sam_settings:
+    GROUNDING_DINO_CONFIG_PATH: "Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+    GROUNDING_DINO_CHECKPOINT_PATH: "Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
+    SAM_ENCODER_VERSION: "vit_h"
+    SAM_CHECKPOINT_PATH: "Grounded-Segment-Anything/sam_vit_h_4b8939.pth"
+    BOX_THRESHOLD: 0.25
+    TEXT_THRESHOLD: 0.25
+    NMS_THRESHOLD: 0.8
+    min_mask_region_area: 1024
+    pred_iou_thresh: 0.9 
+    stability_score_thresh: 0.98 
+
+  dino_settings: 
+    GROUNDING_DINO_CONFIG_PATH: "Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+    GROUNDING_DINO_CHECKPOINT_PATH: "Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
+    BOX_THRESHOLD: 0.35
+    TEXT_THRESHOLD: 0.25
