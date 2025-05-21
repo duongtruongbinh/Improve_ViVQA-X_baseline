@@ -2,7 +2,7 @@ import yaml
 import os
 import sys
 
-CONFIG_FILE_PATH = "../config.yaml" # Assumes config.yaml is in the project root or same directory
+CONFIG_FILE_PATH = "../config.yaml" 
 
 def load_app_config(config_path=CONFIG_FILE_PATH):
     """Loads the application configuration from a YAML file."""
