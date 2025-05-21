@@ -4,21 +4,16 @@ import requests # Để kiểm tra URL hình ảnh công khai
 import os
 
 # ----- Cấu hình cần chỉnh sửa -----
-# Địa chỉ server vLLM OpenAI-compatible của bạn.
-# Dựa trên log "POST /v1/chat/completions", đây là endpoint mà VLM của bạn đang giao tiếp qua.
-VLLM_BASE_URL = "http://127.0.0.1:8000/v1"  # Thay 127.0.0.1:8000 nếu server vLLM của bạn chạy ở địa chỉ/cổng khác
+VLLM_BASE_URL = "http://127.0.0.1:8000/v1"  
 
 # Tên model chính xác đang chạy trên vLLM server
-MODEL_NAME = "Qwen/Qwen2-VL-2B-Instruct" # Từ log của bạn: VLM for AutoGen: Qwen/Qwen2-VL-2B-Instruct
+MODEL_NAME = "Qwen/Qwen2-VL-2B-Instruct" 
 
-# Cung cấp ĐƯỜNG DẪN ĐẦY ĐỦ đến file ảnh hoặc URL của ảnh gây ra sự cố.
-# Bạn có thể lấy thông tin này từ log của file main.py khi chạy với verbose=True,
-# ví dụ: /mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg
-IMAGE_INPUT = "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg" # THAY THẾ BẰNG ĐƯỜNG DẪN ẢNH CỤ THỂ GẶP LỖI
-QUESTION = "What color is his outfit?" # THAY THẾ BẰNG CÂU HỎI MÀU SẮC CỤ THỂ GẶP LỖI
+IMAGE_INPUT = "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg" 
+QUESTION = "What color is his outfit?"
 
-# Tùy chọn: API key (thường không cần thiết cho vLLM local, nhưng client OpenAI yêu cầu)
-API_KEY = "EMPTY" # Hoặc bất kỳ chuỗi nào nếu vLLM server không yêu cầu key
+
+API_KEY = "EMPTY" 
 # -----------------------------------
 
 def encode_image_to_base64(image_path):
@@ -26,8 +21,8 @@ def encode_image_to_base64(image_path):
     try:
         with open(image_path, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read()).decode('utf-8')
-        # Xác định mime type dựa trên phần mở rộng file
-        mime_type = "image/jpeg" # Mặc định
+        
+        mime_type = "image/jpeg" 
         if image_path.lower().endswith(".png"):
             mime_type = "image/png"
         elif image_path.lower().endswith(".jpg") or image_path.lower().endswith(".jpeg"):
@@ -52,9 +47,9 @@ def get_image_url_for_payload(image_input_str):
     """
     if image_input_str.startswith("http://") or image_input_str.startswith("https://"):
         try:
-            # Thực hiện một yêu cầu HEAD đơn giản để kiểm tra URL có hợp lệ và truy cập được không
-            response = requests.head(image_input_str, timeout=10) # Tăng timeout nếu cần
-            response.raise_for_status() # Ném lỗi nếu mã trạng thái là 4xx hoặc 5xx
+            
+            response = requests.head(image_input_str, timeout=10) 
+            response.raise_for_status() 
             print(f"Hình ảnh từ URL hợp lệ: {image_input_str}")
             return image_input_str
         except requests.exceptions.RequestException as e:
@@ -67,25 +62,19 @@ def get_image_url_for_payload(image_input_str):
         print(f"Lỗi: Đường dẫn hình ảnh '{image_input_str}' không tồn tại và cũng không phải là URL hợp lệ.")
         return None
 
-# Khởi tạo client OpenAI
-# Ngay cả khi `vLLM Base URL` trong config của main.py là 'N/A',
-# log `POST /v1/chat/completions` từ vLLM cho thấy nó đang phục vụ qua HTTP.
-# Script này nhắm vào endpoint HTTP đó.
+
 client = openai.OpenAI(
     base_url=VLLM_BASE_URL,
     api_key=API_KEY,
 )
 
-# Chuẩn bị URL hình ảnh cho payload, tương tự như initial_vlm_message_parts trong main_vqa_flow.py
 image_url_for_payload = get_image_url_for_payload(IMAGE_INPUT)
 
 if image_url_for_payload:
     print(f"\nĐang gửi yêu cầu đến model: {MODEL_NAME} tại {VLLM_BASE_URL}")
     print(f"Câu hỏi: {QUESTION}")
-    # Không in toàn bộ data URI nếu quá dài
     print(f"Sử dụng hình ảnh: {IMAGE_INPUT} (đã xử lý)")
 
-    # Cấu trúc payload giống như `initial_user_message` trong main_vqa_flow.py
     messages_payload = [
         {
             "role": "user",
