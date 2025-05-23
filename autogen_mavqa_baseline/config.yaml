@@ -10,7 +10,7 @@ vllm_details:
   llm_url: "http://localhost:8000/v1"
   vlm_family: "Qwen-VL"
   llm_family: "Qwen"
-  temperature: 0.1
+  temperature: 0.0
 
   # Config for OpenAI API 
   openai_api_key: "${OPENAI_API_KEY}"  # << THAY BẰNG KHÓA API THẬT CỦA BẠN
@@ -20,7 +20,6 @@ vllm_details:
   openai_base_url: "https://api.openai.com/v1"
   openai_vlm_family: "openai"
   openai_llm_family: "openai"
-  # Giá ví dụ cho gpt-4o (prompt, completion) - bạn có thể cập nhật
   openai_vlm_price: [0.0025, 0.01]  # gpt-4o: $2.50 input, $10.00 output per 1M
   openai_llm_price: [0.00015, 0.0006]  # gpt-4o-mini: $0.15 input, $0.60 output per 1M
 
@@ -28,6 +27,7 @@ vllm_details:
 
 # ---------------- INFERENCE SETTINGS ----------------
 inference_settings:
+  vqa_flow_type: "specialized" # "reflection" or "specialized"
   verbose: True
   find_nearby_objects: False
   force_multi_agents: False
@@ -44,14 +44,14 @@ datasets:
   percent_test: 1
 
   # --- GQA Specific Settings ---
-  gqa_dataset_split: "val"
+  gqa_dataset_split: "val" # rest-val, val, testdev
   gqa_images_dir: "datasets/gqa/images"
   gqa_val_questions_file: "datasets/gqa/val_balanced_questions.json"
   gqa_val_subset_questions_file: "datasets/gqa/gqasubset1000.json"
   gqa_test_questions_file: "datasets/gqa/testdev_balanced_questions.json"
 
   # --- VQA-v2 / COCO Specific Settings ---
-  vqa_v2_dataset_split: "rest-val"
+  vqa_v2_dataset_split: "val"
   # Image folders
   vqa_v2_train_images_dir: "/mnt/VLAI_data/COCO_Images/train2014"
   vqa_v2_val_images_dir:   "/mnt/VLAI_data/COCO_Images/val2014"
@@ -78,6 +78,12 @@ datasets:
 # ---------------- VLM INTERACTION PARAMETERS ----------------
 vlm_interaction_params:
   min_bbox_size: 32
+
+# ---------------- REFLECTION FLOW SETTINGS ----------------
+vqa_reflection_settings:
+  max_rounds: 1                  
+  min_reflector_confidence_for_approval: 0.85 
+  stop_on_no_improvement_threshold: 0.02 
 
 # ---------------- TOOL CONFIG (Paths from original sam/dino sections) ----------------
 tool_config:
