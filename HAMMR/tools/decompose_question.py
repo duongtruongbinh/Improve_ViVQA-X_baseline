@@ -6,7 +6,7 @@ from autogen_core.tools import FunctionTool
 from pathlib import Path
 
 # Initialize Vertex AI
-CREDENTIALS_PATH = Path(__file__).parent.parent / "credentials" / "bwa-agents-54872988b93e.json"
+CREDENTIALS_PATH = Path(__file__).parent.parent / "credentials" / "bwa-agents-ad0e1f5ab4b7.json"
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(CREDENTIALS_PATH)
 aiplatform.init(project='bwa-agents', location='us-central1')
 
@@ -21,7 +21,7 @@ def decompose_question(
     prompt = (
             f"Decompose the following complex question into exactly two simpler, self-contained sub-questions. "
             f"The sub-questions, when answered sequentially, should help answer the original complex question. "
-            f"Return the two sub-questions as a JSON array of strings.\n\n"
+            f"Return the two sub-questions as a array of strings.\n\n"
             f"Complex Question: \"What is the Köppen climate classification for the city where this mosque is located?\"\n"
             f"Output: [\"In which city is this mosque located?\", \"What is the Köppen climate classification for this city?\"]\n\n"
             f"Complex Question: \"Who is the CEO of the company that developed the game featuring a plumber who jumps on turtles?\"\n"
