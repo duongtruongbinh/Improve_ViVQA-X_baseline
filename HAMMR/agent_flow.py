@@ -1,7 +1,7 @@
 from autogen_agentchat.agents import AssistantAgent
 from autogen_agentchat.teams import Swarm
 from autogen_core.models import ChatCompletionClient
-from agents.EncyclopedicAgent import singlehop_encyclopedic
+from agents.EncyclopedicAgent import singlehop_encyclopedic, twohop_encyclopedic
 from autogen_agentchat.conditions import TextMentionTermination
 from autogen_agentchat.messages import MultiModalMessage
 from autogen_core import CancellationToken, Image
@@ -13,11 +13,11 @@ from autogen_agentchat.conditions import MaxMessageTermination
 config = {
     "provider": "OpenAIChatCompletionClient",
     "config": {
-        "model": "qwen3-4b",
+        "model": "qwen3-1.7b",
         "base_url": "http://127.0.0.1:1234/v1",
         "api_key": "lm-studio",
         "model_info": {
-            "name": "qwen3-4b",
+            "name": "qwen3-1.7b",
             "family": "openai",
             "supports_tool_calling": False,
             "supports_json_mode": True,
@@ -36,8 +36,8 @@ dispatcher_system_message = """
     You are a multimodal Dispatcher Agent. Your job is to analyze the user's visual question and route it to the correct specialist agent.
 
     Currently available:
-    - SingleHopEncyclopedicAgent → for factual questions that require a single lookup (e.g. from Wikipedia).
-
+    - SingleHopEncyclopedicAgent → for factual questions that require one step of reasoning.
+    - TwoHopEncyclopedicAgent → for complex questions that require identifying something in the image and then retrieving related knowledge.
     Task workflow:
 
     PHASE 1: PLANNING
@@ -66,7 +66,7 @@ dispatcher = AssistantAgent(
     name="Dispatcher",
     system_message=dispatcher_system_message,
     model_client=client,
-    handoffs=["SingleHopEncyclopedicAgent",],
+    handoffs=["SingleHopEncyclopedicAgent", "TwoHopEncyclopedicAgent"],
 )
 
 text_termination = TextMentionTermination("TERMINATE")
@@ -74,7 +74,7 @@ max_messages_termination = MaxMessageTermination(max_messages=25)
 termination = text_termination | max_messages_termination
 vqa_team = Swarm(
     participants=[dispatcher,
-                  singlehop_encyclopedic], termination_condition=termination
+                  singlehop_encyclopedic, twohop_encyclopedic], termination_condition=termination
 )
 
 # Đọc ảnh từ file
@@ -88,7 +88,7 @@ image = Image.from_file(image_path)
 #     ],
 #     source="user"
 # )
-message = "Question: What breed is this cat?, Image_url: https://images.pexels.com/photos/2071882/pexels-photo-2071882.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+message = "Question: What is the Köppen climate classification for the city where this mosque is located?, Image_url: https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/%D9%85%D8%B3%D8%AC%D8%AF_%D8%A7%D9%84%D9%85%D8%B1%D8%B3%D9%8A_%D8%A7%D8%A8%D9%88_%D8%A7%D9%84%D8%B9%D8%A8%D8%A7%D8%B3.jpg/1200px-%D9%85%D8%B3%D8%AC%D8%AF_%D8%A7%D9%84%D9%85%D8%B1%D8%B3%D9%8A_%D8%A7%D8%A8%D9%88_%D8%A7%D9%84%D8%B9%D8%A8%D8%A7%D8%B3.jpg?20160929000632"
 async def main():
   await Console(vqa_team.run_stream(task=message))
   await client.close()
