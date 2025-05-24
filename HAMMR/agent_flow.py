@@ -66,7 +66,7 @@ dispatcher = AssistantAgent(
     name="Dispatcher",
     system_message=dispatcher_system_message,
     model_client=client,
-    handoffs=["SingleHopEncyclopedicAgent"],
+    handoffs=["SingleHopEncyclopedicAgent",],
 )
 
 text_termination = TextMentionTermination("TERMINATE")

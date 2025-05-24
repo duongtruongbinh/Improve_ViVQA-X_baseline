@@ -59,3 +59,6 @@ annotations/
 # ==== Hệ điều hành ====
 .DS_Store
 Thumbs.db
+
+
+Improve_ViVQA-X_baseline/HAMMR/credentials/

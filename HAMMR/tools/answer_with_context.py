@@ -4,12 +4,13 @@ from google.cloud import aiplatform
 from autogen_core.tools import FunctionTool
 from pathlib import Path
 
+
+# 30 requests mỗi phút
 CREDENTIALS_PATH = Path(__file__).parent.parent / \
     "credentials" / "bwa-agents-54872988b93e.json"
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(CREDENTIALS_PATH.resolve())
 aiplatform.init(project='bwa-agents',
                 location='us-central1')
-
 
 def answer_with_context(question: str, context: str) -> str:
   """
