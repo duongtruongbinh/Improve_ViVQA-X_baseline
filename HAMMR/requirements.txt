@@ -1,0 +1,15 @@
+datasets==2.18.0
+pyvis==0.3.2
+gradio==5.29.0
+vllm==0.7.3
+autogen-agentchat==0.5.7
+autogen-ext[openai,azure]==0.5.7
+matplotlib==3.10.3
+langchain==0.3.25
+langchain-openai==0.3.14
+langgraph==0.3.33
+langchain-tavily==0.1.6
+langchain-community==0.3.24
+google-cloud-aiplatform==1.93.1
+langchain-google-vertexai==2.0.24
+wikipedia==1.4.0
