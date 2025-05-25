@@ -7,6 +7,12 @@ export VLLM_LOGGING_LEVEL=DEBUG
 export CUDA_LAUNCH_BLOCKING=1
 ```
 
+### Create Conda Environment
+
+```bash
+conda env create -f environment.yaml -n ten_env
+```
+
 ## Model Name
 
 ### Visual Language Models (VLMs)
@@ -140,3 +146,4 @@ pip check
 pipdeptree
 pipdeptree -w silence
 ```
+
