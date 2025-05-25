@@ -1,0 +1,356 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "dataset_split": "val",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 10,
+        "random_seed": 0,
+        "actual_items_in_loader": 10,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "524450002": {
+            "question_id": "524450002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000524450.jpg",
+            "question": "Is this a fire engine?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "245414001": {
+            "question_id": "245414001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000245414.jpg",
+            "question": "What is the nickname for this activity?",
+            "target_answers": "kiting",
+            "question_type": "other",
+            "initial_answer": "kite flying",
+            "final_answer": "kite flying",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Token F1 (lemmatized) (0.67 >= 0.5).]"
+            ],
+            "processing_time_seconds": 7.49,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "kite flying",
+                "normalized_target_answer": "kiting",
+                "normalized_target_answers": [
+                    "kiting"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.67 >= 0.5)."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "133503001": {
+            "question_id": "133503001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000133503.jpg",
+            "question": "What season is it?",
+            "target_answers": "winter",
+            "question_type": "other",
+            "initial_answer": "winter",
+            "final_answer": "winter",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.08,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "winter",
+                "normalized_target_answer": "winter",
+                "normalized_target_answers": [
+                    "winter"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "228504001": {
+            "question_id": "228504001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000228504.jpg",
+            "question": "Is it real sunny outside?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.21,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "226058002": {
+            "question_id": "226058002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226058.jpg",
+            "question": "What are the sitting on?",
+            "target_answers": "couch",
+            "question_type": "other",
+            "initial_answer": "couch",
+            "final_answer": "couch",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "couch",
+                "normalized_target_answer": "couch",
+                "normalized_target_answers": [
+                    "couch"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "55323008": {
+            "question_id": "55323008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000055323.jpg",
+            "question": "Where has this computer been placed?",
+            "target_answers": "desk",
+            "question_type": "other",
+            "initial_answer": "desk",
+            "final_answer": "desk",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "desk",
+                "normalized_target_answer": "desk",
+                "normalized_target_answers": [
+                    "desk"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "133060000": {
+            "question_id": "133060000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000133060.jpg",
+            "question": "What position is this?",
+            "target_answers": "batter",
+            "question_type": "other",
+            "initial_answer": "batter",
+            "final_answer": "batter",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "batter",
+                "normalized_target_answer": "batter",
+                "normalized_target_answers": [
+                    "batter"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "290293002": {
+            "question_id": "290293002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000290293.jpg",
+            "question": "What kind of building is this?",
+            "target_answers": "train station",
+            "question_type": "other",
+            "initial_answer": "train station",
+            "final_answer": "train station",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.08,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "train station",
+                "normalized_target_answer": "train station",
+                "normalized_target_answers": [
+                    "train station"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "84859000": {
+            "question_id": "84859000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000084859.jpg",
+            "question": "What are the big sheep doing?",
+            "target_answers": "eating",
+            "question_type": "other",
+            "initial_answer": "eating",
+            "final_answer": "eating",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.05,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "eating",
+                "normalized_target_answer": "eating",
+                "normalized_target_answers": [
+                    "eating"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Majority vote is [Correct] with a score of 1/1"
+        },
+        "278437004": {
+            "question_id": "278437004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278437.jpg",
+            "question": "What is this cow doing with its left hind leg?",
+            "target_answers": "scratching",
+            "question_type": "other",
+            "initial_answer": "graze",
+            "final_answer": "graze",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "graze",
+                "normalized_target_answer": "scratching",
+                "normalized_target_answers": [
+                    "scratching"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1"
+        }
+    },
+    "overall_metrics": {
+        "baseline_accuracy": 0.9,
+        "final_accuracy": 0.9,
+        "detailed_grader_stats": {
+            "count_correct": 9,
+            "count_incorrect": 1,
+            "count_correct_baseline": 9,
+            "count_incorrect_baseline": 1,
+            "count_total": 10
+        },
+        "total_processed_successfully": 10,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 0,
+        "total_attempted_in_loader": 10,
+        "question_type_summary": {
+            "counts": {
+                "total": 10,
+                "yes/no": 2,
+                "number": 0,
+                "other": 8
+            },
+            "accuracies_report": {
+                "yes/no": {
+                    "count": 2,
+                    "correct": 2,
+                    "accuracy_percent": 100.0
+                },
+                "number": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "other": {
+                    "count": 8,
+                    "correct": 7,
+                    "accuracy_percent": 87.5
+                }
+            }
+        }
+    }
+}

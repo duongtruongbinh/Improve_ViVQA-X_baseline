@@ -34,7 +34,7 @@ Qwen/Qwen3-4B
 ## Serve Visual Language Models
 
 ```bash
-CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-2B-Instruct --dtype bfloat16 --port 8000 --gpu-memory-utilization 0.4
+CUDA_VISIBLE_DEVICES=2 vllm serve Qwen/Qwen2-VL-2B-Instruct --dtype bfloat16 --port 8000 --gpu-memory-utilization 0.4
 CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-7B-Instruct --dtype bfloat16 --port 8001
 ```
 ## Other Common Parameters for `vllm serve`

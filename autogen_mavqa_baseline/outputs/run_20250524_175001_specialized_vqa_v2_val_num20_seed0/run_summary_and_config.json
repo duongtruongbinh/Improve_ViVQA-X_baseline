@@ -1,0 +1,60 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "dataset_split": "val",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 20,
+        "random_seed": 0,
+        "vqa_flow_type": "specialized",
+        "actual_items_in_loader": 20,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null,
+        "reflection_max_rounds": null,
+        "reflection_min_confidence_approval": null,
+        "reflection_stop_no_improvement_thresh": null,
+        "debate_num_solvers": null,
+        "debate_max_rounds": null
+    },
+    "overall_metrics": {
+        "final_accuracy_direct_comparison_percent": 0.0,
+        "total_correct_direct_comparison": 0,
+        "total_evaluated_for_direct_comparison": 0,
+        "total_processed_successfully": 0,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 20,
+        "total_attempted_in_loader": 20,
+        "question_type_summary_direct_comparison": {
+            "counts": {
+                "total": 0,
+                "yes/no": 0,
+                "number": 0,
+                "other": 0,
+                "unknown": 0
+            },
+            "accuracies_report": {
+                "yes/no": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "number": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "other": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "unknown": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                }
+            }
+        }
+    }
+}

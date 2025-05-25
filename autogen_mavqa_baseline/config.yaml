@@ -1,6 +1,6 @@
 # # ---------------- VLLM AND MODEL DETAILS ----------------
-vllm_details:
-  api_provider: "vllm"  # or "openai" or"vllm"
+vlm_details:
+  api_provider: "vllm"  # Options: "vllm", "openai" (for AutoGen agents)
 
   # Config for vLLM (local)
   vlm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
@@ -10,59 +10,60 @@ vllm_details:
   llm_url: "http://localhost:8000/v1"
   vlm_family: "Qwen-VL"
   llm_family: "Qwen"
-  temperature: 0.0
+  temperature: 0.2
 
   # Config for OpenAI API 
-  openai_api_key: "${OPENAI_API_KEY}"  # << THAY BẰNG KHÓA API THẬT CỦA BẠN
-
+  openai_api_key: "${OPENAI_API_KEY}" 
   openai_vlm_model_name: "gpt-4o-mini" 
   openai_llm_model_name: "gpt-4o-mini"
   openai_base_url: "https://api.openai.com/v1"
   openai_vlm_family: "openai"
   openai_llm_family: "openai"
-  openai_vlm_price: [0.0025, 0.01]  # gpt-4o: $2.50 input, $10.00 output per 1M
-  openai_llm_price: [0.00015, 0.0006]  # gpt-4o-mini: $0.15 input, $0.60 output per 1M
+  openai_vlm_price: [0.0025, 0.01] 
+  openai_llm_price: [0.00015, 0.0006] 
 
+  # Config for 'simple_direct' flow (direct Hugging Face model)
+  simple_direct_model_path: "Qwen/Qwen2-VL-2B-Instruct" # Path or HF identifier. E.g., "/mnt/dataset1/pretrained_fm/Qwen_Qwen2-VL-7B-Instruct"
 
 
 # ---------------- INFERENCE SETTINGS ----------------
 inference_settings:
-  vqa_flow_type: "specialized" # "reflection" or "specialized"
+  vqa_flow_type: "debate" # Options: "reflection", "specialized", "debate", "simple_direct"
   verbose: True
   find_nearby_objects: False
   force_multi_agents: False
   nearby_bbox_iou_threshold: 0.5
-  print_every: 50
-  output_response_filename: "outputs/autogen_vqa_results.jsonl"
+  print_every: 1 
+  output_response_filename: "autogen_vqa_results.jsonl" # Note: this path is relative to the run-specific output dir, not "outputs/"
   save_output_response: True
+  f1_threshold_for_other_type: 0.5
+
 
 # ---------------- DATASET SETTINGS ----------------
 datasets:
-  dataset_name: "vqa-v2"
+  dataset_name: "vqa-v2" # Options: "vqa-v2", "gqa"
+  random_seed: 0
   use_num_test_data: False
-  num_test_data: 10
-  percent_test: 1
+  num_test_data: 20 
+  percent_test: 1 # Example for 1% of data
 
   # --- GQA Specific Settings ---
-  gqa_dataset_split: "val" # rest-val, val, testdev
+  gqa_dataset_split: "rest-val" # Options for GQA: "train", "val", "testdev", "submission", "challenge", "rest-val" (if custom)
   gqa_images_dir: "datasets/gqa/images"
   gqa_val_questions_file: "datasets/gqa/val_balanced_questions.json"
-  gqa_val_subset_questions_file: "datasets/gqa/gqasubset1000.json"
-  gqa_test_questions_file: "datasets/gqa/testdev_balanced_questions.json"
+  # gqa_val_subset_questions_file: "datasets/gqa/gqasubset1000.json" # This was in your original file, uncomment if used
+  gqa_testdev_questions_file: "datasets/gqa/testdev_balanced_questions.json" # Renamed from gqa_test_questions_file for clarity if it's testdev
 
   # --- VQA-v2 / COCO Specific Settings ---
-  vqa_v2_dataset_split: "val"
-  # Image folders
+  vqa_v2_dataset_split: "rest-val" 
   vqa_v2_train_images_dir: "/mnt/VLAI_data/COCO_Images/train2014"
   vqa_v2_val_images_dir:   "/mnt/VLAI_data/COCO_Images/val2014"
   vqa_v2_test_images_dir:  "/mnt/VLAI_data/COCO_Images/test2015"
-  # Question JSONs
-  vqa_v2_train_questions_file:      "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_train2014_questions.json"
-  vqa_v2_val_questions_file:        "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_questions.json"
-  vqa_v2_test_questions_file:       "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test2015_questions.json"
-  vqa_v2_test_dev_questions_file:   "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test-dev2015_questions.json"
-  vqa_v2_rest_val_questions_file:   "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_rest_val2014_questions.json"
-  # Annotation JSONs
+  vqa_v2_train_questions_file:    "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_train2014_questions.json"
+  vqa_v2_val_questions_file:      "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_questions.json"
+  vqa_v2_test_questions_file:     "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test2015_questions.json"
+  vqa_v2_test_dev_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test-dev2015_questions.json"
+  vqa_v2_rest_val_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_rest_val2014_questions.json" 
   vqa_v2_train_annotations_file:    "/mnt/VLAI_data/VQAv2/v2_mscoco_train2014_annotations.json"
   vqa_v2_val_annotations_file:      "/mnt/VLAI_data/VQAv2/v2_mscoco_val2014_annotations.json"
   vqa_v2_rest_val_annotations_file: "/mnt/VLAI_data/VQAv2/v2_mscoco_rest_val2014_annotations.json"
@@ -79,11 +80,16 @@ datasets:
 vlm_interaction_params:
   min_bbox_size: 32
 
+# ---------------- DEBATE FLOW SETTINGS ----------------
+vqa_debate_settings:
+  num_solvers: 1              
+  max_rounds: 1               
+
 # ---------------- REFLECTION FLOW SETTINGS ----------------
 vqa_reflection_settings:
-  max_rounds: 1                  
+  max_rounds: 1               
   min_reflector_confidence_for_approval: 0.85 
-  stop_on_no_improvement_threshold: 0.02 
+  stop_on_no_improvement_threshold: 0.02      
 
 # ---------------- TOOL CONFIG (Paths from original sam/dino sections) ----------------
 tool_config:

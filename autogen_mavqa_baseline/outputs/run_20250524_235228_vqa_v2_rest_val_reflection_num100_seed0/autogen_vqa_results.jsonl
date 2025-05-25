@@ -1,0 +1,2051 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 100,
+        "random_seed": 0,
+        "dataset_split": "rest-val",
+        "vqa_flow_type": "reflection",
+        "actual_items_in_loader": 100,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "283028001": {
+            "question_id": "283028001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000283028.jpg",
+            "question": "How old is this computer?",
+            "target_answers": "old",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.04,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "104392003": {
+            "question_id": "104392003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000104392.jpg",
+            "question": "Is the room lit by sunlight?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "320823002": {
+            "question_id": "320823002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000320823.jpg",
+            "question": "Is that a wedding?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "159203003": {
+            "question_id": "159203003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000159203.jpg",
+            "question": "What color is the hydrant?",
+            "target_answers": "green",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "568863006": {
+            "question_id": "568863006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000568863.jpg",
+            "question": "What covers the ground?",
+            "target_answers": "water",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.0,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "285773005": {
+            "question_id": "285773005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000285773.jpg",
+            "question": "What type of glass is shown?",
+            "target_answers": "wine",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "419848000": {
+            "question_id": "419848000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000419848.jpg",
+            "question": "What is on the bottom of this food?",
+            "target_answers": "plate",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "475195003": {
+            "question_id": "475195003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000475195.jpg",
+            "question": "How many bananas are there?",
+            "target_answers": "30",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "478320003": {
+            "question_id": "478320003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000478320.jpg",
+            "question": "Is the airline wizz air?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "383621004": {
+            "question_id": "383621004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000383621.jpg",
+            "question": "Is there a tree in the picture?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "104801011": {
+            "question_id": "104801011",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000104801.jpg",
+            "question": "Is there a patio?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "123070002": {
+            "question_id": "123070002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000123070.jpg",
+            "question": "Is this a National Park?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "98143001": {
+            "question_id": "98143001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000098143.jpg",
+            "question": "Is this stove currently being used to cook food?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "376177001": {
+            "question_id": "376177001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000376177.jpg",
+            "question": "Is the plane for civilians?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267191002": {
+            "question_id": "267191002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267191.jpg",
+            "question": "Does the man have a helmet?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "179397000": {
+            "question_id": "179397000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000179397.jpg",
+            "question": "What normally comes out of the large, tall thing?",
+            "target_answers": "smoke",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "242095006": {
+            "question_id": "242095006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000242095.jpg",
+            "question": "How many kites are in the sky?",
+            "target_answers": "12",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "211069000": {
+            "question_id": "211069000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000211069.jpg",
+            "question": "How many giraffes are in the picture?",
+            "target_answers": "2",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "445041002": {
+            "question_id": "445041002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000445041.jpg",
+            "question": "Who is he talking to?",
+            "target_answers": "his boss",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "578093002": {
+            "question_id": "578093002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000578093.jpg",
+            "question": "How many trains are at the train station?",
+            "target_answers": "1",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "243891008": {
+            "question_id": "243891008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000243891.jpg",
+            "question": "Does it look as if the child is having the adult beverage and the adult the \"lite\" beverage?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "187285000": {
+            "question_id": "187285000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000187285.jpg",
+            "question": "Is this child on the ocean?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "87052022": {
+            "question_id": "87052022",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000087052.jpg",
+            "question": "Is the man in love?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "226170008": {
+            "question_id": "226170008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226170.jpg",
+            "question": "Which of these food items isn't like the others?",
+            "target_answers": "carrots",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "320290004": {
+            "question_id": "320290004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000320290.jpg",
+            "question": "Is this an old picture scene?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "175718001": {
+            "question_id": "175718001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000175718.jpg",
+            "question": "Is the glass very cold?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "248912000": {
+            "question_id": "248912000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000248912.jpg",
+            "question": "What color is the table?",
+            "target_answers": "green",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "172004004": {
+            "question_id": "172004004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000172004.jpg",
+            "question": "Is the giraffe eating?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "312544000": {
+            "question_id": "312544000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000312544.jpg",
+            "question": "Are these birds of the same sex?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "12280000": {
+            "question_id": "12280000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000012280.jpg",
+            "question": "Is this Mary Poppins?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "348854001": {
+            "question_id": "348854001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000348854.jpg",
+            "question": "What other vegetable besides carrots are in the picture?",
+            "target_answers": "broccoli",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "87617001": {
+            "question_id": "87617001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000087617.jpg",
+            "question": "Where are they standing?",
+            "target_answers": "street",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267910001": {
+            "question_id": "267910001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "Might the electricity be out?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "230884007": {
+            "question_id": "230884007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000230884.jpg",
+            "question": "What sport is played here?",
+            "target_answers": "skateboarding",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "500718004": {
+            "question_id": "500718004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500718.jpg",
+            "question": "What is the name of the airline?",
+            "target_answers": "easyjet",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "361285004": {
+            "question_id": "361285004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000361285.jpg",
+            "question": "What is growing on the side of the clock tower?",
+            "target_answers": "trees",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "24734001": {
+            "question_id": "24734001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000024734.jpg",
+            "question": "Is this a breakfast dish?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "251888012": {
+            "question_id": "251888012",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "Is this the River Thames?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "481212002": {
+            "question_id": "481212002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000481212.jpg",
+            "question": "Will the dog start barking at the cat?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "68933002": {
+            "question_id": "68933002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000068933.jpg",
+            "question": "Is this a color photo?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "516415001": {
+            "question_id": "516415001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000516415.jpg",
+            "question": "Is he practicing?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267910003": {
+            "question_id": "267910003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "What number is written on the paper?",
+            "target_answers": "0",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "381332001": {
+            "question_id": "381332001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000381332.jpg",
+            "question": "Is this man playing a video game?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "104669005": {
+            "question_id": "104669005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000104669.jpg",
+            "question": "Is there meat in the meal?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "206838000": {
+            "question_id": "206838000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000206838.jpg",
+            "question": "What are the girls wearing?",
+            "target_answers": "bikinis",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "192095000": {
+            "question_id": "192095000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000192095.jpg",
+            "question": "Is the pitcher wound up?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "164672002": {
+            "question_id": "164672002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000164672.jpg",
+            "question": "Are there any clocks in the picture?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "34455005": {
+            "question_id": "34455005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000034455.jpg",
+            "question": "Is this a smartphone?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "424392002": {
+            "question_id": "424392002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000424392.jpg",
+            "question": "Are the zebra's eyes open or closed?",
+            "target_answers": "open",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "137826003": {
+            "question_id": "137826003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000137826.jpg",
+            "question": "How many levels does the bus have?",
+            "target_answers": "2",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "171762000": {
+            "question_id": "171762000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000171762.jpg",
+            "question": "What is the shape of the plate?",
+            "target_answers": "round",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "196484001": {
+            "question_id": "196484001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000196484.jpg",
+            "question": "Is it cloudy?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "278579001": {
+            "question_id": "278579001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278579.jpg",
+            "question": "Are these two people have beards?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "515682001": {
+            "question_id": "515682001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000515682.jpg",
+            "question": "Is the kite big?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "34950004": {
+            "question_id": "34950004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000034950.jpg",
+            "question": "Are there wires?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "345848001": {
+            "question_id": "345848001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000345848.jpg",
+            "question": "What color is the large suitcase?",
+            "target_answers": "black",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "442761000": {
+            "question_id": "442761000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000442761.jpg",
+            "question": "Is the dog biting the man's hand?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "101647020": {
+            "question_id": "101647020",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000101647.jpg",
+            "question": "Has anybody been in this room recently?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "343193017": {
+            "question_id": "343193017",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000343193.jpg",
+            "question": "What brands of phone are pictured here?",
+            "target_answers": "blackberry, iphone and nokia",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "225751002": {
+            "question_id": "225751002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000225751.jpg",
+            "question": "Is there broccoli?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "560218002": {
+            "question_id": "560218002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000560218.jpg",
+            "question": "What time is it?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "323797000": {
+            "question_id": "323797000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000323797.jpg",
+            "question": "Is the elephant helping the other elephant?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "352011002": {
+            "question_id": "352011002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000352011.jpg",
+            "question": "Where is the printer?",
+            "target_answers": "on desk",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "527486000": {
+            "question_id": "527486000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000527486.jpg",
+            "question": "Is this person asking the ball to behave?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "513775004": {
+            "question_id": "513775004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000513775.jpg",
+            "question": "Is that a man's hand holding the plate?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "523175000": {
+            "question_id": "523175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000523175.jpg",
+            "question": "What kind of soup is this?",
+            "target_answers": "vegetable",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "500175000": {
+            "question_id": "500175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500175.jpg",
+            "question": "What time of day does this picture depict?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "11241003": {
+            "question_id": "11241003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is this enough food for more than two people?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "216867002": {
+            "question_id": "216867002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000216867.jpg",
+            "question": "How many passengers can this plane carry?",
+            "target_answers": "2",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "97682000": {
+            "question_id": "97682000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000097682.jpg",
+            "question": "Does the man have long fingers?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.0,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "11241001": {
+            "question_id": "11241001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is the Tabasco sauce bottle full?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "13300003": {
+            "question_id": "13300003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000013300.jpg",
+            "question": "What is in the vase?",
+            "target_answers": "plants",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "479440023": {
+            "question_id": "479440023",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000479440.jpg",
+            "question": "Is the cat frightened?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "492254001": {
+            "question_id": "492254001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000492254.jpg",
+            "question": "Is the green color from moss?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "501281002": {
+            "question_id": "501281002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000501281.jpg",
+            "question": "Are there any senior citizens in this picture?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "156029002": {
+            "question_id": "156029002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000156029.jpg",
+            "question": "Is the man putting the pizza into or taking it out of the oven?",
+            "target_answers": "in",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "447465001": {
+            "question_id": "447465001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000447465.jpg",
+            "question": "What are the people doing?",
+            "target_answers": "skiing",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "421231004": {
+            "question_id": "421231004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421231.jpg",
+            "question": "What kind of icing is on the cake?",
+            "target_answers": "chocolate",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "242246001": {
+            "question_id": "242246001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000242246.jpg",
+            "question": "Where is this market?",
+            "target_answers": "outside",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "251888007": {
+            "question_id": "251888007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "What city is this?",
+            "target_answers": "new york",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "527486004": {
+            "question_id": "527486004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000527486.jpg",
+            "question": "Is this girl black?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "300876005": {
+            "question_id": "300876005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000300876.jpg",
+            "question": "What are they eating?",
+            "target_answers": "pancakes",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "449661001": {
+            "question_id": "449661001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000449661.jpg",
+            "question": "What room is this?",
+            "target_answers": "hospital",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.0,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "255630005": {
+            "question_id": "255630005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000255630.jpg",
+            "question": "What color is the water?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "501281001": {
+            "question_id": "501281001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000501281.jpg",
+            "question": "What are the people doing?",
+            "target_answers": "tennis",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "304012005": {
+            "question_id": "304012005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000304012.jpg",
+            "question": "What does the sign say?",
+            "target_answers": "12m",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "506441003": {
+            "question_id": "506441003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000506441.jpg",
+            "question": "What color is the pickle?",
+            "target_answers": "green",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "497334000": {
+            "question_id": "497334000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000497334.jpg",
+            "question": "Is the book closed?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "107227000": {
+            "question_id": "107227000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000107227.jpg",
+            "question": "What color is her blouse?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "501762001": {
+            "question_id": "501762001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000501762.jpg",
+            "question": "What is behind the man?",
+            "target_answers": "ocean",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "564636000": {
+            "question_id": "564636000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg",
+            "question": "What color is his outfit?",
+            "target_answers": "red",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "365745000": {
+            "question_id": "365745000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000365745.jpg",
+            "question": "Is this a rural scene?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.03,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "198641004": {
+            "question_id": "198641004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000198641.jpg",
+            "question": "What species is the stuffed animal behind the cat?",
+            "target_answers": "no stuffed animal",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "520009002": {
+            "question_id": "520009002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000520009.jpg",
+            "question": "Is it sunny?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.02,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "130240003": {
+            "question_id": "130240003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000130240.jpg",
+            "question": "Is this boy playing offense or defense?",
+            "target_answers": "defense",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "264870003": {
+            "question_id": "264870003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000264870.jpg",
+            "question": "How many items do you see?",
+            "target_answers": "3",
+            "question_type": "number",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267837001": {
+            "question_id": "267837001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267837.jpg",
+            "question": "What type of outerwear does the person have on?",
+            "target_answers": "ski gear",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "120356002": {
+            "question_id": "120356002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000120356.jpg",
+            "question": "Does the carpet have stains?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "551018004": {
+            "question_id": "551018004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000551018.jpg",
+            "question": "What color is the car?",
+            "target_answers": "silver",
+            "question_type": "other",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "185950000": {
+            "question_id": "185950000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000185950.jpg",
+            "question": "Is it a male or a female?",
+            "target_answers": "male",
+            "question_type": "yes/no",
+            "final_answer": "[VQAAgentEmptyContent]",
+            "processing_time_seconds": 0.01,
+            "error": "VQAAgentError: Agent returned empty content.",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        }
+    },
+    "overall_metrics": {
+        "total_processed_successfully": 0,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 100,
+        "total_attempted_in_loader": 100,
+        "overall_accuracy_from_type_aggregation": 0.0,
+        "overall_correct_count": 0,
+        "overall_total_typed_questions": 100,
+        "question_type_summary": {
+            "counts_by_type": {
+                "total": 100,
+                "yes/no": 53,
+                "number": 8,
+                "other": 39
+            },
+            "accuracies_by_type": {
+                "yes/no": {
+                    "count": 53,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "number": {
+                    "count": 8,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "other": {
+                    "count": 39,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                }
+            }
+        }
+    }
+}

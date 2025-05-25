@@ -1,3 +1,4 @@
+# evaluation.py
 import re
 import sys
 
@@ -25,9 +26,7 @@ try:
         'omw-1.4': 'corpora/omw-1.4',
         'punkt': 'tokenizers/punkt'
     }
-
     successfully_loaded_resources_count = 0
-
     for resource_name, resource_path_fragment in nltk_resources_to_check.items():
         try:
             nltk_module.data.find(resource_path_fragment)
@@ -38,16 +37,17 @@ try:
                 nltk_module.data.find(resource_path_fragment)
                 successfully_loaded_resources_count += 1
             except Exception as e_download:
-                print(f"ERROR (check.py): Failed to download/verify NLTK resource '{resource_name}': {e_download}")
-
+                print(f"ERROR (evaluation.py): Failed to download/verify NLTK resource '{resource_name}': {e_download}")
+    
     if successfully_loaded_resources_count == len(nltk_resources_to_check):
         all_nltk_resources_available = True
         lemmatizer = WordNetLemmatizer()
     else:
         lemmatizer = None
+        print("Warning (evaluation.py): Not all NLTK resources available/downloaded. Lemmatization quality may be affected.")
 
 except ImportError:
-    print("NLTK Warning (check.py): 'nltk' library not found. Lemmatization disabled.")
+    print("NLTK Warning (evaluation.py): 'nltk' library not found. Lemmatization disabled.")
 
 CONTRACTIONS_VQA = {
     'aint': "ain't", 'arent': "aren't", 'cant': "can't", 'couldve': "could've",
@@ -117,17 +117,18 @@ def normalize_vqa(text: str) -> str:
             continue
         words.append(CONTRACTIONS_VQA.get(w, w))
     return ' '.join(words)
-
+    
 def clean_answer_for_comparison(answer_text: str) -> str:
     if not isinstance(answer_text, str):
         return ""
-
     text_to_clean = answer_text.strip()
-    match = re.match(r"^(?:\[Answer\]|\[Reattempted Answer\])\s*(.*)", text_to_clean, re.IGNORECASE)
+    match = re.match(r"^(?:\[Answer\]|\[Reattempted Answer\]|answer:)\s*(.*)", text_to_clean, re.IGNORECASE)
     if match:
         text_to_clean = match.group(1)
-
-    return text_to_clean.strip().lower()
+    
+    if text_to_clean.endswith("..."):
+        text_to_clean = text_to_clean[:-3].strip()
+    return text_to_clean.lower().strip("'\" ")
 
 def parse_number(text: str):
     if text is None:
@@ -140,7 +141,6 @@ def parse_number(text: str):
                 return float(w2n.word_to_num(text))
             except ValueError:
                 pass
-
         numbers_found = re.findall(r'-?\d+\.?\d*|-?\.\d+', text)
         if numbers_found:
             try:
@@ -152,10 +152,8 @@ def parse_number(text: str):
 def get_lemmatized_tokens(text: str) -> list:
     if not all_nltk_resources_available or not lemmatizer or not word_tokenize_func:
         return [t for t in re.findall(r'\b\w+\b', text.lower()) if t] if text else []
-
     if not isinstance(text, str) or not text.strip():
         return []
-
     try:
         tokens = word_tokenize_func(text.lower())
         processed_tokens = []
@@ -171,15 +169,12 @@ def get_lemmatized_tokens(text: str) -> list:
                 lemma = 'metal'
             else:
                 lemma = lemmatizer.lemmatize(token, pos='n')
-
             if lemma:
                 processed_tokens.append(lemma)
-        
         final_tokens = [t for t in processed_tokens if t]
         return final_tokens
     except Exception as e:
         return [t for t in re.findall(r'\b\w+\b', text.lower()) if t] if text else []
-
 
 def calculate_token_f1(model_ans_str: str, target_ans_str: str, use_lemmatization: bool = True) -> float:
     if use_lemmatization and all_nltk_resources_available:
@@ -188,25 +183,60 @@ def calculate_token_f1(model_ans_str: str, target_ans_str: str, use_lemmatizatio
     else:
         processed_model_tokens = [t for t in (model_ans_str.lower().split() if model_ans_str else []) if t]
         processed_target_tokens = [t for t in (target_ans_str.lower().split() if target_ans_str else []) if t]
-
     if not processed_model_tokens and not processed_target_tokens:
         return 1.0
     if not processed_model_tokens or not processed_target_tokens:
         return 0.0
-
     common_tokens = set(processed_model_tokens) & set(processed_target_tokens)
-
     if not common_tokens:
         return 0.0
-
     precision = len(common_tokens) / len(processed_model_tokens)
     recall = len(common_tokens) / len(processed_target_tokens)
-
     if precision + recall == 0:
         return 0.0
-
     f1 = 2 * (precision * recall) / (precision + recall)
     return f1
+
+def preprocess_model_answer_for_eval(answer_str: str, question_type: str) -> str:
+    if not isinstance(answer_str, str):
+        return "" 
+    
+    processed = answer_str.lower().strip()
+
+    if processed.startswith("answer:"):
+        processed = processed[len("answer:"):].strip()
+    
+    if processed.endswith("..."):
+        processed = processed[:-3].strip()
+    
+    if processed.startswith("the answer is"):
+        if processed.startswith("the answer is:"):
+            processed = processed[len("the answer is:"):].strip()
+        else: 
+            processed = processed[len("the answer is "):].strip()
+
+    if processed.startswith('"') and processed.endswith('"'):
+        processed = processed[1:-1]
+    elif processed.startswith("'") and processed.endswith("'"):
+        processed = processed[1:-1]
+    
+    processed = processed.strip(". ")
+
+    if question_type == "yes/no":
+        if processed == "yes" or processed.startswith("yes,") or processed.startswith("yes "):
+            return "yes"
+        if processed == "no" or processed.startswith("no,") or processed.startswith("no "):
+            return "no"
+        
+        first_word_cleaned = re.sub(r'[^\w\s-]', '', processed.split(maxsplit=1)[0])
+        if first_word_cleaned in ["yes", "no"]:
+            return first_word_cleaned
+        return processed 
+
+    elif question_type == "number":
+        return processed 
+            
+    return processed
 
 def perform_direct_accuracy_check(
     final_answer_text: str,
@@ -248,20 +278,22 @@ def perform_direct_accuracy_check(
         majority_vote_output = "Direct comparison: Skipped - No Target Answer(s)"
         return direct_accuracy_results, grades_output, majority_vote_output
 
-    processed_target_answer_for_single_comparison = processed_target_answer_list[0]
-    cleaned_model_ans = clean_answer_for_comparison(final_answer_text if final_answer_text else "")
-    normalized_target_ans_single = processed_target_answer_for_single_comparison.lower() 
+    model_ans_cleaned_by_user_func = clean_answer_for_comparison(final_answer_text if final_answer_text else "")
+    
+    model_ans_preprocessed_for_eval = preprocess_model_answer_for_eval(model_ans_cleaned_by_user_func, question_type)
+    
+    normalized_target_ans_single = processed_target_answer_list[0].lower() 
     is_correct = False
 
-    direct_accuracy_results["cleaned_model_answer"] = cleaned_model_ans
+    direct_accuracy_results["cleaned_model_answer"] = model_ans_preprocessed_for_eval
     direct_accuracy_results["normalized_target_answer"] = normalized_target_ans_single
     direct_accuracy_results["normalized_target_answers"] = [t.lower() for t in processed_target_answer_list]
 
-    if not cleaned_model_ans and cleaned_model_ans != "0": # "0" can be a valid answer
+    if not model_ans_preprocessed_for_eval and model_ans_preprocessed_for_eval != "0":
         is_correct = (normalized_target_ans_single == "" or normalized_target_ans_single == "none")
-        match_method_note = "Model answer empty after cleaning."
+        match_method_note = "Model answer empty after preprocessing."
         if question_type == "vqa_standard":
-            vqa_model_ans_norm = normalize_vqa(cleaned_model_ans)
+            vqa_model_ans_norm = normalize_vqa(model_ans_preprocessed_for_eval)
             matches = 0
             for gt_ans in processed_target_answer_list:
                 gt_ans_norm = normalize_vqa(gt_ans)
@@ -277,15 +309,13 @@ def perform_direct_accuracy_check(
             match_method_note = "VQA Standard: target_answers must be a non-empty list."
             is_correct = False
         else:
-            model_ans_vqa_normalized = normalize_vqa(cleaned_model_ans)
+            model_ans_vqa_normalized = normalize_vqa(model_ans_preprocessed_for_eval)
             gt_ans_vqa_normalized_list = [normalize_vqa(gt) for gt in processed_target_answer_list]
             direct_accuracy_results["normalized_target_answers"] = gt_ans_vqa_normalized_list
-
             matches = 0
             for gt_norm in gt_ans_vqa_normalized_list:
                 if model_ans_vqa_normalized == gt_norm:
                     matches += 1
-            
             vqa_s = min(matches / 3.0, 1.0)
             direct_accuracy_results["vqa_score"] = vqa_s
             is_correct = (vqa_s > 0) 
@@ -295,8 +325,8 @@ def perform_direct_accuracy_check(
         positive_indicators = {"yes", "yeah", "yep", "correct", "true", "affirmative", "y", "positive"}
         negative_indicators = {"no", "nope", "incorrect", "false", "negative", "n", "not"}
 
-        model_ans_is_positive = cleaned_model_ans in positive_indicators
-        model_ans_is_negative = cleaned_model_ans in negative_indicators
+        model_ans_is_positive = model_ans_preprocessed_for_eval in positive_indicators
+        model_ans_is_negative = model_ans_preprocessed_for_eval in negative_indicators
         target_is_positive = normalized_target_ans_single in positive_indicators
         target_is_negative = normalized_target_ans_single in negative_indicators
 
@@ -305,50 +335,51 @@ def perform_direct_accuracy_check(
             is_correct = True
             match_method_note = "Yes/No variants check (standard)."
         elif not (target_is_positive or target_is_negative) and not (model_ans_is_positive or model_ans_is_negative):
-            if cleaned_model_ans == normalized_target_ans_single:
+            if model_ans_preprocessed_for_eval == normalized_target_ans_single:
                 is_correct = True
                 match_method_note = "Yes/No variants check (exact match on non-standard words)."
             else:
-                f1_yes_no_fallback = calculate_token_f1(cleaned_model_ans, normalized_target_ans_single, use_lemmatization=all_nltk_resources_available)
-                if f1_yes_no_fallback >= 0.5:
+                f1_yes_no_fallback = calculate_token_f1(model_ans_preprocessed_for_eval, normalized_target_ans_single, use_lemmatization=all_nltk_resources_available)
+                if f1_yes_no_fallback >= 0.5: 
                     is_correct = True
                     match_method_note = f"Yes/No variants check (F1 match on non-standard: {f1_yes_no_fallback:.2f})."
                 else:
                     match_method_note = f"Yes/No variants check (non-standard words no match, F1={f1_yes_no_fallback:.2f})."
         else:
             match_method_note = "Yes/No variants check (mismatch)."
-            if not (target_is_positive or target_is_negative) and cleaned_model_ans == normalized_target_ans_single:
-                 is_correct = True
-                 match_method_note = "Yes/No variants check (model matched specific non-yes/no target)."
+            if not (target_is_positive or target_is_negative) and model_ans_preprocessed_for_eval == normalized_target_ans_single:
+                is_correct = True
+                match_method_note = "Yes/No variants check (model matched specific non-yes/no target after preprocess)."
+
 
     elif question_type == "number":
-        model_num = parse_number(cleaned_model_ans)
+        model_num = parse_number(model_ans_preprocessed_for_eval)
         target_num = parse_number(normalized_target_ans_single)
 
         if model_num is not None and target_num is not None:
             if isinstance(model_num, float) or isinstance(target_num, float):
-                is_correct = abs(model_num - target_num) < 1e-5 # Tolerance for float comparison
+                is_correct = abs(model_num - target_num) < 1e-5 
             else:
                 is_correct = int(model_num) == int(target_num)
             match_method_note = f"Number parsed (model={model_num}, target={target_num})."
         else:
-            is_correct = (cleaned_model_ans == normalized_target_ans_single) # Fallback
+            is_correct = (model_ans_preprocessed_for_eval == normalized_target_ans_single)
             match_method_note = f"Number string match (parsed: model={model_num}, target={target_num})."
             
     elif question_type == "other":
-        if cleaned_model_ans == normalized_target_ans_single:
+        if model_ans_preprocessed_for_eval == normalized_target_ans_single:
             is_correct = True
             match_method_note = "Other: Exact match."
         else:
             can_use_lemma = all_nltk_resources_available
-            f1 = calculate_token_f1(cleaned_model_ans, normalized_target_ans_single, use_lemmatization=can_use_lemma)
+            f1 = calculate_token_f1(model_ans_preprocessed_for_eval, normalized_target_ans_single, use_lemmatization=can_use_lemma)
 
             if f1 >= f1_threshold_other:
                 is_correct = True
                 match_method_note = f"Other: Token F1 {'(lemmatized)' if can_use_lemma else '(no lemma)'} ({f1:.2f} >= {f1_threshold_other})."
             elif enable_relaxed_other_check and can_use_lemma:
                 original_f1_fail_note_prefix = f"Other: Token F1 (lemmatized) ({f1:.2f} < {f1_threshold_other})."
-                l_model_tokens = get_lemmatized_tokens(cleaned_model_ans)
+                l_model_tokens = get_lemmatized_tokens(model_ans_preprocessed_for_eval)
                 l_target_tokens = get_lemmatized_tokens(normalized_target_ans_single)
                 relaxed_match_found = False
 
@@ -360,7 +391,6 @@ def perform_direct_accuracy_check(
 
                     if (set_model.issubset(set_target) or set_target.issubset(set_model)) and \
                        abs(len_model - len_target) <= 2 and (set_model & set_target):
-                        # More lenient for very short answers
                         if (len_model <= 2 and len_target <= 3) or \
                            (len_target <= 2 and len_model <= 3) or \
                            (len_model ==1 and len_target > 0) or \
@@ -372,34 +402,46 @@ def perform_direct_accuracy_check(
                     if not is_correct and len_model == 1 and len_target == 1:
                         m_tok_lemma = l_model_tokens[0]
                         t_tok_lemma = l_target_tokens[0]
-                        if len(m_tok_lemma) >= 3 and len(t_tok_lemma) >=3: # Avoid tiny words
+                        if len(m_tok_lemma) >= 3 and len(t_tok_lemma) >=3: 
                             common_suffixes = ['s', 'es', 'ing', 'ed', 'er', 'est', 'en', 'al', 'ic', 'ive', 'ous', 'ly', 'tion', 'sion', 'ment']
                             if (m_tok_lemma.startswith(t_tok_lemma) and m_tok_lemma[len(t_tok_lemma):] in common_suffixes) or \
                                (t_tok_lemma.startswith(m_tok_lemma) and t_tok_lemma[len(m_tok_lemma):] in common_suffixes):
                                 is_correct = True
                                 relaxed_match_found = True
-                                match_method_note = f"{original_f1_fail_note_prefix} Relaxed: Morphological variant (prefix/suffix) for '{m_tok_lemma}' vs '{t_tok_lemma}'."
+                                match_method_note = f"{original_f1_fail_note_prefix} Relaxed: Morphological variant for '{m_tok_lemma}' vs '{t_tok_lemma}'."
 
                 if not relaxed_match_found:
                     match_method_note = f"{original_f1_fail_note_prefix} Relaxed checks failed or not applicable."
-                elif not is_correct :
-                     match_method_note = f"{original_f1_fail_note_prefix} Relaxed checks logic error."
+                elif not is_correct : 
+                    match_method_note = f"{original_f1_fail_note_prefix} Relaxed checks logic error." # Should not happen if relaxed_match_found is True and sets is_correct
             else:
                 match_method_note = f"Other: No match (Exact & F1 {'(lemmatized)' if can_use_lemma else '(no lemma)'} < {f1_threshold_other} failed, F1={f1:.2f}). Relaxed checks disabled or NLTK unavailable."
     else:
-        is_correct = (cleaned_model_ans == normalized_target_ans_single)
+        is_correct = (model_ans_preprocessed_for_eval == normalized_target_ans_single)
         match_method_note = f"Unknown QType ({question_type}): Exact match with first target."
 
     direct_accuracy_results["is_correct"] = is_correct
     direct_accuracy_results["notes"] = match_method_note
     
+    # --- BEGIN MODIFIED LOGIC ---
+    if question_type == "yes/no":
+        direct_accuracy_results["is_correct_strict"] = is_correct
+    elif question_type == "number":
+        direct_accuracy_results["is_correct_loose_numeric"] = is_correct
+        direct_accuracy_results["is_correct_strict"] = is_correct # For now, assuming loose and strict are the same based on current parsing.
+                                                                # If a stricter definition for "is_correct_strict" (e.g. no float conversion)
+                                                                # is needed, this would require more logic.
+    elif question_type == "other":
+        direct_accuracy_results["is_correct_f1"] = is_correct
+    # --- END MODIFIED LOGIC ---
+    
     if verbose:
         print_color_prefix = "\033[94m"
         print_color_suffix = "\033[0m"
         try:
-            if not sys.stdout.isatty(): # Check if output is not a TTY
-                 print_color_prefix = ""
-                 print_color_suffix = ""
+            if not sys.stdout.isatty():
+                print_color_prefix = ""
+                print_color_suffix = ""
         except:
             print_color_prefix = ""
             print_color_suffix = ""
@@ -408,9 +450,9 @@ def perform_direct_accuracy_check(
         if question_type == "vqa_standard" and isinstance(direct_accuracy_results["normalized_target_answers"], list):
             targets_display = direct_accuracy_results["normalized_target_answers"]
             if direct_accuracy_results["vqa_score"] is not None:
-                 targets_display = f"{targets_display} (VQA Score: {direct_accuracy_results['vqa_score']:.2f})"
+                targets_display = f"{targets_display} (VQA Score: {direct_accuracy_results['vqa_score']:.2f})"
 
-        print(f"{print_color_prefix}      (check.py) QType: {question_type}, Model: '{cleaned_model_ans}', Target(s): '{targets_display}', Correct: {is_correct}, Note: {match_method_note}{print_color_suffix}")
+        print(f"{print_color_prefix}      (check.py) QType: {question_type}, Model: '{model_ans_preprocessed_for_eval}', Target(s): '{targets_display}', Correct: {is_correct}, Note: {match_method_note}{print_color_suffix}")
 
     final_note_summary = match_method_note.split('-')[0].strip() if '-' in match_method_note else match_method_note
     if direct_accuracy_results["notes"] and "Skipped" in direct_accuracy_results["notes"]:

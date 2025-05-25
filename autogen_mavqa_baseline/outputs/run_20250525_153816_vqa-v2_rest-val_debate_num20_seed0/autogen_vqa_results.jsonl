@@ -1,0 +1,1653 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 20,
+        "random_seed": 0,
+        "dataset_split": "rest-val",
+        "vqa_flow_type": "debate",
+        "actual_items_in_loader": 20,
+        "vlm_model_autogen": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model_autogen": "Qwen/Qwen2-VL-2B-Instruct",
+        "direct_vlm_model_path": "N/A",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "564636000": {
+            "question_id": "564636000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg",
+            "question": "What color is his outfit?",
+            "target_answers": "red",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_564636000",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_564636000",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_564636000",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_564636000",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_564636000",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_564636000",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The skier is wearing a purple outfit.\nJSON: {\"answer\": \"purple\", \"confidence\": 1.0}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 8.54,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the skier is wearing a purple outfit.\njson: {\"answer\": \"purple\", \"confidence\": 1.0}",
+                "normalized_target_answer": "red",
+                "normalized_target_answers": [
+                    "red"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "421231004": {
+            "question_id": "421231004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421231.jpg",
+            "question": "What kind of icing is on the cake?",
+            "target_answers": "chocolate",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_421231004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_421231004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_421231004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_421231004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_421231004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_421231004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The cake has a chocolate icing with white writing on it.\nJSON: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 2.05,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the cake has a chocolate icing with white writing on it.\njson: {\"answer\": \"chocolate icing with white writing\", \"confidence\": 0.95}",
+                "normalized_target_answer": "chocolate",
+                "normalized_target_answers": [
+                    "chocolate"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.06 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.06 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "230884007": {
+            "question_id": "230884007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000230884.jpg",
+            "question": "What sport is played here?",
+            "target_answers": "skateboarding",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_230884007",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the answer is \"skateboarding\" and the confidence is 1.0.\n{\n  \"answer\": \"skateboarding\",\n  \"confidence\": 1.0\n}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the answer is \"skateboarding\" and the confidence is 1.0.\n{\n  \"answer\": \"skateboarding\",\n  \"confidence\": 1.0\n}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_230884007",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_230884007",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_230884007",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the answer is \"skateboarding\" and the confidence is 1.0.\n{\n  \"answer\": \"skateboarding\",\n  \"confidence\": 1.0\n}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the answer is \"skateboarding\" and the confidence is 1.0.\n{\n  \"answer\": \"skateboarding\",\n  \"confidence\": 1.0\n}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_230884007",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_230884007",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The person in the image is riding a skateboard, which is a sport. Therefore, the sport played here is skateboarding.\nJSON: {\"answer\": \"skateboarding\", \"confidence\": 1.0}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 2.43,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the person in the image is riding a skateboard, which is a sport. therefore, the sport played here is skateboarding.\njson: {\"answer\": \"skateboarding\", \"confidence\": 1.0}",
+                "normalized_target_answer": "skateboarding",
+                "normalized_target_answers": [
+                    "skateboarding"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.05 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.05 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "11241001": {
+            "question_id": "11241001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is the Tabasco sauce bottle full?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_11241001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_11241001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_11241001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_11241001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_11241001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_11241001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a table with various dishes and bottles, but there is no visible Tabasco sauce bottle. Therefore, we cannot determine if the Tabasco sauce bottle is full based on the image.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 2.51,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a table with various dishes and bottles, but there is no visible tabasco sauce bottle. therefore, we cannot determine if the tabasco sauce bottle is full based on the image.\njson: {\"answer\": \"no\", \"confidence\": 0.0}",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch).",
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (mismatch)."
+        },
+        "500175000": {
+            "question_id": "500175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500175.jpg",
+            "question": "What time of day does this picture depict?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_500175000",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_500175000",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_500175000",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_500175000",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_500175000",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_500175000",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image depicts a silhouette of a building with birds flying around it. The birds are in different positions, suggesting that the time of day is not specified in the image. Therefore, it is not possible to determine the exact time of day from the image alone.\n\nJSON: {\"answer\": \"The time of day is not specified in the image.\", \"confidence\": 0.0}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 3.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image depicts a silhouette of a building with birds flying around it. the birds are in different positions, suggesting that the time of day is not specified in the image. therefore, it is not possible to determine the exact time of day from the image alone.\n\njson: {\"answer\": \"the time of day is not specified in the image.\", \"confidence\": 0.0}",
+                "normalized_target_answer": "evening",
+                "normalized_target_answers": [
+                    "evening"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "267910001": {
+            "question_id": "267910001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "Might the electricity be out?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_267910001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working or studying, which could imply that they are using the electricity to power their devices.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working or studying, which could imply that they are using the electricity to power their devices.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_267910001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_267910001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_267910001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working or studying, which could imply that they are using the electricity to power their devices.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working or studying, which could imply that they are using the electricity to power their devices.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_267910001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_267910001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a laptop with a lit candle, which suggests that the electricity might be out. The presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\nJSON: {\"answer\": \"The electricity might be out\", \"confidence\": 0.8}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 3.19,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a laptop with a lit candle, which suggests that the electricity might be out. the presence of a notebook and pen also indicates that someone might be working on a project or task that requires electricity.\njson: {\"answer\": \"the electricity might be out\", \"confidence\": 0.8}",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch).",
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (mismatch)."
+        },
+        "123070002": {
+            "question_id": "123070002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000123070.jpg",
+            "question": "Is this a National Park?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_123070002",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a natural landscape with trees, water, and elephants, which are characteristics of a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a natural landscape with trees, water, and elephants, which are characteristics of a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_123070002",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_123070002",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_123070002",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a natural landscape with trees, water, and elephants, which are characteristics of a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a natural landscape with trees, water, and elephants, which are characteristics of a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_123070002",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_123070002",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a scene with elephants and trees, which are common elements in a National Park. Therefore, it is likely that this image depicts a National Park.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.95}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 2.62,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a scene with elephants and trees, which are common elements in a national park. therefore, it is likely that this image depicts a national park.\njson: {\"answer\": \"yes\", \"confidence\": 0.95}",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch).",
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (mismatch)."
+        },
+        "225751002": {
+            "question_id": "225751002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000225751.jpg",
+            "question": "Is there broccoli?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_225751002",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a dish with blue and green vegetables, but there is no broccoli visible in the image. Therefore, the answer is no.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a dish with blue and green vegetables, but there is no broccoli visible in the image. Therefore, the answer is no.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_225751002",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_225751002",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_225751002",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a dish with blue and green vegetables, but there is no broccoli visible in the image. Therefore, the answer is no.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a dish with blue and green vegetables, but there is no broccoli visible in the image. Therefore, the answer is no.\nJSON: {\"answer\": \"No\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_225751002",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_225751002",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a dish with blue and green vegetables, including broccoli. Therefore, the answer is yes.\nJSON: {\"answer\": \"Yes\", \"confidence\": 1.0}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 2.18,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a dish with blue and green vegetables, including broccoli. therefore, the answer is yes.\njson: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch).",
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (mismatch)."
+        },
+        "251888007": {
+            "question_id": "251888007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "What city is this?",
+            "target_answers": "new york",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_251888007",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city in the image is Hong Kong.\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city in the image is Hong Kong.\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.95}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_251888007",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_251888007",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_251888007",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city in the image is Hong Kong.\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city in the image is Hong Kong.\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.95}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_251888007",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_251888007",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a cityscape with tall buildings and a boat in the foreground. The boat has a flag, which is a common sight in Hong Kong, where the flag is often seen on boats and ships. Therefore, the city is likely Hong Kong.\n\nJSON: {\"answer\": \"Hong Kong\", \"confidence\": 0.85}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 3.39,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a cityscape with tall buildings and a boat in the foreground. the boat has a flag, which is a common sight in hong kong, where the flag is often seen on boats and ships. therefore, the city is likely hong kong.\n\njson: {\"answer\": \"hong kong\", \"confidence\": 0.85}",
+                "normalized_target_answer": "new york",
+                "normalized_target_answers": [
+                    "new york"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "255630005": {
+            "question_id": "255630005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000255630.jpg",
+            "question": "What color is the water?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_255630005",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_255630005",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_255630005",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_255630005",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_255630005",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_255630005",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. The color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\nJSON: {\"answer\": \"The water is a mix of blue and white\", \"confidence\": 0.8}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 3.65,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the water in the image appears to be a mix of blue and white, indicating the presence of both ocean water and possibly some wave action. the color of the water is not clearly defined, but it is likely a mixture of blue and white due to the presence of both ocean water and wave action.\n\njson: {\"answer\": \"the water is a mix of blue and white\", \"confidence\": 0.8}",
+                "normalized_target_answer": "blue",
+                "normalized_target_answers": [
+                    "blue"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.02 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.02 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "361285004": {
+            "question_id": "361285004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000361285.jpg",
+            "question": "What is growing on the side of the clock tower?",
+            "target_answers": "trees",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_361285004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no indication of any plants or growth on the side of the tower.\n\nJSON: {\"answer\": \"No plants or growth on the side of the clock tower.\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no indication of any plants or growth on the side of the tower.\n\nJSON: {\"answer\": \"No plants or growth on the side of the clock tower.\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_361285004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_361285004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_361285004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no indication of any plants or growth on the side of the tower.\n\nJSON: {\"answer\": \"No plants or growth on the side of the clock tower.\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no indication of any plants or growth on the side of the tower.\n\nJSON: {\"answer\": \"No plants or growth on the side of the clock tower.\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_361285004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_361285004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The clock tower is a tall structure with a clock face on its side. There is no visible plant life growing on it.\n\nJSON: {\"answer\": \"No plant life growing on the side of the clock tower.\", \"confidence\": 1.0}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 2.93,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the clock tower is a tall structure with a clock face on its side. there is no visible plant life growing on it.\n\njson: {\"answer\": \"no plant life growing on the side of the clock tower.\", \"confidence\": 1.0}",
+                "normalized_target_answer": "trees",
+                "normalized_target_answers": [
+                    "trees"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "551018004": {
+            "question_id": "551018004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000551018.jpg",
+            "question": "What color is the car?",
+            "target_answers": "silver",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_551018004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The car in the image is white.\nJSON: {\"answer\": \"white\", \"confidence\": 0.95}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The car in the image is white.\nJSON: {\"answer\": \"white\", \"confidence\": 0.95}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_551018004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_551018004",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_551018004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The car in the image is white.\nJSON: {\"answer\": \"white\", \"confidence\": 0.95}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The car in the image is white.\nJSON: {\"answer\": \"white\", \"confidence\": 0.95}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_551018004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_551018004",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a street with various vehicles, including cars and buses. The question asks for the color of a car, which is not visible in the image. Therefore, the answer is not applicable.\nJSON: {\"answer\": \"The color of the car is not visible in the image.\", \"confidence\": 0.0}",
+            "final_confidence": 0.1,
+            "processing_time_seconds": 3.05,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a street with various vehicles, including cars and buses. the question asks for the color of a car, which is not visible in the image. therefore, the answer is not applicable.\njson: {\"answer\": \"the color of the car is not visible in the image.\", \"confidence\": 0.0}",
+                "normalized_target_answer": "silver",
+                "normalized_target_answers": [
+                    "silver"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "516415001": {
+            "question_id": "516415001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000516415.jpg",
+            "question": "Is he practicing?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_516415001",
+                        "round_num": 0,
+                        "reasoning": "The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.",
+                        "answer": "Yes",
+                        "confidence": 1.0,
+                        "raw_output": "Reasoning: The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.\n{\"answer\": \"Yes\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_516415001",
+                        "round_num": 0,
+                        "reasoning": "The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.",
+                        "answer": "Yes",
+                        "confidence": 1.0,
+                        "raw_output": "Reasoning: The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.\n{\"answer\": \"Yes\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_516415001",
+                        "round_num": 0,
+                        "reasoning": "The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.",
+                        "answer": "Yes",
+                        "confidence": 1.0,
+                        "raw_output": "Reasoning: The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.\n{\"answer\": \"Yes\", \"confidence\": 1.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_516415001",
+                    "round_num": 0,
+                    "reasoning": "The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.",
+                    "answer": "Yes",
+                    "confidence": 1.0,
+                    "raw_output": "Reasoning: The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.\n{\"answer\": \"Yes\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_516415001",
+                    "round_num": 0,
+                    "reasoning": "The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.",
+                    "answer": "Yes",
+                    "confidence": 1.0,
+                    "raw_output": "Reasoning: The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.\n{\"answer\": \"Yes\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_516415001",
+                    "round_num": 0,
+                    "reasoning": "The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.",
+                    "answer": "Yes",
+                    "confidence": 1.0,
+                    "raw_output": "Reasoning: The image shows a person holding a baseball bat, which suggests that they are practicing baseball. Therefore, the answer is yes and the confidence is 1.0.\n{\"answer\": \"Yes\", \"confidence\": 1.0}"
+                }
+            ],
+            "final_aggregated_answer": "Yes",
+            "final_confidence": 1.0,
+            "processing_time_seconds": 2.37,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard).",
+                "is_correct_strict": true
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (standard)."
+        },
+        "206838000": {
+            "question_id": "206838000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000206838.jpg",
+            "question": "What are the girls wearing?",
+            "target_answers": "bikinis",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_206838000",
+                        "round_num": 0,
+                        "reasoning": "The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json",
+                        "answer": "bikinis",
+                        "confidence": 1.0,
+                        "raw_output": "Reasoning: The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json\n{\"answer\": \"bikinis\", \"confidence\": 1.0}\n```"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_206838000",
+                        "round_num": 0,
+                        "reasoning": "The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json",
+                        "answer": "bikinis",
+                        "confidence": 1.0,
+                        "raw_output": "Reasoning: The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json\n{\"answer\": \"bikinis\", \"confidence\": 1.0}\n```"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_206838000",
+                        "round_num": 0,
+                        "reasoning": "The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json",
+                        "answer": "bikinis",
+                        "confidence": 1.0,
+                        "raw_output": "Reasoning: The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json\n{\"answer\": \"bikinis\", \"confidence\": 1.0}\n```"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_206838000",
+                    "round_num": 0,
+                    "reasoning": "The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json",
+                    "answer": "bikinis",
+                    "confidence": 1.0,
+                    "raw_output": "Reasoning: The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json\n{\"answer\": \"bikinis\", \"confidence\": 1.0}\n```"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_206838000",
+                    "round_num": 0,
+                    "reasoning": "The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json",
+                    "answer": "bikinis",
+                    "confidence": 1.0,
+                    "raw_output": "Reasoning: The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json\n{\"answer\": \"bikinis\", \"confidence\": 1.0}\n```"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_206838000",
+                    "round_num": 0,
+                    "reasoning": "The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json",
+                    "answer": "bikinis",
+                    "confidence": 1.0,
+                    "raw_output": "Reasoning: The image shows two women wearing bikinis while riding horses in the water. Therefore, the answer is \"bikinis\" and the confidence is 1.0.\n```json\n{\"answer\": \"bikinis\", \"confidence\": 1.0}\n```"
+                }
+            ],
+            "final_aggregated_answer": "bikinis",
+            "final_confidence": 1.0,
+            "processing_time_seconds": 2.69,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "bikinis",
+                "normalized_target_answer": "bikinis",
+                "normalized_target_answers": [
+                    "bikinis"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match.",
+                "is_correct_f1": true
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Exact match."
+        },
+        "568863006": {
+            "question_id": "568863006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000568863.jpg",
+            "question": "What covers the ground?",
+            "target_answers": "water",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_568863006",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_568863006",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_568863006",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_568863006",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_568863006",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_568863006",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\nJSON: {\"answer\": \"water\", \"confidence\": 0.8}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 2.06,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a flooded street with a speed limit sign, indicating that the ground is covered by water.\njson: {\"answer\": \"water\", \"confidence\": 0.8}",
+                "normalized_target_answer": "water",
+                "normalized_target_answers": [
+                    "water"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.05 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.05 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "515682001": {
+            "question_id": "515682001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000515682.jpg",
+            "question": "Is the kite big?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_515682001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_515682001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_515682001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_515682001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_515682001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_515682001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a kite flying in the sky, and the question asks if the kite is big. The answer is yes, as the kite is visibly large in the image.\nJSON: {\"answer\": \"yes\", \"confidence\": 1.0}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 2.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a kite flying in the sky, and the question asks if the kite is big. the answer is yes, as the kite is visibly large in the image.\njson: {\"answer\": \"yes\", \"confidence\": 1.0}",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch).",
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (mismatch)."
+        },
+        "475195003": {
+            "question_id": "475195003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000475195.jpg",
+            "question": "How many bananas are there?",
+            "target_answers": "30",
+            "question_type": "number",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_475195003",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_475195003",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_475195003",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_475195003",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_475195003",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_475195003",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. The image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. Therefore, it is reasonable to infer that there are many bananas in the image.\nJSON: {\"answer\": \"many\", \"confidence\": 0.8}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 3.62,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a variety of blue fruits, including bananas, and the question asks about the number of bananas. the image does not provide a clear count of bananas, but it does show a significant number of blue fruits, including bananas. therefore, it is reasonable to infer that there are many bananas in the image.\njson: {\"answer\": \"many\", \"confidence\": 0.8}",
+                "normalized_target_answer": "30",
+                "normalized_target_answers": [
+                    "30"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=0.8, target=30.0).",
+                "is_correct_loose_numeric": false,
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Number parsed (model=0.8, target=30.0)."
+        },
+        "242246001": {
+            "question_id": "242246001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000242246.jpg",
+            "question": "Where is this market?",
+            "target_answers": "outside",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_242246001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_242246001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_242246001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_242246001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_242246001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_242246001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows a market with various items displayed on tables and people shopping. The presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. Therefore, the market is likely located in a market area.\nJSON: {\"answer\": \"market\", \"confidence\": 0.85}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 3.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows a market with various items displayed on tables and people shopping. the presence of bowls filled with blue balls and other items suggests that this is a market for selling goods. therefore, the market is likely located in a market area.\njson: {\"answer\": \"market\", \"confidence\": 0.85}",
+                "normalized_target_answer": "outside",
+                "normalized_target_answers": [
+                    "outside"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        },
+        "278579001": {
+            "question_id": "278579001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278579.jpg",
+            "question": "Are these two people have beards?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_278579001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}"
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_278579001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}"
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_278579001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+                        "confidence": 0.1,
+                        "raw_output": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}"
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_278579001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}"
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_278579001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}"
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_278579001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+                    "confidence": 0.1,
+                    "raw_output": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}"
+                }
+            ],
+            "final_aggregated_answer": "Reasoning: The image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. The presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. Therefore, it is reasonable to infer that they have beards.\nJSON: {\"answer\": \"Yes\", \"confidence\": 0.85}",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 3.85,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "reasoning: the image shows two men standing next to each other, with one of them wearing a tie and the other wearing a suit and tie. the presence of ties suggests that they are dressed for a formal event, which could imply that they are attending a wedding or a similar occasion where formal attire is expected. therefore, it is reasonable to infer that they have beards.\njson: {\"answer\": \"yes\", \"confidence\": 0.85}",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch).",
+                "is_correct_strict": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Yes/No variants check (mismatch)."
+        },
+        "348854001": {
+            "question_id": "348854001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000348854.jpg",
+            "question": "What other vegetable besides carrots are in the picture?",
+            "target_answers": "broccoli",
+            "question_type": "other",
+            "debate_history_per_round": [
+                [
+                    {
+                        "solver_name": "VQASolver_1_QID_348854001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+                        "confidence": 0.1,
+                        "raw_output": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0."
+                    },
+                    {
+                        "solver_name": "VQASolver_2_QID_348854001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+                        "confidence": 0.1,
+                        "raw_output": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0."
+                    },
+                    {
+                        "solver_name": "VQASolver_3_QID_348854001",
+                        "round_num": 0,
+                        "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                        "answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+                        "confidence": 0.1,
+                        "raw_output": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0."
+                    }
+                ]
+            ],
+            "final_solver_outputs": [
+                {
+                    "solver_name": "VQASolver_1_QID_348854001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+                    "confidence": 0.1,
+                    "raw_output": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0."
+                },
+                {
+                    "solver_name": "VQASolver_2_QID_348854001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+                    "confidence": 0.1,
+                    "raw_output": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0."
+                },
+                {
+                    "solver_name": "VQASolver_3_QID_348854001",
+                    "round_num": 0,
+                    "reasoning": "[ParsingFailed_RawOutputUsedAsAnswer]",
+                    "answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+                    "confidence": 0.1,
+                    "raw_output": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0."
+                }
+            ],
+            "final_aggregated_answer": "The image shows a bunch of blue carrots. The reasoning is that the carrots are blue and not the usual orange or green color. Therefore, the answer is \"blue carrots\" and the confidence is 1.0.",
+            "final_confidence": 0.10000000000000002,
+            "processing_time_seconds": 2.24,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the image shows a bunch of blue carrots. the reasoning is that the carrots are blue and not the usual orange or green color. therefore, the answer is \"blue carrots\" and the confidence is 1.0",
+                "normalized_target_answer": "broccoli",
+                "normalized_target_answers": [
+                    "broccoli"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.",
+                "is_correct_f1": false
+            },
+            "num_debate_rounds_completed": 1,
+            "stop_reason": "CompletedAfterRounds_MajorityVote",
+            "flow_type_used": "debate",
+            "majority_vote": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+        }
+    },
+    "overall_metrics": {
+        "total_processed_successfully": 20,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 0,
+        "total_attempted_in_loader": 20,
+        "overall_accuracy_from_type_aggregation": 10.0,
+        "overall_correct_count": 2,
+        "overall_total_typed_questions": 20,
+        "question_type_summary": {
+            "counts_by_type": {
+                "total": 20,
+                "yes/no": 7,
+                "number": 1,
+                "other": 12
+            },
+            "accuracies_by_type": {
+                "yes/no": {
+                    "count": 7,
+                    "correct": 1,
+                    "accuracy_percent": 14.285714285714285
+                },
+                "number": {
+                    "count": 1,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "other": {
+                    "count": 12,
+                    "correct": 1,
+                    "accuracy_percent": 8.333333333333332
+                }
+            }
+        }
+    }
+}

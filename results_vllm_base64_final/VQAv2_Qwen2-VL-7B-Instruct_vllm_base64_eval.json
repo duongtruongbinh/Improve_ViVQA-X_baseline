@@ -1,0 +1,6002 @@
+[
+  {
+    "question_id": 262148000,
+    "question": "Where is he looking?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "at table",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "skateboard",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "table",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "down",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262148001,
+    "question": "What are the people in the background doing?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "spectating",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "watching",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262148002,
+    "question": "What is he on top of?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "table",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "table",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "table",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "picnic table",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "picnic table",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "picnic table",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "picnic table",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "picnic table",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "skateboard",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "picnic table",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393225000,
+    "question": "What website copyrighted the picture?",
+    "predict_ans": "HTTP://FOODIEBAKER.COM",
+    "gt_ans": [
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "foodiebaker",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "http://foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "foodiebakercom",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "foodiebaker",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Token F1 (lemma) (0.67 >= 0.5)."
+  },
+  {
+    "question_id": 393225001,
+    "question": "Is this a creamy soup?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 393225002,
+    "question": "Is this rice noodle soup?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 393225003,
+    "question": "What is to the right of the soup?",
+    "predict_ans": "chopsticks",
+    "gt_ans": [
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "shrimp",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "chopsticks",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "chopsticks spoon",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 393226000,
+    "question": "What is the man doing in the street?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "crossing it",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "walking",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "walking",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "crossing",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "crossing road",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "walking",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "crossing",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "walking",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "crossing",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "walking",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393226001,
+    "question": "How many photo's can you see?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393226002,
+    "question": "What does the truck on the left sell?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "ice cream",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 240301000,
+    "question": "Why is there a gap between the roof and wall?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "ventilation",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "provide air",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "to air out barn from stinky bovines",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "keep cow safe",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "airflow",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "to let sunlight in",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "for air",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "air",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 240301001,
+    "question": "Is it daylight in this picture?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 240301002,
+    "question": "Why is the cow laying down?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "tired",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "tired",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "resting",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "tired",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "tired",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "resting",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "tired",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "it's tired",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "tired",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 131089000,
+    "question": "What color is the grass in this picture?",
+    "predict_ans": "green",
+    "gt_ans": [
+      {
+        "answer": "gray",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "black, white",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "gray",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "no",
+        "answer_id": 7
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "gray",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 131089001,
+    "question": "Did the batter hit the ball?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 131089002,
+    "question": "How many are playing ball?",
+    "predict_ans": "1",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "boy",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=1.0, target=1.0)."
+  },
+  {
+    "question_id": 131089003,
+    "question": "Is there a chain link fence in the image?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 131089004,
+    "question": "Is the boy playing baseball?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 262162000,
+    "question": "Is that a folding chair?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162001,
+    "question": "How many beds?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "10",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162002,
+    "question": "What color is the bedspread?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "beige",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "pink",
+        "answer_confidence": "no",
+        "answer_id": 3
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yellow",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yellow",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "beige",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yellow",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162003,
+    "question": "How many pictures are there?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162004,
+    "question": "Are these twin mattresses?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no, it is queen",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162005,
+    "question": "How many sources of light are there?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162006,
+    "question": "Is this room decorated for the 1970s?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162007,
+    "question": "Are the lights on in this room?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162008,
+    "question": "Are the windows big?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162009,
+    "question": "What is the chair made of?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "leather",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "plastic",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "plastic, vinyl, metal",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162010,
+    "question": "Is this room in someone's home?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162011,
+    "question": "Which room is this?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162012,
+    "question": "Is the bed white?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162013,
+    "question": "Could this be a hotel room?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162014,
+    "question": "Is the bed made?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes, just one",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162015,
+    "question": "Are there bed headboards present in the photo?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162016,
+    "question": "Is there a mirror in the room?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162017,
+    "question": "What kind of room is this?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "bedroom",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162018,
+    "question": "How many chairs are in the photo?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162019,
+    "question": "Is the desk cluttered?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162020,
+    "question": "Has the bed been made?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162021,
+    "question": "How many seats are there?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162022,
+    "question": "How many frames are on the wall?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162023,
+    "question": "What color are the walls?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "off white",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "off white",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "beige",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162024,
+    "question": "Are there any boxes in the room?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162025,
+    "question": "Could this be a multi-purpose room?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162026,
+    "question": "What animal print does that chair resemble?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "panther",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "none",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "leather",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "dog",
+        "answer_confidence": "no",
+        "answer_id": 4
+      },
+      {
+        "answer": "cat",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "none",
+        "answer_confidence": "no",
+        "answer_id": 6
+      },
+      {
+        "answer": "none",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "none",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "none",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "dog",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Model answer empty after cleaning."
+  },
+  {
+    "question_id": 262162027,
+    "question": "What is behind the foot of the bed?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "wall",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "chair",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162028,
+    "question": "What is the size of the bed?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "queen",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "queen",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "queen",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "queen sized",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "full",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "queen",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "queen",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "double",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "king",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "queen",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262162029,
+    "question": "How many pictures on the wall?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "6",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "7",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393243000,
+    "question": "Will this kid leave the powdered sugar on his face?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393243001,
+    "question": "What is the child eating?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "donut",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "doughnut",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "donut hole",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "donut",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393243002,
+    "question": "Is this person wearing a tie?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393243003,
+    "question": "What color is the kids hair?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262175000,
+    "question": "Is the man's tie purple?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262175001,
+    "question": "Where was the picture taken of the man?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "in forest",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "in jungle",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "park",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "forest",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "forest",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "outside",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "forest",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "not sure",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "outside",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "hawaii",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262175002,
+    "question": "What is the man wearing on his head?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "plant life",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "hat",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "hat",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "hat",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "silly hat",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "palm leaves",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "leaf-hat",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "hat",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "hat",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "crown",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262175003,
+    "question": "Is this a designer tie?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 131108000,
+    "question": "Is this photo color?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 131108001,
+    "question": "Does the door open inward or outward?",
+    "predict_ans": "inward",
+    "gt_ans": [
+      {
+        "answer": "inward",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "outward",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "inward",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "outward",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "outward",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "not sure",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "outward",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "out",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "inward",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "inward",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 131108002,
+    "question": "Is there a drainage in the pic?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 393254000,
+    "question": "What does the sentence on the top say?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "this is camping",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393254001,
+    "question": "What kind of vehicle is the RV pulling on the bottom picture?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "jeep",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "bus",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "jeep",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "suv",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "suv",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "car",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "jeep",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "jeep",
+        "answer_confidence": "no",
+        "answer_id": 9
+      },
+      {
+        "answer": "jeep",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393254002,
+    "question": "Where is the camping tent?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "forest",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "in wood",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "woods",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "woods",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "in woods",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "top picture",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "top picture",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "top picture",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "campground",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "woods",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 42000,
+    "question": "What color are the gym shoes?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "white and black",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 42001,
+    "question": "Is there a red sandal here?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 42002,
+    "question": "What color is the flip flop?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "red and blue",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 131115000,
+    "question": "Are there players in the dugout?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 131115001,
+    "question": "Is the battery looking at the ball?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 131115002,
+    "question": "How many people are on the field?",
+    "predict_ans": "3",
+    "gt_ans": [
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=3.0, target=3.0)."
+  },
+  {
+    "question_id": 262189000,
+    "question": "How many signs?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262189001,
+    "question": "What color is the Salisbury Rd. sign?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "white with blue lettering",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "white and blue",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "blue and white",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "white, brown",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "not sure",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "white and blue",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262189002,
+    "question": "What does the last sign say?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "ross street",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "ross",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "ross st",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "camperdown ross st",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393266000,
+    "question": "What color is the sign?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "red and yellow",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "orange, yellow, white, black",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "red and yellow",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "red/yellow",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "red orange",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "red and orange",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "red and yellow",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "red",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393266001,
+    "question": "Can you turn right or left in the tunnel?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "right",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393266002,
+    "question": "What color is the plant?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "white",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "red, orange",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "green",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393267000,
+    "question": "What color is the woman's shirt on the left?",
+    "predict_ans": "black",
+    "gt_ans": [
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "blonde",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "black",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 393267001,
+    "question": "What type of beverage is being displayed?",
+    "predict_ans": "wine",
+    "gt_ans": [
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 393267002,
+    "question": "Why are some people wearing hats?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "they aren't",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "fashion",
+        "answer_confidence": "no",
+        "answer_id": 2
+      },
+      {
+        "answer": "no hats",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "none are wearing hats",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "none are",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "style",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "nobody's wearing hats",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "nobody is wearing hats",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "to keep warm",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "they are not",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Token F1 (lemma) (0.67 >= 0.5)."
+  },
+  {
+    "question_id": 393267003,
+    "question": "What kind of event are the people involved in?",
+    "predict_ans": "wine tasting",
+    "gt_ans": [
+      {
+        "answer": "wine tasting",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "wedding",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "taste testing",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "alcohol show",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "wine",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "wine sale",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "wine tasting",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "wine tasting",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "wine tasting",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 262197000,
+    "question": "How many skyscrapers are there?",
+    "predict_ans": "2",
+    "gt_ans": [
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=2.0, target=2.0)."
+  },
+  {
+    "question_id": 262197001,
+    "question": "What is the color of the building in the background?",
+    "predict_ans": "gray",
+    "gt_ans": [
+      {
+        "answer": "gray",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 262197002,
+    "question": "Is there a tree in front of the building?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 262197003,
+    "question": "Is there a person riding a bike?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 262197004,
+    "question": "Are there lights on in the two buildings?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 262197005,
+    "question": "How many stories is the building on the left?",
+    "predict_ans": "5",
+    "gt_ans": [
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "4",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "5",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "5",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "many",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "6",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "3",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=5.0, target=5.0)."
+  },
+  {
+    "question_id": 262197006,
+    "question": "Is this a hospital?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "maybe",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 262197007,
+    "question": "How many umbrellas do you see?",
+    "predict_ans": "0",
+    "gt_ans": [
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=0.0, target=0.0)."
+  },
+  {
+    "question_id": 262197008,
+    "question": "How many colors is the building on the right painted?",
+    "predict_ans": "1",
+    "gt_ans": [
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=1.0, target=1.0)."
+  },
+  {
+    "question_id": 262197009,
+    "question": "What is on the boy's back walking?",
+    "predict_ans": "backpack",
+    "gt_ans": [
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "backpack",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 262197010,
+    "question": "How many modes of transportation are depicted?",
+    "predict_ans": "1",
+    "gt_ans": [
+      {
+        "answer": "0",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "2",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "1",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "0",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": true,
+    "eval_notes": "Number parsed (model=1.0, target=1.0)."
+  },
+  {
+    "question_id": 262197011,
+    "question": "What color is the building?",
+    "predict_ans": "gray",
+    "gt_ans": [
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "gray",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "brown",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 393271000,
+    "question": "Is it still snowing in the picture?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393271001,
+    "question": "Does this appear to be a photo of multiple exposures of the black clad snowboarder?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "maybe",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393271002,
+    "question": "How many people can you see in the picture?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "8",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "6",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "8",
+        "answer_confidence": "maybe",
+        "answer_id": 9
+      },
+      {
+        "answer": "6",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "number",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262200000,
+    "question": "Is this an adult party?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262200001,
+    "question": "What is being celebrated?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "birthday",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 262200002,
+    "question": "Who is in front of the cake with candles?",
+    "predict_ans": "",
+    "gt_ans": [
+      {
+        "answer": "woman",
+        "answer_confidence": "maybe",
+        "answer_id": 1
+      },
+      {
+        "answer": "boy",
+        "answer_confidence": "maybe",
+        "answer_id": 2
+      },
+      {
+        "answer": "cup",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "birthday boy",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "woman",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "boy in blue shirt",
+        "answer_confidence": "maybe",
+        "answer_id": 6
+      },
+      {
+        "answer": "little girl",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "boy",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "boy",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "girl",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": false,
+    "eval_notes": "No match with any ground truth answers."
+  },
+  {
+    "question_id": 393274000,
+    "question": "What is this vehicle?",
+    "predict_ans": "train",
+    "gt_ans": [
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "bus",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Exact match."
+  },
+  {
+    "question_id": 393274001,
+    "question": "Can you see the hook up for the train?",
+    "predict_ans": "no",
+    "gt_ans": [
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 393274002,
+    "question": "Is this train at the station?",
+    "predict_ans": "yes",
+    "gt_ans": [
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 5
+      },
+      {
+        "answer": "no",
+        "answer_confidence": "yes",
+        "answer_id": 6
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 7
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 8
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 9
+      },
+      {
+        "answer": "yes",
+        "answer_confidence": "yes",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "yes/no",
+    "is_correct_by_check": true,
+    "eval_notes": "Yes/No variants (standard)."
+  },
+  {
+    "question_id": 393274003,
+    "question": "What is cast?",
+    "predict_ans": "shadow",
+    "gt_ans": [
+      {
+        "answer": "shadows",
+        "answer_confidence": "yes",
+        "answer_id": 1
+      },
+      {
+        "answer": "human",
+        "answer_confidence": "yes",
+        "answer_id": 2
+      },
+      {
+        "answer": "shadow",
+        "answer_confidence": "yes",
+        "answer_id": 3
+      },
+      {
+        "answer": "sun",
+        "answer_confidence": "yes",
+        "answer_id": 4
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "maybe",
+        "answer_id": 5
+      },
+      {
+        "answer": "line",
+        "answer_confidence": "no",
+        "answer_id": 6
+      },
+      {
+        "answer": "train",
+        "answer_confidence": "maybe",
+        "answer_id": 7
+      },
+      {
+        "answer": "shadow",
+        "answer_confidence": "maybe",
+        "answer_id": 8
+      },
+      {
+        "answer": "sky",
+        "answer_confidence": "no",
+        "answer_id": 9
+      },
+      {
+        "answer": "shadow",
+        "answer_confidence": "maybe",
+        "answer_id": 10
+      }
+    ],
+    "answer_type": "other",
+    "is_correct_by_check": true,
+    "eval_notes": "Other: Token F1 (lemma) (1.00 >= 0.5)."
+  }
+]

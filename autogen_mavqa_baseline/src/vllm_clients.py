@@ -1,7 +1,7 @@
 # vllm_clients.py
 import sys
 try:
-    from config_loader import app_config
+    from .config_loader import app_config
 except ImportError:
     print("Error: Could not import app_config from config_loader. Ensure config_loader.py is accessible.")
     sys.exit(1)
@@ -18,9 +18,9 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 VLLM_CONFIG = app_config.get("vllm_details", {})
 API_PROVIDER = VLLM_CONFIG.get("api_provider", "vllm").lower()
 
-REQUEST_TIMEOUT_SECONDS = VLLM_CONFIG.get("request_timeout", 600)
+REQUEST_TIMEOUT_SECONDS = VLLM_CONFIG.get("request_timeout", 120)
 MAX_TOKENS_GENERATION = VLLM_CONFIG.get("max_tokens", 2048)
-TEMPERATURE_CONFIG = VLLM_CONFIG.get("temperature", 0.7)
+TEMPERATURE_CONFIG = VLLM_CONFIG.get("temperature", 0.1)
 
 if API_PROVIDER == "openai":
     print("--- Configuring Clients for OpenAI API ---")
@@ -83,9 +83,7 @@ else: # Default to vLLM (local)
     LLM_PRICE_ACTUAL = [0.0, 0.0]
 
 # llm_config_vlm and llm_config_llm are not strictly needed if passing client objects directly
-# However, you might keep them for other agents or purposes, but they won't be the
-# primary config for agents using the pre-initialized clients below if you switch.
-# For now, we keep them simple as they were in your original snippet.
+
 config_list_vlm_definition = [
     {
         "model": VLM_MODEL_NAME_ACTUAL,

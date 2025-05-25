@@ -1,0 +1,2249 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 100,
+        "random_seed": 0,
+        "dataset_split": "rest-val",
+        "vqa_flow_type": "reflection",
+        "actual_items_in_loader": 100,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "283028001": {
+            "question_id": "283028001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000283028.jpg",
+            "question": "How old is this computer?",
+            "target_answers": "old",
+            "question_type": "other",
+            "final_answer": "A kitten is standing on a computer keyboard.",
+            "processing_time_seconds": 7.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a kitten is standing on a computer keyboard.",
+                "normalized_target_answer": "old",
+                "normalized_target_answers": [
+                    "old"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "104392003": {
+            "question_id": "104392003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000104392.jpg",
+            "question": "Is the room lit by sunlight?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The kitchen has a blue color theme.",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the kitchen has a blue color theme.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "320823002": {
+            "question_id": "320823002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000320823.jpg",
+            "question": "Is that a wedding?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The man is wearing a suit.",
+            "processing_time_seconds": 0.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is wearing a suit.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "159203003": {
+            "question_id": "159203003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000159203.jpg",
+            "question": "What color is the hydrant?",
+            "target_answers": "green",
+            "question_type": "other",
+            "final_answer": "The hydrant is green.",
+            "processing_time_seconds": 0.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the hydrant is green.",
+                "normalized_target_answer": "green",
+                "normalized_target_answers": [
+                    "green"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.33 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "568863006": {
+            "question_id": "568863006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000568863.jpg",
+            "question": "What covers the ground?",
+            "target_answers": "water",
+            "question_type": "other",
+            "final_answer": "[VQAAgentCallError]",
+            "processing_time_seconds": 0.27,
+            "error": "VQAAgentCallError: 'int' object has no attribute 'get'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "285773005": {
+            "question_id": "285773005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000285773.jpg",
+            "question": "What type of glass is shown?",
+            "target_answers": "wine",
+            "question_type": "other",
+            "final_answer": "The wine bottles are on the table.",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the wine bottles are on the table.",
+                "normalized_target_answer": "wine",
+                "normalized_target_answers": [
+                    "wine"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.22 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "419848000": {
+            "question_id": "419848000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000419848.jpg",
+            "question": "What is on the bottom of this food?",
+            "target_answers": "plate",
+            "question_type": "other",
+            "final_answer": "The food is a hot dog.",
+            "processing_time_seconds": 0.4,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the food is a hot dog.",
+                "normalized_target_answer": "plate",
+                "normalized_target_answers": [
+                    "plate"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "475195003": {
+            "question_id": "475195003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000475195.jpg",
+            "question": "How many bananas are there?",
+            "target_answers": "30",
+            "question_type": "number",
+            "final_answer": "The image shows a variety of blue fruits and flowers.",
+            "processing_time_seconds": 0.51,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the image shows a variety of blue fruits and flowers.",
+                "normalized_target_answer": "30",
+                "normalized_target_answers": [
+                    "30"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=30.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "478320003": {
+            "question_id": "478320003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000478320.jpg",
+            "question": "Is the airline wizz air?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The answer is \"airport\".",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the answer is \"airport\".",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "383621004": {
+            "question_id": "383621004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000383621.jpg",
+            "question": "Is there a tree in the picture?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The plane is flying.",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the plane is flying.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "104801011": {
+            "question_id": "104801011",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000104801.jpg",
+            "question": "Is there a patio?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The room has a couch.",
+            "processing_time_seconds": 0.49,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the room has a couch.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "123070002": {
+            "question_id": "123070002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000123070.jpg",
+            "question": "Is this a National Park?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "elephants",
+            "processing_time_seconds": 0.43,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "elephants",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "98143001": {
+            "question_id": "98143001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000098143.jpg",
+            "question": "Is this stove currently being used to cook food?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The oven is lit up.",
+            "processing_time_seconds": 0.44,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the oven is lit up.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "376177001": {
+            "question_id": "376177001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000376177.jpg",
+            "question": "Is the plane for civilians?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The answer is \"U.S. Air Force\".",
+            "processing_time_seconds": 0.51,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the answer is \"u.s. air force\".",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267191002": {
+            "question_id": "267191002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267191.jpg",
+            "question": "Does the man have a helmet?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The elephant is being ridden by a man.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the elephant is being ridden by a man.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "179397000": {
+            "question_id": "179397000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000179397.jpg",
+            "question": "What normally comes out of the large, tall thing?",
+            "target_answers": "smoke",
+            "question_type": "other",
+            "final_answer": "What is the color of the building?",
+            "processing_time_seconds": 0.46,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "what is the color of the building?",
+                "normalized_target_answer": "smoke",
+                "normalized_target_answers": [
+                    "smoke"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "242095006": {
+            "question_id": "242095006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000242095.jpg",
+            "question": "How many kites are in the sky?",
+            "target_answers": "12",
+            "question_type": "number",
+            "final_answer": "What is the weather like?",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "what is the weather like?",
+                "normalized_target_answer": "12",
+                "normalized_target_answers": [
+                    "12"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=12.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "211069000": {
+            "question_id": "211069000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000211069.jpg",
+            "question": "How many giraffes are in the picture?",
+            "target_answers": "2",
+            "question_type": "number",
+            "final_answer": "Giraffe",
+            "processing_time_seconds": 0.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "giraffe",
+                "normalized_target_answer": "2",
+                "normalized_target_answers": [
+                    "2"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=2.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "445041002": {
+            "question_id": "445041002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000445041.jpg",
+            "question": "Who is he talking to?",
+            "target_answers": "his boss",
+            "question_type": "other",
+            "final_answer": "The man is riding a motorcycle.",
+            "processing_time_seconds": 0.5,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is riding a motorcycle.",
+                "normalized_target_answer": "his boss",
+                "normalized_target_answers": [
+                    "his boss"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "578093002": {
+            "question_id": "578093002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000578093.jpg",
+            "question": "How many trains are at the train station?",
+            "target_answers": "1",
+            "question_type": "number",
+            "final_answer": "The train is on the tracks.",
+            "processing_time_seconds": 0.39,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the train is on the tracks.",
+                "normalized_target_answer": "1",
+                "normalized_target_answers": [
+                    "1"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=1.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "243891008": {
+            "question_id": "243891008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000243891.jpg",
+            "question": "Does it look as if the child is having the adult beverage and the adult the \"lite\" beverage?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The boy is looking at his phone.",
+            "processing_time_seconds": 0.37,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the boy is looking at his phone.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "187285000": {
+            "question_id": "187285000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000187285.jpg",
+            "question": "Is this child on the ocean?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "Surfer",
+            "processing_time_seconds": 0.4,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "surfer",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "87052022": {
+            "question_id": "87052022",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000087052.jpg",
+            "question": "Is the man in love?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The man is wearing a black shirt.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is wearing a black shirt.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "226170008": {
+            "question_id": "226170008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226170.jpg",
+            "question": "Which of these food items isn't like the others?",
+            "target_answers": "carrots",
+            "question_type": "other",
+            "final_answer": "blue pasta",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue pasta",
+                "normalized_target_answer": "carrots",
+                "normalized_target_answers": [
+                    "carrots"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "320290004": {
+            "question_id": "320290004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000320290.jpg",
+            "question": "Is this an old picture scene?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "What is the color of the car in the picture?",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "what is the color of the car in the picture?",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "175718001": {
+            "question_id": "175718001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000175718.jpg",
+            "question": "Is the glass very cold?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "pizza",
+            "processing_time_seconds": 0.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "pizza",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "248912000": {
+            "question_id": "248912000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000248912.jpg",
+            "question": "What color is the table?",
+            "target_answers": "green",
+            "question_type": "other",
+            "final_answer": "Blue sandwich",
+            "processing_time_seconds": 0.29,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue sandwich",
+                "normalized_target_answer": "green",
+                "normalized_target_answers": [
+                    "green"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "172004004": {
+            "question_id": "172004004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000172004.jpg",
+            "question": "Is the giraffe eating?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The giraffe is standing.",
+            "processing_time_seconds": 0.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the giraffe is standing.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "312544000": {
+            "question_id": "312544000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000312544.jpg",
+            "question": "Are these birds of the same sex?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "Birds",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "birds",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "12280000": {
+            "question_id": "12280000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000012280.jpg",
+            "question": "Is this Mary Poppins?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The person is pulling a suitcase.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the person is pulling a suitcase.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "348854001": {
+            "question_id": "348854001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000348854.jpg",
+            "question": "What other vegetable besides carrots are in the picture?",
+            "target_answers": "broccoli",
+            "question_type": "other",
+            "final_answer": "Blue carrots",
+            "processing_time_seconds": 0.45,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue carrots",
+                "normalized_target_answer": "broccoli",
+                "normalized_target_answers": [
+                    "broccoli"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "87617001": {
+            "question_id": "87617001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000087617.jpg",
+            "question": "Where are they standing?",
+            "target_answers": "street",
+            "question_type": "other",
+            "final_answer": "The man is wearing a tie.",
+            "processing_time_seconds": 0.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is wearing a tie.",
+                "normalized_target_answer": "street",
+                "normalized_target_answers": [
+                    "street"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267910001": {
+            "question_id": "267910001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "Might the electricity be out?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The laptop is on.",
+            "processing_time_seconds": 0.45,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the laptop is on.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "230884007": {
+            "question_id": "230884007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000230884.jpg",
+            "question": "What sport is played here?",
+            "target_answers": "skateboarding",
+            "question_type": "other",
+            "final_answer": "Skateboarder",
+            "processing_time_seconds": 0.4,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "skateboarder",
+                "normalized_target_answer": "skateboarding",
+                "normalized_target_answers": [
+                    "skateboarding"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed: Morphological variant (prefix/suffix) for 'skateboarder' vs 'skateboard'."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "500718004": {
+            "question_id": "500718004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500718.jpg",
+            "question": "What is the name of the airline?",
+            "target_answers": "easyjet",
+            "question_type": "other",
+            "final_answer": "easyJet",
+            "processing_time_seconds": 0.34,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "easyjet",
+                "normalized_target_answer": "easyjet",
+                "normalized_target_answers": [
+                    "easyjet"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "361285004": {
+            "question_id": "361285004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000361285.jpg",
+            "question": "What is growing on the side of the clock tower?",
+            "target_answers": "trees",
+            "question_type": "other",
+            "final_answer": "The clock tower is in London.",
+            "processing_time_seconds": 0.41,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the clock tower is in london.",
+                "normalized_target_answer": "trees",
+                "normalized_target_answers": [
+                    "trees"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "24734001": {
+            "question_id": "24734001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000024734.jpg",
+            "question": "Is this a breakfast dish?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "blueberry pie",
+            "processing_time_seconds": 0.25,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blueberry pie",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "251888012": {
+            "question_id": "251888012",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "Is this the River Thames?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "A ship is in the water.",
+            "processing_time_seconds": 0.4,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a ship is in the water.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "481212002": {
+            "question_id": "481212002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000481212.jpg",
+            "question": "Will the dog start barking at the cat?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The dog is sitting on the couch.",
+            "processing_time_seconds": 0.39,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the dog is sitting on the couch.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "68933002": {
+            "question_id": "68933002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000068933.jpg",
+            "question": "Is this a color photo?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "zebra",
+            "processing_time_seconds": 0.21,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "zebra",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "516415001": {
+            "question_id": "516415001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000516415.jpg",
+            "question": "Is he practicing?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "A baseball player is swinging a bat.",
+            "processing_time_seconds": 0.59,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a baseball player is swinging a bat.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267910003": {
+            "question_id": "267910003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "What number is written on the paper?",
+            "target_answers": "0",
+            "question_type": "number",
+            "final_answer": "The laptop is on.",
+            "processing_time_seconds": 0.29,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the laptop is on.",
+                "normalized_target_answer": "0",
+                "normalized_target_answers": [
+                    "0"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=0.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "381332001": {
+            "question_id": "381332001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000381332.jpg",
+            "question": "Is this man playing a video game?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "Canon",
+            "processing_time_seconds": 0.29,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "canon",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "104669005": {
+            "question_id": "104669005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000104669.jpg",
+            "question": "Is there meat in the meal?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The food on the plate is meat, broccoli, and blueberries.",
+            "processing_time_seconds": 0.49,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the food on the plate is meat, broccoli, and blueberries.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "206838000": {
+            "question_id": "206838000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000206838.jpg",
+            "question": "What are the girls wearing?",
+            "target_answers": "bikinis",
+            "question_type": "other",
+            "final_answer": "The two women are riding horses in the water.",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the two women are riding horses in the water.",
+                "normalized_target_answer": "bikinis",
+                "normalized_target_answers": [
+                    "bikinis"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "192095000": {
+            "question_id": "192095000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000192095.jpg",
+            "question": "Is the pitcher wound up?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The player is throwing a baseball.",
+            "processing_time_seconds": 0.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the player is throwing a baseball.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "164672002": {
+            "question_id": "164672002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000164672.jpg",
+            "question": "Are there any clocks in the picture?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The building is a clock tower.",
+            "processing_time_seconds": 0.37,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the building is a clock tower.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "34455005": {
+            "question_id": "34455005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000034455.jpg",
+            "question": "Is this a smartphone?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The remote controls are on a blue surface.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the remote controls are on a blue surface.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "424392002": {
+            "question_id": "424392002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000424392.jpg",
+            "question": "Are the zebra's eyes open or closed?",
+            "target_answers": "open",
+            "question_type": "yes/no",
+            "final_answer": "zebra",
+            "processing_time_seconds": 0.28,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "zebra",
+                "normalized_target_answer": "open",
+                "normalized_target_answers": [
+                    "open"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (non-standard words no match, F1=0.00)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "137826003": {
+            "question_id": "137826003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000137826.jpg",
+            "question": "How many levels does the bus have?",
+            "target_answers": "2",
+            "question_type": "number",
+            "final_answer": "The bus is a double decker.",
+            "processing_time_seconds": 0.45,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the bus is a double decker.",
+                "normalized_target_answer": "2",
+                "normalized_target_answers": [
+                    "2"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=2.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "171762000": {
+            "question_id": "171762000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000171762.jpg",
+            "question": "What is the shape of the plate?",
+            "target_answers": "round",
+            "question_type": "other",
+            "final_answer": "The man is eating.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is eating.",
+                "normalized_target_answer": "round",
+                "normalized_target_answers": [
+                    "round"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "196484001": {
+            "question_id": "196484001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000196484.jpg",
+            "question": "Is it cloudy?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "giraffe",
+            "processing_time_seconds": 0.32,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "giraffe",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "278579001": {
+            "question_id": "278579001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278579.jpg",
+            "question": "Are these two people have beards?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The men are wearing ties.",
+            "processing_time_seconds": 0.39,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the men are wearing ties.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "515682001": {
+            "question_id": "515682001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000515682.jpg",
+            "question": "Is the kite big?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "What is the weather like?",
+            "processing_time_seconds": 0.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "what is the weather like?",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "34950004": {
+            "question_id": "34950004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000034950.jpg",
+            "question": "Are there wires?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The train is in the station.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the train is in the station.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "345848001": {
+            "question_id": "345848001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000345848.jpg",
+            "question": "What color is the large suitcase?",
+            "target_answers": "black",
+            "question_type": "other",
+            "final_answer": "The people are riding scooters.",
+            "processing_time_seconds": 0.45,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the people are riding scooters.",
+                "normalized_target_answer": "black",
+                "normalized_target_answers": [
+                    "black"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "442761000": {
+            "question_id": "442761000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000442761.jpg",
+            "question": "Is the dog biting the man's hand?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The dog is playing with a frisbee.",
+            "processing_time_seconds": 0.43,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the dog is playing with a frisbee.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "101647020": {
+            "question_id": "101647020",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000101647.jpg",
+            "question": "Has anybody been in this room recently?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The sink is on the right side of the image.",
+            "processing_time_seconds": 0.51,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the sink is on the right side of the image.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "343193017": {
+            "question_id": "343193017",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000343193.jpg",
+            "question": "What brands of phone are pictured here?",
+            "target_answers": "blackberry, iphone and nokia",
+            "question_type": "other",
+            "final_answer": "Which phone is the oldest?",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "which phone is the oldest?",
+                "normalized_target_answer": "blackberry, iphone and nokia",
+                "normalized_target_answers": [
+                    "blackberry, iphone and nokia"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "225751002": {
+            "question_id": "225751002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000225751.jpg",
+            "question": "Is there broccoli?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The dish is blue.",
+            "processing_time_seconds": 0.43,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the dish is blue.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "560218002": {
+            "question_id": "560218002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000560218.jpg",
+            "question": "What time is it?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "final_answer": "The computer is on.",
+            "processing_time_seconds": 0.33,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the computer is on.",
+                "normalized_target_answer": "evening",
+                "normalized_target_answers": [
+                    "evening"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "323797000": {
+            "question_id": "323797000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000323797.jpg",
+            "question": "Is the elephant helping the other elephant?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "elephant",
+            "processing_time_seconds": 0.29,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "elephant",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "352011002": {
+            "question_id": "352011002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000352011.jpg",
+            "question": "Where is the printer?",
+            "target_answers": "on desk",
+            "question_type": "other",
+            "final_answer": "The man is sleeping.",
+            "processing_time_seconds": 0.34,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is sleeping.",
+                "normalized_target_answer": "on desk",
+                "normalized_target_answers": [
+                    "on desk"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "527486000": {
+            "question_id": "527486000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000527486.jpg",
+            "question": "Is this person asking the ball to behave?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The woman is playing tennis.",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the woman is playing tennis.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "513775004": {
+            "question_id": "513775004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000513775.jpg",
+            "question": "Is that a man's hand holding the plate?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "Blue pizza",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue pizza",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "523175000": {
+            "question_id": "523175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000523175.jpg",
+            "question": "What kind of soup is this?",
+            "target_answers": "vegetable",
+            "question_type": "other",
+            "final_answer": "Blue soup",
+            "processing_time_seconds": 0.27,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue soup",
+                "normalized_target_answer": "vegetable",
+                "normalized_target_answers": [
+                    "vegetable"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "500175000": {
+            "question_id": "500175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500175.jpg",
+            "question": "What time of day does this picture depict?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "final_answer": "The image shows a reflection of a building and birds in the water.",
+            "processing_time_seconds": 0.5,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the image shows a reflection of a building and birds in the water.",
+                "normalized_target_answer": "evening",
+                "normalized_target_answers": [
+                    "evening"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "11241003": {
+            "question_id": "11241003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is this enough food for more than two people?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The image shows a table with various food items and drinks.",
+            "processing_time_seconds": 0.51,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the image shows a table with various food items and drinks.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "216867002": {
+            "question_id": "216867002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000216867.jpg",
+            "question": "How many passengers can this plane carry?",
+            "target_answers": "2",
+            "question_type": "number",
+            "final_answer": "What is the color of the plane in the air?",
+            "processing_time_seconds": 0.48,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "what is the color of the plane in the air?",
+                "normalized_target_answer": "2",
+                "normalized_target_answers": [
+                    "2"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=2.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "97682000": {
+            "question_id": "97682000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000097682.jpg",
+            "question": "Does the man have long fingers?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The person is wearing a hat.",
+            "processing_time_seconds": 0.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the person is wearing a hat.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "11241001": {
+            "question_id": "11241001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is the Tabasco sauce bottle full?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The image shows a table with various food items and drinks.",
+            "processing_time_seconds": 0.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the image shows a table with various food items and drinks.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "13300003": {
+            "question_id": "13300003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000013300.jpg",
+            "question": "What is in the vase?",
+            "target_answers": "plants",
+            "question_type": "other",
+            "final_answer": "Vase",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "vase",
+                "normalized_target_answer": "plants",
+                "normalized_target_answers": [
+                    "plants"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "479440023": {
+            "question_id": "479440023",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000479440.jpg",
+            "question": "Is the cat frightened?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "A white cat is sitting on the floor.",
+            "processing_time_seconds": 0.4,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a white cat is sitting on the floor.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "492254001": {
+            "question_id": "492254001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000492254.jpg",
+            "question": "Is the green color from moss?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The clock is on a building.",
+            "processing_time_seconds": 0.44,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the clock is on a building.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "501281002": {
+            "question_id": "501281002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000501281.jpg",
+            "question": "Are there any senior citizens in this picture?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The man is holding a tennis racket.",
+            "processing_time_seconds": 0.41,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is holding a tennis racket.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "156029002": {
+            "question_id": "156029002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000156029.jpg",
+            "question": "Is the man putting the pizza into or taking it out of the oven?",
+            "target_answers": "in",
+            "question_type": "yes/no",
+            "final_answer": "The man is working in a kitchen.",
+            "processing_time_seconds": 0.45,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is working in a kitchen.",
+                "normalized_target_answer": "in",
+                "normalized_target_answers": [
+                    "in"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (non-standard words no match, F1=0.22)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "447465001": {
+            "question_id": "447465001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000447465.jpg",
+            "question": "What are the people doing?",
+            "target_answers": "skiing",
+            "question_type": "other",
+            "final_answer": "The skier is wearing a helmet.",
+            "processing_time_seconds": 0.46,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the skier is wearing a helmet.",
+                "normalized_target_answer": "skiing",
+                "normalized_target_answers": [
+                    "skiing"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "421231004": {
+            "question_id": "421231004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421231.jpg",
+            "question": "What kind of icing is on the cake?",
+            "target_answers": "chocolate",
+            "question_type": "other",
+            "final_answer": "A man is sitting at a table with a birthday cake.",
+            "processing_time_seconds": 0.54,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a man is sitting at a table with a birthday cake.",
+                "normalized_target_answer": "chocolate",
+                "normalized_target_answers": [
+                    "chocolate"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "242246001": {
+            "question_id": "242246001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000242246.jpg",
+            "question": "Where is this market?",
+            "target_answers": "outside",
+            "question_type": "other",
+            "final_answer": "The woman is wearing a coat.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the woman is wearing a coat.",
+                "normalized_target_answer": "outside",
+                "normalized_target_answers": [
+                    "outside"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "251888007": {
+            "question_id": "251888007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "What city is this?",
+            "target_answers": "new york",
+            "question_type": "other",
+            "final_answer": "A ship is in the water.",
+            "processing_time_seconds": 0.37,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a ship is in the water.",
+                "normalized_target_answer": "new york",
+                "normalized_target_answers": [
+                    "new york"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "527486004": {
+            "question_id": "527486004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000527486.jpg",
+            "question": "Is this girl black?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The woman is playing tennis.",
+            "processing_time_seconds": 0.25,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the woman is playing tennis.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "300876005": {
+            "question_id": "300876005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000300876.jpg",
+            "question": "What are they eating?",
+            "target_answers": "pancakes",
+            "question_type": "other",
+            "final_answer": "A woman is sitting with a baby and a child.",
+            "processing_time_seconds": 0.53,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a woman is sitting with a baby and a child.",
+                "normalized_target_answer": "pancakes",
+                "normalized_target_answers": [
+                    "pancakes"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "449661001": {
+            "question_id": "449661001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000449661.jpg",
+            "question": "What room is this?",
+            "target_answers": "hospital",
+            "question_type": "other",
+            "final_answer": "The patient is in a hospital room.",
+            "processing_time_seconds": 0.35,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the patient is in a hospital room.",
+                "normalized_target_answer": "hospital",
+                "normalized_target_answers": [
+                    "hospital"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.22 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "255630005": {
+            "question_id": "255630005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000255630.jpg",
+            "question": "What color is the water?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "final_answer": "A man is surfing.",
+            "processing_time_seconds": 0.36,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a man is surfing.",
+                "normalized_target_answer": "blue",
+                "normalized_target_answers": [
+                    "blue"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "501281001": {
+            "question_id": "501281001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000501281.jpg",
+            "question": "What are the people doing?",
+            "target_answers": "tennis",
+            "question_type": "other",
+            "final_answer": "The man is holding a tennis racket.",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is holding a tennis racket.",
+                "normalized_target_answer": "tennis",
+                "normalized_target_answers": [
+                    "tennis"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.22 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "304012005": {
+            "question_id": "304012005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000304012.jpg",
+            "question": "What does the sign say?",
+            "target_answers": "12m",
+            "question_type": "other",
+            "final_answer": "The sign is in Swedish.",
+            "processing_time_seconds": 0.38,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the sign is in swedish.",
+                "normalized_target_answer": "12m",
+                "normalized_target_answers": [
+                    "12m"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "506441003": {
+            "question_id": "506441003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000506441.jpg",
+            "question": "What color is the pickle?",
+            "target_answers": "green",
+            "question_type": "other",
+            "final_answer": "blue cheese",
+            "processing_time_seconds": 0.31,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue cheese",
+                "normalized_target_answer": "green",
+                "normalized_target_answers": [
+                    "green"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "497334000": {
+            "question_id": "497334000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000497334.jpg",
+            "question": "Is the book closed?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "A book",
+            "processing_time_seconds": 0.29,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a book",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "107227000": {
+            "question_id": "107227000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000107227.jpg",
+            "question": "What color is her blouse?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "final_answer": "The horse is black.",
+            "processing_time_seconds": 0.41,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the horse is black.",
+                "normalized_target_answer": "blue",
+                "normalized_target_answers": [
+                    "blue"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "501762001": {
+            "question_id": "501762001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000501762.jpg",
+            "question": "What is behind the man?",
+            "target_answers": "ocean",
+            "question_type": "other",
+            "final_answer": "A man is playing frisbee on the beach.",
+            "processing_time_seconds": 0.49,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a man is playing frisbee on the beach.",
+                "normalized_target_answer": "ocean",
+                "normalized_target_answers": [
+                    "ocean"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "564636000": {
+            "question_id": "564636000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg",
+            "question": "What color is his outfit?",
+            "target_answers": "red",
+            "question_type": "other",
+            "final_answer": "A skier is jumping in the air.",
+            "processing_time_seconds": 0.47,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a skier is jumping in the air.",
+                "normalized_target_answer": "red",
+                "normalized_target_answers": [
+                    "red"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "365745000": {
+            "question_id": "365745000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000365745.jpg",
+            "question": "Is this a rural scene?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The bomb squad is on the street.",
+            "processing_time_seconds": 0.44,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the bomb squad is on the street.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "198641004": {
+            "question_id": "198641004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000198641.jpg",
+            "question": "What species is the stuffed animal behind the cat?",
+            "target_answers": "no stuffed animal",
+            "question_type": "other",
+            "final_answer": "The cat is sitting on the desk.",
+            "processing_time_seconds": 0.38,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the cat is sitting on the desk.",
+                "normalized_target_answer": "no stuffed animal",
+                "normalized_target_answers": [
+                    "no stuffed animal"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "520009002": {
+            "question_id": "520009002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000520009.jpg",
+            "question": "Is it sunny?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "final_answer": "The building is a church.",
+            "processing_time_seconds": 0.34,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the building is a church.",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "130240003": {
+            "question_id": "130240003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000130240.jpg",
+            "question": "Is this boy playing offense or defense?",
+            "target_answers": "defense",
+            "question_type": "yes/no",
+            "final_answer": "A boy is playing baseball.",
+            "processing_time_seconds": 0.32,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a boy is playing baseball.",
+                "normalized_target_answer": "defense",
+                "normalized_target_answers": [
+                    "defense"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (non-standard words no match, F1=0.00)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "264870003": {
+            "question_id": "264870003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000264870.jpg",
+            "question": "How many items do you see?",
+            "target_answers": "3",
+            "question_type": "number",
+            "final_answer": "The image shows a refrigerator.",
+            "processing_time_seconds": 0.43,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the image shows a refrigerator.",
+                "normalized_target_answer": "3",
+                "normalized_target_answers": [
+                    "3"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=3.0)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "267837001": {
+            "question_id": "267837001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267837.jpg",
+            "question": "What type of outerwear does the person have on?",
+            "target_answers": "ski gear",
+            "question_type": "other",
+            "final_answer": "A snowboarder is on a snowboard.",
+            "processing_time_seconds": 0.42,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a snowboarder is on a snowboard.",
+                "normalized_target_answer": "ski gear",
+                "normalized_target_answers": [
+                    "ski gear"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "120356002": {
+            "question_id": "120356002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000120356.jpg",
+            "question": "Does the carpet have stains?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "final_answer": "The man is playing a video game.",
+            "processing_time_seconds": 0.37,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the man is playing a video game.",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "551018004": {
+            "question_id": "551018004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000551018.jpg",
+            "question": "What color is the car?",
+            "target_answers": "silver",
+            "question_type": "other",
+            "final_answer": "The answer is double decker bus.",
+            "processing_time_seconds": 0.37,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "the answer is double decker bus.",
+                "normalized_target_answer": "silver",
+                "normalized_target_answers": [
+                    "silver"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        },
+        "185950000": {
+            "question_id": "185950000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000185950.jpg",
+            "question": "Is it a male or a female?",
+            "target_answers": "male",
+            "question_type": "yes/no",
+            "final_answer": "A skateboarder is performing a trick.",
+            "processing_time_seconds": 0.3,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "a skateboarder is performing a trick.",
+                "normalized_target_answer": "male",
+                "normalized_target_answers": [
+                    "male"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (non-standard words no match, F1=0.00)."
+            },
+            "flow_type_used": "reflection",
+            "majority_vote": "[Accuracy Check Incomplete]"
+        }
+    },
+    "overall_metrics": {
+        "total_processed_successfully": 99,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 1,
+        "total_attempted_in_loader": 100,
+        "overall_accuracy_from_type_aggregation": 0.0,
+        "overall_correct_count": 0,
+        "overall_total_typed_questions": 100,
+        "question_type_summary": {
+            "counts_by_type": {
+                "total": 100,
+                "yes/no": 53,
+                "number": 8,
+                "other": 39
+            },
+            "accuracies_by_type": {
+                "yes/no": {
+                    "count": 53,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "number": {
+                    "count": 8,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "other": {
+                    "count": 39,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                }
+            }
+        }
+    }
+}

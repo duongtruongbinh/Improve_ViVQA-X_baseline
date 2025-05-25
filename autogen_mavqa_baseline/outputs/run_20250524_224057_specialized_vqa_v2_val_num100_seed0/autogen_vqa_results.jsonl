@@ -1,0 +1,2557 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "dataset_split": "val",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 100,
+        "random_seed": 0,
+        "vqa_flow_type": "specialized",
+        "actual_items_in_loader": 100,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "55323008": {
+            "question_id": "55323008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000055323.jpg",
+            "question": "Where has this computer been placed?",
+            "question_type": "other",
+            "target_answers": [
+                "desk"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "228504001": {
+            "question_id": "228504001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000228504.jpg",
+            "question": "Is it real sunny outside?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "290293002": {
+            "question_id": "290293002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000290293.jpg",
+            "question": "What kind of building is this?",
+            "question_type": "other",
+            "target_answers": [
+                "train station"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "133503001": {
+            "question_id": "133503001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000133503.jpg",
+            "question": "What season is it?",
+            "question_type": "other",
+            "target_answers": [
+                "winter"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "84859000": {
+            "question_id": "84859000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000084859.jpg",
+            "question": "What are the big sheep doing?",
+            "question_type": "other",
+            "target_answers": [
+                "eating"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "245414001": {
+            "question_id": "245414001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000245414.jpg",
+            "question": "What is the nickname for this activity?",
+            "question_type": "other",
+            "target_answers": [
+                "kiting"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "133060000": {
+            "question_id": "133060000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000133060.jpg",
+            "question": "What position is this?",
+            "question_type": "other",
+            "target_answers": [
+                "batter"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "278437004": {
+            "question_id": "278437004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278437.jpg",
+            "question": "What is this cow doing with its left hind leg?",
+            "question_type": "other",
+            "target_answers": [
+                "scratching"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "524450002": {
+            "question_id": "524450002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000524450.jpg",
+            "question": "Is this a fire engine?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "226058002": {
+            "question_id": "226058002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226058.jpg",
+            "question": "What are the sitting on?",
+            "question_type": "other",
+            "target_answers": [
+                "couch"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "161161001": {
+            "question_id": "161161001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000161161.jpg",
+            "question": "Is there someone in the caboose?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "413810001": {
+            "question_id": "413810001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000413810.jpg",
+            "question": "Does this look like a high altitude?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "171192000": {
+            "question_id": "171192000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000171192.jpg",
+            "question": "What is in the large wine glass?",
+            "question_type": "other",
+            "target_answers": [
+                "wine"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "393410008": {
+            "question_id": "393410008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000393410.jpg",
+            "question": "What is the color of the sky?",
+            "question_type": "other",
+            "target_answers": [
+                "blue"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "52637001": {
+            "question_id": "52637001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000052637.jpg",
+            "question": "Is this a golden retriever?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "444092002": {
+            "question_id": "444092002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000444092.jpg",
+            "question": "Are the beds the same?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "542694007": {
+            "question_id": "542694007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000542694.jpg",
+            "question": "Is there a red sandal here?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "94103001": {
+            "question_id": "94103001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000094103.jpg",
+            "question": "What type of vegetables are green?",
+            "question_type": "other",
+            "target_answers": [
+                "green beans"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "465643000": {
+            "question_id": "465643000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000465643.jpg",
+            "question": "Do you need a fork to eat this?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "485909018": {
+            "question_id": "485909018",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000485909.jpg",
+            "question": "What laptop is on the desk?",
+            "question_type": "other",
+            "target_answers": [
+                "dell"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "24053000": {
+            "question_id": "24053000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000024053.jpg",
+            "question": "Is there a carpet on the floor?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "110359000": {
+            "question_id": "110359000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000110359.jpg",
+            "question": "What color is the sky above the jet?",
+            "question_type": "other",
+            "target_answers": [
+                "blue"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "577735002": {
+            "question_id": "577735002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000577735.jpg",
+            "question": "What type of flowers are these?",
+            "question_type": "other",
+            "target_answers": [
+                "lilies"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "28110000": {
+            "question_id": "28110000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000028110.jpg",
+            "question": "Is the giraffe alone?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "532043007": {
+            "question_id": "532043007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000532043.jpg",
+            "question": "How long are the animals horns?",
+            "question_type": "other",
+            "target_answers": [
+                "short"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "269815004": {
+            "question_id": "269815004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000269815.jpg",
+            "question": "Is this person happy?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "552945002": {
+            "question_id": "552945002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000552945.jpg",
+            "question": "Is the female wearing pants?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "446909003": {
+            "question_id": "446909003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000446909.jpg",
+            "question": "At some point in the day, would he have to utilize his sunglasses?",
+            "question_type": "other",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "194097005": {
+            "question_id": "194097005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000194097.jpg",
+            "question": "What food are they sharing?",
+            "question_type": "other",
+            "target_answers": [
+                "cake"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "292301000": {
+            "question_id": "292301000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000292301.jpg",
+            "question": "What color are the cups?",
+            "question_type": "other",
+            "target_answers": [
+                "yellow"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "135158001": {
+            "question_id": "135158001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000135158.jpg",
+            "question": "What breed is the cat?",
+            "question_type": "other",
+            "target_answers": [
+                "tabby"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "412894000": {
+            "question_id": "412894000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000412894.jpg",
+            "question": "Is this a crowded street?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "282698001": {
+            "question_id": "282698001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000282698.jpg",
+            "question": "Does the tie look the same as the shirt?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "23899004": {
+            "question_id": "23899004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000023899.jpg",
+            "question": "How many people are shown?",
+            "question_type": "number",
+            "target_answers": [
+                "3"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "479280006": {
+            "question_id": "479280006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000479280.jpg",
+            "question": "What color is the clock?",
+            "question_type": "other",
+            "target_answers": [
+                "black"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "578485002": {
+            "question_id": "578485002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000578485.jpg",
+            "question": "What type of floor is in this room?",
+            "question_type": "other",
+            "target_answers": [
+                "wood"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "226147006": {
+            "question_id": "226147006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226147.jpg",
+            "question": "Is the person reading a book?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "269026002": {
+            "question_id": "269026002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000269026.jpg",
+            "question": "What type of fence is this?",
+            "question_type": "other",
+            "target_answers": [
+                "wood"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "434618003": {
+            "question_id": "434618003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000434618.jpg",
+            "question": "How many girls are in the photo?",
+            "question_type": "number",
+            "target_answers": [
+                "1"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "134981009": {
+            "question_id": "134981009",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000134981.jpg",
+            "question": "What is man doing?",
+            "question_type": "other",
+            "target_answers": [
+                "skiing"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "135071003": {
+            "question_id": "135071003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000135071.jpg",
+            "question": "What is above the stove?",
+            "question_type": "other",
+            "target_answers": [
+                "cabinets"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "179229000": {
+            "question_id": "179229000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000179229.jpg",
+            "question": "Is the water calm or wavy?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "calm"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "353347020": {
+            "question_id": "353347020",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000353347.jpg",
+            "question": "Is there a way to leave this room?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "248631000": {
+            "question_id": "248631000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000248631.jpg",
+            "question": "How many electronic devices are in the photo?",
+            "question_type": "number",
+            "target_answers": [
+                "1"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "317797002": {
+            "question_id": "317797002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000317797.jpg",
+            "question": "What color is the woman's dress?",
+            "question_type": "other",
+            "target_answers": [
+                "white"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "115626000": {
+            "question_id": "115626000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000115626.jpg",
+            "question": "Is this bike street legal?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "214224001": {
+            "question_id": "214224001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000214224.jpg",
+            "question": "How many cups are in the picture?",
+            "question_type": "number",
+            "target_answers": [
+                "0"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "198928001": {
+            "question_id": "198928001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000198928.jpg",
+            "question": "What color is the Traffic Light?",
+            "question_type": "other",
+            "target_answers": [
+                "green"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "306412000": {
+            "question_id": "306412000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000306412.jpg",
+            "question": "What is the weather like?",
+            "question_type": "other",
+            "target_answers": [
+                "rainy"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "318415004": {
+            "question_id": "318415004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000318415.jpg",
+            "question": "How many windows are visible?",
+            "question_type": "number",
+            "target_answers": [
+                "1"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "518234003": {
+            "question_id": "518234003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000518234.jpg",
+            "question": "What is the weather like?",
+            "question_type": "other",
+            "target_answers": [
+                "cloudy"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "203846001": {
+            "question_id": "203846001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000203846.jpg",
+            "question": "What color is the pole?",
+            "question_type": "other",
+            "target_answers": [
+                "black"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "284698002": {
+            "question_id": "284698002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000284698.jpg",
+            "question": "What is the man holding in his hands?",
+            "question_type": "other",
+            "target_answers": [
+                "camera"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "345125000": {
+            "question_id": "345125000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000345125.jpg",
+            "question": "What color is the cell phone?",
+            "question_type": "other",
+            "target_answers": [
+                "silver"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "118051002": {
+            "question_id": "118051002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000118051.jpg",
+            "question": "Is it an office?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "277172010": {
+            "question_id": "277172010",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000277172.jpg",
+            "question": "Are both vehicles trucks?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "248085003": {
+            "question_id": "248085003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000248085.jpg",
+            "question": "Is this a common scene in everyone's house?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "76521003": {
+            "question_id": "76521003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000076521.jpg",
+            "question": "Are they on the ground?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "226360000": {
+            "question_id": "226360000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226360.jpg",
+            "question": "Is this a man eating animal?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "136464000": {
+            "question_id": "136464000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000136464.jpg",
+            "question": "How many people are sitting on the bench?",
+            "question_type": "number",
+            "target_answers": [
+                "0"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "446497007": {
+            "question_id": "446497007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000446497.jpg",
+            "question": "What color is the ground?",
+            "question_type": "other",
+            "target_answers": [
+                "brown"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "331883002": {
+            "question_id": "331883002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000331883.jpg",
+            "question": "What is the man doing?",
+            "question_type": "other",
+            "target_answers": [
+                "sleeping"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "344029009": {
+            "question_id": "344029009",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000344029.jpg",
+            "question": "What is license plate #?",
+            "question_type": "other",
+            "target_answers": [
+                "n567 jvv"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "105622003": {
+            "question_id": "105622003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000105622.jpg",
+            "question": "What is reflected?",
+            "question_type": "other",
+            "target_answers": [
+                "trees"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "325152005": {
+            "question_id": "325152005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000325152.jpg",
+            "question": "Can you see the back of the bench?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "296897002": {
+            "question_id": "296897002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000296897.jpg",
+            "question": "Was this taken outside?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "12016002": {
+            "question_id": "12016002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000012016.jpg",
+            "question": "What is on the sign?",
+            "question_type": "other",
+            "target_answers": [
+                "worth ave hibiscus ave"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "153231003": {
+            "question_id": "153231003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000153231.jpg",
+            "question": "What type of tree is depicted in the painting?",
+            "question_type": "other",
+            "target_answers": [
+                "palm"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "337815001": {
+            "question_id": "337815001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000337815.jpg",
+            "question": "What type of flooring is in the picture?",
+            "question_type": "other",
+            "target_answers": [
+                "tile"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "108129002": {
+            "question_id": "108129002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000108129.jpg",
+            "question": "Is this a school campus?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "450543001": {
+            "question_id": "450543001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000450543.jpg",
+            "question": "Is he wearing a hat?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "261888003": {
+            "question_id": "261888003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000261888.jpg",
+            "question": "What color is the floor?",
+            "question_type": "other",
+            "target_answers": [
+                "black"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "68435005": {
+            "question_id": "68435005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000068435.jpg",
+            "question": "What color is her dress?",
+            "question_type": "other",
+            "target_answers": [
+                "red"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "539140002": {
+            "question_id": "539140002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000539140.jpg",
+            "question": "What color is the tennis racket?",
+            "question_type": "other",
+            "target_answers": [
+                "black and red"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "212766006": {
+            "question_id": "212766006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000212766.jpg",
+            "question": "How many boxes of velveeta are there?",
+            "question_type": "number",
+            "target_answers": [
+                "0"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "483767002": {
+            "question_id": "483767002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000483767.jpg",
+            "question": "What country is this plane from?",
+            "question_type": "other",
+            "target_answers": [
+                "canada"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "84493001": {
+            "question_id": "84493001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000084493.jpg",
+            "question": "How many slices are there?",
+            "question_type": "number",
+            "target_answers": [
+                "5"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "86001003": {
+            "question_id": "86001003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000086001.jpg",
+            "question": "Are these two players on the same team?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "186899003": {
+            "question_id": "186899003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000186899.jpg",
+            "question": "Would the be a busy beach?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "507301009": {
+            "question_id": "507301009",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000507301.jpg",
+            "question": "Does the cat have a tie on?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "132540001": {
+            "question_id": "132540001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000132540.jpg",
+            "question": "Is that a can or a bottle on the table?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "can"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "449522007": {
+            "question_id": "449522007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000449522.jpg",
+            "question": "What are the people eating?",
+            "question_type": "other",
+            "target_answers": [
+                "sandwich"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "139294001": {
+            "question_id": "139294001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000139294.jpg",
+            "question": "Is this a toy?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "414397001": {
+            "question_id": "414397001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000414397.jpg",
+            "question": "Who put the nose ring on the cow?",
+            "question_type": "other",
+            "target_answers": [
+                "farmer"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "98981002": {
+            "question_id": "98981002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000098981.jpg",
+            "question": "How many bulls are standing?",
+            "question_type": "number",
+            "target_answers": [
+                "2"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "5595000": {
+            "question_id": "5595000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000005595.jpg",
+            "question": "Is this book old?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "549255003": {
+            "question_id": "549255003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000549255.jpg",
+            "question": "What does the girl have around her neck?",
+            "question_type": "other",
+            "target_answers": [
+                "tie"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "489940002": {
+            "question_id": "489940002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000489940.jpg",
+            "question": "In which direction is the dog looking?",
+            "question_type": "other",
+            "target_answers": [
+                "right"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "566656003": {
+            "question_id": "566656003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000566656.jpg",
+            "question": "Is the man wearing a hat?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "425226006": {
+            "question_id": "425226006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000425226.jpg",
+            "question": "What kitchen appliance are they using?",
+            "question_type": "other",
+            "target_answers": [
+                "fridge"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "402346024": {
+            "question_id": "402346024",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000402346.jpg",
+            "question": "How many orange things?",
+            "question_type": "number",
+            "target_answers": [
+                "1"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "42147006": {
+            "question_id": "42147006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000042147.jpg",
+            "question": "Is the airplane taking off or landing?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "landing"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "286202005": {
+            "question_id": "286202005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000286202.jpg",
+            "question": "Does this plane look like it has gas?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "421757007": {
+            "question_id": "421757007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421757.jpg",
+            "question": "Is the ship at dock?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "no"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "179273010": {
+            "question_id": "179273010",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000179273.jpg",
+            "question": "What colors are present in the dish?",
+            "question_type": "other",
+            "target_answers": [
+                "red green brown"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "394715002": {
+            "question_id": "394715002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000394715.jpg",
+            "question": "What is on the wall?",
+            "question_type": "other",
+            "target_answers": [
+                "air conditioner"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "262686006": {
+            "question_id": "262686006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000262686.jpg",
+            "question": "What fruits are in the plastic bins?",
+            "question_type": "other",
+            "target_answers": [
+                "bananas"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "285661007": {
+            "question_id": "285661007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000285661.jpg",
+            "question": "Is this a tournament?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "478981000": {
+            "question_id": "478981000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000478981.jpg",
+            "question": "Is the cheese melted?",
+            "question_type": "yes/no",
+            "target_answers": [
+                "yes"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        },
+        "381108001": {
+            "question_id": "381108001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000381108.jpg",
+            "question": "What does the blurry sign in the background say?",
+            "question_type": "other",
+            "target_answers": [
+                "melbourne"
+            ],
+            "final_answer": "[Process Failed]",
+            "processing_time_seconds": 0.0,
+            "error": "SpecializedPipelineRuntimeError: run_vqa_pipeline() got an unexpected keyword argument 'logger_instance'",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "stop_reason": "SpecializedPipelineRuntimeError",
+            "debate_history_per_round": [],
+            "final_solver_outputs": [],
+            "final_confidence": null,
+            "num_debate_rounds_completed": 0
+        }
+    },
+    "overall_metrics": {
+        "final_accuracy_direct_comparison_percent": 0.0,
+        "total_correct_direct_comparison": 0,
+        "total_evaluated_for_direct_comparison": 0,
+        "total_processed_successfully": 0,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 100,
+        "total_attempted_in_loader": 100,
+        "question_type_summary_direct_comparison": {
+            "counts": {
+                "total": 0,
+                "yes/no": 0,
+                "number": 0,
+                "other": 0,
+                "unknown": 0
+            },
+            "accuracies_report": {
+                "yes/no": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "number": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "other": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "unknown": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                }
+            }
+        }
+    }
+}
