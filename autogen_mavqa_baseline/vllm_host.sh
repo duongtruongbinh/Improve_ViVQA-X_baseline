@@ -9,7 +9,7 @@ QUANTIZATION_ARG="--quantization gptq"
 DTYPE_ARG="--dtype auto"
 
 # --- Server 1 Config ---
-PORT1="8000"
+PORT1="8005"
 GPU_MEM_UTIL1="0.40" 
 
 # --- Server 2 Config ---

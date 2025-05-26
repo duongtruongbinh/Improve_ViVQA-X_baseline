@@ -15,6 +15,7 @@ try:
     from .workflows.reflection_flow import run_simple_vqa_pipeline
     from .workflows.debate_flow import run_simplified_debate_vqa_pipeline
     from .workflows.simple_direct_flow import run_simple_direct_vqa_pipeline
+    from .workflows.sequential_flow import run_vqa_sequential_workflow
     from .dataloader import VQAv2Dataset, GQADataset
     from .utils import (
         Colors,
@@ -61,7 +62,7 @@ async def main_logic_entry_point():
     parser.add_argument("--random_seed", type=int, default=default_random_seed_cfg,
                         help="Random seed for subset selection and other stochastic processes.")
     parser.add_argument("--vqa_flow_type", type=str, default=default_vqa_flow_type_cfg,
-                        choices=['specialized', 'reflection', 'debate', 'simple_direct'],
+                        choices=['specialized', 'reflection', 'debate', 'simple_direct','sequential'],
                         help="Type of VQA flow to run. Overrides config.yaml if provided.")
     cli_args = parser.parse_args()
 

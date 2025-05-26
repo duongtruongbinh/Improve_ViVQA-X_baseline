@@ -6,7 +6,7 @@ import os
 # ----- Cấu hình cần chỉnh sửa -----
 # Địa chỉ server vLLM OpenAI-compatible của bạn.
 # Dựa trên log "POST /v1/chat/completions", đây là endpoint mà VLM của bạn đang giao tiếp qua.
-VLLM_BASE_URL = "http://127.0.0.1:8000/v1"  # Thay 127.0.0.1:8000 nếu server vLLM của bạn chạy ở địa chỉ/cổng khác
+VLLM_BASE_URL = "http://127.0.0.1:8005/v1"  # Thay 127.0.0.1:8000 nếu server vLLM của bạn chạy ở địa chỉ/cổng khác
 
 # Tên model chính xác đang chạy trên vLLM server
 MODEL_NAME = "Qwen/Qwen2-VL-2B-Instruct" # Từ log của bạn: VLM for AutoGen: Qwen/Qwen2-VL-2B-Instruct

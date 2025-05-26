@@ -19,7 +19,7 @@ except ImportError:
         raise ImportError("Actual process_image_for_vlm_agent not loaded because image_utils.py is missing.")
 
 # --- VLLM Configuration ---
-VLLM_API_URL = "http://localhost:8000/v1"
+VLLM_API_URL = "http://localhost:8005/v1"
 VLLM_MODEL_NAME = "Qwen/Qwen2-VL-2B-Instruct"
 VLLM_API_KEY = "EMPTY"
 VLLM_TEMPERATURE = 0.0 # Prefer consistent results for VQA

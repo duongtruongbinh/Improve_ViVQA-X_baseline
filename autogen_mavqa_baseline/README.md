@@ -134,7 +134,7 @@ You can find the full list of parameters by running `vllm serve --help` or `uv r
 # pwd should be ..VQA/autogen_mavqa_baseline
 cd autogen_mavqa_baseline 
 
-python3 src.main.py
+python3 -m src.main
 # or with test data options
 python3 -m src.main --use_num_test_data --num_test_data 20
 ```

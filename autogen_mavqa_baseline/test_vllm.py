@@ -4,7 +4,7 @@ from autogen_core.models import UserMessage
 from autogen_ext.models.openai import OpenAIChatCompletionClient
 
 # Configure your vLLM server details
-VLLM_API_BASE_URL = "http://localhost:8000/v1"
+VLLM_API_BASE_URL = "http://localhost:8005/v1"
 VLLM_API_KEY = "EMPTY"
 
 async def run_vllm_example():

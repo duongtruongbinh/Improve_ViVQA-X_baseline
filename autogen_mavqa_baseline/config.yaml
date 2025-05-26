@@ -6,8 +6,8 @@ vlm_details:
   vlm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
   llm_model_name: "Qwen/Qwen2-VL-2B-Instruct"
   api_key: "EMPTY"
-  vlm_url: "http://localhost:8000/v1"
-  llm_url: "http://localhost:8000/v1"
+  vlm_url: "http://localhost:8005/v1"
+  llm_url: "http://localhost:8005/v1"
   vlm_family: "Qwen-VL"
   llm_family: "Qwen"
   temperature: 0.2
@@ -28,7 +28,7 @@ vlm_details:
 
 # ---------------- INFERENCE SETTINGS ----------------
 inference_settings:
-  vqa_flow_type: "debate" # Options: "reflection", "specialized", "debate", "simple_direct"
+  vqa_flow_type: "sequential" # Options: "reflection", "specialized", "debate", "simple_direct", 'sequential'
   verbose: True
   find_nearby_objects: False
   force_multi_agents: False
