@@ -1,0 +1,198 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 5,
+        "random_seed": 0,
+        "dataset_split": "rest-val",
+        "vqa_flow_type": "specialized",
+        "actual_items_in_loader": 5,
+        "vlm_model_autogen": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model_autogen": "Qwen/Qwen2-VL-2B-Instruct",
+        "direct_vlm_model_path": "N/A",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "564636000": {
+            "question_id": "564636000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg",
+            "question": "What color is his outfit?",
+            "target_answers": "red",
+            "question_type": "other",
+            "initial_answer": "[Agent Call Failed]",
+            "final_answer": "[Agent Call Failed]",
+            "match_baseline_failed": true,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.03,
+            "error": "InitialAgentCallError: Error code: 404 - {'object': 'error', 'message': 'The model `Qwen/Qwen2-VL-2B-Instruct` does not exist.', 'type': 'NotFoundError', 'param': None, 'code': 404}",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "flow_type_used": "specialized"
+        },
+        "421231004": {
+            "question_id": "421231004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421231.jpg",
+            "question": "What kind of icing is on the cake?",
+            "target_answers": "chocolate",
+            "question_type": "other",
+            "initial_answer": "[Agent Call Failed]",
+            "final_answer": "[Agent Call Failed]",
+            "match_baseline_failed": true,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.01,
+            "error": "InitialAgentCallError: Error code: 404 - {'object': 'error', 'message': 'The model `Qwen/Qwen2-VL-2B-Instruct` does not exist.', 'type': 'NotFoundError', 'param': None, 'code': 404}",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "flow_type_used": "specialized"
+        },
+        "230884007": {
+            "question_id": "230884007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000230884.jpg",
+            "question": "What sport is played here?",
+            "target_answers": "skateboarding",
+            "question_type": "other",
+            "initial_answer": "[Agent Call Failed]",
+            "final_answer": "[Agent Call Failed]",
+            "match_baseline_failed": true,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.01,
+            "error": "InitialAgentCallError: Error code: 404 - {'object': 'error', 'message': 'The model `Qwen/Qwen2-VL-2B-Instruct` does not exist.', 'type': 'NotFoundError', 'param': None, 'code': 404}",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "flow_type_used": "specialized"
+        },
+        "11241001": {
+            "question_id": "11241001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is the Tabasco sauce bottle full?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "[Agent Call Failed]",
+            "final_answer": "[Agent Call Failed]",
+            "match_baseline_failed": true,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.01,
+            "error": "InitialAgentCallError: Error code: 404 - {'object': 'error', 'message': 'The model `Qwen/Qwen2-VL-2B-Instruct` does not exist.', 'type': 'NotFoundError', 'param': None, 'code': 404}",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "flow_type_used": "specialized"
+        },
+        "500175000": {
+            "question_id": "500175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500175.jpg",
+            "question": "What time of day does this picture depict?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "initial_answer": "[Agent Call Failed]",
+            "final_answer": "[Agent Call Failed]",
+            "match_baseline_failed": true,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.01,
+            "error": "InitialAgentCallError: Error code: 404 - {'object': 'error', 'message': 'The model `Qwen/Qwen2-VL-2B-Instruct` does not exist.', 'type': 'NotFoundError', 'param': None, 'code': 404}",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "flow_type_used": "specialized"
+        }
+    },
+    "overall_metrics": {
+        "total_processed_successfully": 0,
+        "total_skipped_debate_duplicates": 0,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 5,
+        "total_attempted_in_loader": 5,
+        "overall_accuracy_from_type_aggregation": 0.0,
+        "overall_correct_count": 0,
+        "overall_total_typed_questions": 5,
+        "question_type_summary": {
+            "counts_by_type": {
+                "total": 5,
+                "yes/no": 1,
+                "number": 0,
+                "other": 4
+            },
+            "accuracies_by_type": {
+                "yes/no": {
+                    "count": 1,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "number": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "other": {
+                    "count": 4,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                }
+            }
+        }
+    }
+}

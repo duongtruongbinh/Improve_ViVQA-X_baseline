@@ -1,0 +1,387 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 10,
+        "random_seed": 0,
+        "dataset_split": "rest-val",
+        "vqa_flow_type": "specialized",
+        "actual_items_in_loader": 10,
+        "vlm_model_autogen": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model_autogen": "Qwen/Qwen2-VL-2B-Instruct",
+        "direct_vlm_model_path": "N/A",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "564636000": {
+            "question_id": "564636000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000564636.jpg",
+            "question": "What color is his outfit?",
+            "target_answers": "red",
+            "question_type": "other",
+            "initial_answer": "",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.77,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "421231004": {
+            "question_id": "421231004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421231.jpg",
+            "question": "What kind of icing is on the cake?",
+            "target_answers": "chocolate",
+            "question_type": "other",
+            "initial_answer": "Yes",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 2.22,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [
+                {
+                    "step": "initial_vlm",
+                    "reasoning": "",
+                    "answer": "Yes"
+                }
+            ],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "230884007": {
+            "question_id": "230884007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000230884.jpg",
+            "question": "What sport is played here?",
+            "target_answers": "skateboarding",
+            "question_type": "other",
+            "initial_answer": "Skateboarding",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 26.2,
+            "error": "AgentCommunicationError: Error code: 400 - {'object': 'error', 'message': 'The decoder prompt (length 4109) is longer than the maximum model length of 4096. Make sure that `max_model_len` is no smaller than the number of text tokens plus multimodal tokens. For image inputs, the number of image tokens depends on the number of images, and possibly their aspect ratios as well.', 'type': 'BadRequestError', 'param': None, 'code': 400}",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [
+                {
+                    "step": "initial_vlm",
+                    "reasoning": "",
+                    "answer": "Skateboarding"
+                }
+            ],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "11241001": {
+            "question_id": "11241001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000011241.jpg",
+            "question": "Is the Tabasco sauce bottle full?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 1.33,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "500175000": {
+            "question_id": "500175000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000500175.jpg",
+            "question": "What time of day does this picture depict?",
+            "target_answers": "evening",
+            "question_type": "other",
+            "initial_answer": "The picture was taken during the evening or night.",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 2.38,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [
+                {
+                    "step": "initial_vlm",
+                    "reasoning": "",
+                    "answer": "The picture was taken during the evening or night."
+                }
+            ],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "267910001": {
+            "question_id": "267910001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000267910.jpg",
+            "question": "Might the electricity be out?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 1.62,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "123070002": {
+            "question_id": "123070002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000123070.jpg",
+            "question": "Is this a National Park?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 0.75,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "225751002": {
+            "question_id": "225751002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000225751.jpg",
+            "question": "Is there broccoli?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "No",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 1.25,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [
+                {
+                    "step": "initial_vlm",
+                    "reasoning": "",
+                    "answer": "No"
+                }
+            ],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "251888007": {
+            "question_id": "251888007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000251888.jpg",
+            "question": "What city is this?",
+            "target_answers": "new york",
+            "question_type": "other",
+            "initial_answer": "",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 1.72,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        },
+        "255630005": {
+            "question_id": "255630005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000255630.jpg",
+            "question": "What color is the water?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "initial_answer": "",
+            "final_answer": "[Answer Failed]",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "Direct Comparison Skipped - Pipeline Error"
+            ],
+            "processing_time_seconds": 1.4,
+            "error": "AgentCommunicationError: list index out of range",
+            "direct_accuracy_check": {
+                "is_correct": null,
+                "cleaned_model_answer": "",
+                "normalized_target_answer": "",
+                "normalized_target_answers": [],
+                "vqa_score": null,
+                "notes": "Skipped due to pipeline error."
+            },
+            "majority_vote": "Majority vote is [Incorrect] with a score of 0/1",
+            "reasoning_steps": [],
+            "confidence_scores": [],
+            "flow_type_used": "specialized"
+        }
+    },
+    "overall_metrics": {
+        "total_processed_successfully": 0,
+        "total_skipped_debate_duplicates": 0,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 10,
+        "total_attempted_in_loader": 10,
+        "overall_accuracy_from_type_aggregation": 0.0,
+        "overall_correct_count": 0,
+        "overall_total_typed_questions": 10,
+        "question_type_summary": {
+            "counts_by_type": {
+                "total": 10,
+                "yes/no": 4,
+                "number": 0,
+                "other": 6
+            },
+            "accuracies_by_type": {
+                "yes/no": {
+                    "count": 4,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                },
+                "number": {
+                    "count": 0,
+                    "correct": 0,
+                    "accuracy_percent": "N/A"
+                },
+                "other": {
+                    "count": 6,
+                    "correct": 0,
+                    "accuracy_percent": 0.0
+                }
+            }
+        }
+    }
+}

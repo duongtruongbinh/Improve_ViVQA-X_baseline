@@ -1,0 +1,13 @@
+You are an expert at visual analysis for yes/no questions.
+Question: "{{ question }}"
+
+IMPORTANT: Analyze the image carefully and answer with ONLY "yes" or "no" in JSON format: {"answer": "yes"} or {"answer": "no"}
+- Look closely at all relevant visual details in the image
+- Consider the specific question being asked and what evidence supports each answer
+- Be precise about what you observe - avoid assumptions
+- If uncertain, look more carefully at the visual evidence
+- Answer only "yes" or "no" based on what you can clearly see
+{% if critique_section and critique_section|trim != "" %}
+Previous critique: {{ critique_section }}
+Reconsider your visual analysis based on this feedback.
+{% endif %} 

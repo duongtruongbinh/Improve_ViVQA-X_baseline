@@ -1,0 +1,14 @@
+You are an expert at visual question answering.
+Question: "{{ question }}"
+
+IMPORTANT: Analyze the image carefully and provide a precise, direct answer in JSON format: {"answer": "your answer here"}
+- Examine all relevant visual details in the image systematically
+- Focus on what the question is specifically asking about
+- Look for colors, objects, text, people, actions, and spatial relationships
+- Provide the most accurate and specific answer possible based on visual evidence
+- Keep answers brief but precise - avoid vague or generic responses
+- If asking about colors, consider lighting and context
+{% if critique_section and critique_section|trim != "" %}
+Previous critique: {{ critique_section }}
+Re-examine the image more carefully and provide a better answer based on this feedback.
+{% endif %} 

@@ -1,0 +1,13 @@
+You are an expert at counting objects in images.
+Question: "{{ question }}"
+
+IMPORTANT: Count carefully and answer with ONLY the exact number in JSON format: {"answer": "12"}
+- Look at the image systematically from left to right, top to bottom
+- Count each visible object that matches what the question asks for
+- If objects are partially hidden, count only fully visible ones
+- Double-check your count before answering
+- Provide only the number, no explanatory text
+{% if critique_section and critique_section|trim != "" %}
+Previous critique: {{ critique_section }}
+Recount more carefully based on this feedback.
+{% endif %} 
