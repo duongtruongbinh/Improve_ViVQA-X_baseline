@@ -10,7 +10,7 @@ from autogen_core.models import ChatCompletionClient
 
 from ..image_utils import process_image_for_vlm_agent
 from ..evaluation import perform_direct_accuracy_check
-from .sequential_agents import (
+from ..agents.sequential_agents import (
     VQATaskRelayMessage,
     VQAImageContextualizerAgent,
     VQAQuestionAnswererAgent,
@@ -44,31 +44,31 @@ async def run_vqa_sequential_workflow(
 
     # Register agents
     # Agent types are unique strings that identify the agent class
-    contextualizer_agent_type = "VQAImageContextualizerAgent_Type"
-    qa_agent_type = "VQAQuestionAnswererAgent_Type"
-    formatter_agent_type = "VQAAnswerFormatterAgent_Type"
-    collector_agent_type = "VQAResultCollectorAgent_Type"
+    # contextualizer_agent_type = "VQAImageContextualizerAgent_Type"
+    # qa_agent_type = "VQAQuestionAnswererAgent_Type"
+    # formatter_agent_type = "VQAAnswerFormatterAgent_Type"
+    # collector_agent_type = "VQAResultCollectorAgent_Type"
 
-    await VQAImageContextualizerAgent.register(
-        runtime, type=contextualizer_agent_type,
-        factory=lambda: VQAImageContextualizerAgent(model_client=vlm_model_client)
-    )
-    await VQAQuestionAnswererAgent.register(
-        runtime, type=qa_agent_type,
-        factory=lambda: VQAQuestionAnswererAgent(model_client=llm_model_client)
-    )
-    await VQAAnswerFormatterAgent.register(
-        runtime, type=formatter_agent_type,
-        factory=lambda: VQAAnswerFormatterAgent(model_client=llm_model_client)
-    )
-    await VQAResultCollectorAgent.register(
-        runtime, type=collector_agent_type,
-        factory=lambda: VQAResultCollectorAgent(
-            completion_events=completion_events,
-            final_results_store=final_results_store
-        )
-    )
-    main_logger.info("Sequential VQA agents registered with runtime.")
+    # await VQAImageContextualizerAgent.register(
+    #     runtime, type=contextualizer_agent_type,
+    #     factory=lambda: VQAImageContextualizerAgent(model_client=vlm_model_client)
+    # )
+    # await VQAQuestionAnswererAgent.register(
+    #     runtime, type=qa_agent_type,
+    #     factory=lambda: VQAQuestionAnswererAgent(model_client=llm_model_client)
+    # )
+    # await VQAAnswerFormatterAgent.register(
+    #     runtime, type=formatter_agent_type,
+    #     factory=lambda: VQAAnswerFormatterAgent(model_client=llm_model_client)
+    # )
+    # await VQAResultCollectorAgent.register(
+    #     runtime, type=collector_agent_type,
+    #     factory=lambda: VQAResultCollectorAgent(
+    #         completion_events=completion_events,
+    #         final_results_store=final_results_store
+    #     )
+    # )
+    # main_logger.info("Sequential VQA agents registered with runtime.")
 
     # Subscribe agents to their respective topics (using the topic *they listen to*)
     # The agent instances are created dynamically by the runtime when a message is published to their type.
@@ -87,10 +87,10 @@ async def run_vqa_sequential_workflow(
     # So, the `type` parameter in `register` is key.
 
     # Revised agent registration matching topic names for clarity with @type_subscription
-    await runtime.delete_agent(AgentId(contextualizer_agent_type, "default")) # clean up if re-running cell
-    await runtime.delete_agent(AgentId(qa_agent_type, "default"))
-    await runtime.delete_agent(AgentId(formatter_agent_type, "default"))
-    await runtime.delete_agent(AgentId(collector_agent_type, "default"))
+    # await runtime.delete_agent(AgentId(contextualizer_agent_type, "default")) # clean up if re-running cell
+    # await runtime.delete_agent(AgentId(qa_agent_type, "default"))
+    # await runtime.delete_agent(AgentId(formatter_agent_type, "default"))
+    # await runtime.delete_agent(AgentId(collector_agent_type, "default"))
 
 
     await VQAImageContextualizerAgent.register(
@@ -161,7 +161,9 @@ async def run_vqa_sequential_workflow(
             image_url=valid_image_url_for_message,
             question=question,
             target_answers=target_answers,
-            question_type=question_type
+            question_type=question_type,
+            current_step_output="",  # Add this field with default value
+            error=None   
         )
 
         # Publish to the first agent in the sequence
@@ -206,27 +208,31 @@ async def run_vqa_sequential_workflow(
                 err_result = create_error_result_dict(
                     qid, image_path, question, target_answers,
                     "InternalError: Result missing after completion event",
-                    "WorkflowError", "sequential", question_type
+                    "WorkflowError"
                 )
+                err_result["flow_type_used"] = "sequential"
+                err_result["question_type"] = question_type
                 err_result["processing_time_seconds"] = round(time.time() - start_time_task, 2)
                 all_pipeline_results.append(err_result)
 
         except asyncio.TimeoutError:
-            main_logger.error(f"QID {qid}: Task timed out.")
+            main_logger.error(f"QID {qid}: Completion event set, but no result found in store.")
             err_result = create_error_result_dict(
                 qid, image_path, question, target_answers,
-                "Sequential task timed out",
-                "TimeoutError", "sequential", question_type
+                "InternalError: Result missing after completion event"
             )
+            err_result["flow_type_used"] = "sequential"
+            err_result["question_type"] = question_type
             err_result["processing_time_seconds"] = round(time.time() - start_time_task, 2)
             all_pipeline_results.append(err_result)
         except Exception as e_flow:
             main_logger.error(f"QID {qid}: Error during sequential flow execution: {e_flow}", exc_info=verbose_logging)
             err_result = create_error_result_dict(
                 qid, image_path, question, target_answers,
-                f"WorkflowExecutionError: {str(e_flow)}",
-                "WorkflowError", "sequential", question_type
+                f"WorkflowExecutionError: {str(e_flow)}"
             )
+            err_result["flow_type_used"] = "sequential"
+            err_result["question_type"] = question_type
             err_result["processing_time_seconds"] = round(time.time() - start_time_task, 2)
             all_pipeline_results.append(err_result)
         finally:

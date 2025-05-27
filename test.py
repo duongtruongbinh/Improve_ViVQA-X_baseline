@@ -31,7 +31,7 @@ config = {
     "provider": "OpenAIChatCompletionClient",
     "config": {
         "model": "Qwen/Qwen3-1.7B",
-        "base_url": "http://127.0.0.1:8000/v1",
+        "base_url": "http://127.0.0.1:8005/v1",
         "api_key": "not_used",
         "parallel_tool_calls": False,
         "model_info": {

@@ -15,7 +15,7 @@ try:
     from .workflows.reflection_flow import run_simple_vqa_pipeline
     from .workflows.debate_flow import run_simplified_debate_vqa_pipeline
     from .workflows.simple_direct_flow import run_simple_direct_vqa_pipeline
-    from .workflows.sequential_flow import run_vqa_sequential_workflow
+    from .workflows.sequential_flow import run_vqa_sequential_workflow # <--- THÊM IMPORT
     from .dataloader import VQAv2Dataset, GQADataset
     from .utils import (
         Colors,
@@ -28,6 +28,7 @@ try:
     from .evaluation import perform_direct_accuracy_check
     from .agents.reflection_agents import VQAGeneratorAgent
     from .agents.debate_agents import VQADebateSolverAgent
+    # Clients for sequential flow (and others)
     from .vllm_clients import vlm_client_vllm, llm_client_vllm
     from .vllm_clients import llm_config_vlm, llm_config_llm
 except ImportError as e:
@@ -62,7 +63,7 @@ async def main_logic_entry_point():
     parser.add_argument("--random_seed", type=int, default=default_random_seed_cfg,
                         help="Random seed for subset selection and other stochastic processes.")
     parser.add_argument("--vqa_flow_type", type=str, default=default_vqa_flow_type_cfg,
-                        choices=['specialized', 'reflection', 'debate', 'simple_direct','sequential'],
+                        choices=['specialized', 'reflection', 'debate', 'simple_direct', 'sequential'], # <--- THÊM 'sequential'
                         help="Type of VQA flow to run. Overrides config.yaml if provided.")
     cli_args = parser.parse_args()
 
@@ -93,7 +94,7 @@ async def main_logic_entry_point():
     effective_num_test = dataset_s_config["num_test_data"]
     effective_random_seed = dataset_s_config["random_seed"]
     effective_split_name = dataset_s_config.get("gqa_dataset_split") if effective_dataset_name == 'gqa' else dataset_s_config.get("vqa_v2_dataset_split")
-    effective_vqa_flow_type = cli_args.vqa_flow_type.lower()
+    effective_vqa_flow_type = cli_args.vqa_flow_type.lower() # Đảm bảo là chữ thường
 
     logger.info(f"Torch version: {torch.__version__}")
     try:
@@ -106,7 +107,8 @@ async def main_logic_entry_point():
         logger.critical(f"{Colors.RED}CRITICAL ERROR: Configuration loaded incorrectly or is empty. Check config.yaml and config_loader.py.{Colors.ENDC}")
         return
     required_config_sections = ["datasets", "inference_settings"]
-    if effective_vqa_flow_type != "simple_direct":
+    # For sequential flow, vlm_details is also needed for vlm_client and llm_client
+    if effective_vqa_flow_type != "simple_direct": # Also applies to sequential
         required_config_sections.append("vlm_details")
 
     for section in required_config_sections:
@@ -135,7 +137,7 @@ async def main_logic_entry_point():
     if effective_vqa_flow_type == "simple_direct":
         model_path_s_direct = vlm_details_conf.get('simple_direct_model_path', 'Default in simple_direct_flow.py')
         logger.info(f"Direct VLM Model Path (from config vllm_details.simple_direct_model_path): {model_path_s_direct}")
-    else:
+    else: # This block applies to specialized, reflection, debate, AND sequential
         logger.info(f"VLM for AutoGen: {vlm_details_conf.get('vlm_model_name', 'N/A')}")
         logger.info(f"LLM for AutoGen: {vlm_details_conf.get('llm_model_name', 'N/A')}")
         base_url_autogen = vlm_details_conf.get('base_url', vlm_details_conf.get('openai_base_url', 'N/A'))
@@ -218,8 +220,9 @@ async def main_logic_entry_point():
     run_config_summary["vqa_flow_type"] = effective_vqa_flow_type
     run_config_summary.update({
         "actual_items_in_loader": len(test_loader),
-        "vlm_model_autogen": vlm_details_conf.get('vlm_model_name') if effective_vqa_flow_type != "simple_direct" else "N/A",
-        "llm_model_autogen": vlm_details_conf.get('llm_model_name') if effective_vqa_flow_type != "simple_direct" else "N/A",
+        # Adjusted to correctly reflect model usage for different flows
+        "vlm_model_autogen": vlm_details_conf.get('vlm_model_name') if effective_vqa_flow_type not in ["simple_direct"] else "N/A",
+        "llm_model_autogen": vlm_details_conf.get('llm_model_name') if effective_vqa_flow_type not in ["simple_direct"] else "N/A",
         "direct_vlm_model_path": vlm_details_conf.get('simple_direct_model_path') if effective_vqa_flow_type == "simple_direct" else "N/A",
         "percent_test_configured": dataset_s_config.get('percent_test') if not effective_use_num else None
     })
@@ -240,14 +243,18 @@ async def main_logic_entry_point():
     processed_successfully_count = 0
     error_in_pipeline_count = 0
     image_not_found_count = 0
-    processed_debate_qids = set() # ADDED: To track QIDs processed by debate flow
-    skipped_debate_due_to_duplicate_count = 0 # ADDED: Counter for skipped debate items
+    processed_debate_qids = set()
+    skipped_debate_due_to_duplicate_count = 0
+
+    # For sequential flow, get f1_threshold from config
+    f1_threshold_for_sequential = inference_s_config.get("f1_threshold_for_other_type", 0.5)
+
 
     for i, data_batch in enumerate(test_loader):
         image_path = data_batch['image_path'][0]
         question_text = data_batch['question'][0]
         question_id_tensor = data_batch['question_id'][0]
-        raw_target_answer = data_batch['answer'][0]
+        raw_target_answer = data_batch['answer'][0] # This could be a list of dicts or a string
         current_qid = str(question_id_tensor.item()) if hasattr(question_id_tensor, 'item') else str(question_id_tensor)
 
         main_determined_q_type = get_question_type(question_text)
@@ -281,8 +288,8 @@ async def main_logic_entry_point():
         else:
             logger.debug(f"{log_prefix} Processing item {i + 1}/{len(test_loader)} (QID: {current_qid}, Main Type Det: {main_determined_q_type})")
 
-        pipeline_result_data = None # Initialize for current iteration
-        item_processed_by_pipeline_this_iteration = False # Flag: default to False
+        pipeline_result_data = None
+        item_processed_by_pipeline_this_iteration = False
 
         if not os.path.exists(image_path):
             logger.error(f"{Colors.RED}ERROR:{Colors.ENDC} Image not found at '{image_path}' for QID {current_qid}. Skipping.")
@@ -318,7 +325,7 @@ async def main_logic_entry_point():
                     logger.info(f"DEBATE flow: QID {current_qid} has already had run_simplified_debate_vqa_pipeline called. "
                                 f"Skipping redundant execution for item index {i}. Using existing result for QID {current_qid}.")
                     skipped_debate_due_to_duplicate_count += 1
-                    item_processed_by_pipeline_this_iteration = False # Pipeline not run for THIS specific item
+                    item_processed_by_pipeline_this_iteration = False
                 else:
                     logger.debug(f"Running DEBATE (simplified) VQA pipeline for QID {current_qid}...")
                     pipeline_result_data = await run_simplified_debate_vqa_pipeline(
@@ -329,7 +336,7 @@ async def main_logic_entry_point():
                         question_type=main_determined_q_type,
                         logger_instance=logger
                     )
-                    processed_debate_qids.add(current_qid) # Mark QID as having its pipeline call attempted
+                    processed_debate_qids.add(current_qid)
                     item_processed_by_pipeline_this_iteration = True
             elif effective_vqa_flow_type == "simple_direct":
                 logger.debug(f"Running SIMPLE DIRECT VQA pipeline for QID {current_qid}...")
@@ -343,13 +350,52 @@ async def main_logic_entry_point():
                     config_settings=current_config
                 )
                 item_processed_by_pipeline_this_iteration = True
-            else: # Handles unknown flow type, preserves original continue behavior
+            elif effective_vqa_flow_type == "sequential": # <--- THÊM CASE CHO SEQUENTIAL
+                logger.debug(f"Running SEQUENTIAL VQA pipeline for QID {current_qid}...")
+                
+                # Prepare task for sequential flow (it expects a list of tasks)
+                current_task_for_sequential = [{
+                    "question_id": current_qid,
+                    "image_path": image_path, # Original path, flow will process it
+                    "question": question_text,
+                    "target_answer": raw_target_answer, # Pass the raw target
+                    "question_type": main_determined_q_type
+                }]
+
+                # Check if clients are available
+                if vlm_client_vllm is None or llm_client_vllm is None:
+                    logger.error(f"VLM or LLM client is None. Cannot run sequential flow for QID {current_qid}.")
+                    pipeline_result_data = create_error_result_dict(
+                        current_qid, image_path, question_text, raw_target_answer,
+                        "VLM or LLM client not initialized for sequential flow.",
+                        "ClientInitializationError", effective_vqa_flow_type
+                    )
+                else:
+                    sequential_results_list = await run_vqa_sequential_workflow(
+                        tasks=current_task_for_sequential,
+                        vlm_model_client=vlm_client_vllm,
+                        llm_model_client=llm_client_vllm,
+                        current_config=current_config, # For image processing within the flow
+                        logger_instance=logger,
+                        f1_threshold_setting=f1_threshold_for_sequential
+                    )
+                    if sequential_results_list and len(sequential_results_list) > 0:
+                        pipeline_result_data = sequential_results_list[0]
+                    else:
+                        logger.error(f"Sequential flow returned empty or no results for QID {current_qid}.")
+                        pipeline_result_data = create_error_result_dict(
+                            current_qid, image_path, question_text, raw_target_answer,
+                            "Sequential flow returned no result.",
+                            "PipelineError", effective_vqa_flow_type
+                        )
+                item_processed_by_pipeline_this_iteration = True
+            else:
                 logger.error(f"Unknown vqa_flow_type: '{effective_vqa_flow_type}'. Skipping QID {current_qid}.")
                 error_data = create_error_result_dict(current_qid, image_path, question_text, raw_target_answer,
                                                       f"Unknown vqa_flow_type: {effective_vqa_flow_type}", "ConfigurationError", effective_vqa_flow_type)
                 all_results_data["results_by_question_id"][current_qid] = error_data
                 error_in_pipeline_count += 1
-                continue # Skip further processing for this item in this iteration
+                continue
 
             if item_processed_by_pipeline_this_iteration:
                 if pipeline_result_data is None:
@@ -362,6 +408,7 @@ async def main_logic_entry_point():
                 elif pipeline_result_data["question_type"] != main_determined_q_type and effective_verbose:
                     logger.info(f"QID {current_qid}: main.py type='{main_determined_q_type}', flow '{effective_vqa_flow_type}' type='{pipeline_result_data['question_type']}'")
 
+                # For specialized flow, it has its own grader logic
                 if effective_vqa_flow_type == "specialized":
                     if grader_instance:
                         grades = pipeline_result_data.get("grades", [])
@@ -373,9 +420,13 @@ async def main_logic_entry_point():
                             pipeline_result_data["majority_vote"] = "Grading Not Applicable or No Grades"
                     else:
                         pipeline_result_data["majority_vote"] = "Specialized (Grader not initialized)"
-                else:
+                # For other flows, including sequential, direct_accuracy_check contains the main evaluation.
+                # We can use a note from it as a placeholder for "majority_vote" if needed, or just rely on direct_accuracy_check.
+                else: # Applies to reflection, debate, simple_direct, sequential
                     accuracy_check_res = pipeline_result_data.get("direct_accuracy_check", {})
-                    pipeline_result_data["majority_vote"] = accuracy_check_res.get("notes", "[Accuracy Check Incomplete]")
+                    # For flows that already populate direct_accuracy_check correctly (like sequential), this should be fine.
+                    pipeline_result_data["majority_vote"] = accuracy_check_res.get("notes", "[Accuracy Check Incomplete or N/A]")
+
 
                 all_results_data["results_by_question_id"][current_qid] = pipeline_result_data
 
@@ -388,8 +439,6 @@ async def main_logic_entry_point():
                 else:
                     processed_successfully_count += 1
                     logger.debug(f"Successfully processed QID {current_qid} through {effective_vqa_flow_type} pipeline.")
-            # If item_processed_by_pipeline_this_iteration is False (e.g. skipped debate duplicate),
-            # this item does not update all_results_data[current_qid], and does not affect success/error counts here.
 
         except Exception as e_pipeline:
             logger.error(f"{Colors.RED}CRITICAL ERROR{Colors.ENDC} during {effective_vqa_flow_type} pipeline for QID {current_qid}: {e_pipeline}", exc_info=True)
@@ -397,29 +446,24 @@ async def main_logic_entry_point():
                                                   str(e_pipeline), "PipelineRuntimeError", effective_vqa_flow_type)
             all_results_data["results_by_question_id"][current_qid] = error_data
             error_in_pipeline_count += 1
-            # If this exception occurred during the *first attempt* for a debate flow QID,
-            # ensure it's marked in processed_debate_qids to prevent retries.
             if effective_vqa_flow_type == "debate" and current_qid not in processed_debate_qids:
                 processed_debate_qids.add(current_qid)
 
     logger.info("--- AutoGen VQA Processing Finished ---")
-    logger.info(f"Total items from DataLoader: {len(test_loader)}") # MODIFIED Log Message
-    logger.info(f"Items processed successfully by pipeline: {Colors.GREEN}{processed_successfully_count}{Colors.ENDC}") # MODIFIED Log Message
-    if skipped_debate_due_to_duplicate_count > 0: # ADDED Log Block
+    logger.info(f"Total items from DataLoader: {len(test_loader)}")
+    logger.info(f"Items processed successfully by pipeline: {Colors.GREEN}{processed_successfully_count}{Colors.ENDC}")
+    if skipped_debate_due_to_duplicate_count > 0:
         logger.info(f"Items skipped for DEBATE flow (QID already processed): {Colors.YELLOW}{skipped_debate_due_to_duplicate_count}{Colors.ENDC}")
     if image_not_found_count > 0:
-        logger.warning(f"Items skipped due to image not found: {Colors.YELLOW}{image_not_found_count}{Colors.ENDC}") # MODIFIED Log Message
+        logger.warning(f"Items skipped due to image not found: {Colors.YELLOW}{image_not_found_count}{Colors.ENDC}")
     if error_in_pipeline_count > 0:
-        logger.error(f"Items with errors (pipeline or config issues): {Colors.RED}{error_in_pipeline_count}{Colors.ENDC}") # MODIFIED Log Message
+        logger.error(f"Items with errors (pipeline or config issues): {Colors.RED}{error_in_pipeline_count}{Colors.ENDC}")
 
 
     question_type_counts = {"total": 0, "yes/no": 0, "number": 0, "other": 0}
     question_type_correct_counts = {"yes/no": 0, "number": 0, "other": 0}
 
-    # The condition for processing stats should be fine as is, because all_results_data will contain
-    # the results for unique QIDs (or the first encountered result if a QID was processed multiple times by non-debate flows).
-    # For debate flow, it will correctly use the single processed result for that QID.
-    if len(all_results_data["results_by_question_id"]) > 0 : # check if there are any results to analyze
+    if len(all_results_data["results_by_question_id"]) > 0 :
         for qid_key, result_item in all_results_data["results_by_question_id"].items():
             if not isinstance(result_item, dict):
                 logger.warning(f"Skipping malformed result item for QID {qid_key} in stats aggregation.")
@@ -444,24 +488,27 @@ async def main_logic_entry_point():
                     if majority_vote_value and isinstance(majority_vote_value, str):
                         if "[correct]" in majority_vote_value.lower():
                             is_correct = True
-                else:
+                else: # Fallback if grader not used/failed, use direct_accuracy_check
                     accuracy_check = result_item.get("direct_accuracy_check", {})
                     is_correct = accuracy_check.get("is_correct", False)
-            elif item_flow_type in ["reflection", "debate", "simple_direct"]:
+            # For reflection, debate, simple_direct, AND sequential flows
+            elif item_flow_type in ["reflection", "debate", "simple_direct", "sequential"]:
                 accuracy_check = result_item.get("direct_accuracy_check", {})
+                # The perform_direct_accuracy_check in each flow (or by sequential_flow itself)
+                # should populate these keys correctly based on question_type.
                 if q_type == "yes/no":
                     is_correct = accuracy_check.get("is_correct_strict", accuracy_check.get("is_correct", False))
                 elif q_type == "number":
                     is_correct = accuracy_check.get("is_correct_loose_numeric", accuracy_check.get("is_correct", False))
-                elif q_type == "other":
+                elif q_type == "other": # Assumes F1 score or similar for 'other'
                     is_correct = accuracy_check.get("is_correct_f1", accuracy_check.get("is_correct", False))
-                else:
+                else: # Fallback
                     is_correct = accuracy_check.get("is_correct", False)
 
             if is_correct:
                 if q_type in question_type_correct_counts:
                     question_type_correct_counts[q_type] += 1
-                else:
+                else: # Should not happen if q_type is categorized correctly above
                     logger.warning(f"Correct answer for unhandled q_type '{q_type}' QID {qid_key} but q_type not in standard counters.")
 
 
@@ -481,20 +528,17 @@ async def main_logic_entry_point():
 
         all_results_data['overall_metrics'].update({
             'total_processed_successfully': processed_successfully_count,
-            'total_skipped_debate_duplicates': skipped_debate_due_to_duplicate_count, # ADDED
+            'total_skipped_debate_duplicates': skipped_debate_due_to_duplicate_count,
             'total_image_not_found': image_not_found_count,
-            'total_pipeline_errors': error_in_pipeline_count, # This includes config errors like unknown flow
+            'total_pipeline_errors': error_in_pipeline_count,
             'total_attempted_in_loader': len(test_loader),
             'overall_accuracy_from_type_aggregation': overall_accuracy_value if total_analyzed_for_types > 0 else None,
             'overall_correct_count': total_correct_overall,
-            'overall_total_typed_questions': total_analyzed_for_types # This is count of unique QIDs analyzed for stats
+            'overall_total_typed_questions': total_analyzed_for_types
         })
         logger.info(f"Total items processed/analyzed for stats (unique QIDs in results): {total_analyzed_for_types}")
-        # The following log lines are now part of the summary block earlier.
-        # logger.info(f"Total items with image not found: {image_not_found_count}")
-        # logger.info(f"Total items with pipeline errors: {error_in_pipeline_count}")
 
-    else: # This 'else' matches 'if len(all_results_data["results_by_question_id"]) > 0'
+    else:
         logger.info("No items were processed or resulted in entries in 'results_by_question_id'; skipping statistics calculation.")
         all_results_data['overall_metrics'] = {
             "message": "No pipeline results to score or items attempted, or results dictionary is empty.",
@@ -526,7 +570,7 @@ async def main_logic_entry_point():
                 "count": total_for_type, "correct": correct_for_type, "accuracy_percent": "N/A"
             }
 
-    if 'overall_metrics' not in all_results_data: all_results_data['overall_metrics'] = {} # Should be initialized by now
+    if 'overall_metrics' not in all_results_data: all_results_data['overall_metrics'] = {}
     all_results_data['overall_metrics']['question_type_summary'] = {
         "counts_by_type": question_type_counts,
         "accuracies_by_type": accuracies_by_type_report

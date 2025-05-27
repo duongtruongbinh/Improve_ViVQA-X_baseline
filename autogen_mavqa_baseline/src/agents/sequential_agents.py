@@ -1,9 +1,9 @@
 # sequential_agents.py
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 import asyncio # For asyncio.Event
-
+from pydantic import BaseModel, Field
 from autogen_core import (
     AgentId,
     MessageContext,
@@ -22,18 +22,21 @@ ANSWER_FORMATTER_TOPIC = "VQAAnswerFormatterAgentTopic"
 RESULT_COLLECTOR_TOPIC = "VQAResultCollectorAgentTopic"
 
 
-@dataclass
-class VQATaskRelayMessage:
+
+class VQATaskRelayMessage(BaseModel):
     question_id: str
     image_url: str
     question: str
     target_answers: Any
     question_type: str
-    current_step_output: str = ""
-    error: Union[str, None] = None
+    current_step_output: str = Field(default="")
+    error: Optional[str] = Field(default=None)
+    
     # For internal flow control if needed, not directly part of agent-to-agent message
     # completion_event: asyncio.Event = field(default_factory=asyncio.Event, repr=False)
-
+    class Config:
+        # Allow arbitrary types if needed (e.g., for asyncio.Event)
+        arbitrary_types_allowed = True
 
 @type_subscription(topic_type=IMAGE_CONTEXTUALIZER_TOPIC)
 class VQAImageContextualizerAgent(RoutedAgent):
@@ -59,20 +62,21 @@ class VQAImageContextualizerAgent(RoutedAgent):
     async def handle_task(self, message: VQATaskRelayMessage, ctx: MessageContext) -> None:
         self.logger.info(f"QID {message.question_id}: Received task. Contextualizing image.")
 
-        vlm_content_list = [
-            {"type": "image_url", "image_url": {"url": message.image_url}},
-            {"type": "text", "text": f"Focus on details relevant to this question: {message.question}"}
-        ]
+        # Create a simple text prompt - the image will be handled via image_path_for_create
+        user_prompt = f"Focus on details relevant to this question: {message.question}"
+        
         messages_to_send = [
             self._system_message,
-            UserMessage(content=vlm_content_list, source="user_contextualizer_input")
+            UserMessage(content=user_prompt, source="user_contextualizer_input")
         ]
 
         response_content = f"[VLMError_Contextualizer_{self.id.key if self.id else 'unbound'}]"
         try:
+            # Pass the image URL as a separate parameter, similar to the mixture agents
             model_result = await self._model_client.create(
                 messages=messages_to_send,
-                cancellation_token=ctx.cancellation_token
+                cancellation_token=ctx.cancellation_token,
+                image_path_for_create=message.image_url
             )
             if isinstance(model_result.content, str) and model_result.content.strip():
                 response_content = model_result.content.strip()
@@ -82,13 +86,10 @@ class VQAImageContextualizerAgent(RoutedAgent):
         except Exception as e:
             self.logger.error(f"QID {message.question_id}: Error during Contextualizer VLM call: {e}", exc_info=True)
             message.error = f"ContextualizerError: {str(e)}"
-            # If error, we might still publish to let the workflow complete with an error state
-            # Or, we could stop here. For sequential, let's propagate.
 
         message.current_step_output = response_content
         self.logger.info(f"QID {message.question_id}: Image contextualized. Output: '{response_content[:100]}...'")
         await self.publish_message(message, topic_id=TopicId(QUESTION_ANSWERER_TOPIC, source=self.id.key))
-
 
 @type_subscription(topic_type=QUESTION_ANSWERER_TOPIC)
 class VQAQuestionAnswererAgent(RoutedAgent):
