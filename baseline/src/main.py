@@ -14,7 +14,6 @@ try:
     from .workflows.specialized_flow import run_vqa_pipeline
     from .workflows.reflection_flow import run_simple_vqa_pipeline
     from .workflows.debate_flow import run_simplified_debate_vqa_pipeline
-    from .workflows.simple_direct_flow import run_simple_direct_vqa_pipeline
     from .dataloader import VQAv2Dataset, GQADataset
     from .utils import (
         Colors,
@@ -61,7 +60,7 @@ async def main_logic_entry_point():
     parser.add_argument("--random_seed", type=int, default=default_random_seed_cfg,
                         help="Random seed for subset selection and other stochastic processes.")
     parser.add_argument("--vqa_flow_type", type=str, default=default_vqa_flow_type_cfg,
-                        choices=['specialized', 'reflection', 'debate', 'simple_direct'],
+                        choices=['specialized', 'reflection', 'debate'],
                         help="Type of VQA flow to run. Overrides config.yaml if provided.")
     cli_args = parser.parse_args()
 
@@ -132,8 +131,8 @@ async def main_logic_entry_point():
         logger.info(f"Using Percentage of Test Data: {percent_to_display:.1f}%")
 
     if effective_vqa_flow_type == "simple_direct":
-        model_path_s_direct = vlm_details_conf.get('simple_direct_model_path', 'Default in simple_direct_flow.py')
-        logger.info(f"Direct VLM Model Path (from config vllm_details.simple_direct_model_path): {model_path_s_direct}")
+        logger.warning(f"{Colors.YELLOW}Warning: 'simple_direct' flow type is not implemented. Using 'specialized' flow instead.{Colors.ENDC}")
+        effective_vqa_flow_type = "specialized"
     else:
         logger.info(f"VLM for AutoGen: {vlm_details_conf.get('vlm_model_name', 'N/A')}")
         logger.info(f"LLM for AutoGen: {vlm_details_conf.get('llm_model_name', 'N/A')}")
@@ -329,18 +328,6 @@ async def main_logic_entry_point():
                         logger_instance=logger
                     )
                     processed_debate_qids.add(current_qid) # Mark QID as having its pipeline call attempted
-                    item_processed_by_pipeline_this_iteration = True
-            elif effective_vqa_flow_type == "simple_direct":
-                logger.debug(f"Running SIMPLE DIRECT VQA pipeline for QID {current_qid}...")
-                pipeline_result_data = await run_simple_direct_vqa_pipeline(
-                    image_path=image_path,
-                    question=question_text,
-                    question_id=current_qid,
-                    target_answer=raw_target_answer,
-                    question_type=main_determined_q_type,
-                    logger_instance=logger,
-                    config_settings=current_config
-                )
                 item_processed_by_pipeline_this_iteration = True
             else: # Handles unknown flow type, preserves original continue behavior
                 logger.error(f"Unknown vqa_flow_type: '{effective_vqa_flow_type}'. Skipping QID {current_qid}.")
@@ -446,7 +433,7 @@ async def main_logic_entry_point():
                 else:
                     accuracy_check = result_item.get("direct_accuracy_check", {})
                     is_correct = accuracy_check.get("is_correct", False)
-            elif item_flow_type in ["reflection", "debate", "simple_direct"]:
+            elif item_flow_type in ["reflection", "debate"]:
                 accuracy_check = result_item.get("direct_accuracy_check", {})
                 if q_type == "yes/no":
                     is_correct = accuracy_check.get("is_correct_strict", accuracy_check.get("is_correct", False))
