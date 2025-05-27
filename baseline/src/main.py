@@ -21,7 +21,9 @@ try:
         get_question_type,
         create_error_result_dict,
         set_seed,
-        Grader
+        Grader,
+        extract_error_analysis_data,
+        save_error_analysis
     )
     from .evaluation import perform_direct_accuracy_check
     from .agents.reflection_agents import VQAGeneratorAgent
@@ -523,6 +525,10 @@ async def main_logic_entry_point():
             with open(output_filename, 'w', encoding='utf-8') as f:
                 json.dump(all_results_data, f, indent=4, ensure_ascii=False)
             logger.info(f"Final results, configuration, and metrics saved to: {output_filename}")
+            
+            # ADDED: Save detailed error analysis for wrong answers
+            save_error_analysis(all_results_data, current_run_output_dir, logger)
+            
         except Exception as e_save:
             logger.error(f"{Colors.RED}ERROR saving final JSON results to {output_filename}: {e_save}{Colors.ENDC}", exc_info=True)
     else:

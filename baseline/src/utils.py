@@ -18,6 +18,7 @@ class Colors:
     RED = FAIL
     GREEN = OKGREEN
     YELLOW = WARNING
+    CYAN = '\033[96m'
 
 class RemoveColorFormatter(logging.Formatter):
     def format(self, record):
@@ -450,3 +451,229 @@ def record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_respo
             json.dump(data, file, indent=4, ensure_ascii=False) 
     except Exception as e:
         print(f"{Colors.FAIL}Error recording final accuracy to {output_response_filename}: {e}{Colors.ENDC}")
+
+def extract_error_analysis_data(result_item: dict, flow_type: str) -> dict:
+    """Extract detailed error analysis data from a result item."""
+    error_analysis = {
+        "question_id": result_item.get("question_id"),
+        "question": result_item.get("question"),
+        "question_type": result_item.get("question_type"),
+        "target_answer": result_item.get("target_answers"),
+        "predicted_answer": result_item.get("final_answer"),
+        "flow_type": flow_type,
+        "error_type": "incorrect_answer",
+        "confidence_score": result_item.get("confidence_score", 0.0),
+        "processing_time": result_item.get("processing_time_seconds", 0.0),
+        "accuracy_details": result_item.get("direct_accuracy_check", {}),
+        "model_interactions": {},
+        "reasoning_analysis": {},
+        "failure_points": []
+    }
+    
+    # Extract flow-specific interaction data
+    if flow_type == "specialized":
+        # Extract specialized flow interactions
+        error_analysis["model_interactions"] = {
+            "initial_answer": result_item.get("initial_answer", ""),
+            "analysis_output": result_item.get("analysis_output", ""),
+            "object_attributes_queried": result_item.get("object_attributes_queried", ""),
+            "reattempt_answer": result_item.get("reattempt_answer", ""),
+            "grades": result_item.get("grades", []),
+            "majority_vote": result_item.get("majority_vote", ""),
+            "match_baseline_failed": result_item.get("match_baseline_failed", False),
+            "is_numeric_reattempt": result_item.get("is_numeric_reattempt", False)
+        }
+        
+        # Analyze reasoning for specialized flow
+        error_analysis["reasoning_analysis"] = {
+            "initial_reasoning_quality": "good" if result_item.get("initial_answer") and not any(marker in result_item.get("initial_answer", "").lower() for marker in ["failed", "error", "empty"]) else "poor",
+            "analysis_triggered": bool(result_item.get("analysis_output")),
+            "reattempt_triggered": bool(result_item.get("reattempt_answer")),
+            "grading_consensus": result_item.get("majority_vote", "").lower() if result_item.get("majority_vote") else "no_consensus"
+        }
+        
+        # Identify failure points
+        if result_item.get("match_baseline_failed"):
+            error_analysis["failure_points"].append("baseline_matching_failed")
+        if not result_item.get("initial_answer") or "failed" in result_item.get("initial_answer", "").lower():
+            error_analysis["failure_points"].append("initial_answer_generation_failed")
+        if result_item.get("analysis_output") and "error" in result_item.get("analysis_output", "").lower():
+            error_analysis["failure_points"].append("failure_analysis_inconclusive")
+        if result_item.get("grades") and len(result_item.get("grades", [])) == 0:
+            error_analysis["failure_points"].append("no_grading_performed")
+            
+    elif flow_type == "reflection":
+        # Extract reflection flow interactions
+        error_analysis["model_interactions"] = {
+            "final_answer": result_item.get("final_answer", ""),
+            "agent_response": "Available" if result_item.get("final_answer") and not result_item.get("final_answer").startswith("[") else "Failed"
+        }
+        
+        error_analysis["reasoning_analysis"] = {
+            "response_quality": "good" if result_item.get("final_answer") and not result_item.get("final_answer").startswith("[") else "poor",
+            "agent_failure": result_item.get("final_answer", "").startswith("[") if result_item.get("final_answer") else True
+        }
+        
+        # Identify failure points
+        if result_item.get("final_answer", "").startswith("["):
+            error_analysis["failure_points"].append("agent_response_failed")
+        if result_item.get("error"):
+            error_analysis["failure_points"].append(f"pipeline_error: {result_item.get('error')}")
+            
+    elif flow_type == "debate":
+        # Extract debate flow interactions
+        additional_metadata = result_item.get("additional_metadata", {})
+        all_rounds = additional_metadata.get("all_rounds_outputs", [])
+        
+        error_analysis["model_interactions"] = {
+            "num_debate_rounds": additional_metadata.get("debate_rounds", 0),
+            "num_solvers": additional_metadata.get("num_solvers", 0),
+            "majority_vote_count": additional_metadata.get("majority_vote_count", 0),
+            "final_answer": result_item.get("final_answer", ""),
+            "solver_responses_by_round": []
+        }
+        
+        # Extract detailed solver interactions
+        for round_idx, round_outputs in enumerate(all_rounds):
+            round_data = {
+                "round_number": round_idx + 1,
+                "solvers": []
+            }
+            for solver_output in round_outputs:
+                solver_data = {
+                    "solver_name": solver_output.get("solver_name", ""),
+                    "answer": solver_output.get("answer", ""),
+                    "reasoning": solver_output.get("reasoning", ""),
+                    "confidence": solver_output.get("confidence", 0.0),
+                    "raw_output": solver_output.get("raw_output", "")[:500] + "..." if len(solver_output.get("raw_output", "")) > 500 else solver_output.get("raw_output", "")  # Truncate for readability
+                }
+                round_data["solvers"].append(solver_data)
+            error_analysis["model_interactions"]["solver_responses_by_round"].append(round_data)
+        
+        # Analyze debate reasoning
+        error_analysis["reasoning_analysis"] = {
+            "consensus_reached": additional_metadata.get("majority_vote_count", 0) > 1,
+            "solver_agreement_level": additional_metadata.get("majority_vote_count", 0) / max(additional_metadata.get("num_solvers", 1), 1),
+            "debate_effectiveness": "high" if additional_metadata.get("majority_vote_count", 0) >= 2 else "low",
+            "final_confidence": result_item.get("confidence_score", 0.0)
+        }
+        
+        # Identify failure points
+        if additional_metadata.get("majority_vote_count", 0) <= 1:
+            error_analysis["failure_points"].append("no_consensus_reached")
+        if result_item.get("confidence_score", 0.0) < 0.5:
+            error_analysis["failure_points"].append("low_confidence_answer")
+        if any("Error" in solver.get("answer", "") for round_outputs in all_rounds for solver in round_outputs):
+            error_analysis["failure_points"].append("solver_errors_detected")
+    
+    return error_analysis
+
+def save_error_analysis(all_results_data: dict, output_dir: str, logger) -> None:
+    """Save detailed error analysis for wrong answers to a separate file."""
+    import time  # Import here to avoid circular imports
+    
+    try:
+        wrong_answers = []
+        total_processed = 0
+        
+        for qid, result_item in all_results_data.get("results_by_question_id", {}).items():
+            if not isinstance(result_item, dict):
+                continue
+                
+            total_processed += 1
+            flow_type = result_item.get("flow_type_used", "unknown")
+            q_type = result_item.get("question_type", "other")
+            
+            # Skip if there's a pipeline error
+            if result_item.get("error"):
+                continue
+            
+            # Determine if answer is correct
+            is_correct = False
+            if flow_type == "specialized":
+                majority_vote_value = result_item.get("majority_vote", "")
+                if majority_vote_value and isinstance(majority_vote_value, str):
+                    is_correct = "[correct]" in majority_vote_value.lower()
+            elif flow_type in ["reflection", "debate"]:
+                accuracy_check = result_item.get("direct_accuracy_check", {})
+                if q_type == "yes/no":
+                    is_correct = accuracy_check.get("is_correct_strict", accuracy_check.get("is_correct", False))
+                elif q_type == "number":
+                    is_correct = accuracy_check.get("is_correct_loose_numeric", accuracy_check.get("is_correct", False))
+                elif q_type == "other":
+                    is_correct = accuracy_check.get("is_correct_f1", accuracy_check.get("is_correct", False))
+                else:
+                    is_correct = accuracy_check.get("is_correct", False)
+            
+            # If answer is wrong, extract detailed error analysis
+            if not is_correct:
+                error_analysis = extract_error_analysis_data(result_item, flow_type)
+                wrong_answers.append(error_analysis)
+        
+        # Create error analysis summary
+        error_summary = {
+            "analysis_metadata": {
+                "total_processed_questions": total_processed,
+                "total_wrong_answers": len(wrong_answers),
+                "error_rate": (len(wrong_answers) / total_processed * 100) if total_processed > 0 else 0,
+                "analysis_timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "flows_analyzed": list(set(item.get("flow_type", "unknown") for item in wrong_answers))
+            },
+            "error_patterns": {
+                "by_question_type": {},
+                "by_flow_type": {},
+                "common_failure_points": {},
+                "confidence_distribution": {"low": 0, "medium": 0, "high": 0}
+            },
+            "detailed_wrong_answers": wrong_answers
+        }
+        
+        # Analyze error patterns
+        for error_item in wrong_answers:
+            # By question type
+            q_type = error_item.get("question_type", "other")
+            if q_type not in error_summary["error_patterns"]["by_question_type"]:
+                error_summary["error_patterns"]["by_question_type"][q_type] = 0
+            error_summary["error_patterns"]["by_question_type"][q_type] += 1
+            
+            # By flow type
+            flow_type = error_item.get("flow_type", "unknown")
+            if flow_type not in error_summary["error_patterns"]["by_flow_type"]:
+                error_summary["error_patterns"]["by_flow_type"][flow_type] = 0
+            error_summary["error_patterns"]["by_flow_type"][flow_type] += 1
+            
+            # Common failure points
+            for failure_point in error_item.get("failure_points", []):
+                if failure_point not in error_summary["error_patterns"]["common_failure_points"]:
+                    error_summary["error_patterns"]["common_failure_points"][failure_point] = 0
+                error_summary["error_patterns"]["common_failure_points"][failure_point] += 1
+            
+            # Confidence distribution
+            confidence = error_item.get("confidence_score", 0.0)
+            if confidence < 0.3:
+                error_summary["error_patterns"]["confidence_distribution"]["low"] += 1
+            elif confidence < 0.7:
+                error_summary["error_patterns"]["confidence_distribution"]["medium"] += 1
+            else:
+                error_summary["error_patterns"]["confidence_distribution"]["high"] += 1
+        
+        # Save error analysis file
+        error_analysis_filename = os.path.join(output_dir, "error_analysis_detailed.json")
+        with open(error_analysis_filename, 'w', encoding='utf-8') as f:
+            json.dump(error_summary, f, indent=4, ensure_ascii=False)
+        
+        logger.info(f"{Colors.CYAN}Error Analysis Report:{Colors.ENDC}")
+        logger.info(f"  Total wrong answers: {Colors.RED}{len(wrong_answers)}{Colors.ENDC} out of {total_processed}")
+        logger.info(f"  Error rate: {Colors.RED}{error_summary['analysis_metadata']['error_rate']:.2f}%{Colors.ENDC}")
+        logger.info(f"  Detailed error analysis saved to: {error_analysis_filename}")
+        
+        # Log top failure patterns
+        if error_summary["error_patterns"]["common_failure_points"]:
+            logger.info(f"  Top failure points:")
+            sorted_failures = sorted(error_summary["error_patterns"]["common_failure_points"].items(), 
+                                   key=lambda x: x[1], reverse=True)
+            for failure_point, count in sorted_failures[:3]:
+                logger.info(f"    - {failure_point}: {count} occurrences")
+        
+    except Exception as e:
+        logger.error(f"{Colors.RED}ERROR saving error analysis: {e}{Colors.ENDC}", exc_info=True)
