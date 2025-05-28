@@ -85,7 +85,7 @@ try:
     initial_vlm_agent = ConversableAgent(
         name="Initial_VLM_Agent",
         llm_config=llm_config_vlm,
-        system_message=load_static_prompt('vlm/initial_default.j2'),
+        system_message=load_static_prompt('specialized/initial_vqa.j2'),
         description="Uses VLM for the first VQA attempt.",
         human_input_mode="NEVER"
     )
@@ -93,7 +93,7 @@ try:
     failure_analysis_agent = ConversableAgent(
         name="Failure_Analysis_Agent",
         llm_config=llm_config_llm,
-        system_message=load_static_prompt('agents/failure_analysis_system.j2'),
+        system_message=load_static_prompt('specialized/failure_analysis.j2'),
         description="Analyzes VLM failures and suggests reattempt strategy.",
         human_input_mode="NEVER"
     )
@@ -101,7 +101,7 @@ try:
     object_attribute_agent = ConversableAgent(
         name="Object_Attribute_Agent",
         llm_config=llm_config_vlm,
-        system_message=load_static_prompt('agents/object_attribute_system_no_tools.j2'),
+        system_message=load_static_prompt('specialized/object_attribute.j2'),
         description="Describes specified objects/attributes in the image.",
         human_input_mode="NEVER"
     )
@@ -109,7 +109,7 @@ try:
     reattempt_vlm_agent = ConversableAgent(
         name="Reattempt_VLM_Agent",
         llm_config=llm_config_vlm,
-        system_message=load_static_prompt('vlm/reattempt_default_no_tools.j2'),
+        system_message=load_static_prompt('specialized/reattempt.j2'),
         description="VLM reattempts VQA with extra context.",
         human_input_mode="NEVER"
     )
@@ -121,7 +121,7 @@ except Exception as e_init:
 # ------------ 7. Orchestrator instance ---------------------------------------------
 try:
     vqa_orchestrator = VQAOrchestratorAgent(
-        system_message=load_static_prompt('agents/vqa_orchestrator_system.j2'),
+        system_message=load_static_prompt('specialized/orchestrator.j2'),
         llm_config=llm_config_llm
     )
 except Exception as e_orch:

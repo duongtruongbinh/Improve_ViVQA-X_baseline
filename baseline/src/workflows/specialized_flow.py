@@ -55,12 +55,6 @@ try:
         object_attribute_agent, reattempt_vlm_agent
     )
     from ..vllm_clients import llm_client_vllm, vlm_client_vllm
-    from ..prompts import (
-        INITIAL_VLM_SYSTEM_PROMPT_VQA_V2, INITIAL_VLM_SYSTEM_PROMPT_DEFAULT,
-        FAILURE_ANALYSIS_SYSTEM_PROMPT, OBJECT_ATTRIBUTE_SYSTEM_PROMPT_NO_TOOLS,
-        REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS, REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS
-    )
-    from autogen.agentchat.conversable_agent import ConversableAgent
 except ImportError as e:
     print(f"ERROR: Error importing modules in main_vqa_flow.py: {e}.")
     print("Ensure all required files (config_loader, image_utils, agents, prompts, vllm_clients, check) exist and are accessible, and AutoGen packages are installed.")
