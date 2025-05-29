@@ -10,7 +10,9 @@ export CUDA_LAUNCH_BLOCKING=1
 ### Create Conda Environment
 
 ```bash
-conda env create -f environment.yaml -n ten_env
+cd VQA
+conda env create -f VQA_env.yaml -n VQA
+conda env create -f vllm_env.yaml -n vllm
 ```
 
 ## Model Name
@@ -41,7 +43,7 @@ Qwen/Qwen3-4B
 
 ```bash
 CUDA_VISIBLE_DEVICES=0 vllm serve Qwen/Qwen2-VL-2B-Instruct --dtype bfloat16 --port 8000 --gpu-memory-utilization 0.4
-CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-7B-Instruct --dtype bfloat16 --port 8001 --max-model-len 2048
+CUDA_VISIBLE_DEVICES=1 vllm serve Qwen/Qwen2-VL-7B-Instruct --dtype bfloat16 --port 8001 --max-model-len 2048 --enable-auto-tool-choice
 ```
 ## Other Common Parameters for `vllm serve`
 
