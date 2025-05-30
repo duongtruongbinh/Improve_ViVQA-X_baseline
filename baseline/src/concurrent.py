@@ -332,6 +332,7 @@ class VQADelegatorAgent(RoutedAgent):
     def __init__(self, description: str):
         super().__init__(description)
         self.model_client = vlm_client_vllm
+        self.logger = logging.getLogger(self.__class__.__name__)
 
     @message_handler
     async def on_user_vqa_task(self, message: VQAUserTask, ctx: MessageContext) -> VQAFinalResult:

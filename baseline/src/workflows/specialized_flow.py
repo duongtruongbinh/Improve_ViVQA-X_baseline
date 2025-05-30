@@ -6,6 +6,7 @@ import sys
 import traceback
 import logging
 from typing import Dict, Any, Optional, Tuple, List, Union
+from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 _yes_no_starters_specialized = [
     "is ", "are ", "was ", "were ", "do ", "does ", "did ", "am ",
@@ -21,6 +22,29 @@ _number_starters_specialized = [
 FAILURE_MARKERS = [
     "[Answer Failed]", "sorry", "unable to answer", "cannot answer"
 ]
+
+# Setup Jinja environment for loading prompts
+CURRENT_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROMPTS_DIR = os.path.join(CURRENT_SCRIPT_DIR, '..', 'prompts')
+
+jinja_env = Environment(
+    loader=FileSystemLoader(PROMPTS_DIR),
+    autoescape=select_autoescape(['j2']),
+    trim_blocks=True,
+    lstrip_blocks=True
+)
+
+def load_static_prompt(template_name: str) -> str:
+    """Render template with no variables."""
+    template = jinja_env.get_template(template_name)
+    return template.render()
+
+# Load system prompts
+INITIAL_VLM_SYSTEM_PROMPT_VQA_V2 = load_static_prompt('specialized/initial_vqa.j2')
+INITIAL_VLM_SYSTEM_PROMPT_DEFAULT = load_static_prompt('specialized/initial_vqa.j2')
+FAILURE_ANALYSIS_SYSTEM_PROMPT = load_static_prompt('specialized/failure_analysis.j2')
+REATTEMPT_VLM_SYSTEM_PROMPT_VQA_V2_NO_TOOLS = load_static_prompt('specialized/reattempt.j2')
+REATTEMPT_VLM_SYSTEM_PROMPT_DEFAULT_NO_TOOLS = load_static_prompt('specialized/reattempt.j2')
 
 def get_question_type_specialized(question_text: str) -> str:
     """Determine the type of question based on its text.

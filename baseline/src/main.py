@@ -8,6 +8,8 @@ import json
 import traceback
 import logging
 import sys
+import time
+from datetime import datetime, timedelta
 
 try:
     from .config_loader import app_config
@@ -37,6 +39,7 @@ except ImportError as e:
     exit(1)
 
 async def main_logic_entry_point():
+    script_start_time = time.time()
     current_config = app_config
 
     default_dataset_name_cfg = current_config.get("datasets", {}).get("dataset_name")
@@ -155,6 +158,7 @@ async def main_logic_entry_point():
     set_seed(effective_random_seed)
     logger.info(f"Global random seeds set to: {effective_random_seed}")
 
+    dataset_load_start = time.time()
     logger.info(f"Loading dataset: {effective_dataset_name}, split: {effective_split_name}...")
     try:
         dataset_class = GQADataset if effective_dataset_name == 'gqa' else VQAv2Dataset
@@ -206,7 +210,9 @@ async def main_logic_entry_point():
         return
 
     test_loader = DataLoader(test_subset, batch_size=1, shuffle=False, num_workers=0, drop_last=False)
-    logger.info(f"Created DataLoader with {len(test_subset)} samples (num batches: {len(test_loader)}).")
+    dataset_load_end = time.time()
+    dataset_load_time = dataset_load_end - dataset_load_start
+    logger.info(f"Created DataLoader with {len(test_subset)} samples (num batches: {len(test_loader)}). Dataset loading took: {dataset_load_time:.2f} seconds")
 
     grader_instance = Grader() if effective_vqa_flow_type == "specialized" else None
 
@@ -242,6 +248,8 @@ async def main_logic_entry_point():
     image_not_found_count = 0
     processed_debate_qids = set() # ADDED: To track QIDs processed by debate flow
     skipped_debate_due_to_duplicate_count = 0 # ADDED: Counter for skipped debate items
+
+    processing_start_time = time.time()
 
     for i, data_batch in enumerate(test_loader):
         image_path = data_batch['image_path'][0]
@@ -390,7 +398,12 @@ async def main_logic_entry_point():
             if effective_vqa_flow_type == "debate" and current_qid not in processed_debate_qids:
                 processed_debate_qids.add(current_qid)
 
+    processing_end_time = time.time()
+    processing_time = processing_end_time - processing_start_time
+    execution_time_str = str(timedelta(seconds=processing_time))
+
     logger.info("--- AutoGen VQA Processing Finished ---")
+    logger.info(f"Processing time: {Colors.CYAN}{execution_time_str} ({processing_time:.2f} seconds){Colors.ENDC}")
     logger.info(f"Total items from DataLoader: {len(test_loader)}") # MODIFIED Log Message
     logger.info(f"Items processed successfully by pipeline: {Colors.GREEN}{processed_successfully_count}{Colors.ENDC}") # MODIFIED Log Message
     if skipped_debate_due_to_duplicate_count > 0: # ADDED Log Block
@@ -475,7 +488,10 @@ async def main_logic_entry_point():
             'total_attempted_in_loader': len(test_loader),
             'overall_accuracy_from_type_aggregation': overall_accuracy_value if total_analyzed_for_types > 0 else None,
             'overall_correct_count': total_correct_overall,
-            'overall_total_typed_questions': total_analyzed_for_types # This is count of unique QIDs analyzed for stats
+            'overall_total_typed_questions': total_analyzed_for_types, # This is count of unique QIDs analyzed for stats
+            'processing_time_seconds': processing_time,
+            'processing_time_formatted': execution_time_str,
+            'dataset_load_time_seconds': dataset_load_time
         })
         logger.info(f"Total items processed/analyzed for stats (unique QIDs in results): {total_analyzed_for_types}")
         # The following log lines are now part of the summary block earlier.
@@ -491,6 +507,9 @@ async def main_logic_entry_point():
             'total_image_not_found': image_not_found_count,
             'total_pipeline_errors': error_in_pipeline_count,
             'total_attempted_in_loader': len(test_loader),
+            'processing_time_seconds': processing_time,
+            'processing_time_formatted': execution_time_str,
+            'dataset_load_time_seconds': dataset_load_time
         }
 
 
@@ -533,6 +552,17 @@ async def main_logic_entry_point():
             logger.error(f"{Colors.RED}ERROR saving final JSON results to {output_filename}: {e_save}{Colors.ENDC}", exc_info=True)
     else:
         logger.info("Skipping saving final results file as per 'save_output_response' configuration.")
+
+    script_end_time = time.time()
+    total_script_time = script_end_time - script_start_time
+    total_script_time_str = str(timedelta(seconds=total_script_time))
+    
+    logger.info("=" * 60)
+    logger.info(f"TOTAL SCRIPT EXECUTION TIME: {Colors.GREEN}{total_script_time_str} ({total_script_time:.2f} seconds){Colors.ENDC}")
+    logger.info(f"  - Dataset loading: {dataset_load_time:.2f} seconds")
+    logger.info(f"  - Processing pipeline: {processing_time:.2f} seconds")
+    logger.info(f"  - Other operations: {(total_script_time - dataset_load_time - processing_time):.2f} seconds")
+    logger.info("=" * 60)
 
 if __name__ == "__main__":
     if not torch.cuda.is_available():
