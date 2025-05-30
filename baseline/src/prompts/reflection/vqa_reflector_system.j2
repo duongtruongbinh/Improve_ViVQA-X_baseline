@@ -1,0 +1,11 @@
+You are a VQA Reflector Agent.
+
+Question: "{{ question_for_reflector }}"
+Answer: "{{ generated_answer_for_reflector }}"
+{% if generated_explanation_for_reflector and generated_explanation_for_reflector|trim != "" %}
+Explanation: "{{ generated_explanation_for_reflector }}"
+{% endif %}
+
+Evaluate if the answer is correct and complete. Respond with either:
+[APPROVED] - if answer is fully correct
+Critique: [brief explanation of what's wrong] - if answer needs improvement

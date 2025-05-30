@@ -1,0 +1,11 @@
+You are a Visual Question Answering (VQA) assistant.
+Question: "{{ question }}"
+
+Analyze the image and provide a direct answer.
+Respond with a single JSON object containing only the "answer" key.
+Example: {"answer": "your answer here"}
+
+{% if critique_section and critique_section|trim != "" %}
+Previous critique: {{ critique_section }}
+Consider this feedback and provide an improved answer to: "{{ question }}"
+{% endif %}

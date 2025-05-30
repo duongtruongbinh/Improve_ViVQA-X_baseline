@@ -1,0 +1,3051 @@
+{
+    "run_configuration": {
+        "dataset_name": "vqa-v2",
+        "dataset_split": "val",
+        "verbose": true,
+        "use_num_test_data": true,
+        "num_test_data": 100,
+        "random_seed": 0,
+        "actual_items_in_loader": 100,
+        "vlm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "llm_model": "Qwen/Qwen2-VL-2B-Instruct",
+        "percent_test_configured": null
+    },
+    "results_by_question_id": {
+        "465643000": {
+            "question_id": "465643000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000465643.jpg",
+            "question": "Do you need a fork to eat this?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.19,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "179229000": {
+            "question_id": "179229000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000179229.jpg",
+            "question": "Is the water calm or wavy?",
+            "target_answers": "calm",
+            "question_type": "yes/no",
+            "initial_answer": "calm",
+            "final_answer": "calm",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (exact match on non]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "calm",
+                "normalized_target_answer": "calm",
+                "normalized_target_answers": [
+                    "calm"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (exact match on non-standard words)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "134981009": {
+            "question_id": "134981009",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000134981.jpg",
+            "question": "What is man doing?",
+            "target_answers": "skiing",
+            "question_type": "other",
+            "initial_answer": "skiing",
+            "final_answer": "skiing",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "skiing",
+                "normalized_target_answer": "skiing",
+                "normalized_target_answers": [
+                    "skiing"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "226360000": {
+            "question_id": "226360000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226360.jpg",
+            "question": "Is this a man eating animal?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "444092002": {
+            "question_id": "444092002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000444092.jpg",
+            "question": "Are the beds the same?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "248631000": {
+            "question_id": "248631000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000248631.jpg",
+            "question": "How many electronic devices are in the photo?",
+            "target_answers": "1",
+            "question_type": "number",
+            "initial_answer": "1",
+            "final_answer": "1",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Correct - Number parsed (model=1.0, target=1.0).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "1",
+                "normalized_target_answer": "1",
+                "normalized_target_answers": [
+                    "1"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=1.0, target=1.0)."
+            },
+            "majority_vote": "Direct comparison (number): Correct"
+        },
+        "179273010": {
+            "question_id": "179273010",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000179273.jpg",
+            "question": "What colors are present in the dish?",
+            "target_answers": "red green brown",
+            "question_type": "other",
+            "initial_answer": "blue",
+            "final_answer": "blue",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 4.62,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue",
+                "normalized_target_answer": "red green brown",
+                "normalized_target_answers": [
+                    "red green brown"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "136464000": {
+            "question_id": "136464000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000136464.jpg",
+            "question": "How many people are sitting on the bench?",
+            "target_answers": "0",
+            "question_type": "number",
+            "initial_answer": "2",
+            "final_answer": "2",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=2.0, target=0.0).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "2",
+                "normalized_target_answer": "0",
+                "normalized_target_answers": [
+                    "0"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=2.0, target=0.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "412894000": {
+            "question_id": "412894000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000412894.jpg",
+            "question": "Is this a crowded street?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "86001003": {
+            "question_id": "86001003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000086001.jpg",
+            "question": "Are these two players on the same team?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "483767002": {
+            "question_id": "483767002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000483767.jpg",
+            "question": "What country is this plane from?",
+            "target_answers": "canada",
+            "question_type": "other",
+            "initial_answer": "Italy",
+            "final_answer": "Italy",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "italy",
+                "normalized_target_answer": "canada",
+                "normalized_target_answers": [
+                    "canada"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "203846001": {
+            "question_id": "203846001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000203846.jpg",
+            "question": "What color is the pole?",
+            "target_answers": "black",
+            "question_type": "other",
+            "initial_answer": "black",
+            "final_answer": "black",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "black",
+                "normalized_target_answer": "black",
+                "normalized_target_answers": [
+                    "black"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "108129002": {
+            "question_id": "108129002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000108129.jpg",
+            "question": "Is this a school campus?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "317797002": {
+            "question_id": "317797002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000317797.jpg",
+            "question": "What color is the woman's dress?",
+            "target_answers": "white",
+            "question_type": "other",
+            "initial_answer": "white",
+            "final_answer": "white",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "white",
+                "normalized_target_answer": "white",
+                "normalized_target_answers": [
+                    "white"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "132540001": {
+            "question_id": "132540001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000132540.jpg",
+            "question": "Is that a can or a bottle on the table?",
+            "target_answers": "can",
+            "question_type": "yes/no",
+            "initial_answer": "bottle",
+            "final_answer": "bottle",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (non]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "bottle",
+                "normalized_target_answer": "can",
+                "normalized_target_answers": [
+                    "can"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (non-standard words no match, F1=0.00)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "135158001": {
+            "question_id": "135158001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000135158.jpg",
+            "question": "What breed is the cat?",
+            "target_answers": "tabby",
+            "question_type": "other",
+            "initial_answer": "blue",
+            "final_answer": "blue",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue",
+                "normalized_target_answer": "tabby",
+                "normalized_target_answers": [
+                    "tabby"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "226058002": {
+            "question_id": "226058002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226058.jpg",
+            "question": "What are the sitting on?",
+            "target_answers": "couch",
+            "question_type": "other",
+            "initial_answer": "couch",
+            "final_answer": "couch",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "couch",
+                "normalized_target_answer": "couch",
+                "normalized_target_answers": [
+                    "couch"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "84493001": {
+            "question_id": "84493001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000084493.jpg",
+            "question": "How many slices are there?",
+            "target_answers": "5",
+            "question_type": "number",
+            "initial_answer": "3",
+            "final_answer": "3",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=3.0, target=5.0).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "3",
+                "normalized_target_answer": "5",
+                "normalized_target_answers": [
+                    "5"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=3.0, target=5.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "425226006": {
+            "question_id": "425226006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000425226.jpg",
+            "question": "What kitchen appliance are they using?",
+            "target_answers": "fridge",
+            "question_type": "other",
+            "initial_answer": "refrigerator",
+            "final_answer": "refrigerator",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "refrigerator",
+                "normalized_target_answer": "fridge",
+                "normalized_target_answers": [
+                    "fridge"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "421757007": {
+            "question_id": "421757007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000421757.jpg",
+            "question": "Is the ship at dock?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "402346024": {
+            "question_id": "402346024",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000402346.jpg",
+            "question": "How many orange things?",
+            "target_answers": "1",
+            "question_type": "number",
+            "initial_answer": "0",
+            "final_answer": "0",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=0.0, target=1.0).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "0",
+                "normalized_target_answer": "1",
+                "normalized_target_answers": [
+                    "1"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=0.0, target=1.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "306412000": {
+            "question_id": "306412000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000306412.jpg",
+            "question": "What is the weather like?",
+            "target_answers": "rainy",
+            "question_type": "other",
+            "initial_answer": "rainy",
+            "final_answer": "rainy",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "rainy",
+                "normalized_target_answer": "rainy",
+                "normalized_target_answers": [
+                    "rainy"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "226147006": {
+            "question_id": "226147006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000226147.jpg",
+            "question": "Is the person reading a book?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "542694007": {
+            "question_id": "542694007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000542694.jpg",
+            "question": "Is there a red sandal here?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "325152005": {
+            "question_id": "325152005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000325152.jpg",
+            "question": "Can you see the back of the bench?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "578485002": {
+            "question_id": "578485002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000578485.jpg",
+            "question": "What type of floor is in this room?",
+            "target_answers": "wood",
+            "question_type": "other",
+            "initial_answer": "wood",
+            "final_answer": "wood",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "wood",
+                "normalized_target_answer": "wood",
+                "normalized_target_answers": [
+                    "wood"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "133503001": {
+            "question_id": "133503001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000133503.jpg",
+            "question": "What season is it?",
+            "target_answers": "winter",
+            "question_type": "other",
+            "initial_answer": "winter",
+            "final_answer": "winter",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "winter",
+                "normalized_target_answer": "winter",
+                "normalized_target_answers": [
+                    "winter"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "479280006": {
+            "question_id": "479280006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000479280.jpg",
+            "question": "What color is the clock?",
+            "target_answers": "black",
+            "question_type": "other",
+            "initial_answer": "blue",
+            "final_answer": "blue",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue",
+                "normalized_target_answer": "black",
+                "normalized_target_answers": [
+                    "black"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "110359000": {
+            "question_id": "110359000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000110359.jpg",
+            "question": "What color is the sky above the jet?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "initial_answer": "gray",
+            "final_answer": "gray",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "gray",
+                "normalized_target_answer": "blue",
+                "normalized_target_answers": [
+                    "blue"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "186899003": {
+            "question_id": "186899003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000186899.jpg",
+            "question": "Would the be a busy beach?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "194097005": {
+            "question_id": "194097005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000194097.jpg",
+            "question": "What food are they sharing?",
+            "target_answers": "cake",
+            "question_type": "other",
+            "initial_answer": "cake",
+            "final_answer": "cake",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "cake",
+                "normalized_target_answer": "cake",
+                "normalized_target_answers": [
+                    "cake"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "115626000": {
+            "question_id": "115626000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000115626.jpg",
+            "question": "Is this bike street legal?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "98981002": {
+            "question_id": "98981002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000098981.jpg",
+            "question": "How many bulls are standing?",
+            "target_answers": "2",
+            "question_type": "number",
+            "initial_answer": "<no bulls>",
+            "final_answer": "<no bulls>",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number string match (parsed: model=None, target=2.0).]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "<no bulls>",
+                "normalized_target_answer": "2",
+                "normalized_target_answers": [
+                    "2"
+                ],
+                "vqa_score": null,
+                "notes": "Number string match (parsed: model=None, target=2.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "450543001": {
+            "question_id": "450543001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000450543.jpg",
+            "question": "Is he wearing a hat?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "413810001": {
+            "question_id": "413810001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000413810.jpg",
+            "question": "Does this look like a high altitude?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "282698001": {
+            "question_id": "282698001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000282698.jpg",
+            "question": "Does the tie look the same as the shirt?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "446497007": {
+            "question_id": "446497007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000446497.jpg",
+            "question": "What color is the ground?",
+            "target_answers": "brown",
+            "question_type": "other",
+            "initial_answer": "gray",
+            "final_answer": "gray",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "gray",
+                "normalized_target_answer": "brown",
+                "normalized_target_answers": [
+                    "brown"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "212766006": {
+            "question_id": "212766006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000212766.jpg",
+            "question": "How many boxes of velveeta are there?",
+            "target_answers": "0",
+            "question_type": "number",
+            "initial_answer": "2",
+            "final_answer": "2",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=2.0, target=0.0).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "2",
+                "normalized_target_answer": "0",
+                "normalized_target_answers": [
+                    "0"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=2.0, target=0.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "394715002": {
+            "question_id": "394715002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000394715.jpg",
+            "question": "What is on the wall?",
+            "target_answers": "air conditioner",
+            "question_type": "other",
+            "initial_answer": "radio",
+            "final_answer": "radio",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "radio",
+                "normalized_target_answer": "air conditioner",
+                "normalized_target_answers": [
+                    "air conditioner"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "28110000": {
+            "question_id": "28110000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000028110.jpg",
+            "question": "Is the giraffe alone?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "153231003": {
+            "question_id": "153231003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000153231.jpg",
+            "question": "What type of tree is depicted in the painting?",
+            "target_answers": "palm",
+            "question_type": "other",
+            "initial_answer": "palm",
+            "final_answer": "palm",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "palm",
+                "normalized_target_answer": "palm",
+                "normalized_target_answers": [
+                    "palm"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "577735002": {
+            "question_id": "577735002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000577735.jpg",
+            "question": "What type of flowers are these?",
+            "target_answers": "lilies",
+            "question_type": "other",
+            "initial_answer": "lilacs",
+            "final_answer": "lilacs",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "lilacs",
+                "normalized_target_answer": "lilies",
+                "normalized_target_answers": [
+                    "lilies"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "12016002": {
+            "question_id": "12016002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000012016.jpg",
+            "question": "What is on the sign?",
+            "target_answers": "worth ave hibiscus ave",
+            "question_type": "other",
+            "initial_answer": "sign",
+            "final_answer": "sign",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "sign",
+                "normalized_target_answer": "worth ave hibiscus ave",
+                "normalized_target_answers": [
+                    "worth ave hibiscus ave"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "55323008": {
+            "question_id": "55323008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000055323.jpg",
+            "question": "Where has this computer been placed?",
+            "target_answers": "desk",
+            "question_type": "other",
+            "initial_answer": "desk",
+            "final_answer": "desk",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "desk",
+                "normalized_target_answer": "desk",
+                "normalized_target_answers": [
+                    "desk"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "5595000": {
+            "question_id": "5595000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000005595.jpg",
+            "question": "Is this book old?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "286202005": {
+            "question_id": "286202005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000286202.jpg",
+            "question": "Does this plane look like it has gas?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "23899004": {
+            "question_id": "23899004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000023899.jpg",
+            "question": "How many people are shown?",
+            "target_answers": "3",
+            "question_type": "number",
+            "initial_answer": "2",
+            "final_answer": "2",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=2.0, target=3.0).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "2",
+                "normalized_target_answer": "3",
+                "normalized_target_answers": [
+                    "3"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=2.0, target=3.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "105622003": {
+            "question_id": "105622003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000105622.jpg",
+            "question": "What is reflected?",
+            "target_answers": "trees",
+            "question_type": "other",
+            "initial_answer": "umbrella",
+            "final_answer": "umbrella",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "umbrella",
+                "normalized_target_answer": "trees",
+                "normalized_target_answers": [
+                    "trees"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "248085003": {
+            "question_id": "248085003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000248085.jpg",
+            "question": "Is this a common scene in everyone's house?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.07,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "262686006": {
+            "question_id": "262686006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000262686.jpg",
+            "question": "What fruits are in the plastic bins?",
+            "target_answers": "bananas",
+            "question_type": "other",
+            "initial_answer": "bananas",
+            "final_answer": "bananas",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "bananas",
+                "normalized_target_answer": "bananas",
+                "normalized_target_answers": [
+                    "bananas"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "552945002": {
+            "question_id": "552945002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000552945.jpg",
+            "question": "Is the female wearing pants?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "269026002": {
+            "question_id": "269026002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000269026.jpg",
+            "question": "What type of fence is this?",
+            "target_answers": "wood",
+            "question_type": "other",
+            "initial_answer": "wooden",
+            "final_answer": "wooden",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Token F1 (lemmatized) (1.00 >= 0.5).]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "wooden",
+                "normalized_target_answer": "wood",
+                "normalized_target_answers": [
+                    "wood"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (1.00 >= 0.5)."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "345125000": {
+            "question_id": "345125000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000345125.jpg",
+            "question": "What color is the cell phone?",
+            "target_answers": "silver",
+            "question_type": "other",
+            "initial_answer": "blue",
+            "final_answer": "blue",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue",
+                "normalized_target_answer": "silver",
+                "normalized_target_answers": [
+                    "silver"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "84859000": {
+            "question_id": "84859000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000084859.jpg",
+            "question": "What are the big sheep doing?",
+            "target_answers": "eating",
+            "question_type": "other",
+            "initial_answer": "eating",
+            "final_answer": "eating",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "eating",
+                "normalized_target_answer": "eating",
+                "normalized_target_answers": [
+                    "eating"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "414397001": {
+            "question_id": "414397001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000414397.jpg",
+            "question": "Who put the nose ring on the cow?",
+            "target_answers": "farmer",
+            "question_type": "other",
+            "initial_answer": "man",
+            "final_answer": "man",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "man",
+                "normalized_target_answer": "farmer",
+                "normalized_target_answers": [
+                    "farmer"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "318415004": {
+            "question_id": "318415004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000318415.jpg",
+            "question": "How many windows are visible?",
+            "target_answers": "1",
+            "question_type": "number",
+            "initial_answer": "0",
+            "final_answer": "0",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=0.0, target=1.0).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "0",
+                "normalized_target_answer": "1",
+                "normalized_target_answers": [
+                    "1"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=0.0, target=1.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "161161001": {
+            "question_id": "161161001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000161161.jpg",
+            "question": "Is there someone in the caboose?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "344029009": {
+            "question_id": "344029009",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000344029.jpg",
+            "question": "What is license plate #?",
+            "target_answers": "n567 jvv",
+            "question_type": "other",
+            "initial_answer": "4016",
+            "final_answer": "4016",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "4016",
+                "normalized_target_answer": "n567 jvv",
+                "normalized_target_answers": [
+                    "n567 jvv"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "76521003": {
+            "question_id": "76521003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000076521.jpg",
+            "question": "Are they on the ground?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "449522007": {
+            "question_id": "449522007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000449522.jpg",
+            "question": "What are the people eating?",
+            "target_answers": "sandwich",
+            "question_type": "other",
+            "initial_answer": "sandwich",
+            "final_answer": "sandwich",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "sandwich",
+                "normalized_target_answer": "sandwich",
+                "normalized_target_answers": [
+                    "sandwich"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "485909018": {
+            "question_id": "485909018",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000485909.jpg",
+            "question": "What laptop is on the desk?",
+            "target_answers": "dell",
+            "question_type": "other",
+            "initial_answer": "laptop",
+            "final_answer": "laptop",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "laptop",
+                "normalized_target_answer": "dell",
+                "normalized_target_answers": [
+                    "dell"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "261888003": {
+            "question_id": "261888003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000261888.jpg",
+            "question": "What color is the floor?",
+            "target_answers": "black",
+            "question_type": "other",
+            "initial_answer": "gray",
+            "final_answer": "gray",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "gray",
+                "normalized_target_answer": "black",
+                "normalized_target_answers": [
+                    "black"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "434618003": {
+            "question_id": "434618003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000434618.jpg",
+            "question": "How many girls are in the photo?",
+            "target_answers": "1",
+            "question_type": "number",
+            "initial_answer": "2",
+            "final_answer": "2",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=2.0, target=1.0).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "2",
+                "normalized_target_answer": "1",
+                "normalized_target_answers": [
+                    "1"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=2.0, target=1.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "135071003": {
+            "question_id": "135071003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000135071.jpg",
+            "question": "What is above the stove?",
+            "target_answers": "cabinets",
+            "question_type": "other",
+            "initial_answer": "bottles",
+            "final_answer": "bottles",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "bottles",
+                "normalized_target_answer": "cabinets",
+                "normalized_target_answers": [
+                    "cabinets"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "285661007": {
+            "question_id": "285661007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000285661.jpg",
+            "question": "Is this a tournament?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "549255003": {
+            "question_id": "549255003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000549255.jpg",
+            "question": "What does the girl have around her neck?",
+            "target_answers": "tie",
+            "question_type": "other",
+            "initial_answer": "tie",
+            "final_answer": "tie",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.09,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "tie",
+                "normalized_target_answer": "tie",
+                "normalized_target_answers": [
+                    "tie"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "269815004": {
+            "question_id": "269815004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000269815.jpg",
+            "question": "Is this person happy?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.16,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "489940002": {
+            "question_id": "489940002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000489940.jpg",
+            "question": "In which direction is the dog looking?",
+            "target_answers": "right",
+            "question_type": "other",
+            "initial_answer": "right",
+            "final_answer": "right",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "right",
+                "normalized_target_answer": "right",
+                "normalized_target_answers": [
+                    "right"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "478981000": {
+            "question_id": "478981000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000478981.jpg",
+            "question": "Is the cheese melted?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "381108001": {
+            "question_id": "381108001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000381108.jpg",
+            "question": "What does the blurry sign in the background say?",
+            "target_answers": "melbourne",
+            "question_type": "other",
+            "initial_answer": "unanswerable",
+            "final_answer": "unanswerable",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.09,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "unanswerable",
+                "normalized_target_answer": "melbourne",
+                "normalized_target_answers": [
+                    "melbourne"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "52637001": {
+            "question_id": "52637001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000052637.jpg",
+            "question": "Is this a golden retriever?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "507301009": {
+            "question_id": "507301009",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000507301.jpg",
+            "question": "Does the cat have a tie on?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "539140002": {
+            "question_id": "539140002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000539140.jpg",
+            "question": "What color is the tennis racket?",
+            "target_answers": "black and red",
+            "question_type": "other",
+            "initial_answer": "white",
+            "final_answer": "white",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "white",
+                "normalized_target_answer": "black and red",
+                "normalized_target_answers": [
+                    "black and red"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "518234003": {
+            "question_id": "518234003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000518234.jpg",
+            "question": "What is the weather like?",
+            "target_answers": "cloudy",
+            "question_type": "other",
+            "initial_answer": "cloudy",
+            "final_answer": "cloudy",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "cloudy",
+                "normalized_target_answer": "cloudy",
+                "normalized_target_answers": [
+                    "cloudy"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "446909003": {
+            "question_id": "446909003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000446909.jpg",
+            "question": "At some point in the day, would he have to utilize his sunglasses?",
+            "target_answers": "yes",
+            "question_type": "other",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "171192000": {
+            "question_id": "171192000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000171192.jpg",
+            "question": "What is in the large wine glass?",
+            "target_answers": "wine",
+            "question_type": "other",
+            "initial_answer": "wine",
+            "final_answer": "wine",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "wine",
+                "normalized_target_answer": "wine",
+                "normalized_target_answers": [
+                    "wine"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "331883002": {
+            "question_id": "331883002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000331883.jpg",
+            "question": "What is the man doing?",
+            "target_answers": "sleeping",
+            "question_type": "other",
+            "initial_answer": "sleeping",
+            "final_answer": "sleeping",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "sleeping",
+                "normalized_target_answer": "sleeping",
+                "normalized_target_answers": [
+                    "sleeping"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "290293002": {
+            "question_id": "290293002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000290293.jpg",
+            "question": "What kind of building is this?",
+            "target_answers": "train station",
+            "question_type": "other",
+            "initial_answer": "train station",
+            "final_answer": "train station",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "train station",
+                "normalized_target_answer": "train station",
+                "normalized_target_answers": [
+                    "train station"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "277172010": {
+            "question_id": "277172010",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000277172.jpg",
+            "question": "Are both vehicles trucks?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "532043007": {
+            "question_id": "532043007",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000532043.jpg",
+            "question": "How long are the animals horns?",
+            "target_answers": "short",
+            "question_type": "other",
+            "initial_answer": "long",
+            "final_answer": "long",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "long",
+                "normalized_target_answer": "short",
+                "normalized_target_answers": [
+                    "short"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "24053000": {
+            "question_id": "24053000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000024053.jpg",
+            "question": "Is there a carpet on the floor?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "566656003": {
+            "question_id": "566656003",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000566656.jpg",
+            "question": "Is the man wearing a hat?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "214224001": {
+            "question_id": "214224001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000214224.jpg",
+            "question": "How many cups are in the picture?",
+            "target_answers": "0",
+            "question_type": "number",
+            "initial_answer": "2",
+            "final_answer": "2",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (number): Incorrect - Number parsed (model=2.0, target=0.0).]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "2",
+                "normalized_target_answer": "0",
+                "normalized_target_answers": [
+                    "0"
+                ],
+                "vqa_score": null,
+                "notes": "Number parsed (model=2.0, target=0.0)."
+            },
+            "majority_vote": "Direct comparison (number): Incorrect"
+        },
+        "228504001": {
+            "question_id": "228504001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000228504.jpg",
+            "question": "Is it real sunny outside?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "198928001": {
+            "question_id": "198928001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000198928.jpg",
+            "question": "What color is the Traffic Light?",
+            "target_answers": "green",
+            "question_type": "other",
+            "initial_answer": "red",
+            "final_answer": "red",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "red",
+                "normalized_target_answer": "green",
+                "normalized_target_answers": [
+                    "green"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "296897002": {
+            "question_id": "296897002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000296897.jpg",
+            "question": "Was this taken outside?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "353347020": {
+            "question_id": "353347020",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000353347.jpg",
+            "question": "Is there a way to leave this room?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "yes",
+            "final_answer": "yes",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.09,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "yes",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "94103001": {
+            "question_id": "94103001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000094103.jpg",
+            "question": "What type of vegetables are green?",
+            "target_answers": "green beans",
+            "question_type": "other",
+            "initial_answer": "green beans",
+            "final_answer": "green beans",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "green beans",
+                "normalized_target_answer": "green beans",
+                "normalized_target_answers": [
+                    "green beans"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "68435005": {
+            "question_id": "68435005",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000068435.jpg",
+            "question": "What color is her dress?",
+            "target_answers": "red",
+            "question_type": "other",
+            "initial_answer": "blue",
+            "final_answer": "blue",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue",
+                "normalized_target_answer": "red",
+                "normalized_target_answers": [
+                    "red"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "524450002": {
+            "question_id": "524450002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000524450.jpg",
+            "question": "Is this a fire engine?",
+            "target_answers": "no",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Correct - Yes/No variants check (standard).]"
+            ],
+            "processing_time_seconds": 0.11,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "no",
+                "normalized_target_answers": [
+                    "no"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (standard)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Correct"
+        },
+        "139294001": {
+            "question_id": "139294001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000139294.jpg",
+            "question": "Is this a toy?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "292301000": {
+            "question_id": "292301000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000292301.jpg",
+            "question": "What color are the cups?",
+            "target_answers": "yellow",
+            "question_type": "other",
+            "initial_answer": "blue",
+            "final_answer": "blue",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "blue",
+                "normalized_target_answer": "yellow",
+                "normalized_target_answers": [
+                    "yellow"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "42147006": {
+            "question_id": "42147006",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000042147.jpg",
+            "question": "Is the airplane taking off or landing?",
+            "target_answers": "landing",
+            "question_type": "yes/no",
+            "initial_answer": "taking off",
+            "final_answer": "taking off",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (non]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "taking off",
+                "normalized_target_answer": "landing",
+                "normalized_target_answers": [
+                    "landing"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (non-standard words no match, F1=0.00)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "284698002": {
+            "question_id": "284698002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000284698.jpg",
+            "question": "What is the man holding in his hands?",
+            "target_answers": "camera",
+            "question_type": "other",
+            "initial_answer": "camera",
+            "final_answer": "camera",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.1,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "camera",
+                "normalized_target_answer": "camera",
+                "normalized_target_answers": [
+                    "camera"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "337815001": {
+            "question_id": "337815001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000337815.jpg",
+            "question": "What type of flooring is in the picture?",
+            "target_answers": "tile",
+            "question_type": "other",
+            "initial_answer": "tile",
+            "final_answer": "tile",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.14,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "tile",
+                "normalized_target_answer": "tile",
+                "normalized_target_answers": [
+                    "tile"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "245414001": {
+            "question_id": "245414001",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000245414.jpg",
+            "question": "What is the nickname for this activity?",
+            "target_answers": "kiting",
+            "question_type": "other",
+            "initial_answer": "kite flying",
+            "final_answer": "kite flying",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Token F1 (lemmatized) (0.67 >= 0.5).]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "kite flying",
+                "normalized_target_answer": "kiting",
+                "normalized_target_answers": [
+                    "kiting"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.67 >= 0.5)."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        },
+        "278437004": {
+            "question_id": "278437004",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000278437.jpg",
+            "question": "What is this cow doing with its left hind leg?",
+            "target_answers": "scratching",
+            "question_type": "other",
+            "initial_answer": "graze",
+            "final_answer": "graze",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.15,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "graze",
+                "normalized_target_answer": "scratching",
+                "normalized_target_answers": [
+                    "scratching"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "118051002": {
+            "question_id": "118051002",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000118051.jpg",
+            "question": "Is it an office?",
+            "target_answers": "yes",
+            "question_type": "yes/no",
+            "initial_answer": "no",
+            "final_answer": "no",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (yes/no): Incorrect - Yes/No variants check (mismatch).]"
+            ],
+            "processing_time_seconds": 0.09,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "no",
+                "normalized_target_answer": "yes",
+                "normalized_target_answers": [
+                    "yes"
+                ],
+                "vqa_score": null,
+                "notes": "Yes/No variants check (mismatch)."
+            },
+            "majority_vote": "Direct comparison (yes/no): Incorrect"
+        },
+        "393410008": {
+            "question_id": "393410008",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000393410.jpg",
+            "question": "What is the color of the sky?",
+            "target_answers": "blue",
+            "question_type": "other",
+            "initial_answer": "orange",
+            "final_answer": "orange",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Incorrect - Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable.]"
+            ],
+            "processing_time_seconds": 0.13,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": false,
+                "cleaned_model_answer": "orange",
+                "normalized_target_answer": "blue",
+                "normalized_target_answers": [
+                    "blue"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Token F1 (lemmatized) (0.00 < 0.5). Relaxed checks failed or not applicable."
+            },
+            "majority_vote": "Direct comparison (other): Incorrect"
+        },
+        "133060000": {
+            "question_id": "133060000",
+            "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000133060.jpg",
+            "question": "What position is this?",
+            "target_answers": "batter",
+            "question_type": "other",
+            "initial_answer": "batter",
+            "final_answer": "batter",
+            "match_baseline_failed": false,
+            "is_numeric_reattempt": false,
+            "analysis_output": "",
+            "object_attributes_queried": "",
+            "reattempt_answer": "",
+            "grades": [
+                "[Direct Comparison (other): Correct - Other: Exact match.]"
+            ],
+            "processing_time_seconds": 0.12,
+            "error": null,
+            "direct_accuracy_check": {
+                "is_correct": true,
+                "cleaned_model_answer": "batter",
+                "normalized_target_answer": "batter",
+                "normalized_target_answers": [
+                    "batter"
+                ],
+                "vqa_score": null,
+                "notes": "Other: Exact match."
+            },
+            "majority_vote": "Direct comparison (other): Correct"
+        }
+    },
+    "overall_metrics": {
+        "final_accuracy_direct_comparison_percent": 48.0,
+        "total_correct_direct_comparison": 48,
+        "total_evaluated_for_direct_comparison": 100,
+        "total_processed_successfully": 100,
+        "total_image_not_found": 0,
+        "total_pipeline_errors": 0,
+        "total_attempted_in_loader": 100,
+        "question_type_summary_direct_comparison": {
+            "counts": {
+                "total": 100,
+                "yes/no": 39,
+                "number": 10,
+                "other": 51,
+                "unknown": 0
+            },
+            "accuracies_report": {
+                "yes/no": {
+                    "count": 39,
+                    "correct": 21,
+                    "accuracy_percent": 53.84615384615385
+                },
+                "number": {
+                    "count": 10,
+                    "correct": 1,
+                    "accuracy_percent": 10.0
+                },
+                "other": {
+                    "count": 51,
+                    "correct": 26,
+                    "accuracy_percent": 50.98039215686274
+                }
+            }
+        }
+    }
+}
