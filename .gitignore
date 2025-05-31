@@ -17,7 +17,6 @@ ENV*/
 # ==== IDE & editor ====
 .vscode/
 
-
 # ==== Notebook & test cache ====
 .ipynb_checkpoints/
 .pytest_cache/
@@ -55,6 +54,9 @@ data/
 datasets/
 images/
 annotations/
+
+# ==== Output files ====
+outputs/
 
 # ==== Hệ điều hành ====
 .DS_Store
