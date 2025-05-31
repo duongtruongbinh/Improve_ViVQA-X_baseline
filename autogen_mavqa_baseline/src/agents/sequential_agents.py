@@ -62,7 +62,6 @@ class VQAImageContextualizerAgent(RoutedAgent):
     async def handle_task(self, message: VQATaskRelayMessage, ctx: MessageContext) -> None:
         self.logger.info(f"QID {message.question_id}: Received task. Contextualizing image.")
 
-        # Create a simple text prompt - the image will be handled via image_path_for_create
         user_prompt = f"Focus on details relevant to this question: {message.question}"
         
         messages_to_send = [
@@ -72,12 +71,19 @@ class VQAImageContextualizerAgent(RoutedAgent):
 
         response_content = f"[VLMError_Contextualizer_{self.id.key if self.id else 'unbound'}]"
         try:
-            # Pass the image URL as a separate parameter, similar to the mixture agents
-            model_result = await self._model_client.create(
-                messages=messages_to_send,
-                cancellation_token=ctx.cancellation_token,
-                image_path_for_create=message.image_url
-            )
+            # Check if the client supports image_path_for_create parameter
+            if hasattr(self._model_client, '_supports_image_path') or 'VLLM' in str(type(self._model_client)):
+                model_result = await self._model_client.create(
+                    messages=messages_to_send,
+                    cancellation_token=ctx.cancellation_token,
+                    image_path_for_create=message.image_url
+                )
+            else:
+                # For standard OpenAI clients, just use text prompt
+                model_result = await self._model_client.create(
+                    messages=messages_to_send,
+                    cancellation_token=ctx.cancellation_token
+                )
             if isinstance(model_result.content, str) and model_result.content.strip():
                 response_content = model_result.content.strip()
             else:
