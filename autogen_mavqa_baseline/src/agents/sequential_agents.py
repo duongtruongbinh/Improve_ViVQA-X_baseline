@@ -22,15 +22,15 @@ ANSWER_FORMATTER_TOPIC = "VQAAnswerFormatterAgentTopic"
 RESULT_COLLECTOR_TOPIC = "VQAResultCollectorAgentTopic"
 
 
-
-class VQATaskRelayMessage(BaseModel):
+@dataclass
+class VQATaskRelayMessage:
     question_id: str
     image_url: str
     question: str
     target_answers: Any
     question_type: str
     current_step_output: str = Field(default="")
-    error: Optional[str] = Field(default=None)
+    error: str = "" 
     
     # For internal flow control if needed, not directly part of agent-to-agent message
     # completion_event: asyncio.Event = field(default_factory=asyncio.Event, repr=False)
@@ -47,13 +47,13 @@ class VQAImageContextualizerAgent(RoutedAgent):
         self.logger = logging.getLogger(f"{self.agent_name}")
         self._system_message = SystemMessage(
             content=(
-                "You are a visual analysis assistant. Given an image and a question, "
-                "describe the relevant visual elements and context in the image that would help answer the question. "
-                "Focus on details pertinent to the question. Do not answer the question directly. "
-                "Provide a detailed textual description of what you see that is relevant."
+                "You are a specialist Visual Context Extractor. Your task is to carefully examine an image and a given question, then extract and describe ONLY the specific visual elements, attributes, and spatial relationships in the image that are DIRECTLY relevant and essential for answering the question. "
+                "Focus on objective, observable details. Do NOT attempt to answer the question itself. Do NOT infer information beyond what is visually present. "
+                "Your output should be a factual, textual description of these key visual details. Avoid general descriptions of the entire image unless all parts are relevant. "
+                "For example, if the question is 'What color is the car?', describe the car's color and any visual context that helps identify it. Do not describe other objects unless they are crucial for context related to the car and its color."
             )
         )
-
+    #Cập nhật logger với agent_id để phân biệt các instance của agent.
     async def bind_id_and_runtime(self, agent_id: AgentId, runtime) -> None:
         await super().bind_id_and_runtime(agent_id, runtime)
         self.logger = logging.getLogger(f"{self.agent_name}.{self.id.key if self.id else 'unbound'}")
@@ -106,11 +106,11 @@ class VQAQuestionAnswererAgent(RoutedAgent):
         self.logger = logging.getLogger(f"{self.agent_name}")
         self._system_message = SystemMessage(
             content=(
-                "You are a Question Answering assistant. You will be given an original question and a detailed "
-                "visual analysis/description of an image relevant to that question. Your task is to "
-                "answer the original question accurately and concisely using ONLY the information from the "
-                "original question and the provided visual analysis. "
-                "Do not refer to 'the visual analysis' in your answer. Just provide the answer."
+                "You are a precise Question Answering Specialist. Your task is to answer the 'Original Question' with high accuracy. "
+                "You MUST base your answer STRICTLY and SOLELY on the information contained within the 'Original Question' itself and the 'Provided Visual Analysis'. "
+                "Do NOT use any external knowledge or make assumptions beyond what is explicitly stated in these inputs. "
+                "Do NOT refer to 'the visual analysis' or 'the provided description' in your answer. Simply provide the direct answer to the question. "
+                "If the provided visual analysis is insufficient to answer the question, state that the information is not available in the visual analysis."
             )
         )
 
@@ -166,13 +166,18 @@ class VQAAnswerFormatterAgent(RoutedAgent):
         self.logger = logging.getLogger(f"{self.agent_name}")
         self._system_message = SystemMessage(
             content=(
-                "You are an Answer Refinement specialist. You will be given an original question and a candidate answer. "
-                "Your task is to refine the candidate answer to be very concise, directly responsive to the question, "
-                "and well-formatted. "
-                "For example, if the question is 'Is there a cat?', a good refined answer is 'Yes' or 'No'. "
-                "If it's 'How many cats?', a good refined answer is just the number (e.g., '3'). "
-                "If it's 'What color is the cat?', a good refined answer is just the color (e.g., 'Black')."
-                "Output ONLY the final refined answer, with no preamble like 'The refined answer is:'."
+                "You are an expert Answer Refinement and Formatting Specialist. Your task is to take an 'Original Question' and a 'Candidate Answer' and refine the candidate answer. "
+                "The refined answer MUST be: \n"
+                "1. Directly responsive to the 'Original Question'.\n"
+                "2. As concise as possible while retaining the core meaning of the 'Candidate Answer'.\n"
+                "3. Well-formatted according to the question type. \n"
+                "4. DO NOT introduce new information or alter the factual content of the 'Candidate Answer'. Your role is to simplify and format, not to re-answer or correct.\n\n"
+                "Formatting Examples:\n"
+                "- If Original Question is 'Is there a cat in the image?', and Candidate Answer is 'Yes, a black cat is visible.', a good refined answer is 'Yes'.\n"
+                "- If Original Question is 'How many dogs are present?', and Candidate Answer is 'I can see three dogs playing.', a good refined answer is '3'.\n"
+                "- If Original Question is 'What is the color of the umbrella?', and Candidate Answer is 'The umbrella appears to be a shade of bright red.', a good refined answer is 'Red' or 'Bright red'.\n"
+                "- If Original Question is 'What is the man doing?', and Candidate Answer is 'The man in the picture is riding a bicycle down the street.', a good refined answer is 'Riding a bicycle' or 'Riding a bicycle down the street'. Choose the most direct and informative short phrase.\n\n"
+                "Output ONLY the final refined answer. No preamble, no explanation, just the answer itself."
             )
         )
     async def bind_id_and_runtime(self, agent_id: AgentId, runtime) -> None:
