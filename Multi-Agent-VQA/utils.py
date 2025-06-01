@@ -290,7 +290,7 @@ def write_response_to_json(question_id, response_dict, output_response_filename)
 
     # Write the updated data back to the file
     with open(output_response_filename, 'w') as file:
-        json.dump(data, file, indent=4)
+        json.dump(data, file, indent=2)
 
 
 def record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_response_filename):
@@ -305,4 +305,4 @@ def record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_respo
 
     # Write the updated data back to the file
     with open(output_response_filename, 'w') as file:
-        json.dump(data, file, indent=4)
+        json.dump(data, file, indent=2)
