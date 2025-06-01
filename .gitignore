@@ -17,6 +17,8 @@ ENV*/
 # ==== IDE & editor ====
 .vscode/
 
+# ==== API Keys ====
+openai_key.txt
 
 # ==== Notebook & test cache ====
 .ipynb_checkpoints/
