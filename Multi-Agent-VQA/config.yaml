@@ -37,9 +37,44 @@ dino:
   BOX_THRESHOLD: 0.35
   TEXT_THRESHOLD: 0.25
 llm:
-  llm_model: 'gpt-4o-mini'
+  llm_model: 'Qwen/Qwen3-1.7B'
+  # LLM provider options: 'openai', 'vllm_local'
+  provider: 'vllm_local'  # Change to use local LLM
+  # OpenAI configuration
+  openai:
+    model: 'gpt-4o-mini'
+    api_key_file: 'openai_key.txt'
+    base_url: 'https://api.openai.com/v1/chat/completions'
+  # Local vLLM server configuration for text-only LLM
+  vllm_local:
+    model: 'Qwen/Qwen3-1.7B'
+    api_key: 'EMPTY'
+    base_url: 'http://localhost:9001/v1/chat/completions'
+    max_tokens: 500
+    temperature: 0.1
 vlm:
   min_bbox_size: 32
+  # VLM provider options: 'openai', 'vllm_8000', 'vllm_9000'
+  provider: 'vllm_9000'  # Keep using VLM on port 9000
+  # OpenAI configuration
+  openai:
+    model: 'gpt-4o-mini'
+    api_key_file: 'openai_key.txt'
+    base_url: 'https://api.openai.com/v1/chat/completions'
+  # vLLM server on port 8000 configuration
+  vllm_8000:
+    model: 'Qwen/Qwen2-VL-2B-Instruct'
+    api_key: 'EMPTY'
+    base_url: 'http://localhost:8000/v1/chat/completions'
+    max_tokens: 400
+    temperature: 0.1
+  # vLLM server on port 9000 configuration  
+  vllm_9000:
+    model: 'Qwen/Qwen2-VL-2B-Instruct'  # Updated to match your actual model
+    api_key: 'EMPTY'
+    base_url: 'http://localhost:9000/v1/chat/completions'
+    max_tokens: 400  # Reduced from 400 to avoid long responses triggering multi-agent unnecessarily
+    temperature: 0.1
 inference:
   verbose: True
   find_nearby_objects: False
