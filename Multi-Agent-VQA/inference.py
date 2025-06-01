@@ -110,7 +110,8 @@ def inference(device, args, test_loader):
 
             if (batch_count + 1) % args['inference']['print_every'] == 0:
                 baseline_accuracy, final_accuracy, _ = grader.average_score()
-                print('Accuracy at batch idx ', batch_count, '(baseline, final)', baseline_accuracy, final_accuracy)
+                print(f'\n📊 Progress - Batch {batch_count + 1}:')
+                print(f'   Baseline: {baseline_accuracy:.1%} | Multi-Agent: {final_accuracy:.1%}')
 
             if args['inference']['save_output_response']:
                 write_response_to_json(question_id, response_dict, output_response_filename)
@@ -118,4 +119,15 @@ def inference(device, args, test_loader):
         baseline_accuracy, final_accuracy, stats = grader.average_score()
         if args['inference']['save_output_response']:
             record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_response_filename)
-        print('Accuracy (baseline, final)', baseline_accuracy, final_accuracy, 'stats', stats)
+        
+        # Simple clean final results
+        print(f'\n{"="*50}')
+        print(f'🎯 FINAL RESULTS')
+        print(f'{"="*50}')
+        print(f'Baseline Accuracy:    {baseline_accuracy:.1%}')
+        print(f'Multi-Agent Accuracy: {final_accuracy:.1%}')
+        improvement = (final_accuracy - baseline_accuracy) / baseline_accuracy * 100 if baseline_accuracy > 0 else 0
+        print(f'Improvement:          {improvement:+.1f}%')
+        print(f'Total Questions:      {stats["count_total"]}')
+        print(f'Correct (Final):      {stats["count_correct"]}/{stats["count_total"]}')
+        print(f'{"="*50}')
