@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import os
 import sys
+import torch
 from PIL import Image
 import numpy as np
 import re
@@ -18,7 +19,6 @@ from detections import query_sam, query_grounded_sam, query_grounding_dino
 from counting import query_clip_count
 from utils import *
 
-
 def inference(device, args, test_loader):
     # Building GroundingDINO, LLM, VLM, and CLIP_Count models as multi-agents
     grounding_dino = load_model(args['dino']['GROUNDING_DINO_CONFIG_PATH'], args['dino']['GROUNDING_DINO_CHECKPOINT_PATH'])
@@ -26,6 +26,7 @@ def inference(device, args, test_loader):
     clip_count = CLIP_Count.load_from_checkpoint('CLIP_Count/ckpt/clipcount_pretrained.ckpt', strict=False).to(device)
     clip_count.eval()  # Set the model to evaluation mode
 
+    # Use hardcoded VQA evaluation from utils
     grader = Grader()
     output_response_filename = args['inference']['output_response_filename']
 
@@ -36,24 +37,23 @@ def inference(device, args, test_loader):
 
             image = np.asarray(Image.open(image_path[0]).convert("RGB"))
 
-            # first try to answer the visual question using the baseline large VLM model directly without calling multi-agents
+            # First try to answer using baseline VLM
             answer = VLM.query_vlm(image, question[0], step='ask_directly', verbose=args['inference']['verbose'])
 
-            # if the answer failed, reattempt the visual question answering task with additional information assisted by the object detection model
+            # Original author's trigger logic
             match_baseline_failed = re.search(r'\[Answer Failed\]', answer[0]) is not None or re.search(r'sorry', answer[0].lower()) is not None or len(answer[0]) == 0
-            # verify_numeric_answer = False # uncomment for ablation study on the object-counting agent or on multi-agents
             verify_numeric_answer = re.search(r'\[Non-zero Numeric Answer\]', answer[0]) is not None
 
-            # if the numeric value is large (>4), we need to reattempt the visual question answering task with CLIP-Count for better accuracy
+            # Original author's large number detection
             is_numeric_answer = re.search(r'\[Numeric Answer\](.*)', answer[0])
             if is_numeric_answer is not None:
                 numeric_answer = is_numeric_answer.group(1)
-                number_is_large = LLM.query_llm([numeric_answer], llm_model=args['llm']['llm_model'], step='check_numeric_answer', verbose=args['inference']['verbose'])
-                if re.search(r'Yes', number_is_large) is not None or re.search(r'yes', number_is_large) is not None:
+                number_is_large = LLM.query_llm([numeric_answer], llm_model=args['llm']['llm_model'], 
+                                              step='check_numeric_answer', verbose=args['inference']['verbose'])
+                if re.search(r'Yes|yes', number_is_large) is not None:
                     match_baseline_failed, verify_numeric_answer = True, True
 
-            # start reattempting the visual question answering task with multi-agents
-            # match_baseline_failed = False # uncomment for ablation study on multi-agents
+            # Use multi-agent approach when triggered
             if match_baseline_failed:
                 if args['inference']['verbose']:
                     if verify_numeric_answer:
@@ -62,52 +62,70 @@ def inference(device, args, test_loader):
                         msg = "The baseline model failed to answer the question initially with missing objects. Reattempting with multi-agents."
                     print(f'{Colors.WARNING}{msg}{Colors.ENDC}')
 
-                # extract object instances needed to solve the visual question answering task
-                needed_objects = LLM.query_llm(question, previous_response=answer[0], llm_model=args['llm']['llm_model'], step='needed_objects',
-                                               verify_numeric_answer=verify_numeric_answer, verbose=args['inference']['verbose'])
+                # Extract needed objects for the task
+                needed_objects = LLM.query_llm(question, previous_response=answer[0], llm_model=args['llm']['llm_model'], 
+                                               step='needed_objects', verify_numeric_answer=verify_numeric_answer, 
+                                               verbose=args['inference']['verbose'])
 
                 if verify_numeric_answer:
-                    # reattempt_answer = answer[0]
+                    # Use CLIP-Count for precise counting
                     reattempt_answer = query_clip_count(device, image, clip_count, prompts=needed_objects, verbose=args['inference']['verbose'])
                 else:
-                    # query grounded sam on the input image. the 'boxes' is a tensor of shape (N, 4) where N is the number of object instances in the image,
-                    # the 'logits' is a tensor of shape (N), and the 'phrases' is a list of length (N) such as ['table', 'door']
-                    image, boxes, logits, phrases = query_grounding_dino(device, args, grounding_dino, image_path[0], text_prompt=needed_objects)
+                    # Use Grounding DINO + VLM for detailed analysis
+                    image_annotated, boxes, logits, phrases = query_grounding_dino(device, args, grounding_dino, image_path[0], text_prompt=needed_objects)
 
-                    # query a large vision-language agent on the attributes of each object instance
+                    # Analyze object attributes with VLM
                     object_attributes = VLM.query_vlm(image, question[0], step='attributes', phrases=phrases, bboxes=boxes, verbose=args['inference']['verbose'])
 
-                    # merge object descriptions as a system prompt and reattempt the visual question answering
-                    reattempt_answer = VLM.query_vlm(image, question[0], step='reattempt', obj_descriptions=object_attributes[0], prev_answer=answer[0],
-                                                     needed_objects=needed_objects, verbose=args['inference']['verbose'])[0]
+                    # Generate final answer with object context
+                    reattempt_answer = VLM.query_vlm(image, question[0], step='reattempt', obj_descriptions=object_attributes[0], 
+                                                     prev_answer=answer[0], needed_objects=needed_objects, verbose=args['inference']['verbose'])[0]
 
-                # grade the answer. vqa-v2 test and test-dev datasets do not have ground truth answers available
-                grades = []
-                for grader_id in range(3):
-                    grades.append(LLM.query_llm(question, target_answer=target_answer[0], model_answer=reattempt_answer, step='grade_answer', grader_id=grader_id, verbose=args['inference']['verbose']))
-
-                # record responses to json file
-                response_dict = {'image_id': str(image_id[0].item()), 'image_path': image_path[0], 'question_id': str(question_id[0].item()), 'question': question[0], 'target_answer': target_answer[0],
-                                 'match_baseline_failed': match_baseline_failed, 'verify_numeric_answer': verify_numeric_answer, 'initial_answer': answer[0], 'reattempt_answer': reattempt_answer,
-                                 'needed_objects': needed_objects, 'grades': grades}
-                if not verify_numeric_answer:
-                    response_dict['object_attributes'] = object_attributes[0]
-                    response_dict['boxes'] = str(boxes)
-                    response_dict['logits'] = str(logits)
-                    response_dict['phrases'] = phrases
-
+                final_answer = reattempt_answer
             else:
-                grades = []
-                for grader_id in range(3):
-                    grades.append(LLM.query_llm(question, target_answer=target_answer[0], model_answer=answer[0], step='grade_answer', grader_id=grader_id, verbose=args['inference']['verbose']))
+                final_answer = answer[0]
 
-                # record responses to json file
-                response_dict = {'image_id': str(image_id[0].item()), 'image_path': image_path[0], 'question_id': str(question_id[0].item()), 'question': question[0], 'target_answer': target_answer[0],
-                                 'match_baseline_failed': match_baseline_failed, 'verify_numeric_answer': verify_numeric_answer, 'initial_answer': answer[0], 'grades': grades}
+            # Use VQA evaluation from utils
+            gt_answers = [{'answer': target_answer[0]}] * 3  # VQA format with 3 annotators
+            vqa_score = grader.vqa_score(final_answer, gt_answers)
+            baseline_score = grader.vqa_score(answer[0], gt_answers)
+            
+            if args['inference']['verbose']:
+                print(f"VQA Score: {vqa_score:.3f} [{'Correct' if vqa_score > 0 else 'Incorrect'}]")
 
-            majority_vote = grader.accumulate_grades(args, grades, match_baseline_failed)
-            response_dict['majority_vote'] = majority_vote
+            # Use grader's accumulate_grades for proper tracking
+            majority_vote = grader.accumulate_grades(args, [], match_baseline_failed, 
+                                                   target_answer=gt_answers, 
+                                                   model_answer=final_answer, 
+                                                   answer_type='unknown',
+                                                   initial_answer=answer[0])
 
+            # Record response
+            response_dict = {
+                'image_id': str(image_id[0].item()), 
+                'image_path': image_path[0], 
+                'question_id': str(question_id[0].item()), 
+                'question': question[0], 
+                'target_answer': target_answer[0],
+                'initial_answer': answer[0],
+                'final_answer': final_answer,
+                'match_baseline_failed': match_baseline_failed, 
+                'verify_numeric_answer': verify_numeric_answer,
+                'vqa_score': vqa_score,
+                'baseline_score': baseline_score,
+                'majority_vote': majority_vote
+            }
+
+            if match_baseline_failed:
+                response_dict.update({
+                    'needed_objects': needed_objects,
+                    'object_attributes': object_attributes[0] if 'object_attributes' in locals() else '',
+                    'boxes': str(boxes) if 'boxes' in locals() else '',
+                    'logits': str(logits) if 'logits' in locals() else '',
+                    'phrases': phrases if 'phrases' in locals() else []
+                })
+
+            # Progress reporting
             if (batch_count + 1) % args['inference']['print_every'] == 0:
                 baseline_accuracy, final_accuracy, _ = grader.average_score()
                 print(f'\n📊 Progress - Batch {batch_count + 1}:')
@@ -116,11 +134,11 @@ def inference(device, args, test_loader):
             if args['inference']['save_output_response']:
                 write_response_to_json(question_id, response_dict, output_response_filename)
 
+        # Final results
         baseline_accuracy, final_accuracy, stats = grader.average_score()
         if args['inference']['save_output_response']:
             record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_response_filename)
         
-        # Simple clean final results
         print(f'\n{"="*50}')
         print(f'🎯 FINAL RESULTS')
         print(f'{"="*50}')
@@ -131,3 +149,5 @@ def inference(device, args, test_loader):
         print(f'Total Questions:      {stats["count_total"]}')
         print(f'Correct (Final):      {stats["count_correct"]}/{stats["count_total"]}')
         print(f'{"="*50}')
+        
+        return baseline_accuracy, final_accuracy, stats
