@@ -40,6 +40,14 @@ class QueryLLM:
             self.max_tokens = self.llm_config.get('max_tokens', 500)
             self.temperature = self.llm_config.get('temperature', 0.1)
             print(f"Configured LLM server: {self.base_url} with model: {self.model_name}")
+        elif self.llm_provider in ['vllm_9000', 'vllm_8000']:
+            # vLLM server configuration for different ports
+            self.api_key = self.llm_config.get('api_key', 'EMPTY')
+            self.model_name = self.llm_config.get('model', 'Qwen/Qwen2-VL-2B-Instruct')
+            self.base_url = self.llm_config.get('base_url', 'http://localhost:9000/v1/chat/completions')
+            self.max_tokens = self.llm_config.get('max_tokens', 300)
+            self.temperature = self.llm_config.get('temperature', 0.1)
+            print(f"Configured LLM server: {self.base_url} with model: {self.model_name}")
         else:
             # Fallback to original logic
             if openai_key is not None:
@@ -171,8 +179,8 @@ class QueryLLM:
         # Use instance configuration instead of parameters
         model_to_use = getattr(self, 'model_name', llm_model)
         
-        if self.llm_provider == 'vllm_local':
-            # For local vLLM server, use requests instead of OpenAI client
+        if self.llm_provider in ['vllm_local', 'vllm_9000', 'vllm_8000']:
+            # For any vLLM server, use requests instead of OpenAI client
             import requests
             
             if step == 'check_numeric_answer':
@@ -189,7 +197,7 @@ class QueryLLM:
             payload = {
                 "model": model_to_use,
                 "messages": messages,
-                "max_tokens": getattr(self, 'max_tokens', 500),
+                "max_tokens": getattr(self, 'max_tokens', 300),
                 "temperature": getattr(self, 'temperature', 0.1)
             }
             
