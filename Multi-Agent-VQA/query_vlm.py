@@ -82,22 +82,28 @@ class QueryVLM:
 
     def messages_to_answer_directly(self, question):
         if self.args['datasets']['dataset'] == 'vqa-v2':
-            # Simplified prompt based on successful baseline achieving 79% accuracy
-            message = "You are a Visual Question Answering (VQA) system. " \
-                      "Use only the information visible in the image. " \
-                      "Answer each question with a single word or short phrase whenever possible. " \
-                      "Always use exactly this output format, with no extra text:\n\n" \
-                      "Answer: <your concise answer>\n\n" \
-                      "Examples:\n" \
-                      "Question: What is the man doing?\nAnswer: skiing\n\n" \
-                      "Question: What material is the table made of?\nAnswer: wood\n\n" \
-                      "Question: Which animal is shown in the picture?\nAnswer: giraffe\n\n" \
-                      "Question: What color is the car?\nAnswer: red\n\n" \
-                      "Question: How many people are there?\nAnswer: two\n\n" \
-                      f"Question: {question}\nAnswer:"
+            message = "You are performing a Visual Question Answering task. " \
+                      "You have access to powerful tools that can help analyze the image and objects in detail. " \
+                      "First, use these tools to identify and analyze relevant objects in the image. " \
+                      "Then, explain what the question wants to ask and what objects you need to look at. " \
+                      "Finally, answer the question step by step using the information from your analysis. " \
+                      "The answer could be a 'yes/no', a number, or other open-ended response. " \
+                      "For counting questions (like 'how many'), use '[Numeric Answer]' and describe each object you see. " \
+                      "If you can't find any objects, use '[Zero Numeric Answer]' and '[Answer Failed]'. " \
+                      "If there are many objects (more than three), use '[Non-zero Numeric Answer]' and '[Answer Failed]'. " \
+                      "For yes/no questions, say 'yes' or 'no' after '[Answer]'. " \
+                      "For other questions, provide a single word or short phrase after '[Answer]'. " \
+                      "If you can't answer confidently, explain why and use '[Answer Failed]'. " \
+                      "Remember to actively use your tools to analyze the image in detail."
         else:
-            message = f"Question: {question}\nAnswer:"
-            
+            message = "You are performing a Visual Question Answering task. " \
+                      "You have access to powerful tools that can help analyze the image and objects in detail. " \
+                      "First, use these tools to identify and analyze relevant objects in the image. " \
+                      "Then, explain what the question wants to ask and what objects you need to look at. " \
+                      "Finally, answer the question step by step using the information from your analysis. " \
+                      "Begin your final answer with '[Answer]'. " \
+                      "If you can't answer confidently, explain why and use '[Answer Failed]'. " \
+                      "Remember to actively use your tools to analyze the image in detail."
         return message
 
     def message_to_check_if_answer_is_numeric(self, question):
@@ -110,14 +116,13 @@ class QueryVLM:
 
     def messages_to_query_object_attributes(self, question, phrase=None, verify_numeric_answer=False):
         if verify_numeric_answer:
-            message = "Describe the " + phrase + " in each image in one sentence that can help you answer the question '" + question + "' and count the number of " + phrase + " in the image. "
+            message = "Use your tools to carefully analyze and describe the " + phrase + " in each image in one sentence that can help you answer the question '" + question + "' and count the number of " + phrase + " in the image. "
         else:
-            # We expect each object to offer a different perspective to solve the question
-            # message = "Describe the attributes and the name of the object related to answer the question '" + question + "' in one sentence."
-            message = "Describe the attributes and the name of the object in the image in one sentence, " \
+            message = "Use your tools to carefully analyze and describe the attributes and the name of the object in the image in one sentence, " \
                   "including visual attributes like color, shape, size, materials, and clothes if the object is a person, " \
                   "and semantic attributes like type and current status if applicable. " \
-                  "Think about what objects you should look at to answer the question '" + question + "' in this specific image, and only focus on these objects." \
+                  "Think about what objects you should look at to answer the question '" + question + "' in this specific image, and only focus on these objects. " \
+                  "Use your tools to analyze each object in detail."
 
             if phrase is not None:
                 message += "You need to focus on the " + phrase + " and nearby objects. "
@@ -126,24 +131,32 @@ class QueryVLM:
 
 
     def messages_to_reattempt(self, question, obj_descriptions, prev_answer):
-        message = "The previous attempt to answer the question '" + question + "' was not successful. " \
-                  "Here are additional objects detected in the image: "
+        message = "You are performing a Visual Question Answering task. " \
+                  "You have access to powerful tools that can help analyze the image and objects in detail. " \
+                  "The previous attempt to answer the question '" + question + "' was not successful. " \
+                  "Here is the previous answer for reference: [Previous Failed Answer: " + prev_answer + "] " \
+                  "We've identified these objects in the image: "
 
         for i, obj in enumerate(obj_descriptions):
-            message += "[Object " + str(i + 1) + "] " + obj + "; "
+            message += "[Object " + str(i) + "] " + obj + "; "
 
         if self.args['datasets']['dataset'] == 'vqa-v2':
-            message += "Now, using this additional information and looking at the image again, " \
-                       "answer the question: '" + question + "'. " \
-                       "Provide a direct, accurate answer. " \
-                       "Start your final answer with '[Reattempted Answer]' followed by your response. " \
-                       "For counting questions, count carefully and provide the exact number. " \
-                       "For yes/no questions, answer 'yes' or 'no'. " \
-                       "For other questions, provide the specific word or phrase that answers the question."
+            message += "First, use your tools to analyze these objects and their relationships in detail. " \
+                       "Then, explain what objects and relations are important for answering the question. " \
+                       "Finally, answer the question step by step using this information. " \
+                       "The answer could be a 'yes/no', a number, or other open-ended response. " \
+                       "For counting questions (like 'how many'), use '[Numeric Answer]' and describe each object you see. " \
+                       "If you can't find any objects, use '[Zero Numeric Answer]' and '[Answer Failed]'. " \
+                       "If there are many objects (more than three), use '[Non-zero Numeric Answer]' and '[Answer Failed]'. " \
+                       "For yes/no questions, say 'yes' or 'no' after '[Reattempted Answer]'. " \
+                       "For other questions, provide a single word or short phrase after '[Reattempted Answer]'. " \
+                       "Remember to actively use your tools to analyze the image and objects in detail."
         else:
-            message += "Based on these descriptions and the image, list any geometric, possessive, or semantic relations among the objects above that are crucial for answering the question and ignore the others. "  \
-                       "Given these additional object descriptions that the model previously missed, please re-attempt to answer the visual question '" + question + "' step by step. " \
-                       "Begin your final answer with '[Reattempted Answer]'."
+            message += "First, use your tools to analyze these objects and their relationships in detail. " \
+                       "Then, explain what objects and relations are important for answering the question. " \
+                       "Finally, answer the question step by step using this information. " \
+                       "Begin your final answer with '[Reattempted Answer]'. " \
+                       "Remember to actively use your tools to analyze the image and objects in detail."
 
         return message
 
@@ -244,6 +257,7 @@ class QueryVLM:
             max_tokens = self.max_tokens
 
         # Retry if GPT response is like "I'm sorry, I cannot assist with this request"
+        completion_text = ""  # Initialize completion_text
         for _ in range(3):
             # Form the prompt including the image.
             # Due to the strong performance of the vision model, we omit multiple queries and majority vote to reduce costs
@@ -254,28 +268,31 @@ class QueryVLM:
                 prompt = {
                     "model": self.model_name,
                     "messages": [
+                        {"role": "system", "content": messages},
                         {
                             "role": "user",
                             "content": [
-                                {"type": "text", "text": messages},
                                 {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
                             ]
-                        }
+                        },
+                        {"role": "assistant", "content": "Answer:"}
                     ],
                     "max_tokens": max_tokens
                 }
             elif self.vlm_provider in ['vllm_8000', 'vllm_9000']:
-                # vLLM API format (OpenAI compatible)
+                # vLLM API format (match 1_model.py exactly)
                 prompt = {
                     "model": self.model_name,
                     "messages": [
+                        {"role": "system", "content": messages},
                         {
                             "role": "user",
                             "content": [
-                                {"type": "text", "text": messages},
-                                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}}
+                                {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}},
+                                {"type": "text", "text": question}
                             ]
-                        }
+                        },
+                        {"role": "assistant", "content": "Answer:"}
                     ],
                     "max_tokens": max_tokens,
                     "temperature": self.temperature
@@ -315,66 +332,63 @@ class QueryVLM:
                     if 'error' in response_json:
                         print(f'API Error: {response_json["error"]}')
                         
+                # Process the response
+                # Check if the response is valid and contains the expected data
+                if 'choices' in response_json and len(response_json['choices']) > 0:
+                    completion_text = response_json['choices'][0].get('message', {}).get('content', '')
+
+                    if verbose:
+                        print(f'VLM Response at step {step}: {completion_text}')
+                        
+                    # Process answer based on step and new format
+                    if step == 'ask_directly':
+                        # Simple processing like 1_model.py - just extract after "Answer:"
+                        if "Answer:" in completion_text:
+                            answer = completion_text.split("Answer:", 1)[-1].strip()
+                            # Remove any trailing explanation or newlines  
+                            answer = answer.split('\n')[0].strip()
+                            if answer.lower().startswith("answer:"):
+                                answer = answer.split(":", 1)[-1].strip()
+                            completion_text = answer
+                        else:
+                            # Take first line as answer if no "Answer:" format
+                            clean_answer = completion_text.strip().split('\n')[0].strip()
+                            completion_text = clean_answer
+                    # Handle reattempt format
+                    elif step == 'reattempt':
+                        # Extract answer from [Reattempted Answer] format
+                        if "[Reattempted Answer]" in completion_text:
+                            reattempt_match = re.search(r'\[Reattempted Answer\]\s*(.*?)(?:\n|$)', completion_text, re.DOTALL)
+                            if reattempt_match:
+                                answer = reattempt_match.group(1).strip()
+                                completion_text = answer if answer else completion_text
+                        # If no proper format but contains reasonable answer, extract it
+                        elif ":" in completion_text and len(completion_text.split()) <= 10:
+                            # Try to extract after colon (e.g., "ReAttempted Answer: blue")
+                            parts = completion_text.split(":", 1)
+                            if len(parts) > 1:
+                                answer = parts[1].strip()
+                                if answer:
+                                    completion_text = answer
+                else:
+                    completion_text = ""
+                    if verbose:
+                        print(f'No choices in response or empty choices. Response: {response_json}')
+                        
             except Exception as e:
                 if verbose:
                     print(f'Request error: {e}')
                     print(f'Raw response: {response.text[:200] if "response" in locals() else "No response"}')
-                continue
-
-            # Process the response
-            # Check if the response is valid and contains the expected data
-            if 'choices' in response_json and len(response_json['choices']) > 0:
-                completion_text = response_json['choices'][0].get('message', {}).get('content', '')
-
-                if verbose:
-                    print(f'VLM Response at step {step}: {completion_text}')
-                    
-                # Process answer based on step and new format
-                if step == 'ask_directly':
-                    # Handle new "Answer:" format from successful baseline
-                    if "Answer:" in completion_text:
-                        answer = completion_text.split("Answer:", 1)[-1].strip()
-                        # Remove any trailing explanation or newlines
-                        answer = answer.split('\n')[0].strip()
-                        completion_text = answer
-                    else:
-                        # If no "Answer:" format, check if it's a reasonable short answer
-                        # Clean the response and check if it's a valid single word/phrase
-                        clean_answer = completion_text.strip().split('\n')[0].strip()
-                        
-                        # Accept if it's a reasonable short answer (not empty, not too long, not apologetic)
-                        if (clean_answer and 
-                            len(clean_answer.split()) <= 5 and  # Max 5 words
-                            not re.search(r'sorry|cannot|can\'t|unclear|unknown|not sure|unsure', clean_answer.lower()) and
-                            not re.search(r'\[.*Failed.*\]', clean_answer)):
-                            completion_text = clean_answer
-                        else:
-                            # Only trigger multi-agent if truly failed
-                            completion_text = "[Answer Failed]"
-                            
-                # Handle reattempt format
-                elif step == 'reattempt':
-                    # Extract answer from [Reattempted Answer] format
-                    if "[Reattempted Answer]" in completion_text:
-                        reattempt_match = re.search(r'\[Reattempted Answer\]\s*(.*?)(?:\n|$)', completion_text, re.DOTALL)
-                        if reattempt_match:
-                            answer = reattempt_match.group(1).strip()
-                            completion_text = answer if answer else completion_text
-                    # If no proper format but contains reasonable answer, extract it
-                    elif ":" in completion_text and len(completion_text.split()) <= 10:
-                        # Try to extract after colon (e.g., "ReAttempted Answer: blue")
-                        parts = completion_text.split(":", 1)
-                        if len(parts) > 1:
-                            answer = parts[1].strip()
-                            if answer:
-                                completion_text = answer
-            else:
+                # Don't automatically trigger [Answer Failed] on exception - retry instead
                 completion_text = ""
-                if verbose:
-                    print(f'No choices in response or empty choices. Response: {response_json}')
+                continue
 
             if step == 'ask_directly' or (not re.search(r'sorry|cannot assist|can not assist|can\'t assist', completion_text, re.IGNORECASE)):
                 break
+            
+        # If all retries failed and completion_text is empty, only then consider it failed
+        if not completion_text and step == 'ask_directly':
+            completion_text = "[Answer Failed]"
 
         return completion_text
 
