@@ -150,6 +150,23 @@ class QueryLLM:
         return messages
 
 
+    def messages_to_query_needed_objects(self, question):
+        message = f"What specific objects need to be detected in the image to answer this question: '{question}'?\n\n" \
+                 f"Instructions:\n" \
+                 f"- List ONLY the key objects that are essential for answering\n" \
+                 f"- Use simple, specific object names (e.g., 'car', 'person', 'dog')\n" \
+                 f"- Avoid abstract concepts or actions\n" \
+                 f"- Maximum 3-5 objects\n" \
+                 f"- If counting question, focus on the specific item being counted\n\n" \
+                 f"Examples:\n" \
+                 f"Question: 'How many cars are there?' → Answer: 'car'\n" \
+                 f"Question: 'What color is the dog?' → Answer: 'dog'\n" \
+                 f"Question: 'Is the man wearing a hat?' → Answer: 'man . hat'\n" \
+                 f"Question: 'What is the person holding?' → Answer: 'person . hand'\n\n" \
+                 f"Answer with object names separated by ' . ' (space dot space):"
+        return message
+
+
     def query_llm(self, prompts, previous_response=None, target_answer=None, model_answer=None, grader_id=0, llm_model='gpt-4o-mini', step='related_objects', max_batch_size=4,
                   verify_numeric_answer=False, verbose=False):
         # query on a single image

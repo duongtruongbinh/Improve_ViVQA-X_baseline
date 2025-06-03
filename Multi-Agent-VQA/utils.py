@@ -496,21 +496,60 @@ def save_output_predictions_vqav2(question_id, model_answer, answer_list, split=
 
 
 def write_response_to_json(question_id, response_dict, output_response_filename):
-    # Check if the JSON file already exists
-    if os.path.exists(output_response_filename):
-        # Read the existing content
-        with open(output_response_filename, 'r') as file:
-            data = json.load(file)
-    else:
-        # Initialize an empty list if the file doesn't exist
-        data = {}
+    """
+    Write response data to a JSON file with robust error handling and file validation.
+    
+    Args:
+        question_id: The question ID
+        response_dict: Dictionary containing the response data
+        output_response_filename: Path to the output JSON file
+    """
+    # Ensure the output directory exists
+    output_dir = os.path.dirname(output_response_filename)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
 
-    # Append the new response
-    data[str(question_id.item())] = response_dict
+    # Initialize data dictionary
+    data = {}
+    
+    # Try to read existing data if file exists
+    if os.path.exists(output_response_filename) and os.path.getsize(output_response_filename) > 0:
+        try:
+            with open(output_response_filename, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+                if not isinstance(data, dict):
+                    print(f"{Colors.WARNING}Warning: {output_response_filename} contains invalid JSON structure. Starting with a new dict.{Colors.ENDC}")
+                    data = {}
+        except json.JSONDecodeError as e:
+            print(f"{Colors.WARNING}Warning: {output_response_filename} contains invalid JSON. Starting with a new dict. Error: {e}{Colors.ENDC}")
+            data = {}
+        except Exception as e:
+            print(f"{Colors.WARNING}Warning: Error reading {output_response_filename}. Starting with a new dict. Error: {e}{Colors.ENDC}")
+            data = {}
+    
+    # Convert question_id to string if it's not already
+    qid_str = str(question_id.item() if hasattr(question_id, 'item') and callable(question_id.item) else question_id)
+    
+    # Update data with new response
+    data[qid_str] = response_dict
 
-    # Write the updated data back to the file
-    with open(output_response_filename, 'w') as file:
-        json.dump(data, file, indent=2)
+    # Write data to file with proper error handling
+    try:
+        # First write to a temporary file
+        temp_filename = output_response_filename + '.tmp'
+        with open(temp_filename, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+        
+        # If successful, replace the original file
+        os.replace(temp_filename, output_response_filename)
+    except Exception as e:
+        print(f"{Colors.FAIL}Error writing response to {output_response_filename}: {e}{Colors.ENDC}")
+        # Clean up temp file if it exists
+        if os.path.exists(temp_filename):
+            try:
+                os.remove(temp_filename)
+            except:
+                pass
 
 
 def record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_response_filename):

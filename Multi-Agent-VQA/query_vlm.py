@@ -39,7 +39,7 @@ class QueryVLM:
             self.model_name = self.vlm_config.get('model', 'Qwen/Qwen2-VL-2B-Instruct')
             self.base_url = self.vlm_config.get('base_url', 'http://localhost:8000/v1/chat/completions')
             self.max_tokens = self.vlm_config.get('max_tokens', 400)
-            self.temperature = self.vlm_config.get('temperature', 0.1)
+            self.temperature = self.vlm_config.get('temperature', 0.0)
             print(f"Configured vLLM server: {self.base_url} with model: {self.model_name}")
         else:
             # Fallback to original logic for other providers like gemini
@@ -82,84 +82,78 @@ class QueryVLM:
 
     def messages_to_answer_directly(self, question):
         if self.args['datasets']['dataset'] == 'vqa-v2':
-            message = "You are performing a Visual Question Answering task. " \
-                      "You have access to powerful tools that can help analyze the image and objects in detail. " \
-                      "First, use these tools to identify and analyze relevant objects in the image. " \
-                      "Then, explain what the question wants to ask and what objects you need to look at. " \
-                      "Finally, answer the question step by step using the information from your analysis. " \
-                      "The answer could be a 'yes/no', a number, or other open-ended response. " \
-                      "For counting questions (like 'how many'), use '[Numeric Answer]' and describe each object you see. " \
-                      "If you can't find any objects, use '[Zero Numeric Answer]' and '[Answer Failed]'. " \
-                      "If there are many objects (more than three), use '[Non-zero Numeric Answer]' and '[Answer Failed]'. " \
-                      "For yes/no questions, say 'yes' or 'no' after '[Answer]'. " \
-                      "For other questions, provide a single word or short phrase after '[Answer]'. " \
-                      "If you can't answer confidently, explain why and use '[Answer Failed]'. " \
-                      "Remember to actively use your tools to analyze the image in detail."
+            message = "You are a Visual Question Answering (VQA) system. " \
+                     "Look at the image carefully and answer the question accurately.\n\n" \
+                     "ANSWER FORMAT:\n" \
+                     "Always start your response with 'Answer: ' followed by your answer.\n\n" \
+                     "REGULAR ANSWERS (99% of cases):\n" \
+                     "- YES/NO questions: Answer 'yes' or 'no'\n" \
+                     "- COUNTING questions: Give the number you count (e.g., '3', 'two')\n" \
+                     "- OTHER questions: Give a short, direct answer\n\n" \
+                     "SPECIAL CASES (use ONLY when specified):\n" \
+                     "- ONLY for counting questions where you see ZERO objects: 'Answer: [Zero Numeric Answer]'\n" \
+                     "- ONLY if you absolutely cannot answer: 'Answer: [Answer Failed]'\n\n" \
+                     "Examples:\n" \
+                     "Question: What is the man doing?\nAnswer: skiing\n" \
+                     "Question: Is this a cat?\nAnswer: yes\n" \
+                     "Question: How many cars are there?\nAnswer: 2\n" \
+                     "Question: How many elephants do you see?\nAnswer: [Zero Numeric Answer] (only if you see zero elephants)"
         else:
-            message = "You are performing a Visual Question Answering task. " \
-                      "You have access to powerful tools that can help analyze the image and objects in detail. " \
-                      "First, use these tools to identify and analyze relevant objects in the image. " \
-                      "Then, explain what the question wants to ask and what objects you need to look at. " \
-                      "Finally, answer the question step by step using the information from your analysis. " \
-                      "Begin your final answer with '[Answer]'. " \
-                      "If you can't answer confidently, explain why and use '[Answer Failed]'. " \
-                      "Remember to actively use your tools to analyze the image in detail."
+            message = "You are a Visual Question Answering (VQA) system. " \
+                     "Look at the image carefully and answer the question accurately.\n\n" \
+                     "Always start with 'Answer: ' followed by a short, direct answer.\n" \
+                     "Only use 'Answer: [Answer Failed]' if you absolutely cannot answer.\n\n" \
+                     "Examples:\n" \
+                     "Question: What is the man doing?\nAnswer: skiing\n" \
+                     "Question: What color is the car?\nAnswer: red"
         return message
 
     def message_to_check_if_answer_is_numeric(self, question):
-        message = "You are performing a Visual Question Answering task. " \
-                  "Given the image and the question '" + question + "', please first verify if the question type is like 'how many' or 'what number of' and asks you to count the number of an object. " \
-                  "If not, say '[Not Numeric Answer]' and explain why. " \
-                  "Otherwise, find which object you need to count, say '[Numeric Answer]', and predict the number. "
+        message = f"Is this question asking for a count or number?\n\n" \
+                 f"Question: '{question}'\n\n" \
+                 f"Answer '[Numeric Answer]' if it asks 'how many' or 'what number of'.\n" \
+                 f"Answer '[Not Numeric Answer]' if it asks anything else."
         return message
-
 
     def messages_to_query_object_attributes(self, question, phrase=None, verify_numeric_answer=False):
         if verify_numeric_answer:
-            message = "Use your tools to carefully analyze and describe the " + phrase + " in each image in one sentence that can help you answer the question '" + question + "' and count the number of " + phrase + " in the image. "
+            message = f"Look at the image and count the {phrase}.\n\n" \
+                     f"Question: '{question}'\n\n" \
+                     f"Describe what you see and count each {phrase} carefully. " \
+                     f"Give a detailed description of each instance you can identify."
         else:
-            message = "Use your tools to carefully analyze and describe the attributes and the name of the object in the image in one sentence, " \
-                  "including visual attributes like color, shape, size, materials, and clothes if the object is a person, " \
-                  "and semantic attributes like type and current status if applicable. " \
-                  "Think about what objects you should look at to answer the question '" + question + "' in this specific image, and only focus on these objects. " \
-                  "Use your tools to analyze each object in detail."
+            message = f"Look at the image and describe the objects relevant to answering: '{question}'\n\n" \
+                     f"Describe each relevant object including:\n" \
+                     f"- Visual appearance (color, shape, size)\n" \
+                     f"- Type and current state\n" \
+                     f"- Location and relationships with other objects\n\n"
 
             if phrase is not None:
-                message += "You need to focus on the " + phrase + " and nearby objects. "
+                message += f"Focus especially on: {phrase}\n"
 
         return message
-
 
     def messages_to_reattempt(self, question, obj_descriptions, prev_answer):
-        message = "You are performing a Visual Question Answering task. " \
-                  "You have access to powerful tools that can help analyze the image and objects in detail. " \
-                  "The previous attempt to answer the question '" + question + "' was not successful. " \
-                  "Here is the previous answer for reference: [Previous Failed Answer: " + prev_answer + "] " \
-                  "We've identified these objects in the image: "
-
+        message = f"The previous answer '{prev_answer}' was incorrect. Let me try again using this object information:\n\n" \
+                 f"Question: '{question}'\n\n" \
+                 f"Objects detected:\n"
+        
         for i, obj in enumerate(obj_descriptions):
-            message += "[Object " + str(i) + "] " + obj + "; "
+            message += f"- Object {i+1}: {obj}\n"
 
         if self.args['datasets']['dataset'] == 'vqa-v2':
-            message += "First, use your tools to analyze these objects and their relationships in detail. " \
-                       "Then, explain what objects and relations are important for answering the question. " \
-                       "Finally, answer the question step by step using this information. " \
-                       "The answer could be a 'yes/no', a number, or other open-ended response. " \
-                       "For counting questions (like 'how many'), use '[Numeric Answer]' and describe each object you see. " \
-                       "If you can't find any objects, use '[Zero Numeric Answer]' and '[Answer Failed]'. " \
-                       "If there are many objects (more than three), use '[Non-zero Numeric Answer]' and '[Answer Failed]'. " \
-                       "For yes/no questions, say 'yes' or 'no' after '[Reattempted Answer]'. " \
-                       "For other questions, provide a single word or short phrase after '[Reattempted Answer]'. " \
-                       "Remember to actively use your tools to analyze the image and objects in detail."
+            message += f"\nBased on these objects, answer the question directly:\n" \
+                      f"- For YES/NO questions: Answer only 'yes' or 'no'\n" \
+                      f"- For COUNTING questions: Give the exact number you can count\n" \
+                      f"- For OTHER questions: Give a short, direct answer\n" \
+                      f"- If still uncertain, write '[Answer Failed]'\n\n" \
+                      f"Answer:"
         else:
-            message += "First, use your tools to analyze these objects and their relationships in detail. " \
-                       "Then, explain what objects and relations are important for answering the question. " \
-                       "Finally, answer the question step by step using this information. " \
-                       "Begin your final answer with '[Reattempted Answer]'. " \
-                       "Remember to actively use your tools to analyze the image and objects in detail."
+            message += f"\nBased on these objects, give a direct answer to: '{question}'\n" \
+                      f"If still uncertain, write '[Answer Failed]'\n\n" \
+                      f"Answer:"
 
         return message
-
 
     def messages_to_reattempt_gemini(self, question, obj_descriptions, prev_answer):
         # message = "After a previous attempt to answer the question '" + question + "', the response was not successful, " \
@@ -236,7 +230,7 @@ class QueryVLM:
 
         if step == 'ask_directly':
             messages = self.messages_to_answer_directly(question)
-            max_tokens = 400
+            max_tokens = 30  # Match the successful baseline
         elif step == 'check_numeric_answer':
             messages = self.message_to_check_if_answer_is_numeric(question)
             max_tokens = 300
@@ -354,22 +348,30 @@ class QueryVLM:
                             # Take first line as answer if no "Answer:" format
                             clean_answer = completion_text.strip().split('\n')[0].strip()
                             completion_text = clean_answer
+                            
                     # Handle reattempt format
                     elif step == 'reattempt':
-                        # Extract answer from [Reattempted Answer] format
-                        if "[Reattempted Answer]" in completion_text:
+                        # Extract answer after "Answer:" 
+                        if "Answer:" in completion_text:
+                            answer_part = completion_text.split("Answer:", 1)[-1].strip()
+                            # Take first line as the answer
+                            answer = answer_part.split('\n')[0].strip()
+                            if answer:
+                                completion_text = answer
+                        # Fallback: look for [Reattempted Answer] format (legacy)
+                        elif "[Reattempted Answer]" in completion_text:
                             reattempt_match = re.search(r'\[Reattempted Answer\]\s*(.*?)(?:\n|$)', completion_text, re.DOTALL)
                             if reattempt_match:
                                 answer = reattempt_match.group(1).strip()
                                 completion_text = answer if answer else completion_text
-                        # If no proper format but contains reasonable answer, extract it
-                        elif ":" in completion_text and len(completion_text.split()) <= 10:
-                            # Try to extract after colon (e.g., "ReAttempted Answer: blue")
-                            parts = completion_text.split(":", 1)
-                            if len(parts) > 1:
-                                answer = parts[1].strip()
-                                if answer:
-                                    completion_text = answer
+                        # If no clear format, take first substantial line
+                        else:
+                            lines = completion_text.strip().split('\n')
+                            for line in lines:
+                                line = line.strip()
+                                if line and not line.startswith(('Based on', 'Looking at', 'The', 'I can see')):
+                                    completion_text = line
+                                    break
                 else:
                     completion_text = ""
                     if verbose:

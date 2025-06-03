@@ -40,30 +40,50 @@ def inference(device, args, test_loader):
             # First try to answer using baseline VLM
             answer = VLM.query_vlm(image, question[0], step='ask_directly', verbose=args['inference']['verbose'])
 
-            # Original author's trigger logic
-            match_baseline_failed = re.search(r'\[Answer Failed\]', answer[0]) is not None or re.search(r'sorry', answer[0].lower()) is not None or len(answer[0]) == 0
-            verify_numeric_answer = re.search(r'\[Non-zero Numeric Answer\]', answer[0]) is not None
-
-            # Original author's large number detection
-            is_numeric_answer = re.search(r'\[Numeric Answer\](.*)', answer[0])
-            if is_numeric_answer is not None:
-                numeric_answer = is_numeric_answer.group(1)
-                number_is_large = LLM.query_llm([numeric_answer], llm_model=args['llm']['llm_model'], 
-                                              step='check_numeric_answer', verbose=args['inference']['verbose'])
-                if re.search(r'Yes|yes', number_is_large) is not None:
-                    match_baseline_failed, verify_numeric_answer = True, True
+            # Improved trigger logic
+            baseline_answer = answer[0].strip()
+            
+            # Check for explicit failure signals
+            explicit_failure = any(signal in baseline_answer for signal in ['[Answer Failed]', 'sorry', "I don't know", "I cannot", "unclear"])
+            
+            # Check for numeric answer triggers
+            zero_numeric = '[Zero Numeric Answer]' in baseline_answer
+            nonzero_numeric = '[Non-zero Numeric Answer]' in baseline_answer
+            verify_numeric_answer = nonzero_numeric
+            
+            # Check if answer is too vague or empty
+            vague_answer = len(baseline_answer.strip()) == 0 or baseline_answer.lower().strip() in ['unknown', 'unsure', 'maybe']
+            
+            # Original author's large number detection for counting questions
+            is_counting_question = any(phrase in question[0].lower() for phrase in ['how many', 'what number', 'count'])
+            if is_counting_question and not zero_numeric and not nonzero_numeric and not explicit_failure:
+                # Check if it's a large number that needs verification
+                try:
+                    # Try to extract number from answer
+                    import re
+                    numbers = re.findall(r'\d+', baseline_answer)
+                    if numbers:
+                        largest_num = max(int(num) for num in numbers)
+                        if largest_num > 10:  # Consider large if > 10
+                            verify_numeric_answer = True
+                            explicit_failure = True
+                except:
+                    pass
+            
+            # Decide if multi-agent approach is needed
+            match_baseline_failed = explicit_failure or zero_numeric or vague_answer
 
             # Use multi-agent approach when triggered
             if match_baseline_failed:
                 if args['inference']['verbose']:
                     if verify_numeric_answer:
-                        msg = "The baseline model needs further assistance to predict a numeric answer. Reattempting with multi-agents."
+                        msg = "The baseline model needs assistance with counting/numeric answer. Triggering multi-agent approach."
                     else:
-                        msg = "The baseline model failed to answer the question initially with missing objects. Reattempting with multi-agents."
+                        msg = f"The baseline model failed (answer: '{baseline_answer}'). Triggering multi-agent approach."
                     print(f'{Colors.WARNING}{msg}{Colors.ENDC}')
 
                 # Extract needed objects for the task
-                needed_objects = LLM.query_llm(question, previous_response=answer[0], llm_model=args['llm']['llm_model'], 
+                needed_objects = LLM.query_llm(question, previous_response=baseline_answer, llm_model=args['llm']['llm_model'], 
                                                step='needed_objects', verify_numeric_answer=verify_numeric_answer, 
                                                verbose=args['inference']['verbose'])
 
@@ -74,21 +94,36 @@ def inference(device, args, test_loader):
                     # Use Grounding DINO + VLM for detailed analysis
                     image_annotated, boxes, logits, phrases = query_grounding_dino(device, args, grounding_dino, image_path[0], text_prompt=needed_objects)
 
-                    # Analyze object attributes with VLM
-                    object_attributes = VLM.query_vlm(image, question[0], step='attributes', phrases=phrases, bboxes=boxes, verbose=args['inference']['verbose'])
+                    if len(boxes) > 0:
+                        # Analyze object attributes with VLM
+                        object_attributes = VLM.query_vlm(image, question[0], step='attributes', phrases=phrases, bboxes=boxes, verbose=args['inference']['verbose'])
 
-                    # Generate final answer with object context
-                    reattempt_answer = VLM.query_vlm(image, question[0], step='reattempt', obj_descriptions=object_attributes[0], 
-                                                     prev_answer=answer[0], needed_objects=needed_objects, verbose=args['inference']['verbose'])[0]
-
-                final_answer = reattempt_answer
+                        # Generate final answer with object context
+                        reattempt_answer = VLM.query_vlm(image, question[0], step='reattempt', obj_descriptions=object_attributes[0], 
+                                                         prev_answer=baseline_answer, needed_objects=needed_objects, verbose=args['inference']['verbose'])[0]
+                    else:
+                        # No objects detected, try direct reattempt with question
+                        if args['inference']['verbose']:
+                            print(f'{Colors.WARNING}No objects detected, attempting direct reattempt{Colors.ENDC}')
+                        reattempt_answer = VLM.query_vlm(image, question[0], step='reattempt', obj_descriptions=[f"No specific objects detected for: {needed_objects}"], 
+                                                         prev_answer=baseline_answer, verbose=args['inference']['verbose'])[0]
+                
+                # Post-process reattempt answer
+                reattempt_answer = reattempt_answer.strip()
+                if '[Answer Failed]' in reattempt_answer or len(reattempt_answer) == 0:
+                    # Reattempt also failed, fall back to baseline
+                    final_answer = baseline_answer
+                    if args['inference']['verbose']:
+                        print(f'{Colors.FAIL}Reattempt also failed, using baseline answer{Colors.ENDC}')
+                else:
+                    final_answer = reattempt_answer
             else:
-                final_answer = answer[0]
+                final_answer = baseline_answer
 
             # Use VQA evaluation from utils
             gt_answers = [{'answer': target_answer[0]}] * 3  # VQA format with 3 annotators
             vqa_score = grader.vqa_score(final_answer, gt_answers)
-            baseline_score = grader.vqa_score(answer[0], gt_answers)
+            baseline_score = grader.vqa_score(baseline_answer, gt_answers)
             
             if args['inference']['verbose']:
                 print(f"VQA Score: {vqa_score:.3f} [{'Correct' if vqa_score > 0 else 'Incorrect'}]")
@@ -98,7 +133,7 @@ def inference(device, args, test_loader):
                                                    target_answer=gt_answers, 
                                                    model_answer=final_answer, 
                                                    answer_type='unknown',
-                                                   initial_answer=answer[0])
+                                                   initial_answer=baseline_answer)
 
             # Record response
             response_dict = {
@@ -107,7 +142,7 @@ def inference(device, args, test_loader):
                 'question_id': str(question_id[0].item()), 
                 'question': question[0], 
                 'target_answer': target_answer[0],
-                'initial_answer': answer[0],
+                'initial_answer': baseline_answer,
                 'final_answer': final_answer,
                 'match_baseline_failed': match_baseline_failed, 
                 'verify_numeric_answer': verify_numeric_answer,
