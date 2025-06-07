@@ -57,7 +57,7 @@ if __name__ == "__main__":
         raise ValueError('Invalid dataset name')
 
     # Set CUDA device to GPU 0 only
-    os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+    os.environ["CUDA_VISIBLE_DEVICES"] = "1"
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     world_size = torch.cuda.device_count()
     assert world_size == 1
