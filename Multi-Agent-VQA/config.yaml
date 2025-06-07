@@ -1,25 +1,25 @@
 datasets:
-  dataset: 'vqa-v2' # 'gqa', 'vqa-v2'
-  gqa_dataset_split: 'val'
-  gqa_images_dir: '/mnt/VLAI_data/GQA/images'
-  gqa_val_questions_file: '/mnt/VLAI_data/GQA/val_balanced_questions.json'
-  gqa_val_subset_questions_file: '/mnt/VLAI_data/GQA/gqasubset1000.json'
-  gqa_test_questions_file: '/mnt/VLAI_data/GQA/testdev_balanced_questions.json'
-  vqa_v2_dataset_split: 'rest-val'  # 'val', 'val1000', 'rest-val', 'test-dev', 'test'
-  vqa_v2_val_images_dir: '/mnt/VLAI_data/COCO_Images/val2014'
-  vqa_v2_val_questions_file: '/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_questions.json'
-  vqa_v2_val_annotations_file: '/mnt/VLAI_data/VQAv2/v2_mscoco_val2014_annotations.json'
-  vqa_v2_val1000_questions_file: '/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_1000subset_questions.json'
-  vqa_v2_val1000_annotations_file: '/mnt/VLAI_data/VQAv2/v2_mscoco_val2014_1000subset_annotations.json'
-  vqa_v2_rest_val_questions_file: '/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_rest_val2014_questions.json'
-  vqa_v2_rest_val_annotations_file: '/mnt/VLAI_data/VQAv2/v2_mscoco_rest_val2014_annotations.json'
-  vqa_v2_test_images_dir: '/mnt/VLAI_data/COCO_Images/test2015'
-  vqa_v2_test_questions_file: '/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test2015_questions.json'
-  vqa_v2_test_dev_questions_file: '/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test-dev2015_questions.json'
-  vqa_v2_answer_list: '/mnt/VLAI_data/VQAv2/answer_list.json'
+  dataset: "vqa-v2" # 'gqa', 'vqa-v2'
+  gqa_dataset_split: "val"
+  gqa_images_dir: "/mnt/VLAI_data/GQA/images"
+  gqa_val_questions_file: "/mnt/VLAI_data/GQA/val_balanced_questions.json"
+  gqa_val_subset_questions_file: "/mnt/VLAI_data/GQA/gqasubset1000.json"
+  gqa_test_questions_file: "/mnt/VLAI_data/GQA/testdev_balanced_questions.json"
+  vqa_v2_dataset_split: "rest-val" # 'val', 'val1000', 'rest-val', 'test-dev', 'test'
+  vqa_v2_val_images_dir: "/mnt/VLAI_data/COCO_Images/val2014"
+  vqa_v2_val_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_questions.json"
+  vqa_v2_val_annotations_file: "/mnt/VLAI_data/VQAv2/v2_mscoco_val2014_annotations.json"
+  vqa_v2_val1000_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_val2014_1000subset_questions.json"
+  vqa_v2_val1000_annotations_file: "/mnt/VLAI_data/VQAv2/v2_mscoco_val2014_1000subset_annotations.json"
+  vqa_v2_rest_val_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_rest_val2014_questions.json"
+  vqa_v2_rest_val_annotations_file: "/mnt/VLAI_data/VQAv2/v2_mscoco_rest_val2014_annotations.json"
+  vqa_v2_test_images_dir: "/mnt/VLAI_data/COCO_Images/test2015"
+  vqa_v2_test_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test2015_questions.json"
+  vqa_v2_test_dev_questions_file: "/mnt/VLAI_data/VQAv2/v2_OpenEnded_mscoco_test-dev2015_questions.json"
+  vqa_v2_answer_list: "/mnt/VLAI_data/VQAv2/answer_list.json"
   percent_test: 1 #0.01
-  num_test_data: 10
-  use_num_test_data: False
+  num_test_data: 30    # Final test with 30 samples
+  use_num_test_data: False  # Enable limited testing
 sam:
   GROUNDING_DINO_CONFIG_PATH: "Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
   GROUNDING_DINO_CHECKPOINT_PATH: "Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
@@ -37,14 +37,60 @@ dino:
   BOX_THRESHOLD: 0.35
   TEXT_THRESHOLD: 0.25
 llm:
-  llm_model: 'gpt-4o-mini'
+  llm_model: "Qwen/Qwen2-VL-2B-Instruct"
+  # LLM provider options: 'openai', 'vllm_9000'
+  provider: "vllm_9000" # Use port 9000 where user's server is running
+  # OpenAI configuration
+  openai:
+    model: "gpt-4o-mini"
+    api_key_file: "openai_key.txt"
+    base_url: "https://api.openai.com/v1/chat/completions"
+  # vLLM server configuration - match 1_model.py settings but on port 8000
+  vllm_8000:
+    model: "Qwen/Qwen2-VL-2B-Instruct"
+    api_key: "EMPTY"
+    base_url: "http://localhost:8000/v1/chat/completions"
+    max_tokens: 300  # Longer for LLM tasks
+    temperature: 0.1
+  # Local vLLM server configuration - user's actual server
+  vllm_9000:
+    model: "Qwen/Qwen2-VL-2B-Instruct"
+    api_key: "EMPTY"
+    base_url: "http://localhost:9000/v1/chat/completions"
+    max_tokens: 30  # Shorter for LLM tasks
+    temperature: 0.0
 vlm:
   min_bbox_size: 32
+  # VLM provider options: 'openai', 'vllm_9000'
+  provider: "vllm_9000" # Use port 9000 where user's server is running
+  # OpenAI configuration
+  openai:
+    model: "gpt-4o-mini"
+    api_key_file: "openai_key.txt"
+    base_url: "https://api.openai.com/v1/chat/completions"
+  # vLLM server on port 8000 configuration to match 1_model.py exactly
+  vllm_8000:
+    model: "Qwen/Qwen2-VL-2B-Instruct"
+    api_key: "EMPTY"
+    base_url: "http://localhost:9000/v1/chat/completions"
+    max_tokens: 30  # Match 1_model.py exactly
+    temperature: 0.0  # Match 1_model.py exactly
+  # vLLM server on port 9000 configuration (user's server)
+  vllm_9000:
+    model: "Qwen/Qwen2-VL-2B-Instruct"
+    api_key: "EMPTY"
+    base_url: "http://localhost:9000/v1/chat/completions"
+    max_tokens: 30  # Match 1_model.py for fair comparison
+    temperature: 0.0  # Match 1_model.py for fair comparison
 inference:
-  verbose: True
+  verbose: True    # Enable to see trigger messages
   find_nearby_objects: False
-  force_multi_agents: False
+  force_multi_agents: False  # Keep disabled for natural triggers per paper
   nearby_bbox_iou_threshold: 0.5
   print_every: 10
-  output_response_filename: 'outputs/vqa_v2_rest_val_responses.json'
+  output_response_filename: "outputs/vqa_v2_rest_val_responses.json"
   save_output_response: True
+  # Enhanced trigger settings for paper accuracy
+  counting_threshold: 4  # Trigger CLIP-Count for numbers > 4 (paper setting)
+  enable_enhanced_triggers: True  # Enable all enhanced trigger detection
+  use_grader: False  # Disable LLM grading, use direct VQA scoring

@@ -36,6 +36,8 @@ if __name__ == "__main__":
     parser.add_argument('--dataset', type=str, default=None, help='Set dataset (gqa, vqa-v2)')
     parser.add_argument('--split', type=str, default=None, help='Set dataset gqa: val, val-subset, test. vqa-v2: val, rest-val, val1000, test-dev, test-std')
     parser.add_argument('--verbose', dest='verbose', action='store_true', help='Set verbose to True')
+    parser.add_argument('--num_test_data', type=int, default=None, help='Number of test questions to run')
+    parser.add_argument('--use_num_test_data', dest='use_num_test_data', action='store_true', help='Enable limiting number of test questions')
     cmd_args = parser.parse_args()
 
     # Override args from config.yaml with command-line arguments if provided
@@ -49,6 +51,13 @@ if __name__ == "__main__":
         vertexai.init(project=PROJECT_ID, location=REGION)
     args['datasets']['dataset'] = cmd_args.dataset if cmd_args.dataset is not None else args['datasets']['dataset']
     args['inference']['verbose'] = cmd_args.verbose if cmd_args.verbose is not None else args['inference']['verbose']
+    
+    # Override test data configuration
+    if cmd_args.num_test_data is not None:
+        args['datasets']['num_test_data'] = cmd_args.num_test_data
+    if cmd_args.use_num_test_data:
+        args['datasets']['use_num_test_data'] = True
+    
     if args['datasets']['dataset'] == 'gqa':
         args['datasets']['gqa_dataset_split'] = cmd_args.split if cmd_args.split is not None else args['datasets']['gqa_dataset_split']
     elif args['datasets']['dataset'] == 'vqa-v2':

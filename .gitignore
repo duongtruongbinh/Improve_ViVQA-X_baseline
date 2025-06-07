@@ -40,7 +40,7 @@ coverage.xml
 *.log
 logs/
 wandb/
-runs/             # TensorBoard, Weights&Biases
+runs/ # TensorBoard, Weights&Biases
 tensorboard/
 
 # ==== Checkpoint / model nặng ====
@@ -54,7 +54,6 @@ weights/
 
 # ==== Dữ liệu thô (COCO, VQA, v.v.) ====
 data/
-datasets/
 images/
 annotations/
 

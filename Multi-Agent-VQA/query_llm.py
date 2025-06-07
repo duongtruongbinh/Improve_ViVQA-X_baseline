@@ -15,11 +15,47 @@ class QueryLLM:
     def __init__(self, args, openai_key=None):
         self.args = args
         self.llm_type = args["model"]
-        if openai_key is not None:
-            self.api_key = openai_key
+        
+        # Load LLM provider configuration
+        self.llm_provider = args['llm'].get('provider', 'openai')
+        self.llm_config = args['llm'].get(self.llm_provider, {})
+        
+        print(f"Using LLM provider: {self.llm_provider}")
+        
+        if self.llm_provider == 'openai':
+            # OpenAI configuration
+            if openai_key is not None:
+                self.api_key = openai_key
+            else:
+                api_key_file = self.llm_config.get('api_key_file', 'openai_key.txt')
+                with open(api_key_file, "r") as f:
+                    self.api_key = f.read().strip()
+            self.model_name = self.llm_config.get('model', 'gpt-4o-mini')
+            self.base_url = self.llm_config.get('base_url', 'https://api.openai.com/v1/chat/completions')
+        elif self.llm_provider == 'vllm_local':
+            # Local vLLM server configuration
+            self.api_key = self.llm_config.get('api_key', 'EMPTY')
+            self.model_name = self.llm_config.get('model', 'Qwen/Qwen2.5-1.5B-Instruct')
+            self.base_url = self.llm_config.get('base_url', 'http://localhost:7000/v1/chat/completions')
+            self.max_tokens = self.llm_config.get('max_tokens', 500)
+            self.temperature = self.llm_config.get('temperature', 0.1)
+            print(f"Configured LLM server: {self.base_url} with model: {self.model_name}")
+        elif self.llm_provider in ['vllm_9000', 'vllm_8000']:
+            # vLLM server configuration for different ports
+            self.api_key = self.llm_config.get('api_key', 'EMPTY')
+            self.model_name = self.llm_config.get('model', 'Qwen/Qwen2-VL-2B-Instruct')
+            self.base_url = self.llm_config.get('base_url', 'http://localhost:9000/v1/chat/completions')
+            self.max_tokens = self.llm_config.get('max_tokens', 300)
+            self.temperature = self.llm_config.get('temperature', 0.1)
+            print(f"Configured LLM server: {self.base_url} with model: {self.model_name}")
         else:
-            with open("openai_key.txt", "r") as api_key_file:
-                self.api_key = api_key_file.read().strip()
+            # Fallback to original logic
+            if openai_key is not None:
+                self.api_key = openai_key
+            else:
+                with open("openai_key.txt", "r") as api_key_file:
+                    self.api_key = api_key_file.read().strip()
+            self.model_name = 'gpt-4o-mini'
 
 
     def message_to_check_if_the_number_is_large(self, answer):
@@ -114,12 +150,29 @@ class QueryLLM:
         return messages
 
 
+    def messages_to_query_needed_objects(self, question):
+        message = f"What specific objects need to be detected in the image to answer this question: '{question}'?\n\n" \
+                 f"Instructions:\n" \
+                 f"- List ONLY the key objects that are essential for answering\n" \
+                 f"- Use simple, specific object names (e.g., 'car', 'person', 'dog')\n" \
+                 f"- Avoid abstract concepts or actions\n" \
+                 f"- Maximum 3-5 objects\n" \
+                 f"- If counting question, focus on the specific item being counted\n\n" \
+                 f"Examples:\n" \
+                 f"Question: 'How many cars are there?' → Answer: 'car'\n" \
+                 f"Question: 'What color is the dog?' → Answer: 'dog'\n" \
+                 f"Question: 'Is the man wearing a hat?' → Answer: 'man . hat'\n" \
+                 f"Question: 'What is the person holding?' → Answer: 'person . hand'\n\n" \
+                 f"Answer with object names separated by ' . ' (space dot space):"
+        return message
+
+
     def query_llm(self, prompts, previous_response=None, target_answer=None, model_answer=None, grader_id=0, llm_model='gpt-4o-mini', step='related_objects', max_batch_size=4,
                   verify_numeric_answer=False, verbose=False):
         # query on a single image
         if len(prompts) == 1:
             response = self._query_openai_gpt_4(prompts[0], step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
-                                                grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose)
+                                                grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose, llm_model=llm_model)
             return response
 
         # query on a batch of images in parallel
@@ -133,36 +186,85 @@ class QueryLLM:
 
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_batch_size) as executor:
                 batch_responses = list(executor.map(lambda prompt: self._query_openai_gpt_4(prompt, step, previous_response=previous_response, target_answer=target_answer, model_answer=model_answer,
-                                                                                            grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose), batch_prompts))
+                                                                                            grader_id=grader_id, verify_numeric_answer=verify_numeric_answer, verbose=verbose, llm_model=llm_model), batch_prompts))
             responses.extend(batch_responses)
 
         return responses
 
 
-    def _query_openai_gpt_4(self, prompt, step, previous_response=None, target_answer=None, model_answer=None, grader_id=0, verify_numeric_answer=False, verbose=False):
-        client = OpenAI(api_key=self.api_key)
+    def _query_openai_gpt_4(self, prompt, step, previous_response=None, target_answer=None, model_answer=None, grader_id=0, verify_numeric_answer=False, verbose=False, llm_model='gpt-4o-mini'):
+        # Use instance configuration instead of parameters
+        model_to_use = getattr(self, 'model_name', llm_model)
+        
+        if self.llm_provider in ['vllm_local', 'vllm_9000', 'vllm_8000']:
+            # For any vLLM server, use requests instead of OpenAI client
+            import requests
+            
+            if step == 'check_numeric_answer':
+                messages = self.message_to_check_if_the_number_is_large(prompt)
+            elif step == 'related_objects':
+                messages = self.messages_to_extract_related_objects(prompt)
+            elif step == 'needed_objects':
+                messages = self.messages_to_extract_needed_objects(prompt, previous_response, verify_numeric_answer)
+            elif step == 'grade_answer':
+                messages = self.messages_to_grade_the_answer(prompt, target_answer, model_answer, grader_id)
+            else:
+                raise ValueError(f'Invalid step: {step}')
 
-        if step == 'check_numeric_answer':
-            messages = self.message_to_check_if_the_number_is_large(prompt)
-        elif step == 'related_objects':
-            messages = self.messages_to_extract_related_objects(prompt)
-        elif step == 'needed_objects':
-            messages = self.messages_to_extract_needed_objects(prompt, previous_response, verify_numeric_answer)
-        elif step == 'grade_answer':
-            messages = self.messages_to_grade_the_answer(prompt, target_answer, model_answer, grader_id)
+            payload = {
+                "model": model_to_use,
+                "messages": messages,
+                "max_tokens": getattr(self, 'max_tokens', 300),
+                "temperature": getattr(self, 'temperature', 0.1)
+            }
+            
+            headers = {
+                "Content-Type": "application/json",
+                "Authorization": f"Bearer {self.api_key}"
+            }
+            
+            try:
+                response = requests.post(self.base_url, headers=headers, json=payload)
+                response_json = response.json()
+                
+                if verbose:
+                    print(f'LLM API Response Status: {response.status_code}')
+                    print(f'Using LLM provider: {self.llm_provider}, URL: {self.base_url}')
+                
+                if 'choices' in response_json and len(response_json['choices']) > 0:
+                    response_text = response_json['choices'][0].get('message', {}).get('content', 'Invalid response.')
+                else:
+                    response_text = "Invalid response."
+                    
+            except Exception as e:
+                if verbose:
+                    print(f'LLM Request error: {e}')
+                response_text = "Invalid response."
         else:
-            raise ValueError(f'Invalid step: {step}')
+            # Original OpenAI client code
+            client = OpenAI(api_key=self.api_key)
 
-        try:
-            response = client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=messages,
-            )
+            if step == 'check_numeric_answer':
+                messages = self.message_to_check_if_the_number_is_large(prompt)
+            elif step == 'related_objects':
+                messages = self.messages_to_extract_related_objects(prompt)
+            elif step == 'needed_objects':
+                messages = self.messages_to_extract_needed_objects(prompt, previous_response, verify_numeric_answer)
+            elif step == 'grade_answer':
+                messages = self.messages_to_grade_the_answer(prompt, target_answer, model_answer, grader_id)
+            else:
+                raise ValueError(f'Invalid step: {step}')
 
-            response = response.choices[0].message.content
-        except:
-            response = "Invalid response. "
+            try:
+                response = client.chat.completions.create(
+                    model=model_to_use,
+                    messages=messages,
+                )
+                response_text = response.choices[0].message.content
+            except:
+                response_text = "Invalid response."
+                
         if verbose:
-            print(f'LLM Response at step {step}: {response}')
+            print(f'LLM Response at step {step}: {response_text}')
 
-        return response
+        return response_text

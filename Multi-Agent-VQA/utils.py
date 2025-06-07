@@ -5,92 +5,305 @@ import cv2
 import json
 import re
 import os
+from collections import defaultdict
 
 
 class Grader:
     def __init__(self):
-        self.count_correct = 0
-        self.count_incorrect = 0
-        self.count_correct_baseline = 0
-        self.count_incorrect_baseline = 0
+        self.scores = []
+        self.baseline_scores = []
+        self.by_type = defaultdict(list)
+        self.baseline_by_type = defaultdict(list)
         self.count_total = 0
+        
+        # VQA evaluation constants
+        self.CONTRACTIONS = {
+            'aint': "ain't",
+            'arent': "aren't",
+            'cant': "can't",
+            'couldve': "could've",
+            'couldnt': "couldn't",
+            "couldn'tve": "couldn't've",
+            "couldnt've": "couldn't've",
+            'didnt': "didn't",
+            'doesnt': "doesn't",
+            'dont': "don't",
+            'hadnt': "hadn't",
+            "hadnt've": "hadn't've",
+            "haven'tve": "hadn't've",
+            'hasnt': "hasn't",
+            'havent': "haven't",
+            'hed': "he'd",
+            "hed've": "he'd've",
+            "he'dve": "he'd've",
+            'hes': "he's",
+            'howd': "how'd",
+            'howll': "how'll",
+            'hows': "how's",
+            "Id've": "I'd've",
+            "I'dve": "I'd've",
+            'Im': "I'm",
+            'Ive': "I've",
+            'isnt': "isn't",
+            'itd': "it'd",
+            "itd've": "it'd've",
+            "it'dve": "it'd've",
+            'itll': "it'll",
+            "let's": "let's",
+            'maam': "ma'am",
+            'mightnt': "mightn't",
+            "mightnt've": "mightn't've",
+            "mightn'tve": "mightn't've",
+            'mightve': "might've",
+            'mustnt': "mustn't",
+            'mustve': "must've",
+            'neednt': "needn't",
+            'notve': "not've",
+            'oclock': "o'clock",
+            'oughtnt': "oughtn't",
+            "ow's'at": "'ow's'at",
+            "'ows'at": "'ow's'at",
+            "'ow'sat": "'ow's'at",
+            'shant': "shan't",
+            "shed've": "she'd've",
+            "she'dve": "she'd've",
+            "she's": "she's",
+            'shouldve': "should've",
+            'shouldnt': "shouldn't",
+            "shouldnt've": "shouldn't've",
+            "shouldn'tve": "shouldn't've",
+            "somebody'd": 'somebodyd',
+            "somebodyd've": "somebody'd've",
+            "somebody'dve": "somebody'd've",
+            'somebodyll': "somebody'll",
+            'somebodys': "somebody's",
+            'someoned': "someone'd",
+            "someoned've": "someone'd've",
+            "someone'dve": "someone'd've",
+            'someonell': "someone'll",
+            'someones': "someone's",
+            'somethingd': "something'd",
+            "somethingd've": "something'd've",
+            "something'dve": "something'd've",
+            'somethingll': "something'll",
+            'thats': "that's",
+            'thered': "there'd",
+            "thered've": "there'd've",
+            "there'dve": "there'd've",
+            'therere': "there're",
+            'theres': "there's",
+            'theyd': "they'd",
+            "theyd've": "they'd've",
+            "they'dve": "they'd've",
+            'theyll': "they'll",
+            'theyre': "they're",
+            'theyve': "they've",
+            'twas': "'twas",
+            'wasnt': "wasn't",
+            "wed've": "we'd've",
+            "we'dve": "we'd've",
+            'weve': "we've",
+            'werent': "weren't",
+            'whatll': "what'll",
+            'whatre': "what're",
+            'whats': "what's",
+            'whatve': "what've",
+            'whens': "when's",
+            'whered': "where'd",
+            'wheres': "where's",
+            'whereve': "where've",
+            'whod': "who'd",
+            "whod've": "who'd've",
+            "who'dve": "who'd've",
+            'wholl': "who'll",
+            'whos': "who's",
+            'whove': "who've",
+            'whyll': "why'll",
+            'whyre': "why're",
+            'whys': "why's",
+            'wont': "won't",
+            'wouldve': "would've",
+            'wouldnt': "wouldn't",
+            "wouldnt've": "wouldn't've",
+            "wouldn'tve": "wouldn't've",
+            'yall': "y'all",
+            "yall'll": "y'all'll",
+            "y'allll": "y'all'll",
+            "yall'd've": "y'all'd've",
+            "y'alld've": "y'all'd've",
+            "y'all'dve": "y'all'd've",
+            'youd': "you'd",
+            "youd've": "you'd've",
+            "you'dve": "you'd've",
+            'youll': "you'll",
+            'youre': "you're",
+            'youve': "you've",
+        }
+        
+        self.MANUAL_MAP = {
+            'none': '0', 'zero': '0', 'one': '1', 'two': '2', 'three': '3',
+            'four': '4', 'five': '5', 'six': '6', 'seven': '7', 'eight': '8',
+            'nine': '9', 'ten': '10',
+        }
+        
+        self.ARTICLES = {'a', 'an', 'the'}
+        self.PUNCT = [';', '/', '[', ']', '"', '{', '}', '(', ')',
+                     '=', '+', '\\', '_', '-', '>', '<', '@', '`', ',', '?', '!']
+        self.COMMA_RE = re.compile(r'(\d)(,)(\d)')
+        self.PERIOD_RE = re.compile(r'(?!<=\d)(\.)(?!\d)')
+
+    def normalize(self, text: str) -> str:
+        """Lower, strip punctuation/digits/articles, expand contractions."""
+        text = text.strip().lower()
+        # strip bad commas
+        text = self.COMMA_RE.sub(r'\1\3', text)
+        # remove punctuation
+        for p in self.PUNCT:
+            text = text.replace(p, ' ')
+        # remove stray periods
+        text = self.PERIOD_RE.sub('', text)
+        # tokenize and map
+        words = []
+        for w in text.split():
+            w = self.MANUAL_MAP.get(w, w)
+            if w in self.ARTICLES:
+                continue
+            words.append(self.CONTRACTIONS.get(w, w))
+        return ' '.join(words)
+
+    def vqa_score(self, pred: str, gt_answers: list) -> float:
+        """Compute min(#matches/3, 1) with normalized strings."""
+        pred_n = self.normalize(pred)
+        # Handle both old format (list of strings) and new format (list of dicts)
+        if isinstance(gt_answers, list) and len(gt_answers) > 0:
+            if isinstance(gt_answers[0], dict):
+                gt_n = [self.normalize(d['answer']) for d in gt_answers]
+            else:
+                gt_n = [self.normalize(str(answer)) for answer in gt_answers]
+        else:
+            gt_n = [self.normalize(str(gt_answers))]
+        
+        matches = sum(1 for a in gt_n if a == pred_n)
+        return min(matches / 3.0, 1.0)
+
+    def accumulate_grades(self, args, grades, match_baseline_failed, target_answer=None, model_answer=None, answer_type='unknown', initial_answer=None):
+        """Accumulate grades using VQA evaluation scoring"""
+        self.count_total += 1
+        
+        # Use VQA scoring if we have target_answer and model_answer
+        if target_answer is not None and model_answer is not None:
+            # For baseline (initial answer)
+            if not match_baseline_failed:
+                baseline_score = self.vqa_score(model_answer, target_answer)
+                final_score = baseline_score  # Same as baseline if not reattempted
+            else:
+                # This is a reattempted answer, calculate baseline score from initial_answer
+                if initial_answer is not None:
+                    baseline_score = self.vqa_score(initial_answer, target_answer)
+                else:
+                    baseline_score = 0.0  # Assume baseline failed if no initial_answer provided
+                final_score = self.vqa_score(model_answer, target_answer)
+            
+            self.baseline_scores.append(baseline_score)
+            self.scores.append(final_score)
+            self.baseline_by_type[answer_type].append(baseline_score)
+            self.by_type[answer_type].append(final_score)
+            
+            # Create majority vote message based on VQA score
+            if final_score > 0.5:
+                majority_vote = f'VQA Score: {final_score:.3f} [Correct]'
+                if args['inference']['verbose']:
+                    print(f'{Colors.OKBLUE}{majority_vote}{Colors.ENDC}')
+            else:
+                majority_vote = f'VQA Score: {final_score:.3f} [Incorrect]'
+                if args['inference']['verbose']:
+                    print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
+                    
+            return majority_vote
+            
+        # Fall back to original LLM grading logic if VQA inputs not available
+        elif len(grades) > 0:
+            count_match_correct = 0
+            for grade in grades:
+                grade = grade.lower()
+                if re.search(r'\[correct]', grade) or (re.search("correct", grade) and not re.search("incorrect", grade)):
+                    count_match_correct += 1
+            
+            match_correct = True if count_match_correct >= 2 else False
+            score = 1.0 if match_correct else 0.0
+            
+            if not match_baseline_failed:
+                self.baseline_scores.append(score)
+                self.scores.append(score)
+            else:
+                self.baseline_scores.append(0.0)  # Baseline failed
+                self.scores.append(score)
+            
+            self.baseline_by_type[answer_type].append(self.baseline_scores[-1])
+            self.by_type[answer_type].append(score)
+            
+            if match_correct:
+                majority_vote = 'Majority vote is [Correct] with a score of ' + str(count_match_correct)
+                if args['inference']['verbose']:
+                    print(f'{Colors.OKBLUE}{majority_vote}{Colors.ENDC}')
+            else:
+                majority_vote = 'Majority vote is [Incorrect] with a score of ' + str(count_match_correct)
+                if args['inference']['verbose']:
+                    print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
+                    
+            return majority_vote
+        else:
+            # No grading information available - mark as incorrect
+            self.baseline_scores.append(0.0)
+            self.scores.append(0.0)
+            self.baseline_by_type[answer_type].append(0.0)
+            self.by_type[answer_type].append(0.0)
+            
+            majority_vote = 'No grading information available [Incorrect]'
+            if args['inference']['verbose']:
+                print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
+                
+            return majority_vote
 
     def average_score(self):
         """Calculate and return the average score of the grades."""
         if self.count_total == 0:
-            return 0, 0, None  # Return 0 if there are no grades to avoid division by zero
+            return 0, 0, None
 
-        accuracy_baseline = self.count_correct_baseline / self.count_total
-        accuracy = self.count_correct / self.count_total
+        baseline_accuracy = sum(self.baseline_scores) / len(self.baseline_scores) if self.baseline_scores else 0
+        final_accuracy = sum(self.scores) / len(self.scores) if self.scores else 0
 
-        stat = {
-            'count_correct': self.count_correct,
-            'count_incorrect': self.count_incorrect,
-            'count_correct_baseline': self.count_correct_baseline,
-            'count_incorrect_baseline': self.count_incorrect_baseline,
-            'count_total': self.count_total
+        # Count correct answers for compatibility
+        count_correct_baseline = sum(1 for score in self.baseline_scores if score > 0.5)
+        count_correct = sum(1 for score in self.scores if score > 0.5)
+
+        stats = {
+            'count_correct': count_correct,
+            'count_incorrect': self.count_total - count_correct,
+            'count_correct_baseline': count_correct_baseline,
+            'count_incorrect_baseline': self.count_total - count_correct_baseline,
+            'count_total': self.count_total,
+            'by_type_accuracy': {t: sum(scores)/len(scores) if scores else 0 
+                               for t, scores in self.by_type.items()},
+            'baseline_by_type_accuracy': {t: sum(scores)/len(scores) if scores else 0 
+                                        for t, scores in self.baseline_by_type.items()}
         }
-        return accuracy_baseline, accuracy, stat
-
-    def average_score_simple(self):
-        """Calculate and return the average score of the grades."""
-        if self.count_total == 0:
-            return 0, 0, None  # Return 0 if there are no grades to avoid division by zero
-
-        accuracy = self.count_correct / self.count_total
-
-        stat = {
-            'count_correct': self.count_correct,
-            'count_incorrect': self.count_incorrect,
-            'count_total': self.count_total
-        }
-        return accuracy, stat
-
-    def accumulate_grades(self, args, grades, match_baseline_failed):
-        # accumulate the grades
-        count_match_correct = 0
-        for grade in grades:
-            # if re.search(r'\[Correct\]', grade):
-            #     count_match_correct += 1
-            # A match pattern to avoid no [correct] but still correct judgement
-            grade = grade.lower()
-            if re.search(r'\[correct]', grade) or (re.search("correct", grade) and not re.search("incorrect", grade)):
-                count_match_correct += 1
-        match_correct = True if count_match_correct >= 2 else False  # majority vote: if at least 2 out of 3 graders agree, the answer is correct
-
-        if match_correct:
-            majority_vote = 'Majority vote is [Correct] with a score of ' + str(count_match_correct)
-            if args['inference']['verbose']:
-                print(f'{Colors.OKBLUE}{majority_vote}{Colors.ENDC}')
-        else:
-            majority_vote = 'Majority vote is [Incorrect] with a score of ' + str(count_match_correct)
-            if args['inference']['verbose']:
-                print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
-
-        self.count_total += 1
-        if not match_baseline_failed:  # if the baseline does not fail
-            if match_correct:
-                self.count_correct_baseline += 1
-                self.count_correct += 1  # no need to reattempt the answer
-            else:
-                self.count_incorrect_baseline += 1
-                self.count_incorrect += 1  # still didn't reattempt the answer in this case
-        else:  # if the baseline fails, reattempt the answer
-            self.count_incorrect_baseline += 1
-            if match_correct:
-                self.count_correct += 1
-            else:
-                self.count_incorrect += 1
-
-        return majority_vote
+        
+        return baseline_accuracy, final_accuracy, stats
 
     def accumulate_grades_simple(self, args, grades):
-        # accumulate the grades
+        """Simple grade accumulation for backward compatibility"""
         count_match_correct = 0
         for grade in grades:
             if re.search(r'\[Correct\]', grade):
                 count_match_correct += 1
-        match_correct = True if count_match_correct >= 2 else False  # majority vote: if at least 2 out of 3 graders agree, the answer is correct
+        
+        match_correct = True if count_match_correct >= 2 else False
+        score = 1.0 if match_correct else 0.0
+        
+        self.count_total += 1
+        self.baseline_scores.append(score)
+        self.scores.append(score)
 
         if match_correct:
             majority_vote = 'Majority vote is [Correct] with a score of ' + str(count_match_correct)
@@ -101,15 +314,22 @@ class Grader:
             if args['inference']['verbose']:
                 print(f'{Colors.FAIL}{majority_vote}{Colors.ENDC}')
 
-        self.count_total += 1
-        if match_correct:
-            self.count_correct_baseline += 1
-            self.count_correct += 1  # no need to reattempt the answer
-        else:
-            self.count_incorrect_baseline += 1
-            self.count_incorrect += 1  # still didn't reattempt the answer in this case
-
         return majority_vote
+
+    def average_score_simple(self):
+        """Calculate and return the average score of the grades."""
+        if self.count_total == 0:
+            return 0, None
+
+        accuracy = sum(self.scores) / len(self.scores) if self.scores else 0
+        count_correct = sum(1 for score in self.scores if score > 0.5)
+
+        stats = {
+            'count_correct': count_correct,
+            'count_incorrect': self.count_total - count_correct,
+            'count_total': self.count_total
+        }
+        return accuracy, stats
 
 
 def calculate_iou_batch(a, b):
@@ -276,21 +496,60 @@ def save_output_predictions_vqav2(question_id, model_answer, answer_list, split=
 
 
 def write_response_to_json(question_id, response_dict, output_response_filename):
-    # Check if the JSON file already exists
-    if os.path.exists(output_response_filename):
-        # Read the existing content
-        with open(output_response_filename, 'r') as file:
-            data = json.load(file)
-    else:
-        # Initialize an empty list if the file doesn't exist
-        data = {}
+    """
+    Write response data to a JSON file with robust error handling and file validation.
+    
+    Args:
+        question_id: The question ID
+        response_dict: Dictionary containing the response data
+        output_response_filename: Path to the output JSON file
+    """
+    # Ensure the output directory exists
+    output_dir = os.path.dirname(output_response_filename)
+    if output_dir and not os.path.exists(output_dir):
+        os.makedirs(output_dir, exist_ok=True)
 
-    # Append the new response
-    data[str(question_id.item())] = response_dict
+    # Initialize data dictionary
+    data = {}
+    
+    # Try to read existing data if file exists
+    if os.path.exists(output_response_filename) and os.path.getsize(output_response_filename) > 0:
+        try:
+            with open(output_response_filename, 'r', encoding='utf-8') as file:
+                data = json.load(file)
+                if not isinstance(data, dict):
+                    print(f"{Colors.WARNING}Warning: {output_response_filename} contains invalid JSON structure. Starting with a new dict.{Colors.ENDC}")
+                    data = {}
+        except json.JSONDecodeError as e:
+            print(f"{Colors.WARNING}Warning: {output_response_filename} contains invalid JSON. Starting with a new dict. Error: {e}{Colors.ENDC}")
+            data = {}
+        except Exception as e:
+            print(f"{Colors.WARNING}Warning: Error reading {output_response_filename}. Starting with a new dict. Error: {e}{Colors.ENDC}")
+            data = {}
+    
+    # Convert question_id to string if it's not already
+    qid_str = str(question_id.item() if hasattr(question_id, 'item') and callable(question_id.item) else question_id)
+    
+    # Update data with new response
+    data[qid_str] = response_dict
 
-    # Write the updated data back to the file
-    with open(output_response_filename, 'w') as file:
-        json.dump(data, file, indent=4)
+    # Write data to file with proper error handling
+    try:
+        # First write to a temporary file
+        temp_filename = output_response_filename + '.tmp'
+        with open(temp_filename, 'w', encoding='utf-8') as file:
+            json.dump(data, file, indent=4, ensure_ascii=False)
+        
+        # If successful, replace the original file
+        os.replace(temp_filename, output_response_filename)
+    except Exception as e:
+        print(f"{Colors.FAIL}Error writing response to {output_response_filename}: {e}{Colors.ENDC}")
+        # Clean up temp file if it exists
+        if os.path.exists(temp_filename):
+            try:
+                os.remove(temp_filename)
+            except:
+                pass
 
 
 def record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_response_filename):
@@ -305,4 +564,4 @@ def record_final_accuracy(baseline_accuracy, final_accuracy, stats, output_respo
 
     # Write the updated data back to the file
     with open(output_response_filename, 'w') as file:
-        json.dump(data, file, indent=4)
+        json.dump(data, file, indent=2)
