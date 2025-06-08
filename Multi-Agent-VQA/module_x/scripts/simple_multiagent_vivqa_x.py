@@ -55,9 +55,14 @@ def setup_output_directory(args: dict) -> str:
     
     return output_dir
 
-def query_vllm_api(messages: list, args: dict) -> str:
+def query_vllm_api(messages: list, args: dict, session: requests.Session) -> str:
     """
-    Query vLLM server with messages
+    Query vLLM server with messages using a persistent session.
+    
+    Args:
+        messages (list): The list of messages for the payload.
+        args (dict): The configuration arguments.
+        session (requests.Session): The session object for making HTTP requests.
     """
     try:
         # Get vLLM config
@@ -81,8 +86,8 @@ def query_vllm_api(messages: list, args: dict) -> str:
             "Authorization": f"Bearer {vlm_config['api_key']}"
         }
         
-        # Send request
-        response = requests.post(base_url, headers=headers, json=payload)
+        # Send request using the provided session
+        response = session.post(base_url, headers=headers, json=payload)
         
         if response.status_code == 200:
             response_json = response.json()
@@ -98,9 +103,10 @@ def query_vllm_api(messages: list, args: dict) -> str:
         print(f"Error in vLLM query: {str(e)}")
         return f"Error: {str(e)}"
 
-def vlm_agent_analysis(question: str, image_path: str, args: dict) -> dict:
+def vlm_agent_analysis(question: str, image_path: str, args: dict, session: requests.Session) -> dict:
     """
-    Agent 1: VLM performs initial visual analysis
+    Agent 1: VLM performs initial visual analysis.
+    This function now also returns the base64 encoded image to avoid re-processing.
     """
     try:
         # Load and encode image
@@ -137,13 +143,14 @@ def vlm_agent_analysis(question: str, image_path: str, args: dict) -> dict:
             }
         ]
         
-        visual_analysis = query_vllm_api(messages, args)
+        visual_analysis = query_vllm_api(messages, args, session)
         
         return {
             "agent": "VLM",
             "task": "visual_analysis",
             "input": question,
             "output": visual_analysis,
+            "base64_image": base64_image,  # Return encoded image for reuse
             "success": True
         }
         
@@ -153,18 +160,18 @@ def vlm_agent_analysis(question: str, image_path: str, args: dict) -> dict:
             "task": "visual_analysis", 
             "input": question,
             "output": f"Error: {str(e)}",
+            "base64_image": None,
             "success": False
         }
 
-def llm_agent_reasoning(question: str, visual_analysis: str, args: dict) -> dict:
+def llm_agent_reasoning(question: str, visual_analysis: str, args: dict, session: requests.Session) -> dict:
     """
     Agent 2: LLM performs reasoning based on visual analysis
     """
     try:
         # LLM system prompt for reasoning
         llm_system_prompt = (
-            "Bạn là một chuyên gia lý luận và phân tích. Dựa vào mô tả hình ảnh được cung cấp, "
-            "hãy suy luận để trả lời câu hỏi một cách logic và chính xác.\n"
+            "Bạn là một chuyên gia lý luận và phân tích. Dựa vào mô tả hình ảnh được cung cấp, hãy suy luận để trả lời câu hỏi một cách chính xác.\n"
             "Trả lời theo định dạng:\n"
             "Phân tích: <Quá trình suy luận của bạn>\n"
             "Kết luận: <Câu trả lời cuối cùng>"
@@ -173,7 +180,7 @@ def llm_agent_reasoning(question: str, visual_analysis: str, args: dict) -> dict
         user_prompt = (
             f"Mô tả hình ảnh: {visual_analysis}\n\n"
             f"Câu hỏi: {question}\n\n"
-            f"Hãy suy luận để đưa ra câu trả lời chính xác."
+            f"Dựa vào mô tả trên, hãy phân tích và suy luận để trả lời câu hỏi."
         )
         
         messages = [
@@ -187,7 +194,7 @@ def llm_agent_reasoning(question: str, visual_analysis: str, args: dict) -> dict
             }
         ]
         
-        reasoning_result = query_vllm_api(messages, args)
+        reasoning_result = query_vllm_api(messages, args, session)
         
         return {
             "agent": "LLM",
@@ -206,47 +213,27 @@ def llm_agent_reasoning(question: str, visual_analysis: str, args: dict) -> dict
             "success": False
         }
 
-def coordinator_agent_synthesis(question: str, image_path: str, visual_analysis: str, reasoning_result: str, args: dict) -> dict:
+def coordinator_agent_synthesis(question: str, base64_image: str, visual_analysis: str, reasoning_result: str, args: dict, session: requests.Session) -> dict:
     """
-    Agent 3: Coordinator synthesizes final answer with explanation
+    Agent 3: Coordinator synthesizes final answer with explanation.
+    This function now accepts a base64 string instead of an image path to avoid reloading.
     """
     try:
-        # Load and encode image again for final verification
-        from PIL import Image
-        image = Image.open(image_path).convert('RGB')
-        
-        buffer = io.BytesIO()
-        image.save(buffer, format='JPEG')
-        base64_image = base64.b64encode(buffer.getvalue()).decode('utf-8')
-        
         # Coordinator system prompt
         coordinator_system_prompt = (
             "Bạn là một điều phối viên chuyên nghiệp. Nhiệm vụ của bạn là tổng hợp thông tin từ "
             "chuyên gia phân tích hình ảnh và chuyên gia lý luận để đưa ra câu trả lời cuối cùng.\n"
             "Bạn phải tuân thủ TUYỆT ĐỐI các quy tắc định dạng đầu ra dưới đây.\n\n"
             "--- QUY TẮC BẮT BUỘC ---\n"
-            "1.  **Phần 'Answer'**: Phải là câu trả lời ngắn nhất có thể, trực tiếp vào câu hỏi. Thông thường chỉ là MỘT TỪ hoặc MỘT CỤM TỪ NGẮN. KHÔNG được viết thành câu hoàn chỉnh. KHÔNG được thêm bất kỳ thông tin giải thích hay diễn giải nào.\n"
-            "2.  **Phần 'Explain'**: Dùng để giải thích cho câu trả lời, dựa trên bằng chứng thị giác trong hình.\n"
-            # "--- VÍ DỤ ---\n"
-            # "Question: Mọi người đang tổ chức tiệc à?\n"
-            # "Answer: có\n"
-            # "Explain: mọi người đang tụ tập trong bếp, cầm đồ uống và có không khí vui vẻ.\n\n"
-            # "Question: Người phụ nữ có nhìn vào máy ảnh không?\n"
-            # "Answer: có\n"
-            # "Explain: mắt của người phụ nữ đang hướng thẳng về phía máy ảnh.\n\n"
-            # "Question: Có bao nhiêu chiếc bánh pizza trên bàn?\n"
-            # "Answer: hai\n"
-            # "Explain: có hai chiếc bánh pizza được đặt trong hộp trên chiếc bàn màu trắng.\n\n"
-            # "Question: Cái ô có màu gì?\n"
-            # "Answer: đỏ và trắng\n"
-            # "Explain: chiếc ô có các sọc màu đỏ và trắng xen kẽ."
+            "1. 'Answer:' Chỉ chứa MỘT TỪ hoặc MỘT CỤM TỪ ngắn gọn duy nhất.\n"
+            "2. 'Explain:' Lời giải thích ngắn gọn cho câu trả lời, dựa trên các phân tích đã có và bằng chứng thị giác trong hình."
         )
         
         user_prompt = (
             f"Câu hỏi: {question}\n\n"
-            f"Phân tích hình ảnh từ chuyên gia VLM:\n{visual_analysis}\n\n"
-            f"Kết quả lý luận từ chuyên gia LLM:\n{reasoning_result}\n\n"
-            f"Nhiệm vụ: Dựa vào các phân tích trên, hãy tạo ra câu trả lời cuối cùng. Luôn nhớ phải tuân thủ nghiêm ngặt các QUY TẮC BẮT BUỘC về định dạng đã được cung cấp. "
+            f"Phân tích hình ảnh:\n{visual_analysis}\n\n"
+            f"Kết quả lý luận:\n{reasoning_result}\n\n"
+            f"Nhiệm vụ: Dựa vào các phân tích trên, đưa ra câu trả lời cuối cùng. Tuân thủ nghiêm ngặt các QUY TẮC BẮT BUỘC về định dạng. "
             f"Phần giải thích phải nêu bật bằng chứng thị giác quan trọng nhất để chứng minh cho câu trả lời, "
             f"tránh lặp lại nguyên văn các phân tích đã có."
         )
@@ -259,13 +246,14 @@ def coordinator_agent_synthesis(question: str, image_path: str, visual_analysis:
             {
                 "role": "user",
                 "content": [
+                    # Use the pre-encoded base64 image string
                     {"type": "image_url", "image_url": {"url": f"data:image/jpeg;base64,{base64_image}"}},
                     {"type": "text", "text": user_prompt}
                 ]
             }
         ]
         
-        final_response = query_vllm_api(messages, args)
+        final_response = query_vllm_api(messages, args, session)
         
         return {
             "agent": "Coordinator",
@@ -293,7 +281,11 @@ def coordinator_agent_synthesis(question: str, image_path: str, visual_analysis:
         }
 
 def parse_coordinator_response(response_text: str) -> tuple:
-    """Parse coordinator response to extract answer and explanation"""
+    """
+    Parse coordinator response to extract answer and explanation.
+    This updated version sanitizes the output to remove punctuation and special characters
+    for more robust evaluation.
+    """
     try:
         response_text = response_text.strip()
         
@@ -304,50 +296,54 @@ def parse_coordinator_response(response_text: str) -> tuple:
         lines = response_text.split('\n')
         for line in lines:
             line = line.strip()
-            if line.startswith("Answer:"):
-                answer = line.replace("Answer:", "").strip()
-            elif line.startswith("Explain:"):
-                explanation = line.replace("Explain:", "").strip()
+            if line.lower().startswith("answer:"):
+                answer = line[len("Answer:"):].strip()
+            elif line.lower().startswith("explain:"):
+                explanation = line[len("Explain:"):].strip()
         
-        # Method 2: Use regex pattern matching
+        # Method 2: Use regex pattern matching if line-by-line fails
         if not answer or not explanation:
-            # Try to find Answer: pattern
-            answer_match = re.search(r'Answer:\s*([^\n]+)', response_text, re.IGNORECASE)
+            answer_match = re.search(r'Answer:\s*(.*)', response_text, re.IGNORECASE | re.DOTALL)
             if answer_match:
-                answer = answer_match.group(1).strip()
+                answer = answer_match.group(1).strip().split('\n')[0]
             
-            # Try to find Explain: pattern  
-            explain_match = re.search(r'Explain:\s*([^\n]+)', response_text, re.IGNORECASE)
+            explain_match = re.search(r'Explain:\s*(.*)', response_text, re.IGNORECASE | re.DOTALL)
             if explain_match:
                 explanation = explain_match.group(1).strip()
         
         # Fallback: extract from reasoning structure
         if not answer and ("Kết luận:" in response_text or "kết luận:" in response_text):
-            # Extract conclusion as answer
             if "Kết luận:" in response_text:
                 answer = response_text.split("Kết luận:")[1].strip().split('\n')[0]
             elif "kết luận:" in response_text:
                 answer = response_text.split("kết luận:")[1].strip().split('\n')[0]
         
-        # Final cleanup and validation
+        # Final fallback
         if not answer:
-            # Take first meaningful line as answer
             lines = [l.strip() for l in response_text.split('\n') if l.strip()]
             if lines:
-                # Look for any line that doesn't contain structural words
                 for line in lines:
                     if not any(word in line.lower() for word in ['answer:', 'explain:', 'phân tích:', 'kết luận:']):
                         answer = line
                         break
                 if not answer and lines:
                     answer = lines[0]
-        
-        if not explanation:
+
+        if answer and not explanation:
+             if len(response_text.split('\n')) > 1:
+                  explanation = '\n'.join(response_text.split('\n')[1:]).strip()
+
+        # 1. Chuẩn hóa 'answer': loại bỏ tất cả các dấu câu và ký tự đặc biệt.
+        if answer:
+            sanitized_answer = re.sub(r'[^\w\s]', ' ', answer)
+            answer = ' '.join(sanitized_answer.split()).strip()
+
+        # 2. Chuẩn hóa 'explanation': loại bỏ dấu câu nhưng giữ lại dấu phẩy.
+        if explanation:
+            sanitized_explanation = re.sub(r'[^\w\s,]', ' ', explanation)
+            explanation = ' '.join(sanitized_explanation.split()).strip()
+        else:
             explanation = "Không có lời giải thích chi tiết"
-        
-        # Remove any leading/trailing quotes or special characters
-        answer = answer.strip('"\'`').strip()
-        explanation = explanation.strip('"\'`').strip()
         
         return answer, explanation
         
@@ -361,8 +357,11 @@ def evaluate_vietnamese_answer(predicted: str, target: str) -> bool:
     target_norm = target.strip().lower()
     return pred_norm == target_norm
 
-def multi_agent_process_item(data_item: dict, args: dict, verbose: bool = False) -> dict:
-    """Process a single VQA-X item using multi-agent approach"""
+def multi_agent_process_item(data_item: dict, args: dict, session: requests.Session, verbose: bool = False) -> dict:
+    """
+    Process a single VQA-X item using multi-agent approach.
+    Now uses a requests.Session for all API calls and passes encoded image data.
+    """
     
     # Extract information from data item
     image_path = data_item['image_path']
@@ -385,34 +384,38 @@ def multi_agent_process_item(data_item: dict, args: dict, verbose: bool = False)
         if verbose:
             print("\n[Agent 1: VLM] Performing visual analysis...")
         
-        vlm_result = vlm_agent_analysis(question, image_path, args)
+        vlm_result = vlm_agent_analysis(question, image_path, args, session)
         agent_results.append(vlm_result)
         
-        if not vlm_result['success']:
+        if not vlm_result['success'] or not vlm_result['base64_image']:
             raise Exception(f"VLM Agent failed: {vlm_result['output']}")
         
+        visual_analysis = vlm_result['output']
+        base64_image = vlm_result['base64_image'] # Get the encoded image
+        
         if verbose:
-            print(f"Visual Analysis: {vlm_result['output'][:200]}...")
+            print(f"Visual Analysis: {visual_analysis[:200]}")
         
         # Step 2: LLM Agent - Reasoning
         if verbose:
             print("\n[Agent 2: LLM] Performing reasoning...")
         
-        llm_result = llm_agent_reasoning(question, vlm_result['output'], args)
+        llm_result = llm_agent_reasoning(question, visual_analysis, args, session)
         agent_results.append(llm_result)
         
         if not llm_result['success']:
             raise Exception(f"LLM Agent failed: {llm_result['output']}")
         
         if verbose:
-            print(f"Reasoning: {llm_result['output'][:200]}...")
+            print(f"Reasoning: {llm_result['output'][:200]}")
         
         # Step 3: Coordinator Agent - Synthesis
         if verbose:
             print("\n[Agent 3: Coordinator] Synthesizing final answer...")
         
+        # Pass the pre-encoded base64 image instead of the path
         coordinator_result = coordinator_agent_synthesis(
-            question, image_path, vlm_result['output'], llm_result['output'], args
+            question, base64_image, visual_analysis, llm_result['output'], args, session
         )
         agent_results.append(coordinator_result)
         
@@ -427,7 +430,7 @@ def multi_agent_process_item(data_item: dict, args: dict, verbose: bool = False)
         
         if verbose:
             print(f"\nFinal Answer: {answer}")
-            print(f"Explanation: {explanation[:100]}...")
+            print(f"Explanation: {explanation}")
             print(f"Correct: {answer_correct}")
         
         result = {
@@ -469,7 +472,7 @@ def multi_agent_process_item(data_item: dict, args: dict, verbose: bool = False)
 def main():
     parser = argparse.ArgumentParser(description="Simple Multi-Agent ViVQA-X Evaluation")
     parser.add_argument("--config", default="../configs/vivqa_x_config.yaml", 
-                       help="Path to configuration file")
+                        help="Path to configuration file")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     
     args_cmd = parser.parse_args()
@@ -497,20 +500,22 @@ def main():
     # Initialize results storage
     results = []
     
-    # Process each item with multi-agent approach
-    print("\nStarting Multi-Agent evaluation...")
-    print("="*60)
-    for i, data_item in enumerate(tqdm(dataloader, desc="Multi-Agent Processing")):
-        
-        # Process item with multi-agent
-        result = multi_agent_process_item(data_item, args, verbose=args_cmd.verbose)
-        results.append(result)
-        
-        # Print progress every 5 items
-        if (i + 1) % 5 == 0:
-            correct_so_far = sum(1 for r in results if r['answer_correct'])
-            accuracy_so_far = correct_so_far / len(results)
-            print(f"Progress: {i+1}/{dataset_size}, Multi-Agent Accuracy: {accuracy_so_far:.3f}")
+    # Create a single session to be reused for all requests
+    with requests.Session() as session:
+        # Process each item with multi-agent approach
+        print("\nStarting Multi-Agent evaluation...")
+        print("="*60)
+        for i, data_item in enumerate(tqdm(dataloader, desc="Multi-Agent Processing")):
+            
+            # Process item with multi-agent, passing the session
+            result = multi_agent_process_item(data_item, args, session, verbose=args_cmd.verbose)
+            results.append(result)
+            
+            # Print progress every 5 items
+            if (i + 1) % 5 == 0:
+                correct_so_far = sum(1 for r in results if r.get('answer_correct'))
+                accuracy_so_far = correct_so_far / len(results)
+                tqdm.write(f"Progress: {i+1}/{dataset_size}, Multi-Agent Accuracy: {accuracy_so_far:.3f}")
     
     # Save results
     results_file = os.path.join(output_dir, "vivqa_x_multiagent_results.json")
@@ -536,7 +541,7 @@ def main():
         traceback.print_exc()
         
         # Basic accuracy calculation as fallback
-        correct_count = sum(1 for r in results if r['answer_correct'])
+        correct_count = sum(1 for r in results if r.get('answer_correct'))
         total_count = len(results)
         accuracy = correct_count / total_count if total_count > 0 else 0.0
         

@@ -8,7 +8,7 @@ set -e
 # Configuration
 MODEL_PATH="/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
 CONFIG_PATH="configs/vivqa_x_config.yaml"
-CONDA_ENV="ma_vqa"
+CONDA_ENV="agent_vllm"
 GPU_ID=1
 VLLM_PORT=8000
 
@@ -56,16 +56,18 @@ trap cleanup EXIT
 
 # Start vLLM server in background
 echo "🔥 Starting vLLM server..."
+CONDA_BASE_DIR=$(conda info --base)
+source "$CONDA_BASE_DIR/etc/profile.d/conda.sh"
 conda activate $CONDA_ENV
 export CUDA_VISIBLE_DEVICES=$GPU_ID
 
 nohup python -m vllm.entrypoints.openai.api_server \
     --model "$MODEL_PATH" \
     --port $VLLM_PORT \
-    --gpu-memory-utilization 0.8 \
+    --gpu-memory-utilization 0.9 \
     --max-model-len 2048 \
     --enforce-eager \
-    --trust-remote-code > vllm_server.log 2>&1 &
+    --trust-remote-code >vllm_server.log 2>&1 &
 
 VLLM_PID=$!
 echo "📡 vLLM server started (PID: $VLLM_PID)"
@@ -73,13 +75,13 @@ echo "📋 Server logs: vllm_server.log"
 
 # Wait for server to be ready
 echo "⏳ Waiting for vLLM server to be ready..."
-for i in {1..30}; do
-    if curl -s http://localhost:$VLLM_PORT/health > /dev/null 2>&1; then
+for i in {1..180}; do
+    if curl -s http://localhost:$VLLM_PORT/health >/dev/null 2>&1; then
         echo "✅ vLLM server is ready!"
         break
     fi
-    if [ $i -eq 30 ]; then
-        echo "❌ vLLM server failed to start within 30 seconds"
+    if [ $i -eq 180 ]; then
+        echo "❌ vLLM server failed to start within 180 seconds"
         exit 1
     fi
     sleep 1

@@ -34,7 +34,7 @@ model: "qwen2.5-vl-7b"  # Use Qwen model only
 
 # VLM configuration for vLLM server
 vlm:
-  provider: "vllm_8000"  # Use port 8000 where server is running
+  provider: "vllm_8000" # Use port 8000 where server is running
   min_bbox_size: 128
   vllm_8000:
     api_key: "EMPTY"
@@ -59,12 +59,12 @@ inference:
   find_nearby_objects: False
   force_multi_agents: False
   nearby_bbox_iou_threshold: 0.5
-  print_every: 5  # Print every 5 samples for VQA-X
-  output_response_filename: 'outputs/vivqa_x_test_responses.json'
+  print_every: 5 # Print every 5 samples for VQA-X
+  output_response_filename: "outputs/vivqa_x_test_responses.json"
   save_output_response: True
   counting_threshold: 4
   enable_enhanced_triggers: True
   use_grader: False
   # VQA-X specific settings
-  require_explanation: True  # VQA-X requires both answer and explanation
+  require_explanation: True # VQA-X requires both answer and explanation
   explanation_max_tokens: 50
