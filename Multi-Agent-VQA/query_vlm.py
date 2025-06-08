@@ -82,22 +82,47 @@ class QueryVLM:
 
     def messages_to_answer_directly(self, question):
         if self.args['datasets']['dataset'] == 'vqa-v2':
-            message = "You are a Visual Question Answering (VQA) system. " \
-                     "Look at the image carefully and answer the question accurately.\n\n" \
-                     "ANSWER FORMAT:\n" \
-                     "Always start your response with 'Answer: ' followed by your answer.\n\n" \
-                     "REGULAR ANSWERS (99% of cases):\n" \
-                     "- YES/NO questions: Answer 'yes' or 'no'\n" \
-                     "- COUNTING questions: Give the number you count (e.g., '3', 'two')\n" \
-                     "- OTHER questions: Give a short, direct answer\n\n" \
-                     "SPECIAL CASES (use ONLY when specified):\n" \
-                     "- ONLY for counting questions where you see ZERO objects: 'Answer: [Zero Numeric Answer]'\n" \
-                     "- ONLY if you absolutely cannot answer: 'Answer: [Answer Failed]'\n\n" \
-                     "Examples:\n" \
-                     "Question: What is the man doing?\nAnswer: skiing\n" \
-                     "Question: Is this a cat?\nAnswer: yes\n" \
-                     "Question: How many cars are there?\nAnswer: 2\n" \
-                     "Question: How many elephants do you see?\nAnswer: [Zero Numeric Answer] (only if you see zero elephants)"
+            # Less aggressive prompting for Qwen2.5 7B
+            if hasattr(self, 'model_name') and 'qwen2.5' in self.model_name.lower():
+                message = "You are a Visual Question Answering (VQA) system. " \
+                         "Look at the image carefully and answer the question accurately and concisely.\n\n" \
+                         "ANSWER FORMAT:\n" \
+                         "Always start your response with 'Answer: ' followed by your answer.\n\n" \
+                         "GUIDELINES:\n" \
+                         "- Give the most direct, simple answer possible\n" \
+                         "- YES/NO questions: Answer 'yes' or 'no'\n" \
+                         "- COUNTING questions: Count carefully and give the exact number (e.g., '3', 'two', or '0' if none)\n" \
+                         "- COLOR questions: Give the main/dominant color you see\n" \
+                         "- OBJECT questions: Give the most specific object name\n" \
+                         "- ACTIVITY questions: Give the main activity being performed\n" \
+                         "- Focus on what you can clearly see in the image\n\n" \
+                         "EXAMPLES:\n" \
+                         "Question: What is the man doing?\nAnswer: skiing\n" \
+                         "Question: Is this a cat?\nAnswer: yes\n" \
+                         "Question: How many cars are there?\nAnswer: 2\n" \
+                         "Question: What color is the table?\nAnswer: green\n" \
+                         "Question: How many elephants do you see?\nAnswer: 0\n" \
+                         "Question: Is the person wearing a hat?\nAnswer: no\n" \
+                         "Question: What sport is being played?\nAnswer: tennis\n" \
+                         "Question: How many dogs are in the image?\nAnswer: 1"
+            else:
+                # Original prompting for other models
+                message = "You are a Visual Question Answering (VQA) system. " \
+                         "Look at the image carefully and answer the question accurately.\n\n" \
+                         "ANSWER FORMAT:\n" \
+                         "Always start your response with 'Answer: ' followed by your answer.\n\n" \
+                         "REGULAR ANSWERS (99% of cases):\n" \
+                         "- YES/NO questions: Answer 'yes' or 'no'\n" \
+                         "- COUNTING questions: Give the number you count (e.g., '3', 'two')\n" \
+                         "- OTHER questions: Give a short, direct answer\n\n" \
+                         "SPECIAL CASES (use ONLY when specified):\n" \
+                         "- ONLY for counting questions where you see ZERO objects: 'Answer: [Zero Numeric Answer]'\n" \
+                         "- ONLY if you absolutely cannot answer: 'Answer: [Answer Failed]'\n\n" \
+                         "Examples:\n" \
+                         "Question: What is the man doing?\nAnswer: skiing\n" \
+                         "Question: Is this a cat?\nAnswer: yes\n" \
+                         "Question: How many cars are there?\nAnswer: 2\n" \
+                         "Question: How many elephants do you see?\nAnswer: [Zero Numeric Answer] (only if you see zero elephants)"
         else:
             message = "You are a Visual Question Answering (VQA) system. " \
                      "Look at the image carefully and answer the question accurately.\n\n" \
@@ -134,24 +159,49 @@ class QueryVLM:
         return message
 
     def messages_to_reattempt(self, question, obj_descriptions, prev_answer):
-        message = f"The previous answer '{prev_answer}' was incorrect. Let me try again using this object information:\n\n" \
-                 f"Question: '{question}'\n\n" \
-                 f"Objects detected:\n"
+        # Check if we're using Qwen2.5 model for better prompting
+        is_qwen25 = hasattr(self, 'model_name') and 'qwen2.5' in self.model_name.lower()
         
-        for i, obj in enumerate(obj_descriptions):
-            message += f"- Object {i+1}: {obj}\n"
-
-        if self.args['datasets']['dataset'] == 'vqa-v2':
-            message += f"\nBased on these objects, answer the question directly:\n" \
-                      f"- For YES/NO questions: Answer only 'yes' or 'no'\n" \
-                      f"- For COUNTING questions: Give the exact number you can count\n" \
-                      f"- For OTHER questions: Give a short, direct answer\n" \
-                      f"- If still uncertain, write '[Answer Failed]'\n\n" \
-                      f"Answer:"
+        if is_qwen25:
+            # Simplified and more direct prompting for Qwen2.5
+            message = f"Look at the image again and answer this question: '{question}'\n\n"
+            
+            if obj_descriptions and len(obj_descriptions) > 0:
+                message += f"Here are some relevant objects I can see:\n"
+                for i, obj in enumerate(obj_descriptions):
+                    message += f"- {obj}\n"
+                message += f"\n"
+            
+            message += f"Based on what you can see in the image, answer the question directly.\n"
+            
+            if self.args['datasets']['dataset'] == 'vqa-v2':
+                message += f"Give a short, direct answer:\n" \
+                          f"- For YES/NO questions: Answer 'yes' or 'no'\n" \
+                          f"- For COUNTING questions: Give the exact number\n" \
+                          f"- For OTHER questions: Give a brief answer\n\n" \
+                          f"Answer:"
+            else:
+                message += f"Give a direct answer.\n\nAnswer:"
         else:
-            message += f"\nBased on these objects, give a direct answer to: '{question}'\n" \
-                      f"If still uncertain, write '[Answer Failed]'\n\n" \
-                      f"Answer:"
+            # Original prompting for other models
+            message = f"The previous answer '{prev_answer}' was incorrect. Let me try again using this object information:\n\n" \
+                     f"Question: '{question}'\n\n" \
+                     f"Objects detected:\n"
+            
+            for i, obj in enumerate(obj_descriptions):
+                message += f"- Object {i+1}: {obj}\n"
+
+            if self.args['datasets']['dataset'] == 'vqa-v2':
+                message += f"\nBased on these objects, answer the question directly:\n" \
+                          f"- For YES/NO questions: Answer only 'yes' or 'no'\n" \
+                          f"- For COUNTING questions: Give the exact number you can count\n" \
+                          f"- For OTHER questions: Give a short, direct answer\n" \
+                          f"- If still uncertain, write '[Answer Failed]'\n\n" \
+                          f"Answer:"
+            else:
+                message += f"\nBased on these objects, give a direct answer to: '{question}'\n" \
+                          f"If still uncertain, write '[Answer Failed]'\n\n" \
+                          f"Answer:"
 
         return message
 
@@ -230,7 +280,11 @@ class QueryVLM:
 
         if step == 'ask_directly':
             messages = self.messages_to_answer_directly(question)
-            max_tokens = 30  # Match the successful baseline
+            # Slightly increase max_tokens for Qwen2.5 to allow for better reasoning
+            if hasattr(self, 'model_name') and 'qwen2.5' in self.model_name.lower():
+                max_tokens = 50
+            else:
+                max_tokens = 30  # Match the successful baseline for other models
         elif step == 'check_numeric_answer':
             messages = self.message_to_check_if_answer_is_numeric(question)
             max_tokens = 300
@@ -275,6 +329,9 @@ class QueryVLM:
                 }
             elif self.vlm_provider in ['vllm_8000', 'vllm_9000']:
                 # vLLM API format (match 1_model.py exactly)
+                # Use temperature 0.0 for Qwen2.5 to match successful Qwen2 2B behavior
+                temp = 0.0 if hasattr(self, 'model_name') and 'qwen2.5' in self.model_name.lower() else self.temperature
+                
                 prompt = {
                     "model": self.model_name,
                     "messages": [
@@ -289,7 +346,7 @@ class QueryVLM:
                         {"role": "assistant", "content": "Answer:"}
                     ],
                     "max_tokens": max_tokens,
-                    "temperature": self.temperature
+                    "temperature": temp
                 }
             else:
                 # Default format (fallback)
@@ -336,21 +393,52 @@ class QueryVLM:
                         
                     # Process answer based on step and new format
                     if step == 'ask_directly':
-                        # Simple processing like 1_model.py - just extract after "Answer:"
-                        if "Answer:" in completion_text:
-                            answer = completion_text.split("Answer:", 1)[-1].strip()
-                            # Remove any trailing explanation or newlines  
-                            answer = answer.split('\n')[0].strip()
-                            if answer.lower().startswith("answer:"):
-                                answer = answer.split(":", 1)[-1].strip()
-                            completion_text = answer
+                        # Enhanced processing for Qwen2.5
+                        if hasattr(self, 'model_name') and 'qwen2.5' in self.model_name.lower():
+                            if "Answer:" in completion_text:
+                                answer = completion_text.split("Answer:", 1)[-1].strip()
+                                # Remove any trailing explanation or newlines  
+                                answer = answer.split('\n')[0].strip()
+                                # Remove common prefixes that Qwen2.5 might add
+                                if answer.lower().startswith(("the ", "it is ", "this is ", "there are ", "there is ")):
+                                    # For simple questions, extract the core answer
+                                    if question and any(word in question.lower() for word in ['what color', 'how many', 'is this', 'are these']):
+                                        words = answer.split()
+                                        if len(words) > 2:
+                                            # Try to extract the key part
+                                            if 'what color' in question.lower():
+                                                color_words = ['red', 'blue', 'green', 'yellow', 'black', 'white', 'brown', 'gray', 'orange', 'purple', 'pink', 'silver']
+                                                for word in words:
+                                                    if word.lower() in color_words:
+                                                        answer = word
+                                                        break
+                                            elif 'how many' in question.lower():
+                                                for word in words:
+                                                    if word.isdigit() or word.lower() in ['zero', 'one', 'two', 'three', 'four', 'five']:
+                                                        answer = word
+                                                        break
+                                completion_text = answer
+                            else:
+                                # Take first line as answer if no "Answer:" format
+                                clean_answer = completion_text.strip().split('\n')[0].strip()
+                                completion_text = clean_answer
                         else:
-                            # Take first line as answer if no "Answer:" format
-                            clean_answer = completion_text.strip().split('\n')[0].strip()
-                            completion_text = clean_answer
+                            # Original processing for other models
+                            if "Answer:" in completion_text:
+                                answer = completion_text.split("Answer:", 1)[-1].strip()
+                                # Remove any trailing explanation or newlines  
+                                answer = answer.split('\n')[0].strip()
+                                if answer.lower().startswith("answer:"):
+                                    answer = answer.split(":", 1)[-1].strip()
+                                completion_text = answer
+                            else:
+                                # Take first line as answer if no "Answer:" format
+                                clean_answer = completion_text.strip().split('\n')[0].strip()
+                                completion_text = clean_answer
                             
                     # Handle reattempt format
                     elif step == 'reattempt':
+                        # IMPROVED: Better cleanup of reattempt answers
                         # Extract answer after "Answer:" 
                         if "Answer:" in completion_text:
                             answer_part = completion_text.split("Answer:", 1)[-1].strip()
@@ -358,18 +446,27 @@ class QueryVLM:
                             answer = answer_part.split('\n')[0].strip()
                             if answer:
                                 completion_text = answer
-                        # Fallback: look for [Reattempted Answer] format (legacy)
+                        # Extract [Reattempted Answer] format and clean it
                         elif "[Reattempted Answer]" in completion_text:
                             reattempt_match = re.search(r'\[Reattempted Answer\]\s*(.*?)(?:\n|$)', completion_text, re.DOTALL)
                             if reattempt_match:
                                 answer = reattempt_match.group(1).strip()
+                                # IMPROVED: Clean up common artifacts
+                                if answer.startswith('[') and answer.endswith(']'):
+                                    answer = answer[1:-1].strip()  # Remove brackets
                                 completion_text = answer if answer else completion_text
+                        # IMPROVED: Clean up standalone bracket notation
+                        elif completion_text.startswith('[') and completion_text.endswith(']') and len(completion_text.split()) <= 3:
+                            # Clean single bracketed words like "[Market]"
+                            clean_answer = completion_text.strip()[1:-1].strip() 
+                            if clean_answer:
+                                completion_text = clean_answer
                         # If no clear format, take first substantial line
                         else:
                             lines = completion_text.strip().split('\n')
                             for line in lines:
                                 line = line.strip()
-                                if line and not line.startswith(('Based on', 'Looking at', 'The', 'I can see')):
+                                if line and not line.startswith(('Based on', 'Looking at', 'The image', 'I can see')):
                                     completion_text = line
                                     break
                 else:

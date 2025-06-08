@@ -23,15 +23,10 @@ os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
 if __name__ == "__main__":
     print('Torch', torch.__version__, 'Torchvision', torchvision.__version__)
-    # Load hyperparameters
-    try:
-        with open('config.yaml', 'r') as file:
-            args = yaml.safe_load(file)
-    except Exception as e:
-        print('Error reading the config file')
-
-    # Command-line argument parsing
+    
+    # Command-line argument parsing (moved before config loading)
     parser = argparse.ArgumentParser(description='Command line arguments')
+    parser.add_argument('--config', type=str, default='config.yaml', help='Path to config file')
     parser.add_argument('--vlm_model', type=str, default="gpt4", help='Set VLM model (gpt4, gemini)')
     parser.add_argument('--dataset', type=str, default=None, help='Set dataset (gqa, vqa-v2)')
     parser.add_argument('--split', type=str, default=None, help='Set dataset gqa: val, val-subset, test. vqa-v2: val, rest-val, val1000, test-dev, test-std')
@@ -39,6 +34,19 @@ if __name__ == "__main__":
     parser.add_argument('--num_test_data', type=int, default=None, help='Number of test questions to run')
     parser.add_argument('--use_num_test_data', dest='use_num_test_data', action='store_true', help='Enable limiting number of test questions')
     cmd_args = parser.parse_args()
+
+    # Load hyperparameters from specified config file
+    config_file = cmd_args.config
+    try:
+        with open(config_file, 'r') as file:
+            args = yaml.safe_load(file)
+        print(f"✅ Loaded configuration from: {config_file}")
+        print(f"📋 LLM Model: {args['llm']['llm_model']}")
+        print(f"📋 LLM Provider: {args['llm']['provider']}")
+        print(f"📋 VLM Provider: {args['vlm']['provider']}")
+    except Exception as e:
+        print(f'❌ Error reading the config file {config_file}: {e}')
+        exit(1)
 
     # Override args from config.yaml with command-line arguments if provided
     args['model'] = cmd_args.vlm_model

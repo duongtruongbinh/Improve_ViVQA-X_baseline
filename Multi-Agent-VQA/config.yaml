@@ -47,18 +47,18 @@ llm:
     base_url: "https://api.openai.com/v1/chat/completions"
   # vLLM server configuration - match 1_model.py settings but on port 8000
   vllm_8000:
-    model: "Qwen/Qwen2-VL-2B-Instruct"
+    model: "Qwen/Qwen2-VL-7B-Instruct"
     api_key: "EMPTY"
     base_url: "http://localhost:8000/v1/chat/completions"
     max_tokens: 300  # Longer for LLM tasks
-    temperature: 0.1
+    temperature: 0.2
   # Local vLLM server configuration - user's actual server
   vllm_9000:
     model: "Qwen/Qwen2-VL-2B-Instruct"
     api_key: "EMPTY"
-    base_url: "http://localhost:9000/v1/chat/completions"
-    max_tokens: 30  # Shorter for LLM tasks
-    temperature: 0.0
+    base_url: "http://localhost:9100/v1/chat/completions"
+    max_tokens: 300  # Shorter for LLM tasks
+    temperature: 0.2
 vlm:
   min_bbox_size: 32
   # VLM provider options: 'openai', 'vllm_9000'
@@ -71,17 +71,18 @@ vlm:
   # vLLM server on port 8000 configuration to match 1_model.py exactly
   vllm_8000:
     model: "Qwen/Qwen2-VL-2B-Instruct"
+
     api_key: "EMPTY"
     base_url: "http://localhost:9000/v1/chat/completions"
-    max_tokens: 30  # Match 1_model.py exactly
-    temperature: 0.0  # Match 1_model.py exactly
+    max_tokens: 300  # Match 1_model.py exactly
+    temperature: 0.2  # Match 1_model.py exactly
   # vLLM server on port 9000 configuration (user's server)
   vllm_9000:
     model: "Qwen/Qwen2-VL-2B-Instruct"
     api_key: "EMPTY"
-    base_url: "http://localhost:9000/v1/chat/completions"
-    max_tokens: 30  # Match 1_model.py for fair comparison
-    temperature: 0.0  # Match 1_model.py for fair comparison
+    base_url: "http://localhost:9100/v1/chat/completions"
+    max_tokens: 300  # Match 1_model.py for fair comparison
+    temperature: 0.2  # Match 1_model.py for fair comparison
 inference:
   verbose: True    # Enable to see trigger messages
   find_nearby_objects: False
@@ -94,3 +95,4 @@ inference:
   counting_threshold: 4  # Trigger CLIP-Count for numbers > 4 (paper setting)
   enable_enhanced_triggers: True  # Enable all enhanced trigger detection
   use_grader: False  # Disable LLM grading, use direct VQA scoring
+
