@@ -295,7 +295,6 @@ def coordinator_agent_synthesis(question: str, image_path: str, visual_analysis:
 def parse_coordinator_response(response_text: str) -> tuple:
     """Parse coordinator response to extract answer and explanation"""
     try:
-        # Clean the response text
         response_text = response_text.strip()
         
         answer = ""

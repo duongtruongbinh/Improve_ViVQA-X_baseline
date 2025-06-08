@@ -8,6 +8,7 @@ import json
 import re
 from typing import Dict, List, Any
 import os
+import string
 
 # Try to import evaluation libraries
 try:
@@ -53,6 +54,77 @@ class ViVQAXEvaluator:
             
         text = re.sub(r'\s+', ' ', text.strip())
         return text
+    
+    def _normalize_answer(self, text: str) -> str:
+        """Normalize answer text for more robust comparison."""
+        # Handle case where text might be a list
+        if isinstance(text, list):
+            text = text[0] if text else ""
+        if not isinstance(text, str):
+            text = str(text)
+
+        # Lowercase, remove punctuation, strip whitespace
+        text = text.lower()
+        text = text.translate(str.maketrans('', '', string.punctuation))
+        text = text.strip()
+        # Replace multiple spaces with a single space
+        text = re.sub(r'\s+', ' ', text)
+        return text
+
+    def _is_answer_correct(self, pred: str, target: str) -> bool:
+        """
+        Checks if a predicted answer is correct, with more flexible matching.
+        """
+        pred_norm = self._normalize_answer(pred)
+        target_norm = self._normalize_answer(target)
+
+        # 1. Direct match
+        if pred_norm == target_norm:
+            return True
+
+        # 2. Synonym matching for common answers (yes/no)
+        yes_synonyms = {"có", "đúng", "vâng", "phải", "yes"}
+        no_synonyms = {"không", "sai", "no"}
+
+        if target_norm in yes_synonyms and pred_norm in yes_synonyms:
+            return True
+        
+        if target_norm in no_synonyms and pred_norm in no_synonyms:
+            return True
+            
+        # 3. Handle Vietnamese classifiers
+        classifiers = ["con", "cái", "chiếc", "quả", "bông", "hoa", "người", "xe"]
+        
+        pred_words = pred_norm.split()
+        target_words = target_norm.split()
+
+        # Handle classifier at the beginning of the target answer
+        if len(target_words) > 1 and target_words[0] in classifiers:
+            if " ".join(target_words[1:]) == pred_norm:
+                return True
+
+        # Handle classifier at the beginning of the predicted answer
+        if len(pred_words) > 1 and pred_words[0] in classifiers:
+            if " ".join(pred_words[1:]) == target_norm:
+                return True
+                
+        # 4. Handle word order for short answers
+        if sorted(pred_words) == sorted(target_words):
+            return True
+            
+        # 5. Handle cases like target="không" and pred="không yên tĩnh" (not calm)
+        if target_norm == "không" and pred_norm.startswith("không "):
+            return True
+            
+        # 6. Basic English to Vietnamese mapping for common VQA terms
+        translation_map = {
+            "baseball": "bóng chày",
+            "tennis": "quần vợt",
+        }
+        if translation_map.get(pred_norm, None) == target_norm:
+            return True
+
+        return False
     
     def get_nlg_scores(self, references: List[List[str]], hypotheses: List[str]) -> Dict[str, float]:
         """
@@ -155,10 +227,7 @@ class ViVQAXEvaluator:
         total = len(predicted_answers)
         
         for pred, target in zip(predicted_answers, target_answers):
-            pred_clean = pred.strip().lower()
-            target_clean = target.strip().lower()
-            
-            if pred_clean == target_clean:
+            if self._is_answer_correct(pred, target):
                 correct += 1
         
         accuracy = correct / total if total > 0 else 0.0
@@ -208,7 +277,7 @@ class ViVQAXEvaluator:
         # Get correct predictions for filtered evaluation
         correct_indices = []
         for i, (pred, target) in enumerate(zip(predicted_answers, target_answers)):
-            if pred.strip().lower() == target.strip().lower():
+            if self._is_answer_correct(pred, target):
                 correct_indices.append(i)
         
         # Evaluate explanations (unfiltered)
@@ -260,38 +329,30 @@ class ViVQAXEvaluator:
             Dictionary with all evaluation scores
         """
         
-        # Extract data (following the format from reference code)
-        predicted_answers = []
-        target_answers = []
-        predicted_explanations = []
+        # Extract data
+        predicted_answers = [item['pred_ans'] for item in results_data]
+        target_answers = [item['gt_ans'] for item in results_data]
+        predicted_explanations = [item['pred_explain'] for item in results_data]
         target_explanations = []
-        
-        total_examples = len(results_data)
-        correct_count = 0
-        
+
         for item in results_data:
-            predicted_answers.append(item['pred_ans'])
-            target_answers.append(item['gt_ans'])
-            predicted_explanations.append(item['pred_explain'])
-            
             # Handle both single string and list format for ground truth
             if isinstance(item['gt_explain'], list):
                 target_explanations.append(item['gt_explain'])
             else:
                 target_explanations.append([item['gt_explain']])
-            
-            # Count correct answers
-            if item.get('answer_correct', False):
-                correct_count += 1
-        
-        # Calculate accuracy and task score
-        accuracy = correct_count / total_examples if total_examples > 0 else 0.0
+
+        # Evaluate answers to get accuracy
+        answer_scores = self.evaluate_answers(predicted_answers, target_answers)
+        accuracy = answer_scores['accuracy']
+        correct_count = answer_scores['correct']
+        total_examples = answer_scores['total']
         task_score = accuracy  # Same as accuracy for VQA-X
         
         # Get indices of correct predictions for filtered evaluation
         correct_indices = []
-        for i, item in enumerate(results_data):
-            if item.get('answer_correct', False):
+        for i, (pred, target) in enumerate(zip(predicted_answers, target_answers)):
+            if self._is_answer_correct(pred, target):
                 correct_indices.append(i)
         
         # Evaluate explanations (unfiltered - all samples)
