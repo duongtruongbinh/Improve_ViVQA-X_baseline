@@ -43,7 +43,7 @@ class QueryLLM:
         elif self.llm_provider in ['vllm_9000', 'vllm_8000']:
             # vLLM server configuration for different ports
             self.api_key = self.llm_config.get('api_key', 'EMPTY')
-            self.model_name = self.llm_config.get('model', 'Qwen/Qwen2-VL-2B-Instruct')
+            self.model_name = self.llm_config.get('model', 'Qwen/Qwen2.5-VL-3B-Instruct')
             self.base_url = self.llm_config.get('base_url', 'http://localhost:9000/v1/chat/completions')
             self.max_tokens = self.llm_config.get('max_tokens', 300)
             self.temperature = self.llm_config.get('temperature', 0.1)

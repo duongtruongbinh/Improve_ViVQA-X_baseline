@@ -36,7 +36,7 @@ class QueryVLM:
         elif self.vlm_provider in ['vllm_8000', 'vllm_9000']:
             # vLLM server configuration
             self.api_key = self.vlm_config.get('api_key', 'EMPTY')
-            self.model_name = self.vlm_config.get('model', 'Qwen/Qwen2-VL-2B-Instruct')
+            self.model_name = self.vlm_config.get('model', 'Qwen/Qwen2.5-VL-3B-Instruct')
             self.base_url = self.vlm_config.get('base_url', 'http://localhost:8000/v1/chat/completions')
             self.max_tokens = self.vlm_config.get('max_tokens', 400)
             self.temperature = self.vlm_config.get('temperature', 0.0)

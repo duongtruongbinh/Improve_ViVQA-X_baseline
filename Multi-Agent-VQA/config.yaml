@@ -37,7 +37,7 @@ dino:
   BOX_THRESHOLD: 0.35
   TEXT_THRESHOLD: 0.25
 llm:
-  llm_model: "Qwen/Qwen2-VL-2B-Instruct"
+  llm_model: "Qwen/Qwen2.5-VL-3B-Instruct"
   # LLM provider options: 'openai', 'vllm_9000'
   provider: "vllm_9000" # Use port 9000 where user's server is running
   # OpenAI configuration
@@ -47,14 +47,14 @@ llm:
     base_url: "https://api.openai.com/v1/chat/completions"
   # vLLM server configuration - match 1_model.py settings but on port 8000
   vllm_8000:
-    model: "Qwen/Qwen2-VL-2B-Instruct"
+    model: "Qwen/Qwen2.5-VL-3B-Instruct"
     api_key: "EMPTY"
     base_url: "http://localhost:8000/v1/chat/completions"
     max_tokens: 300  # Longer for LLM tasks
     temperature: 0.1
   # Local vLLM server configuration - user's actual server
   vllm_9000:
-    model: "Qwen/Qwen2-VL-2B-Instruct"
+    model: "Qwen/Qwen2.5-VL-3B-Instruct"
     api_key: "EMPTY"
     base_url: "http://localhost:9000/v1/chat/completions"
     max_tokens: 30  # Shorter for LLM tasks
@@ -70,14 +70,14 @@ vlm:
     base_url: "https://api.openai.com/v1/chat/completions"
   # vLLM server on port 8000 configuration to match 1_model.py exactly
   vllm_8000:
-    model: "Qwen/Qwen2-VL-2B-Instruct"
+    model: "Qwen/Qwen2.5-VL-3B-Instruct"
     api_key: "EMPTY"
     base_url: "http://localhost:9000/v1/chat/completions"
     max_tokens: 30  # Match 1_model.py exactly
     temperature: 0.0  # Match 1_model.py exactly
   # vLLM server on port 9000 configuration (user's server)
   vllm_9000:
-    model: "Qwen/Qwen2-VL-2B-Instruct"
+    model: "Qwen/Qwen2.5-VL-3B-Instruct"
     api_key: "EMPTY"
     base_url: "http://localhost:9000/v1/chat/completions"
     max_tokens: 30  # Match 1_model.py for fair comparison

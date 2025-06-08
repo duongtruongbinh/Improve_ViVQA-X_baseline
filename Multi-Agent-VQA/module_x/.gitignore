@@ -1,0 +1,61 @@
+# Module X specific ignores
+
+# Outputs and results
+outputs/
+results/
+logs/
+*.log
+
+# Experiment data
+experiments/
+runs/
+checkpoints/
+
+# Model files
+*.pth
+*.bin
+*.ckpt
+*.safetensors
+
+# Dataset files
+datasets/
+data/
+images/
+*.jpg
+*.jpeg
+*.png
+
+# API keys and config
+*.key
+.env
+*_private.yaml
+*_secret.yaml
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Cache
+.cache/
+.pytest_cache/
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
