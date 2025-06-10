@@ -39,7 +39,7 @@ dino:
 llm:
   llm_model: "Qwen/Qwen2.5-VL-7B-Instruct"
   # LLM provider options: 'openai', 'vllm_9000'
-  provider: "llm" # Use port 9000 where user's server is running
+  provider: "vllm_9000" # Use port 9000 where user's server is running
   # OpenAI configuration
   openai:
     model: "gpt-4o-mini"
@@ -56,7 +56,7 @@ llm:
 vlm:
   min_bbox_size: 32
   # VLM provider options: 'openai', 'vllm_9000'
-  provider: "vllm" # Use port 9000 where user's server is running
+  provider: "vllm_9000" # Use port 9000 where user's server is running
   # OpenAI configuration
   openai:
     model: "gpt-4o-mini"
