@@ -126,10 +126,22 @@ class AnswerNormalizer:
 
 def inference(device, args, test_loader):
     # Building GroundingDINO, LLM, VLM, and CLIP_Count models as multi-agents
+    print(f"{Colors.OKBLUE}Loading GroundingDINO model...{Colors.ENDC}")
     grounding_dino = load_model(args['dino']['GROUNDING_DINO_CONFIG_PATH'], args['dino']['GROUNDING_DINO_CHECKPOINT_PATH'])
+    if grounding_dino:
+        print(f"{Colors.OKGREEN}GroundingDINO model loaded successfully.{Colors.ENDC}")
+    else:
+        print(f"{Colors.WARNING}Warning: GroundingDINO model failed to load.{Colors.ENDC}")
+
     LLM, VLM = QueryLLM(args), QueryVLM(args)
+    
+    print(f"{Colors.OKBLUE}Loading CLIP-Count model...{Colors.ENDC}")
     clip_count = CLIP_Count.load_from_checkpoint('CLIP_Count/ckpt/clipcount_pretrained.ckpt', strict=False).to(device)
-    clip_count.eval()  # Set the model to evaluation mode
+    if clip_count:
+        print(f"{Colors.OKGREEN}CLIP-Count model loaded successfully.{Colors.ENDC}")
+        clip_count.eval()  # Set the model to evaluation mode
+    else:
+        print(f"{Colors.WARNING}Warning: CLIP-Count model failed to load.{Colors.ENDC}")
     
     # Initialize answer normalizer
     normalizer = AnswerNormalizer()
@@ -187,7 +199,7 @@ def inference(device, args, test_loader):
                     if numbers:
                         largest_num = max(int(num) for num in numbers)
                         # REFINED: Increase threshold - only for truly difficult counting
-                        threshold = 8 if is_qwen25 else 8  # Increase from 3 to 8
+                        threshold = 12 if is_qwen25 else 12  # Increase from 8 to 12
                         if largest_num >= threshold:  
                             verify_numeric_answer = True
                             counting_trigger = True
@@ -259,14 +271,15 @@ def inference(device, args, test_loader):
                     # REFINED: More restrictive attribute triggers  
                     attribute_keywords = ['what type', 'what kind', 'what material', 'what shape', 'what size', 'how big', 'how small']
                     if any(phrase in question_lower for phrase in attribute_keywords):
-                        # REFINED: Only trigger if answer is clearly insufficient
-                        generic_answers = ['object', 'thing', 'item', 'something', 'material', 'type', 'stuff']
-                        if (baseline_answer.lower().strip() in generic_answers or
-                            (len(baseline_answer.split()) <= 1 and baseline_answer.lower() not in ['yes', 'no']) or
-                            any(word in baseline_answer.lower() for word in ['unclear', 'unknown', 'unsure'])):
+                        # IMPROVEMENT: Trigger only if answer is GENERIC or UNCERTAIN. Do not trigger on all short answers.
+                        generic_answers = ['object', 'thing', 'item', 'something', 'material', 'type', 'stuff', 'clothing', 'food']
+                        is_generic_or_uncertain = (baseline_answer.lower().strip() in generic_answers or
+                                                   any(word in baseline_answer.lower() for word in ['unclear', 'unknown', 'unsure', 'not sure', 'seems', 'appears']))
+                        
+                        if is_generic_or_uncertain:
                             detailed_attribute = True
                             if args['inference']['verbose']:
-                                print(f'{Colors.WARNING}Attribute question insufficient: "{baseline_answer}"{Colors.ENDC}')
+                                print(f'{Colors.WARNING}Attribute question got generic/uncertain answer: "{baseline_answer}"{Colors.ENDC}')
             
             # REFINED: More selective complex visual assessment
             long_question = len(question[0].split()) > 15  # Increased threshold from 12 to 15
@@ -341,19 +354,21 @@ def inference(device, args, test_loader):
                                    counting_trigger or complex_visual_question or 
                                    low_confidence_answer or needs_context or location_trigger)
             
-            # IMPROVED: Giảm override conditions - chỉ override cho very simple cases
+            # IMPROVEMENT: Override trigger only for simple yes/no questions with clear yes/no answers.
             simple_question_types = ['is this', 'is there', 'is it', 'are there', 'can you see', 'does the', 'do you see']
             is_simple_question = any(phrase in question_lower for phrase in simple_question_types)
-            simple_answer = baseline_answer.lower().strip() in ['yes', 'no'] or len(baseline_answer.split()) == 1
             
-            # IMPROVED: Không override important question types
+            # A valid simple answer is just 'yes' or 'no'. Exclude generic/uncertain answers.
+            is_valid_simple_answer = baseline_answer.lower().strip() in ['yes', 'no']
+
+            # Do not override important, specific question types.
             important_question_types = ['how many', 'what color', 'where is', 'what type', 'what kind', 'what material', 'what shape', 'what size']
             is_important_question = any(phrase in question_lower for phrase in important_question_types)
             
-            if is_simple_question and simple_answer and not explicit_failure and not zero_numeric and not is_important_question:
+            if is_simple_question and is_valid_simple_answer and not is_important_question and not explicit_failure:
                 match_baseline_failed = False  # Override trigger for simple Q&A pairs
-                if args['inference']['verbose'] and (counting_trigger or complex_visual_question or low_confidence_answer):
-                    print(f'{Colors.OKBLUE}Override: Simple question with reasonable answer, skipping multi-agent{Colors.ENDC}')
+                if args['inference']['verbose'] and (counting_trigger or complex_visual_question or low_confidence_answer or vague_answer):
+                    print(f'{Colors.OKBLUE}Override: Simple question with valid simple answer, skipping multi-agent.{Colors.ENDC}')
             
             # Enhanced trigger reasons for verbose output  
             if match_baseline_failed and args['inference']['verbose']:
@@ -420,20 +435,54 @@ def inference(device, args, test_loader):
             if args['inference']['verbose'] and normalized_final != final_answer:
                 print(f'{Colors.OKBLUE}Answer normalized: "{final_answer}" → "{normalized_final}"{Colors.ENDC}')
 
-            # Use VQA evaluation from utils with normalized answers
-            gt_answers = [{'answer': target_answer[0]}] * 3  # VQA format with 3 annotators
-            vqa_score = grader.vqa_score(normalized_final, gt_answers)
-            baseline_score = grader.vqa_score(normalized_baseline, gt_answers)
+            # --- Flexible Evaluation Logic ---
+            evaluation_method = args['inference'].get('evaluation_method', 'vqa') # Default to 'vqa'
+            vqa_score = -1.0
+            grade = -1.0
             
-            if args['inference']['verbose']:
-                print(f"VQA Score: {vqa_score:.3f} [{'Correct' if vqa_score > 0 else 'Incorrect'}]")
+            if evaluation_method == 'vqa':
+                # Use VQA evaluation from utils with normalized answers
+                gt_answers = [{'answer': target_answer[0]}] * 3  # VQA format with 3 annotators
+                vqa_score = grader.vqa_score(normalized_final, gt_answers)
+                baseline_score = grader.vqa_score(normalized_baseline, gt_answers)
+                if args['inference']['verbose']:
+                    print(f"VQA Score: {vqa_score:.3f} [{'Correct' if vqa_score > 0 else 'Incorrect'}]")
+                # Use grader's accumulate_grades for proper tracking with normalized answer
+                majority_vote = grader.accumulate_grades(args, [], match_baseline_failed, 
+                                                       target_answer=gt_answers, 
+                                                       model_answer=normalized_final, 
+                                                       answer_type='unknown',
+                                                       initial_answer=normalized_baseline)
+            elif evaluation_method == 'grader':
+                # Use LLM Grader
+                grade_response = LLM.query_llm(question, previous_response=final_answer, llm_model=args['llm']['llm_model'], 
+                                             step='grade_answer', target_answer=target_answer[0], verbose=args['inference']['verbose'])
+                try:
+                    grade = float(re.findall(r'\d+\.\d+|\d+', grade_response)[0])
+                except (ValueError, IndexError):
+                    grade = 0.0 # Failed to parse grade
+                
+                # Also calculate baseline grade for comparison
+                baseline_grade_response = LLM.query_llm(question, previous_response=baseline_answer, llm_model=args['llm']['llm_model'], 
+                                             step='grade_answer', target_answer=target_answer[0], verbose=False) # less verbose for baseline
+                try:
+                    baseline_grade = float(re.findall(r'\d+\.\d+|\d+', baseline_grade_response)[0])
+                except (ValueError, IndexError):
+                    baseline_grade = 0.0
 
-            # Use grader's accumulate_grades for proper tracking with normalized answer
-            majority_vote = grader.accumulate_grades(args, [], match_baseline_failed, 
-                                                   target_answer=gt_answers, 
-                                                   model_answer=normalized_final, 
-                                                   answer_type='unknown',
-                                                   initial_answer=normalized_baseline)
+                vqa_score = 1.0 if grade > 0.5 else 0.0
+                baseline_score = 1.0 if baseline_grade > 0.5 else 0.0
+                if args['inference']['verbose']:
+                     print(f"LLM Grade: {grade:.1f} [{'Correct' if vqa_score > 0 else 'Incorrect'}]")
+                
+                # Use grader's accumulate_grades for proper tracking with grader score
+                majority_vote = grader.accumulate_grades(args, [], match_baseline_failed, 
+                                                       target_answer=[{'answer': str(grade)}], # Use grade as proxy for gt
+                                                       model_answer=str(vqa_score), # Use binarized score
+                                                       answer_type='unknown',
+                                                       initial_answer=str(baseline_score))
+            else:
+                raise ValueError(f"Unknown evaluation_method: {evaluation_method}")
 
             # Record response
             response_dict = {
@@ -449,6 +498,8 @@ def inference(device, args, test_loader):
                 'match_baseline_failed': match_baseline_failed, 
                 'verify_numeric_answer': verify_numeric_answer,
                 'vqa_score': vqa_score,
+                'llm_grade': grade,
+                'evaluation_method': evaluation_method,
                 'baseline_score': baseline_score,
                 'majority_vote': majority_vote
             }
