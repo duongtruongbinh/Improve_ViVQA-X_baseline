@@ -1,0 +1,70 @@
+# Configuration for ViVQA-X evaluation using Multi-Agent VQA framework
+datasets:
+  dataset: "vivqa-x" # Vietnamese VQA with explanations
+  vivqa_x_dataset_split: "test" # 'train', 'val', 'test'
+  vivqa_x_images_dir: "/mnt/VLAI_data/COCO_Images/val2014"
+  vivqa_x_train_file: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_train.json"
+  vivqa_x_val_file: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_val.json"
+  vivqa_x_test_file: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_test.json"
+  percent_test: 1 #0.01
+  num_test_data: 100    # Test on 50 samples as requested
+  use_num_test_data: True  # Enable limited testing
+
+# SAM and DINO configurations (inherited from main config)
+sam:
+  GROUNDING_DINO_CONFIG_PATH: "../Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+  GROUNDING_DINO_CHECKPOINT_PATH: "../Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
+  SAM_ENCODER_VERSION: "vit_h"
+  SAM_CHECKPOINT_PATH: "../Grounded-Segment-Anything/sam_vit_h_4b8939.pth"
+  BOX_THRESHOLD: 0.25
+  TEXT_THRESHOLD: 0.25
+  NMS_THRESHOLD: 0.8
+  min_mask_region_area: 1024
+  pred_iou_thresh: 0.9
+  stability_score_thresh: 0.98
+
+dino:
+  GROUNDING_DINO_CONFIG_PATH: "../Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+  GROUNDING_DINO_CHECKPOINT_PATH: "../Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
+  BOX_THRESHOLD: 0.35
+  TEXT_THRESHOLD: 0.25
+
+# Model configuration matching the main framework structure
+model: "qwen2.5-vl-7b"  # Use Qwen model only
+
+# VLM configuration for vLLM server
+vlm:
+  provider: "vllm_8000" # Use port 8000 where server is running
+  min_bbox_size: 128
+  vllm_8000:
+    api_key: "EMPTY"
+    model: "Qwen/Qwen2.5-VL-7B-Instruct"
+    base_url: "http://localhost:9100/v1/chat/completions"
+    max_tokens: 200  # Increased for longer explanations
+    temperature: 0.0
+
+# LLM configuration (for compatibility)
+llm:
+  llm_model: "Qwen/Qwen2.5-VL-7B-Instruct"
+  provider: "vllm_8000"
+  vllm_8000:
+    model: "Qwen/Qwen2.5-VL-7B-Instruct"
+    api_key: "EMPTY"
+    base_url: "http://localhost:9100/v1/chat/completions"
+    max_tokens: 100
+    temperature: 0.0
+
+inference:
+  verbose: False
+  find_nearby_objects: False
+  force_multi_agents: False
+  nearby_bbox_iou_threshold: 0.5
+  print_every: 5 # Print every 5 samples for VQA-X
+  output_response_filename: "outputs/vivqa_x_test_responses.json"
+  save_output_response: True
+  counting_threshold: 4
+  enable_enhanced_triggers: True
+  use_grader: False
+  # VQA-X specific settings
+  require_explanation: True # VQA-X requires both answer and explanation
+  explanation_max_tokens: 50
