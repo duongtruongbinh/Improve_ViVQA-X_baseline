@@ -1,0 +1,11 @@
+# T.sprint_1/step_1_aggressive_pruning.md
+-   **Objective:** Eliminate all modules not part of the core abstract framework.
+-   **Checklist:**
+    -   [x] **DELETE** directory: `Top-Down/app/` (UI components).
+    -   [x] **DELETE** directory: `Top-Down/dataset_card/` (Documentation).
+    -   [x] **DELETE** directory: `Top-Down/lavis/common/annotator/` (Auxiliary tools).
+    -   [x] **DELETE** directory: `Top-Down/lavis/datasets/` (All dataset loaders and builders).
+    -   [x] **DELETE** directory: `Top-Down/lavis/processors/` (All data preprocessing logic).
+    -   [x] **DELETE** directory: `Top-Down/lavis/configs/datasets/` (All dataset configs).
+    -   [x] **DELETE** all non-GPT model directories from `Top-Down/lavis/models/` (e.g., `albef_models`, `blip_models`, `pnp_vqa_models`, etc.).
+    -   [x] **DELETE** all non-essential experiment configurations from `Top-Down/projects/` and `Top-Down/run_scripts/`. 

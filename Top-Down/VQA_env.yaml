@@ -1,0 +1,23 @@
+name: VQA_env
+channels:
+  - pytorch
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pip
+  # Core ML and data handling libraries
+  - pytorch
+  - torchvision
+  - torchaudio
+  - numpy
+  - pandas
+  # Project-specific libraries
+  - openai
+  - pyyaml
+  - tqdm
+  - omegaconf
+  - pip:
+    - retrying
+  # Optional: Specify CUDA version compatible with your hardware
+  # - cudatoolkit=11.7 

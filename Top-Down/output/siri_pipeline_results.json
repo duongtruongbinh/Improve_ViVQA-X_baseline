@@ -1,0 +1,992 @@
+[
+    {
+        "question_id": 452060001,
+        "question": "What is the person holding on the hand?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000452060.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "tennis ball",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "A young woman is captured mid-action on an indoor tennis court, wearing a dark blue t-shirt and white shorts. She has a focused expression as she prepares to hit a tennis ball, holding a tennis racket in her right hand. The court is enclosed with a blue netting backdrop, and the ground appears to be a hard surface, typical for indoor tennis. Her athletic stance and concentration suggest she is engaged in a competitive match or practice session.",
+            "initial_answer_candidates": [
+                "tennis racket",
+                "tennis ball",
+                "water bottle"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "tennis racket",
+                    "relevant_issue": "What object is the person gripping with their right hand?",
+                    "issue_answer": "tennis racket",
+                    "hypothesis": "IF the person is gripping a tennis racket with their right hand, THEN the object they are holding is a tennis racket.",
+                    "confidence_score": 0.95,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "tennis ball",
+                    "relevant_issue": "What object is the person gripping with their right hand?",
+                    "issue_answer": "tennis racket",
+                    "hypothesis": "IF the person is gripping a tennis racket with their right hand, THEN it is likely that they are holding a tennis ball in their other hand.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "water bottle",
+                    "relevant_issue": "What object is the person gripping with their right hand?",
+                    "issue_answer": "tennis racket",
+                    "hypothesis": "IF the person is gripping a tennis racket with their right hand, THEN it is unlikely that they are holding a water bottle in that hand.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "tennis racket",
+                    "relevant_issue": "Is there a tennis ball visible in the image?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF there is a tennis ball visible in the image, THEN it is likely that the person is holding a tennis racket.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "tennis ball",
+                    "relevant_issue": "Is there a tennis ball visible in the image?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF there is a tennis ball visible in the image, THEN the person is likely holding a tennis ball in their hand.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "water bottle",
+                    "relevant_issue": "Is there a tennis ball visible in the image?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF there is a tennis ball visible in the image, THEN the person is likely holding a water bottle instead of a tennis ball.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "tennis racket",
+                    "relevant_issue": "What is the person preparing to hit with the racket?",
+                    "issue_answer": "a tennis ball",
+                    "hypothesis": "IF the person is holding a tennis racket, THEN they are preparing to hit a tennis ball.",
+                    "confidence_score": 0.9,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "tennis ball",
+                    "relevant_issue": "What is the person preparing to hit with the racket?",
+                    "issue_answer": "a tennis ball",
+                    "hypothesis": "IF the person is preparing to hit a tennis ball with the racket, THEN the person is likely holding a tennis ball in their hand.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the person holding on the hand?",
+                    "answer_candidate": "water bottle",
+                    "relevant_issue": "What is the person preparing to hit with the racket?",
+                    "issue_answer": "a tennis ball",
+                    "hypothesis": "IF the person is preparing to hit a tennis ball with a racket, THEN it is likely that they are not holding a water bottle in their hand.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 452060002,
+        "question": "Is the person moving?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000452060.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "No",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "A young woman is captured mid-action on a tennis court, wearing a black t-shirt and white shorts. She is poised with a tennis racket in hand, appearing to be in the process of hitting a ball. The indoor court is surrounded by blue netting, and the ground is a textured surface typical of tennis courts. Her expression shows focus and determination as she engages in the sport.",
+            "initial_answer_candidates": [
+                "Yes",
+                "No",
+                "Uncertain"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "Is the tennis racket in motion?",
+                    "issue_answer": "Yes, the racket is in motion.",
+                    "hypothesis": "IF the tennis racket is in motion, THEN the person is likely moving.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "Is the tennis racket in motion?",
+                    "issue_answer": "Yes, the racket is in motion.",
+                    "hypothesis": "IF the tennis racket is in motion, THEN the person is likely not moving.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "Uncertain",
+                    "relevant_issue": "Is the tennis racket in motion?",
+                    "issue_answer": "Yes, the racket is in motion.",
+                    "hypothesis": "IF the tennis racket is in motion, THEN the person is likely moving.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "Is the woman making contact with a tennis ball?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF the woman is making contact with a tennis ball, THEN the person is likely moving.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "Is the woman making contact with a tennis ball?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF the woman is making contact with a tennis ball, THEN it is likely that she is moving.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "Uncertain",
+                    "relevant_issue": "Is the woman making contact with a tennis ball?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF the woman is making contact with a tennis ball, THEN it is likely that she is moving.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "What is the position of the woman's feet on the court?",
+                    "issue_answer": "feet are positioned apart",
+                    "hypothesis": "IF the woman's feet are positioned apart on the court, THEN she is likely moving.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "What is the position of the woman's feet on the court?",
+                    "issue_answer": "feet are positioned apart",
+                    "hypothesis": "IF the woman's feet are positioned apart, THEN she is likely not moving.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the person moving?",
+                    "answer_candidate": "Uncertain",
+                    "relevant_issue": "What is the position of the woman's feet on the court?",
+                    "issue_answer": "feet are positioned apart",
+                    "hypothesis": "IF the woman's feet are positioned apart on the court, THEN it is likely that she is in a stable stance, which may indicate she is not moving.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 121897000,
+        "question": "Are they playing during the day?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000121897.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "No",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "The image captures a nighttime baseball game in progress, with a player in a red helmet and jersey poised at the plate, ready to swing at a pitch. The catcher, dressed in blue gear, crouches behind home plate, while an umpire in dark clothing stands nearby, observing the play. In the background, additional players in blue uniforms are positioned on the field, illuminated by the bright lights that contrast against the darkening sky, creating a vibrant atmosphere typical of evening sports events.",
+            "initial_answer_candidates": [
+                "No",
+                "Yes",
+                "It's unclear"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "What time of day is depicted in the image?",
+                    "issue_answer": "night",
+                    "hypothesis": "IF the time of day depicted in the image is night, THEN they are not playing during the day.",
+                    "confidence_score": 0.95,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "What time of day is depicted in the image?",
+                    "issue_answer": "night",
+                    "hypothesis": "IF the time of day depicted in the image is night, THEN they are not playing during the day.",
+                    "confidence_score": 0.95,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "It's unclear",
+                    "relevant_issue": "What time of day is depicted in the image?",
+                    "issue_answer": "night",
+                    "hypothesis": "IF the time of day depicted in the image is night, THEN they are not playing during the day.",
+                    "confidence_score": 0.95,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "Are there any visible light sources in the image?",
+                    "issue_answer": "Yes, there are visible light sources.",
+                    "hypothesis": "IF there are visible light sources in the image, THEN it is likely that they are not playing during the day.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "Are there any visible light sources in the image?",
+                    "issue_answer": "Yes, there are visible light sources.",
+                    "hypothesis": "IF there are visible light sources in the image, THEN they are likely playing during the day.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "It's unclear",
+                    "relevant_issue": "Are there any visible light sources in the image?",
+                    "issue_answer": "Yes, there are visible light sources.",
+                    "hypothesis": "IF there are visible light sources in the image, THEN it is likely that they are playing during the day.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "What is the color of the sky in the background?",
+                    "issue_answer": "dark blue",
+                    "hypothesis": "IF the sky in the background is dark blue, THEN it is likely not daytime.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "What is the color of the sky in the background?",
+                    "issue_answer": "dark blue",
+                    "hypothesis": "IF the sky in the background is dark blue, THEN it is likely not daytime.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Are they playing during the day?",
+                    "answer_candidate": "It's unclear",
+                    "relevant_issue": "What is the color of the sky in the background?",
+                    "issue_answer": "dark blue",
+                    "hypothesis": "IF the sky in the background is dark blue, THEN it is likely not daytime.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 121897001,
+        "question": "What is being played?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000121897.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "baseball",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "The image captures a nighttime baseball game in progress, with a player in a red helmet and jersey preparing to bat as the pitcher throws the ball. The batter, positioned in the foreground, is in a dynamic stance, indicating a moment of action. Behind him, the catcher, dressed in blue gear, is crouched low, ready to receive the pitch. In the background, other players in blue uniforms are positioned on the field, highlighting the competitive atmosphere of the game under the bright lights.",
+            "initial_answer_candidates": [
+                "baseball",
+                "softball",
+                "batting practice"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "baseball",
+                    "relevant_issue": "What type of equipment is the player in the foreground using?",
+                    "issue_answer": "bat",
+                    "hypothesis": "IF the player in the foreground is using a bat, THEN it is likely that baseball is being played.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "softball",
+                    "relevant_issue": "What type of equipment is the player in the foreground using?",
+                    "issue_answer": "bat",
+                    "hypothesis": "IF the player in the foreground is using a bat, THEN it is likely that they are playing softball.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "batting practice",
+                    "relevant_issue": "What type of equipment is the player in the foreground using?",
+                    "issue_answer": "bat",
+                    "hypothesis": "IF the player in the foreground is using a bat, THEN it is likely that they are participating in batting practice.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "baseball",
+                    "relevant_issue": "Are there any bases visible in the image?",
+                    "issue_answer": "Yes, there are bases visible.",
+                    "hypothesis": "IF there are bases visible in the image, THEN it is likely that baseball is being played.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "softball",
+                    "relevant_issue": "Are there any bases visible in the image?",
+                    "issue_answer": "Yes, there are bases visible.",
+                    "hypothesis": "IF there are bases visible in the image, THEN it is likely that softball is being played.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "batting practice",
+                    "relevant_issue": "Are there any bases visible in the image?",
+                    "issue_answer": "Yes, there are bases visible.",
+                    "hypothesis": "IF there are bases visible in the image, THEN it is likely that batting practice is being played.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "baseball",
+                    "relevant_issue": "What color uniforms are the players in the background wearing?",
+                    "issue_answer": "blue",
+                    "hypothesis": "IF the players in the background are wearing blue uniforms, THEN it is likely that the sport being played is baseball.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "softball",
+                    "relevant_issue": "What color uniforms are the players in the background wearing?",
+                    "issue_answer": "blue",
+                    "hypothesis": "IF the players in the background are wearing blue uniforms, THEN it is likely that they are playing softball.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is being played?",
+                    "answer_candidate": "batting practice",
+                    "relevant_issue": "What color uniforms are the players in the background wearing?",
+                    "issue_answer": "blue",
+                    "hypothesis": "IF the players in the background are wearing blue uniforms, THEN it is likely that they are participating in batting practice.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 121897002,
+        "question": "What is green?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000121897.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "grass",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "The image captures a dynamic moment in a baseball game at night, where a batter in a red helmet and jersey is in the process of swinging at a pitch. The batter is positioned in the foreground, while the catcher, dressed in blue, crouches behind home plate, ready to receive the ball. In the background, players in blue uniforms are positioned on the field, with the bright green grass contrasting against the brown dirt of the infield. The scene is illuminated by artificial lights, creating a vibrant atmosphere typical of evening sports events.",
+            "initial_answer_candidates": [
+                "grass",
+                "baseball field",
+                "uniforms"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "grass",
+                    "relevant_issue": "What color is the grass in the image?",
+                    "issue_answer": "green",
+                    "hypothesis": "IF the grass in the image is green, THEN grass is a representation of the color green.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "baseball field",
+                    "relevant_issue": "What color is the grass in the image?",
+                    "issue_answer": "green",
+                    "hypothesis": "IF the grass in the image is green, THEN the baseball field is likely to be green.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "uniforms",
+                    "relevant_issue": "What color is the grass in the image?",
+                    "issue_answer": "green",
+                    "hypothesis": "IF the grass in the image is green, THEN uniforms that are also green may be associated with the color green.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "grass",
+                    "relevant_issue": "What colors are the uniforms worn by the players?",
+                    "issue_answer": "red and gray",
+                    "hypothesis": "IF the players are wearing red and gray uniforms, THEN the grass on the field is likely to be green.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "baseball field",
+                    "relevant_issue": "What colors are the uniforms worn by the players?",
+                    "issue_answer": "red and gray",
+                    "hypothesis": "IF the baseball field is green, THEN the uniforms worn by the players can be red and gray.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "uniforms",
+                    "relevant_issue": "What colors are the uniforms worn by the players?",
+                    "issue_answer": "red and gray",
+                    "hypothesis": "IF the uniforms worn by the players are red and gray, THEN they are not green.",
+                    "confidence_score": 0.95,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "grass",
+                    "relevant_issue": "Is there any other green object visible in the scene?",
+                    "issue_answer": "Yes, there is green grass in the field.",
+                    "hypothesis": "IF there is green grass in the field, THEN grass is a green object.",
+                    "confidence_score": 0.9,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "baseball field",
+                    "relevant_issue": "Is there any other green object visible in the scene?",
+                    "issue_answer": "Yes, there is green grass in the field.",
+                    "hypothesis": "IF there is green grass in the field, THEN the baseball field is likely to be green.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is green?",
+                    "answer_candidate": "uniforms",
+                    "relevant_issue": "Is there any other green object visible in the scene?",
+                    "issue_answer": "Yes, there is green grass in the field.",
+                    "hypothesis": "IF there is green grass in the field, THEN it is likely that the color green is represented in the scene.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 63144000,
+        "question": "Is the water cold?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000063144.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "Yes, the water is likely cold.",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "A surfer skillfully rides a wave on a surfboard, showcasing a dynamic moment in water sports. The surfer, dressed in a black wetsuit and a red helmet, balances expertly as the wave curls beneath them. The ocean appears calm with gentle ripples, and the horizon is hazy, suggesting a serene yet invigorating atmosphere. The colors are muted, with soft greens and blues dominating the scene, creating a tranquil backdrop for the action.",
+            "initial_answer_candidates": [
+                "Yes, the water is likely cold.",
+                "No, the water is likely warm.",
+                "It depends on the location and time of year."
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "Yes, the water is likely cold.",
+                    "relevant_issue": "What is the weather like in the image?",
+                    "issue_answer": "calm and overcast",
+                    "hypothesis": "IF the weather is calm and overcast, THEN the water is likely cold.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "No, the water is likely warm.",
+                    "relevant_issue": "What is the weather like in the image?",
+                    "issue_answer": "calm and overcast",
+                    "hypothesis": "IF the weather is calm and overcast, THEN the water is likely warm.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "It depends on the location and time of year.",
+                    "relevant_issue": "What is the weather like in the image?",
+                    "issue_answer": "calm and overcast",
+                    "hypothesis": "IF the weather is calm and overcast, THEN the water is likely to be cold.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "Yes, the water is likely cold.",
+                    "relevant_issue": "Are there any visible indicators of water temperature, such as the surfer's reaction or attire?",
+                    "issue_answer": "The surfer is wearing a wetsuit, indicating cooler water temperatures.",
+                    "hypothesis": "IF the surfer is wearing a wetsuit, THEN the water is likely cold.",
+                    "confidence_score": 0.85,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "No, the water is likely warm.",
+                    "relevant_issue": "Are there any visible indicators of water temperature, such as the surfer's reaction or attire?",
+                    "issue_answer": "The surfer is wearing a wetsuit, indicating cooler water temperatures.",
+                    "hypothesis": "IF the surfer is wearing a wetsuit, THEN the water is likely cold.",
+                    "confidence_score": 0.85,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "It depends on the location and time of year.",
+                    "relevant_issue": "Are there any visible indicators of water temperature, such as the surfer's reaction or attire?",
+                    "issue_answer": "The surfer is wearing a wetsuit, indicating cooler water temperatures.",
+                    "hypothesis": "IF the surfer is wearing a wetsuit, THEN the water is likely cold.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "Yes, the water is likely cold.",
+                    "relevant_issue": "What time of year does the scene suggest based on the environment?",
+                    "issue_answer": "summer",
+                    "hypothesis": "IF the scene suggests it is summer, THEN the water is likely cold.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "No, the water is likely warm.",
+                    "relevant_issue": "What time of year does the scene suggest based on the environment?",
+                    "issue_answer": "summer",
+                    "hypothesis": "IF the scene suggests it is summer, THEN the water is likely warm.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is the water cold?",
+                    "answer_candidate": "It depends on the location and time of year.",
+                    "relevant_issue": "What time of year does the scene suggest based on the environment?",
+                    "issue_answer": "summer",
+                    "hypothesis": "IF the time of year suggested by the environment is summer, THEN the water is likely not cold.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 63144001,
+        "question": "What is the man wearing?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000063144.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "black wetsuit",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "A surfer skillfully rides a wave on a surfboard, showcasing a dynamic posture as he balances on the board. He is dressed in a black wetsuit, which provides insulation and protection from the water, and a red helmet for safety. The ocean is calm with gentle waves, and the horizon is visible in the background, creating a serene yet exhilarating atmosphere for the sport.",
+            "initial_answer_candidates": [
+                "black wetsuit",
+                "red helmet",
+                "surfboard"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "black wetsuit",
+                    "relevant_issue": "What color is the wetsuit the man is wearing?",
+                    "issue_answer": "black",
+                    "hypothesis": "IF the color of the wetsuit the man is wearing is black, THEN the man is wearing a black wetsuit.",
+                    "confidence_score": 1.0,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "red helmet",
+                    "relevant_issue": "What color is the wetsuit the man is wearing?",
+                    "issue_answer": "black",
+                    "hypothesis": "IF the man is wearing a black wetsuit, THEN it is possible that he is also wearing a red helmet as part of his gear.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "surfboard",
+                    "relevant_issue": "What color is the wetsuit the man is wearing?",
+                    "issue_answer": "black",
+                    "hypothesis": "IF the man is wearing a black wetsuit, THEN he is likely engaged in water sports, such as surfing, which would explain the surfboard.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "black wetsuit",
+                    "relevant_issue": "What safety gear is the man wearing on his head?",
+                    "issue_answer": "helmet",
+                    "hypothesis": "IF the man is wearing a black wetsuit, THEN it is likely that he is also wearing a helmet for safety.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "red helmet",
+                    "relevant_issue": "What safety gear is the man wearing on his head?",
+                    "issue_answer": "helmet",
+                    "hypothesis": "IF the man is wearing a helmet, THEN he is likely wearing a red helmet.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "surfboard",
+                    "relevant_issue": "What safety gear is the man wearing on his head?",
+                    "issue_answer": "helmet",
+                    "hypothesis": "IF the man is wearing a helmet, THEN he is likely engaged in an activity that requires safety gear, such as surfing.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "black wetsuit",
+                    "relevant_issue": "Is the surfboard visible in the image?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF the surfboard is visible in the image, THEN the man is likely wearing a black wetsuit for surfing.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "red helmet",
+                    "relevant_issue": "Is the surfboard visible in the image?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF the surfboard is visible in the image, THEN the man is likely wearing a red helmet as part of his surfing gear.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What is the man wearing?",
+                    "answer_candidate": "surfboard",
+                    "relevant_issue": "Is the surfboard visible in the image?",
+                    "issue_answer": "Yes",
+                    "hypothesis": "IF the surfboard is visible in the image, THEN the man is likely wearing a surfboard.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 63144002,
+        "question": "Is this man doing an extreme sport?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000063144.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "No",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "A lone surfer skillfully rides a wave, showcasing his balance and agility on the surfboard. Dressed in a black wetsuit, he appears focused as he navigates the crest of the wave, with the calm ocean stretching out behind him. The scene is set against a serene backdrop, with soft hues in the sky hinting at either dawn or dusk, creating a tranquil yet exhilarating atmosphere typical of surfing environments.",
+            "initial_answer_candidates": [
+                "Yes",
+                "No",
+                "Maybe"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "What activity is the man engaged in on the water?",
+                    "issue_answer": "surfing",
+                    "hypothesis": "IF the man is engaged in surfing on the water, THEN he is likely doing an extreme sport.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "What activity is the man engaged in on the water?",
+                    "issue_answer": "surfing",
+                    "hypothesis": "IF the man is engaged in surfing on the water, THEN it is likely that he is participating in an extreme sport.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "Maybe",
+                    "relevant_issue": "What activity is the man engaged in on the water?",
+                    "issue_answer": "surfing",
+                    "hypothesis": "IF the man is engaged in surfing, THEN he is likely doing an extreme sport.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "How large are the waves in the image?",
+                    "issue_answer": "1-2 feet",
+                    "hypothesis": "IF the waves in the image are 1-2 feet high, THEN it is unlikely that the man is doing an extreme sport.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "How large are the waves in the image?",
+                    "issue_answer": "1-2 feet",
+                    "hypothesis": "IF the waves in the image are 1-2 feet high, THEN it is unlikely that the man is doing an extreme sport.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "Maybe",
+                    "relevant_issue": "How large are the waves in the image?",
+                    "issue_answer": "1-2 feet",
+                    "hypothesis": "IF the waves in the image are 1-2 feet high, THEN it is unlikely that this man is doing an extreme sport.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "Yes",
+                    "relevant_issue": "What is the man's level of skill or experience as depicted in the image?",
+                    "issue_answer": "Intermediate",
+                    "hypothesis": "IF the man has an intermediate level of skill or experience, THEN it is likely that he is engaging in an extreme sport.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "No",
+                    "relevant_issue": "What is the man's level of skill or experience as depicted in the image?",
+                    "issue_answer": "Intermediate",
+                    "hypothesis": "IF the man's level of skill or experience is intermediate, THEN he is likely not engaging in an extreme sport.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "Is this man doing an extreme sport?",
+                    "answer_candidate": "Maybe",
+                    "relevant_issue": "What is the man's level of skill or experience as depicted in the image?",
+                    "issue_answer": "Intermediate",
+                    "hypothesis": "IF the man's level of skill or experience is intermediate, THEN it is possible that he is engaging in an extreme sport.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 63144003,
+        "question": "What color is the close surfboard?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000063144.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "white",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "A surfer skillfully rides a wave on a surfboard, showcasing a dynamic moment in the ocean. The surfer, dressed in a black wetsuit, balances expertly on the board as the water splashes around them. The background features a calm sea with gentle waves and a soft, muted sky, creating a serene atmosphere. The scene captures the thrill of surfing and the beauty of the ocean.",
+            "initial_answer_candidates": [
+                "white",
+                "yellow",
+                "blue"
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "white",
+                    "relevant_issue": "What color is the surfboard in the image?",
+                    "issue_answer": "white",
+                    "hypothesis": "IF the surfboard in the image is white, THEN the close surfboard is also white.",
+                    "confidence_score": 0.9,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "yellow",
+                    "relevant_issue": "What color is the surfboard in the image?",
+                    "issue_answer": "white",
+                    "hypothesis": "IF the surfboard in the image is white, THEN the close surfboard cannot be yellow.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "blue",
+                    "relevant_issue": "What color is the surfboard in the image?",
+                    "issue_answer": "white",
+                    "hypothesis": "IF the surfboard in the image is white, THEN the close surfboard cannot be blue.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "white",
+                    "relevant_issue": "Is the surfboard visible in the foreground or background?",
+                    "issue_answer": "foreground",
+                    "hypothesis": "IF the surfboard is visible in the foreground, THEN it is likely that the surfboard is white.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "yellow",
+                    "relevant_issue": "Is the surfboard visible in the foreground or background?",
+                    "issue_answer": "foreground",
+                    "hypothesis": "IF the surfboard is visible in the foreground, THEN it is likely to be yellow.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "blue",
+                    "relevant_issue": "Is the surfboard visible in the foreground or background?",
+                    "issue_answer": "foreground",
+                    "hypothesis": "IF the surfboard is visible in the foreground, THEN it is likely that the surfboard is blue.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "white",
+                    "relevant_issue": "Are there any distinct patterns or designs on the surfboard?",
+                    "issue_answer": "Yes, there are distinct patterns.",
+                    "hypothesis": "IF there are distinct patterns on the surfboard, THEN the surfboard is likely to be white with designs.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "yellow",
+                    "relevant_issue": "Are there any distinct patterns or designs on the surfboard?",
+                    "issue_answer": "Yes, there are distinct patterns.",
+                    "hypothesis": "IF the surfboard is yellow AND there are distinct patterns on it, THEN the surfboard is likely to be visually striking.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "What color is the close surfboard?",
+                    "answer_candidate": "blue",
+                    "relevant_issue": "Are there any distinct patterns or designs on the surfboard?",
+                    "issue_answer": "Yes, there are distinct patterns.",
+                    "hypothesis": "IF the surfboard is blue AND there are distinct patterns on it, THEN the surfboard is likely to be visually appealing.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    },
+    {
+        "question_id": 39420000,
+        "question": "How come there are only three of these delicious bagels here?",
+        "image_path": "/mnt/VLAI_data/COCO_Images/val2014/COCO_val2014_000000039420.jpg",
+        "ground_truth_answer": null,
+        "final_answer": "Someone ate the others before you arrived.",
+        "is_correct": null,
+        "explainability_trace": {
+            "initial_caption": "The image showcases a tray containing three bagels, two of which are plain and one is topped with chocolate icing. The bagels are placed on a piece of parchment paper, and the tray is set against a background that features a green menu or placemat. The setting appears to be a casual dining area, possibly a caf\u00e9 or bakery, where these delicious bagels are ready to be enjoyed.",
+            "initial_answer_candidates": [
+                "Someone ate the others before you arrived.",
+                "Only three were available at the time.",
+                "They were part of a special promotion."
+            ],
+            "multi_view_knowledge_base": [
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "Someone ate the others before you arrived.",
+                    "relevant_issue": "Are there any other bagels visible in the background?",
+                    "issue_answer": "Yes, there are other bagels visible.",
+                    "hypothesis": "IF there are other bagels visible in the background, THEN it is possible that someone ate the others before you arrived.",
+                    "confidence_score": 0.6,
+                    "confidence_word": "Possible"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "Only three were available at the time.",
+                    "relevant_issue": "Are there any other bagels visible in the background?",
+                    "issue_answer": "Yes, there are other bagels visible.",
+                    "hypothesis": "IF there are other bagels visible in the background, THEN it is possible that more bagels were available but not chosen.",
+                    "confidence_score": 0.7,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "They were part of a special promotion.",
+                    "relevant_issue": "Are there any other bagels visible in the background?",
+                    "issue_answer": "Yes, there are other bagels visible.",
+                    "hypothesis": "IF there are other bagels visible in the background, THEN the three bagels here may be part of a special promotion rather than the only bagels available.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "Someone ate the others before you arrived.",
+                    "relevant_issue": "Does the tray appear to be full or partially empty?",
+                    "issue_answer": "partially empty",
+                    "hypothesis": "IF the tray is partially empty, THEN it is likely that someone ate the other bagels before you arrived.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "Only three were available at the time.",
+                    "relevant_issue": "Does the tray appear to be full or partially empty?",
+                    "issue_answer": "partially empty",
+                    "hypothesis": "IF the tray is partially empty, THEN it is likely that only three bagels were available at the time.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "They were part of a special promotion.",
+                    "relevant_issue": "Does the tray appear to be full or partially empty?",
+                    "issue_answer": "partially empty",
+                    "hypothesis": "IF the tray is partially empty, THEN it is likely that the bagels were part of a special promotion.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "Someone ate the others before you arrived.",
+                    "relevant_issue": "Is there any signage or menu indicating a special promotion for bagels?",
+                    "issue_answer": "Yes, there is signage indicating a promotion.",
+                    "hypothesis": "IF there is signage indicating a promotion for bagels, THEN it is likely that more people came to get bagels, resulting in only three remaining.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "Only three were available at the time.",
+                    "relevant_issue": "Is there any signage or menu indicating a special promotion for bagels?",
+                    "issue_answer": "Yes, there is signage indicating a promotion.",
+                    "hypothesis": "IF there is signage indicating a promotion for bagels, THEN it is likely that only three bagels were available due to the promotion.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                },
+                {
+                    "original_question": "How come there are only three of these delicious bagels here?",
+                    "answer_candidate": "They were part of a special promotion.",
+                    "relevant_issue": "Is there any signage or menu indicating a special promotion for bagels?",
+                    "issue_answer": "Yes, there is signage indicating a promotion.",
+                    "hypothesis": "IF there is signage indicating a special promotion for bagels, THEN the presence of only three bagels is likely due to that promotion.",
+                    "confidence_score": 0.8,
+                    "confidence_word": "Likely"
+                }
+            ]
+        }
+    }
+]

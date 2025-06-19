@@ -1,0 +1,81 @@
+datasets:
+  dataset: "vqa-v2" # 'gqa', 'vqa-v2'
+  gqa_dataset_split: "val"
+  gqa_images_dir: "/path/to/GQA/images"
+  gqa_val_questions_file: "/path/to/GQA/val_balanced_questions.json"
+  gqa_val_subset_questions_file: "/path/to/GQA/gqasubset1000.json"
+  gqa_test_questions_file: "/path/to/GQA/testdev_balanced_questions.json"
+  vqa_v2_dataset_split: "rest-val" # 'val', 'val1000', 'rest-val', 'test-dev', 'test'
+  vqa_v2_val_images_dir: "/path/to/COCO_Images/val2014"
+  vqa_v2_val_questions_file: "/path/to/VQAv2/v2_OpenEnded_mscoco_val2014_questions.json"
+  vqa_v2_val_annotations_file: "/path/to/VQAv2/v2_mscoco_val2014_annotations.json"
+  vqa_v2_val1000_questions_file: "/path/to/VQAv2/v2_OpenEnded_mscoco_val2014_1000subset_questions.json"
+  vqa_v2_val1000_annotations_file: "/path/to/VQAv2/v2_mscoco_val2014_1000subset_annotations.json"
+  vqa_v2_rest_val_questions_file: "/path/to/VQAv2/v2_OpenEnded_mscoco_rest_val2014_questions.json"
+  vqa_v2_rest_val_annotations_file: "/path/to/VQAv2/v2_mscoco_rest_val2014_annotations.json"
+  vqa_v2_test_images_dir: "/path/to/COCO_Images/test2015"
+  vqa_v2_test_questions_file: "/path/to/VQAv2/v2_OpenEnded_mscoco_test2015_questions.json"
+  vqa_v2_test_dev_questions_file: "/path/to/VQAv2/v2_OpenEnded_mscoco_test-dev2015_questions.json"
+  vqa_v2_answer_list: "/path/to/VQAv2/answer_list.json"
+  percent_test: 1
+  num_test_data: 30
+  use_num_test_data: False
+
+sam:
+  GROUNDING_DINO_CONFIG_PATH: "Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+  GROUNDING_DINO_CHECKPOINT_PATH: "Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
+  SAM_ENCODER_VERSION: "vit_h"
+  SAM_CHECKPOINT_PATH: "Grounded-Segment-Anything/sam_vit_h_4b8939.pth"
+  BOX_THRESHOLD: 0.25
+  TEXT_THRESHOLD: 0.25
+  NMS_THRESHOLD: 0.8
+  min_mask_region_area: 1024
+  pred_iou_thresh: 0.9
+  stability_score_thresh: 0.98
+
+dino:
+  GROUNDING_DINO_CONFIG_PATH: "Grounded-Segment-Anything/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py"
+  GROUNDING_DINO_CHECKPOINT_PATH: "Grounded-Segment-Anything/groundingdino_swint_ogc.pth"
+  BOX_THRESHOLD: 0.35
+  TEXT_THRESHOLD: 0.25
+
+llm:
+  llm_model: "Qwen/Qwen2.5-VL-7B-Instruct"
+  provider: "vllm_9000"
+  openai:
+    model: "gpt-4o-mini"
+    api_key_file: "YOUR_OPENAI_KEY_FILE"  # Replace with your key file path
+    base_url: "https://api.openai.com/v1/chat/completions"
+  vllm_9000:
+    model: "Qwen/Qwen2.5-VL-7B-Instruct"
+    api_key: "YOUR_API_KEY"  # Replace with your key
+    base_url: "http://localhost:9100/v1/chat/completions"
+    max_tokens: 300
+    temperature: 0.2
+
+vlm:
+  min_bbox_size: 32
+  provider: "vllm_9000"
+  openai:
+    model: "gpt-4o-mini"
+    api_key_file: "YOUR_OPENAI_KEY_FILE"  # Replace with your key file path
+    base_url: "https://api.openai.com/v1/chat/completions"
+  vllm_9000:
+    model: "Qwen/Qwen2.5-VL-7B-Instruct"
+    api_key: "YOUR_API_KEY"  # Replace with your key
+    base_url: "http://localhost:9100/v1/chat/completions"
+    max_tokens: 300
+    temperature: 0.2
+
+inference:
+  verbose: True
+  find_nearby_objects: False
+  force_multi_agents: False
+  nearby_bbox_iou_threshold: 0.5
+  print_every: 10
+  output_response_filename: "outputs/vqa_v2_rest_val_responses.json"
+  save_output_response: True
+  counting_threshold: 4
+  enable_enhanced_triggers: True
+  use_grader: False
+  evaluation_method: 'vqa' 
