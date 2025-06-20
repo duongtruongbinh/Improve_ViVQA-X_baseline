@@ -1,84 +1,221 @@
-# Framework VQA với Suy luận Top-Down (SIRI)
+# SIRI VQA Framework - Enhanced Local Pipeline
 
-Dự án này là một triển khai của framework **SIRI (Seeker, Integrator, Responder)** được mô tả trong paper "Towards Top-Down Reasoning". Nó sử dụng một kiến trúc cộng tác đa agent để giải quyết các bài toán Trả lời câu hỏi bằng hình ảnh (Visual Question Answering - VQA) với mục tiêu tăng cường khả năng suy luận và cung cấp kết quả có thể giải thích được.
+**SIRI (Seeker, Integrator, Responder)** is an advanced Visual Question Answering framework implementing a visualize-then-analyze pipeline with 100% local inference capabilities.
 
-## Bắt đầu Nhanh
+## 🚀 Key Features
 
-Để hiểu rõ về dự án và bắt đầu sử dụng, vui lòng tham khảo các tài liệu chi tiết dưới đây.
+- **100% Local Processing**: No external API dependencies
+- **Enhanced Visual Pipeline**: GroundingDINO → DAM → vLLM analysis
+- **Multi-Agent Architecture**: Responder, Seeker, and Integrator agents
+- **Explainable AI**: Full reasoning traces with visual annotations
+- **Flexible Backends**: Support for both vLLM (default) and OpenAI API
+- **Advanced Object Detection**: Grounding-based visual understanding
 
-### 1. Hướng dẫn Toàn diện
+## 🏗️ Architecture Overview
 
-Tài liệu này là nơi tốt nhất để bắt đầu. Nó giải thích kiến trúc của hệ thống, cách cài đặt môi trường, cấu hình và chạy pipeline.
+### Pipeline Flow
+```
+Question → Detection Keywords → GroundingDINO → Annotated Image → DAM Analysis → vLLM Reasoning → Final Answer
+```
 
-➡️ **Đọc [Hướng dẫn sử dụng (GUIDE.md)](./DOCUMENTATION_GUIDE.md)**
+### Agent System
+1. **ResponderAgent**: Enhanced with visual object detection and analysis
+2. **SeekerAgent**: Generates sub-questions and hypotheses  
+3. **IntegratorAgent**: Weighted voting and decision integration
 
-### 2. Cấu trúc Dự án
+## 📦 Installation
 
-Nếu bạn muốn hiểu rõ về vai trò của từng tệp và thư mục trong dự án, hãy tham khảo tài liệu này.
+### Prerequisites
+- CUDA-compatible GPU
+- Python 3.8+
+- Conda package manager
 
-➡️ **Khám phá [Cấu trúc Thư mục (STRUCTURE.md)](./DOCUMENTATION_STRUCTURE.md)**
+### Environment Setup
+```bash
+# Create and activate environment
+conda env create -f Top-Down/VQA_env.yaml
+conda activate VQA_env
 
----
+# Verify GroundingDINO weights are downloaded (693MB)
+ls GroundingDINO/weights/groundingdino_swint_ogc.pth
+```
 
-## Tóm tắt Luồng hoạt động
+### vLLM Server Setup
+Start the local vLLM server for inference:
+```bash
+vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
+    --host 0.0.0.0 \
+    --port 9100 \
+    --api-key dummy-key \
+    --served-model-name Qwen/Qwen2.5-VL-7B-Instruct \
+    --trust-remote-code \
+    --max-model-len 8192 \
+    --max-num-batched-tokens 8192
+```
 
-1.  **Cài đặt:** Tạo môi trường Conda bằng `VQA_env.yaml`.
-2.  **Cấu hình:**
-    -   Tạo tệp `openai_key.txt` và điền API key.
-    -   Kiểm tra và cập nhật các đường dẫn dataset trong `configs/vivqa_config.yaml`.
-3.  **Chạy:** Thực thi `python3 main.py` từ thư mục gốc của project.
-4.  **Xem kết quả:** Kiểm tra các tệp được tạo ra trong thư mục `output/`.
+## ⚙️ Configuration
 
-## **Towards Top Down Reasoning**
+### Main Configuration
+Edit `Top-Down/config.yaml` for vLLM settings:
+```yaml
+vllm:
+  base_url: "http://localhost:9100/v1"
+  model: "Qwen/Qwen2.5-VL-7B-Instruct"
+  api_key: "dummy-key"
+  max_tokens: 1000
+  temperature: 0.7
+```
 
-Official PyTorch implementation for the paper:
+### Dataset Configuration
+Configure your dataset in `Top-Down/configs/vivqa_config.yaml`:
+```yaml
+inference:
+  dataset_split: "val"
+  num_questions: 5  # Set to -1 for full dataset
 
-> **Towards top-down reasoning: An explainable multi-agent approach for visual question answering (TMM 2025)**.
->
-> Zeqing Wang, Wentao Wan, Qiqing Lao, Runmeng Chen, Minjie Lang, Xiao Wang, Keze Wang, Liang Lin.
->
-> <a href='https://arxiv.org/pdf/2311.17331'><img src='https://img.shields.io/badge/arXiv-2311.17331-red'></a> 
+dataset_paths:
+  questions_file: "/path/to/your/questions.json"
+  images_dir: "/path/to/your/images/"
+```
 
-## Environment Prepare
-Please refer to [LAVIS](https://github.com/salesforce/LAVIS). But do not use the official code, we modify the response function to obtain the confidence of the answer candidate. The source of LAVIS has been contained in this repo.
+## 🚀 Usage
 
-## LLM Results
-### New LLM or new vqa dataset
-We provide a unify api toolkit in api_tools/request_api_zoo.py, which support:
-- Official OpenAI's server
-- [Siliconflow](https://siliconflow.cn/zh-cn/)
-- [Zhipu](https://open.bigmodel.cn/)
-### Used LLM Results
-Due to the update of LLM's API, we provide the middle results of the experiments we have conducted. You can download them from [GoogleDriver](https://drive.google.com/file/d/1sxj80Zs0KaQU1yZdx8oozjc8vMewwH7X/view?usp=sharing)
+### Backend Options (Simple)
 
-## Running
-After setting the API key, or preparing the LLM results, you can run the framework via:
+**Option 1: vLLM (Default)**
+```bash
+# Start vLLM server first (see Installation)
+python Top-Down/main.py --backend vllm
+```
 
- ```bash
-  bash run_gpt.sh
- ``` 
-### Other Setting
+**Option 2: OpenAI API (gpt-4o-mini)**
+```bash
+# Create API key file
+cp Top-Down/openai_key.txt.template Top-Down/openai_key.txt
+# Edit openai_key.txt with your real API key
 
-- We use a multi-process to speed up the LLM revoke, you can modify the num of process in 'step_eval_multi_process_api_zoo.py'
-- Download corresponding datasets and set the path in:  step_eval_mutil_process_api_zoo.py, test_for_integration_rights_alloction.py
+# Run with OpenAI
+python Top-Down/main.py --backend openai
+```
 
+### Test Your Setup
+```bash
+# Test both backends
+python Top-Down/test_backends.py
+```
 
+### Quick Start Examples
+```bash
+# Test with 5 questions using vLLM (default)
+python Top-Down/main.py --config Top-Down/configs/vllm_test_config.yaml
 
-## **TODO**
-- ~~Release main framework code based on LAVIS~~
-- ~~Release Corresponding middle results~~
-- A more clear codebase with running README.md
+# Full dataset with vLLM
+python Top-Down/main.py --backend vllm
 
-## **Acknowledgement**
-We heavily borrow the code from
-[LAVIS](https://github.com/salesforce/LAVIS),
- and [LLaVA](https://github.com/haotian-liu/LLaVA). Thanks for sharing their code.
+# Quick test with OpenAI
+python Top-Down/main.py --backend openai --config Top-Down/configs/vllm_test_config.yaml
+```
 
-## **Citation**
+### Testing vLLM Connection
+```bash
+curl -X POST "http://localhost:9100/v1/chat/completions" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer dummy-key" \
+  -d '{"model": "Qwen/Qwen2.5-VL-7B-Instruct", "messages": [{"role": "user", "content": "Hello"}]}'
+```
 
-If you find the code useful for your work, please star this repo and consider citing:
+## 📊 Output
+
+Results are saved to `Top-Down/output/`:
+- **`siri_pipeline_results.json`**: Detailed results with visual annotations and reasoning traces
+- **`siri_summary.txt`**: Summary statistics and accuracy metrics
+
+### Sample Output Structure
+```json
+{
+  "question_id": 12345,
+  "question": "What color is the car?",
+  "ground_truth_answer": "red", 
+  "final_answer": "red",
+  "is_correct": true,
+  "explainability_trace": {
+    "visual_detection": {
+      "detected_objects": ["car"],
+      "annotated_image_path": "output/annotated_12345.png"
+    },
+    "dam_analysis": "Detailed analysis of the red car...",
+    "multi_view_knowledge_base": [...],
+    "reasoning_steps": [...]
+  }
+}
+```
+
+## 🔧 Advanced Features
+
+### Visual Object Detection
+The pipeline automatically:
+1. Extracts detection keywords from questions
+2. Uses GroundingDINO for precise object localization
+3. Generates annotated images with bounding boxes
+4. Provides visual context for enhanced reasoning
+
+### Fallback System
+- **Component-level**: GroundingDINO/DAM failures fallback to direct VLM
+- **Backend-level**: vLLM failures can fallback to OpenAI API
+- **Graceful degradation**: System continues with reduced capabilities
+
+## 📁 Project Structure
 
 ```
+Top-Down/
+├── README.md                 # This file
+├── main.py                   # Entry point
+├── config.yaml              # vLLM configuration  
+├── config_loader.py          # Configuration management
+├── vllm_client.py           # vLLM client wrapper
+├── VQA_env.yaml             # Conda environment
+├── core/
+│   ├── agents.py            # SIRI agents implementation
+│   └── pipeline.py          # Main pipeline orchestration
+├── configs/
+│   ├── vivqa_config.yaml    # Dataset configuration
+│   └── vllm_test_config.yaml # Test configuration
+├── docs/                    # Documentation
+└── output/                  # Results and logs
+```
+
+## 🛠️ Troubleshooting
+
+### Common Issues
+
+**vLLM Server Not Starting**
+```bash
+# Check GPU memory
+nvidia-smi
+# Reduce max-model-len if needed
+```
+
+**GroundingDINO Compilation Errors**
+```bash
+# Reinstall with CUDA support
+cd GroundingDINO
+pip install -e .
+```
+
+**DAM Model Warnings**
+- Torchvision warnings are normal and don't affect functionality
+- Model path warnings can be ignored if inference works
+
+### Performance Optimization
+- Use `--max-num-batched-tokens` to control memory usage
+- Adjust `num_questions` for testing vs. full evaluation
+- Monitor GPU memory during processing
+
+## 📄 Citation
+
+If you use this framework, please cite the original SIRI paper:
+
+```bibtex
 @misc{wang2025topdownreasoningexplainablemultiagent,
       title={Towards Top-Down Reasoning: An Explainable Multi-Agent Approach for Visual Question Answering}, 
       author={Zeqing Wang and Wentao Wan and Qiqing Lao and Runmeng Chen and Minjie Lang and Xiao Wang and Keze Wang and Liang Lin},
@@ -89,3 +226,11 @@ If you find the code useful for your work, please star this repo and consider ci
       url={https://arxiv.org/abs/2311.17331}, 
 }
 ```
+
+## 📝 License
+
+This project maintains the original licensing terms. See individual component licenses for details.
+
+## 🤝 Contributing
+
+See `docs/CONTRIBUTING.md` for contribution guidelines and development setup.

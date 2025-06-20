@@ -33,6 +33,11 @@ def setup_api_client(config):
 
 def load_dataset(config):
     """Loads the questions and annotations based on the configured split."""
+    # Check if this is ViVQA-X format
+    if config.get('vivqax', {}).get('format') == 'vivqax':
+        return load_vivqax_dataset(config)
+    
+    # Original VQA-v2 format
     split = config['inference']['dataset_split']
     paths = config['dataset_paths']
     
@@ -66,19 +71,56 @@ def load_dataset(config):
 
     return questions_data, annotations
 
+def load_vivqax_dataset(config):
+    """Loads ViVQA-X dataset with Vietnamese questions and answers."""
+    split = config['inference']['dataset_split']
+    paths = config['dataset_paths']
+    
+    # Get the appropriate file for the split
+    file_key = f'{split}_file'
+    data_file = paths[file_key]
+    
+    logging.info(f"Loading ViVQA-X data for split '{split}' from {data_file}...")
+    with open(data_file, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    # Convert ViVQA-X format to pipeline format
+    questions_data = []
+    annotations = {}
+    
+    for item in data:
+        # Convert to pipeline format
+        question_entry = {
+            'question_id': item['question_id'],
+            'question': item['question'],
+            'image_id': int(item['image_id'])
+        }
+        questions_data.append(question_entry)
+        
+        # Store ground truth answer
+        annotations[item['question_id']] = item['answer']
+    
+    logging.info(f"Loaded {len(questions_data)} ViVQA-X questions with answers")
+    return questions_data, annotations
+
 # --- Main SIRI Pipeline ---
 
-def run_siri_pipeline(config_path: str):
+def run_siri_pipeline(config_path: str, use_vllm: bool = True):
     """
     Orchestrates the full SIRI (Seeker, Integrator, Responder) pipeline.
+    Now supports both OpenAI and local vLLM backends.
     """
     config = load_config(config_path)
-    client = setup_api_client(config)
-
-    # 1. Initialize Agents
-    model_cfg = config['model']
-    responder = ResponderAgent(client, model_cfg['name'], model_cfg['temperature'], model_cfg['max_tokens'])
-    seeker = SeekerAgent(client, model_cfg['name'], responder)
+    
+    # 1. Initialize Agents with simple backend selection
+    if use_vllm:
+        logging.info("🚀 Initializing SIRI agents with local vLLM backend...")
+    else:
+        logging.info("🌐 Initializing SIRI agents with OpenAI backend...")
+    
+    # Use the simplified backend manager
+    responder = ResponderAgent(use_vllm=use_vllm)
+    seeker = SeekerAgent(responder=responder, use_vllm=use_vllm)
     integrator = IntegratorAgent(responder)
 
     # 2. Load Data
@@ -89,14 +131,20 @@ def run_siri_pipeline(config_path: str):
     
     split = config['inference']['dataset_split']
     
-    if 'val' in split:
-        image_dir = config['dataset_paths']['val_images_dir']
-        image_prefix = 'val2014'
-    elif 'test' in split:
-        image_dir = config['dataset_paths']['test_images_dir']
-        image_prefix = 'test2015'
+    # Handle ViVQA-X format (uses single images_dir)
+    if config.get('vivqax', {}).get('format') == 'vivqax':
+        image_dir = config['dataset_paths']['images_dir']
+        image_prefix = 'val2014'  # ViVQA-X uses COCO val2014 images
     else:
-        raise ValueError(f"Could not determine image directory for split: {split}")
+        # Original VQA-v2 format
+        if 'val' in split:
+            image_dir = config['dataset_paths']['val_images_dir']
+            image_prefix = 'val2014'
+        elif 'test' in split:
+            image_dir = config['dataset_paths']['test_images_dir']
+            image_prefix = 'test2015'
+        else:
+            raise ValueError(f"Could not determine image directory for split: {split}")
 
     # 3. Run Pipeline
     all_results = []
@@ -106,8 +154,14 @@ def run_siri_pipeline(config_path: str):
     for item in tqdm(questions, desc="SIRI Pipeline Processing"):
         question_id = item['question_id']
         question_text = item['question']
-        # The 'image' key from the question file is not used; we use 'image_id' to construct the path
-        image_path = os.path.join(image_dir, f"COCO_{image_prefix}_{str(item['image_id']).zfill(12)}.jpg")
+        
+        # Construct image path based on format
+        if config.get('vivqax', {}).get('format') == 'vivqax':
+            # ViVQA-X uses direct image names like COCO_val2014_000000393271.jpg
+            image_path = os.path.join(image_dir, f"COCO_{image_prefix}_{str(item['image_id']).zfill(12)}.jpg")
+        else:
+            # Original VQA-v2 format
+            image_path = os.path.join(image_dir, f"COCO_{image_prefix}_{str(item['image_id']).zfill(12)}.jpg")
 
         logging.info(f"\n--- Processing Question ID: {question_id} ---")
         

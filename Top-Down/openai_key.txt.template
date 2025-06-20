@@ -1,1 +1,8 @@
-YOUR-API-KEY-HERE
+# OpenAI API Key Template
+# 
+# To use OpenAI API instead of vLLM:
+# 1. Rename this file to 'openai_key.txt'
+# 2. Replace the line below with your actual OpenAI API key
+# 3. Run with: python main.py --backend openai
+
+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

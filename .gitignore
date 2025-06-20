@@ -55,3 +55,6 @@ model_outputs_cache/
 *.pth
 *.ckpt
 *.safetensors
+
+# GroundingDINO submodule (use Docker instead)
+GroundingDINO/
