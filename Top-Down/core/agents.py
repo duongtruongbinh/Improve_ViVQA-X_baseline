@@ -37,7 +37,7 @@ class ResponderAgent:
     Enhanced with 100% local GroundingDINO and DAM integration for visualization pipeline.
     Now supports both OpenAI and local vLLM servers.
     """
-    def __init__(self, client: OpenAI = None, model_name: str = None, temperature: float = None, max_tokens: int = None, use_vllm: bool = True, enable_dam: bool = True):
+    def __init__(self, client: OpenAI = None, model_name: str = None, temperature: float = None, max_tokens: int = None, use_vllm: bool = True, enable_dam: bool = True, groundingdino_docker: bool = False):
         # Initialize backend - simple choice between vLLM or OpenAI
         backend_type = "vllm" if use_vllm else "openai"
         try:
@@ -67,13 +67,21 @@ class ResponderAgent:
         self.image_storage_dir = None
         self.enable_dam = enable_dam
         self.dam = None
+        self._force_groundingdino_docker = groundingdino_docker  # Config-driven Docker mode
         
         # Initialize local components
         self._initialize_groundingdino()
         self._initialize_dam()
     
     def _initialize_groundingdino(self):
-        """Initialize GroundingDINO - try native first, fallback to Docker"""
+        """Initialize GroundingDINO - Force Docker for production stability"""
+        
+        # Check if config forces Docker mode
+        if hasattr(self, '_force_groundingdino_docker') and self._force_groundingdino_docker:
+            logging.info("🐳 Config forces GroundingDINO Docker mode")
+            self._setup_groundingdino_docker()
+            return
+        
         try:
             # Try native GroundingDINO installation first
             import supervision as sv
@@ -92,9 +100,13 @@ class ResponderAgent:
                 return
                 
         except Exception as e:
-            logging.warning(f"Native GroundingDINO failed: {e}")
+            logging.warning(f"Native GroundingDINO failed ({str(e)[:50]}...), switching to Docker")
         
-        # Fallback to Docker service
+        # Fallback to Docker service (production mode)
+        self._setup_groundingdino_docker()
+    
+    def _setup_groundingdino_docker(self):
+        """Setup GroundingDINO Docker service"""
         try:
             import subprocess
             
@@ -108,6 +120,8 @@ class ResponderAgent:
                 self.groundingdino_model = None  # Docker service doesn't need model object
                 logging.info("✅ GroundingDINO Docker service available")
                 return
+            else:
+                logging.warning("GroundingDINO Docker image not found. Run: docker build -t groundingdino:latest GroundingDINO/")
                 
         except Exception as e:
             logging.warning(f"GroundingDINO Docker check failed: {e}")

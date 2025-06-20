@@ -112,6 +112,11 @@ def run_siri_pipeline(config_path: str, use_vllm: bool = True):
     """
     config = load_config(config_path)
     
+    # Check for new config format
+    if 'data_config' in config:
+        return run_refactored_pipeline(config, use_vllm)
+    
+    # Continue with original format for backward compatibility
     # 1. Initialize Agents with simple backend selection
     if use_vllm:
         logging.info("🚀 Initializing SIRI agents with local vLLM backend...")
@@ -222,3 +227,142 @@ def run_siri_pipeline(config_path: str, use_vllm: bool = True):
             f.write("Accuracy not calculated (no annotations found for the processed questions).\n")
     
     logging.info(f"Summary saved to {config['inference']['summary_file']}")
+
+def run_refactored_pipeline(config, use_vllm: bool = True):
+    """Run pipeline with new refactored config format"""
+    
+    # Reduce HTTP logging if requested
+    if config.get('logging_config', {}).get('reduce_http_logs'):
+        import urllib3
+        urllib3.disable_warnings()
+        logging.getLogger("httpx").setLevel(logging.WARNING)
+        logging.getLogger("openai").setLevel(logging.WARNING)
+        logging.getLogger("httpcore").setLevel(logging.WARNING)
+    
+    # 1. Initialize Agents with config-driven parameters
+    if use_vllm:
+        logging.info("🚀 Initializing SIRI agents with local vLLM backend...")
+    else:
+        logging.info("🌐 Initializing SIRI agents with OpenAI backend...")
+    
+    # Get agent config
+    agent_config = config.get('agents_config', {}).get('responder', {})
+    
+    # Initialize ResponderAgent with config parameters
+    responder = ResponderAgent(
+        use_vllm=use_vllm,
+        enable_dam=agent_config.get('enable_dam', True),
+        groundingdino_docker=agent_config.get('groundingdino_docker', False),
+        temperature=agent_config.get('temperature', 0.7),
+        max_tokens=agent_config.get('max_tokens', 1000)
+    )
+    
+    seeker = SeekerAgent(responder=responder, use_vllm=use_vllm)
+    integrator = IntegratorAgent(responder)
+
+    # 2. Load Data
+    data_config = config['data_config']
+    
+    logging.info(f"Loading {data_config['dataset_name']} data for split '{data_config['split']}' from {data_config['data_path']}...")
+    with open(data_config['data_path'], 'r', encoding='utf-8') as f:
+        data = json.load(f)
+    
+    # Convert to pipeline format
+    questions_data = []
+    annotations = {}
+    
+    for item in data:
+        question_entry = {
+            'question_id': item['question_id'],
+            'question': item['question'],
+            'image_id': int(item['image_id'])
+        }
+        questions_data.append(question_entry)
+        annotations[item['question_id']] = item['answer']
+    
+    logging.info(f"Loaded {len(questions_data)} {data_config['dataset_name']} questions with answers")
+    
+    # Limit questions for testing
+    num_questions = data_config.get('num_questions', -1)
+    if num_questions > 0:
+        questions_data = questions_data[:num_questions]
+    
+    # 3. Run Pipeline
+    all_results = []
+    correct_count = 0
+    evaluated_count = 0
+    
+    for item in tqdm(questions_data, desc="SIRI Pipeline Processing"):
+        question_id = item['question_id']
+        question_text = item['question']
+        
+        # Construct image path
+        image_path = os.path.join(
+            data_config['image_dir'], 
+            f"COCO_val2014_{str(item['image_id']).zfill(12)}.jpg"
+        )
+
+        logging.info(f"\n--- Processing Question ID: {question_id} ---")
+        
+        # Step 1 (Responder): Get initial candidates and caption
+        initial_response = responder.generate_initial_response(question_text, image_path)
+        answer_candidates = initial_response.get('answer_candidates', [])
+        caption = initial_response.get('caption', '')
+        
+        # Step 2 (Seeker): Build the Multi-View Knowledge Base
+        mvkv = seeker.build_mvkv(question_text, image_path, answer_candidates, caption)
+
+        # Step 3 (Integrator): Conduct weighted voting to get the final answer
+        final_answer = integrator.conduct_weighted_voting(question_text, image_path, answer_candidates, mvkv)
+        
+        # 4. Evaluate and Store Results
+        ground_truth = annotations.get(question_id)
+        is_correct = None
+        if ground_truth is not None:
+            evaluated_count += 1
+            is_correct = final_answer.lower().strip() == ground_truth.lower().strip()
+            if is_correct:
+                correct_count += 1
+        
+        result_entry = {
+            "question_id": question_id,
+            "question": question_text,
+            "image_path": image_path,
+            "ground_truth_answer": ground_truth,
+            "final_answer": final_answer,
+            "is_correct": is_correct,
+            "explainability_trace": {
+                "initial_caption": caption,
+                "initial_answer_candidates": answer_candidates,
+                "multi_view_knowledge_base": mvkv
+            }
+        }
+        all_results.append(result_entry)
+
+    # 5. Save Outputs
+    output_config = config['output_config']
+    output_dir = os.path.dirname(output_config['results_file'])
+    os.makedirs(output_dir, exist_ok=True)
+    
+    with open(output_config['results_file'], 'w') as f:
+        json.dump(all_results, f, indent=4)
+    
+    logging.info(f"Pipeline complete. Full results saved to {output_config['results_file']}")
+
+    # Write summary
+    accuracy = (correct_count / evaluated_count) * 100 if evaluated_count > 0 else 0
+    with open(output_config['summary_file'], 'w') as f:
+        f.write("SIRI Pipeline Final Summary\n")
+        f.write("="*40 + "\n")
+        f.write(f"Dataset: {data_config['dataset_name']}\n")
+        f.write(f"Backend: {'vLLM' if use_vllm else 'OpenAI'}\n")
+        f.write(f"DAM: {'Enabled' if agent_config.get('enable_dam', True) else 'Disabled'}\n")
+        f.write(f"GroundingDINO: {'Docker' if agent_config.get('groundingdino_docker', False) else 'Native'}\n")
+        f.write(f"Processed {len(questions_data)} questions.\n")
+        f.write(f"Evaluated {evaluated_count} questions with annotations.\n")
+        if evaluated_count > 0:
+            f.write(f"Final Accuracy: {accuracy:.2f}% ({correct_count}/{evaluated_count})\n")
+        else:
+            f.write("Accuracy not calculated (no annotations found).\n")
+    
+    logging.info(f"Summary saved to {output_config['summary_file']}")

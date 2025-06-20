@@ -1,41 +1,33 @@
-# Top-Down/configs/vivqax_config.yaml
-# Configuration for ViVQA-X Dataset (Vietnamese VQA)
+# ViVQA-X Configuration for Refactored Pipeline
+# Image → VLM → GroundingDINO → DAM → Seeker
 
-# General settings
-inference:
-  # The dataset split to use. Options: 'train', 'val', 'test'
-  dataset_split: "val"
-  # Number of questions to process. Set to -1 to process all questions.
-  num_questions: 10 # Test with 10 questions
-  # Path for the final output results file.
-  output_file: "Top-Down/output/vivqax_results.json"
-  # Path for the human-readable summary file.
+data_config:
+  dataset_name: "ViVQA-X"
+  data_path: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_val.json"
+  image_dir: "/mnt/VLAI_data/COCO_Images/val2014"
+  split: "val"
+  num_questions: 10  # For testing, set to -1 for full dataset
+
+agents_config:
+  responder:
+    enable_dam: false  # Disable DAM temporarily due to timm dependency issue
+    enable_groundingdino: true
+    groundingdino_docker: true  # Force Docker due to native _C compilation issue
+    model_name: "Qwen/Qwen2.5-VL-7B-Instruct"
+    temperature: 0.7
+    max_tokens: 1000
+
+output_config:
+  results_file: "Top-Down/output/vivqax_results.json"
   summary_file: "Top-Down/output/vivqax_summary.txt"
-
-# Configuration for the LLM and VLM models
-model:
-  # All agents will use this model for simplicity and consistency.
-  name: "gpt-4o-mini"
-  # API request settings
-  temperature: 0.1
-  max_tokens: 512
-
-# Configuration for the ViVQA-X dataset paths
-# IMPORTANT: These paths are absolute and must exist on your system.
-dataset_paths:
-  # Base directory for COCO validation images (ViVQA-X uses COCO images)
-  images_dir: "/mnt/VLAI_data/COCO_Images/val2014"
+  enable_visualization: true
+  save_intermediate_images: true
   
-  # ViVQA-X dataset files
-  train_file: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_train.json"
-  val_file: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_val.json"
-  test_file: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_test.json"
+logging_config:
+  reduce_http_logs: true  # Reduce HTTP request logging
 
 # ViVQA-X specific settings
 vivqax:
-  # Language of the dataset
   language: "vietnamese"
-  # Dataset format (different from VQA-v2)
   format: "vivqax"
-  # Whether to use explanation field for additional context
   use_explanations: true 

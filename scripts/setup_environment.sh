@@ -35,26 +35,32 @@ if ! command -v docker &> /dev/null; then
     exit 1
 fi
 
-# Build GroundingDINO Docker image
-cd GroundingDINO
-echo "Building GroundingDINO Docker image..."
-docker build -t groundingdino:latest .
+# Check if GroundingDINO directory exists
+if [ -d "GroundingDINO" ]; then
+    # Build GroundingDINO Docker image
+    cd GroundingDINO
+    echo "Building GroundingDINO Docker image..."
+    docker build -t groundingdino:latest .
 
-# Test the Docker image
-echo "Testing GroundingDINO Docker..."
-if docker run --rm --gpus all groundingdino:latest python -c "print('GroundingDINO Docker ready!')"; then
-    echo "✅ GroundingDINO Docker setup successful"
-else
-    echo "⚠️  GPU not available, testing CPU mode..."
-    if docker run --rm groundingdino:latest python -c "print('GroundingDINO Docker ready (CPU)!')"; then
-        echo "✅ GroundingDINO Docker setup successful (CPU mode)"
+    # Test the Docker image
+    echo "Testing GroundingDINO Docker..."
+    if docker run --rm --gpus all groundingdino:latest python -c "print('GroundingDINO Docker ready!')"; then
+        echo "✅ GroundingDINO Docker setup successful"
     else
-        echo "❌ GroundingDINO Docker setup failed"
-        exit 1
+        echo "⚠️  GPU not available, testing CPU mode..."
+        if docker run --rm groundingdino:latest python -c "print('GroundingDINO Docker ready (CPU)!')"; then
+            echo "✅ GroundingDINO Docker setup successful (CPU mode)"
+        else
+            echo "❌ GroundingDINO Docker setup failed"
+            exit 1
+        fi
     fi
+    cd ..
+else
+    echo "⚠️  GroundingDINO directory not found"
+    echo "   Pipeline will run in VLM-only mode"
+    echo "   To enable GroundingDINO: git clone https://github.com/IDEA-Research/GroundingDINO.git"
 fi
-
-cd ..
 
 echo "🔧 Step 3: Setting up GroundingDINO service..."
 

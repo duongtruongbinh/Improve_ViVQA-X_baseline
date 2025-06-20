@@ -1,5 +1,9 @@
 SIRI Pipeline Final Summary
 ========================================
+Dataset: ViVQA-X
+Backend: vLLM
+DAM: Disabled
+GroundingDINO: Docker
 Processed 10 questions.
 Evaluated 10 questions with annotations.
-Final Accuracy: 0.00% (0/10)
+Final Accuracy: 40.00% (4/10)
