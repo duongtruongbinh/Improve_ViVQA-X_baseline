@@ -89,17 +89,23 @@ class BackendManager:
     
     def _load_openai_key(self) -> Optional[str]:
         """Load OpenAI API key from file or environment"""
-        # Try loading from file first
-        key_file = Path("Top-Down/openai_key.txt")
-        if key_file.exists():
-            try:
-                with open(key_file, 'r') as f:
-                    key = f.read().strip()
-                    if key and key.startswith('sk-'):
-                        logging.info("🔑 Loaded OpenAI API key from file")
-                        return key
-            except Exception as e:
-                logging.warning(f"Failed to read API key file: {e}")
+        # Try loading from file first - check multiple possible paths
+        possible_paths = [
+            Path("openai_key.txt"),                    # Current directory
+            Path("Top-Down/openai_key.txt"),          # From parent directory
+            Path(__file__).parent.parent / "openai_key.txt"  # Relative to this file
+        ]
+        
+        for key_file in possible_paths:
+            if key_file.exists():
+                try:
+                    with open(key_file, 'r') as f:
+                        key = f.read().strip()
+                        if key and key.startswith('sk-'):
+                            logging.info(f"🔑 Loaded OpenAI API key from {key_file}")
+                            return key
+                except Exception as e:
+                    logging.warning(f"Failed to read API key file {key_file}: {e}")
         
         # Try environment variable
         env_key = os.getenv('OPENAI_API_KEY')

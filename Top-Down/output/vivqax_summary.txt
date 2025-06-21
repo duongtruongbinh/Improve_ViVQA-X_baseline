@@ -6,4 +6,4 @@ DAM: Disabled
 GroundingDINO: Docker
 Processed 10 questions.
 Evaluated 10 questions with annotations.
-Final Accuracy: 40.00% (4/10)
+Final Accuracy: 20.00% (2/10)

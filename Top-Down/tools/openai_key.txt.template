@@ -1,0 +1,12 @@
+# OpenAI API Key Template
+# 
+# Instructions:
+# 1. Get your OpenAI API key from: https://platform.openai.com/api-keys
+# 2. Replace "your-openai-api-key-here" with your actual API key
+# 3. Rename this file to "openai_key.txt" (remove .template)
+# 4. Your API key should start with "sk-"
+#
+# Example format:
+# sk-proj-abcd1234efgh5678ijkl9012mnop3456qrst7890uvwx1234yz567890abcd
+
+your-openai-api-key-here 

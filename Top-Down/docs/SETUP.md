@@ -1,145 +1,247 @@
-# Quick Setup Guide
+# Setup Guide
 
-This guide helps you get the SIRI VQA framework running quickly.
+## 🎯 Overview
 
-## 🚀 Prerequisites
+This guide covers setting up the VQA Top-Down pipeline with CPU-friendly configuration and OpenAI backend support.
 
-- **OS**: Linux (Ubuntu 20.04+ recommended)
-- **GPU**: NVIDIA GPU with 16GB+ VRAM (RTX 3090/4090 or better)
-- **CUDA**: Version 11.8 or 12.1
-- **Python**: 3.8 - 3.11
-- **Conda**: Miniconda or Anaconda
+## 📋 Prerequisites
 
-## 📦 Quick Installation
+- **Python**: 3.8+ 
+- **Conda**: Package manager
+- **Hardware**: CPU (recommended) or GPU (optional)
+- **OpenAI API**: Active account with API key
 
-### 1. Environment Setup
+## 🚀 Quick Setup (Recommended)
+
+### 1. Environment Activation
 ```bash
-# Navigate to workspace
-cd /path/to/VQA
+# Activate existing VQA environment
+conda activate VQA
 
-# Create environment
-conda env create -f Top-Down/VQA_env.yaml
-conda activate VQA_env
+# If environment doesn't exist, create it
+conda env create -f VQA_env.yaml
+conda activate VQA
 ```
 
-### 2. Model Setup
+### 2. OpenAI API Configuration
 ```bash
-# Verify GroundingDINO weights (should be ~693MB)
-ls -lh GroundingDINO/weights/groundingdino_swint_ogc.pth
+# Option A: File-based (Recommended)
+cd Top-Down
+echo "sk-your-actual-api-key-here" > openai_key.txt
 
-# If missing, download:
-mkdir -p GroundingDINO/weights
-cd GroundingDINO/weights
-wget https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
-cd ../..
+# Option B: Environment variable
+export OPENAI_API_KEY="sk-your-actual-api-key-here"
+```
 
-# Install GroundingDINO
+### 3. Verify Setup
+```bash
+# Test all components
+python tools/test_config.py
+
+# Expected output:
+# 🧪 VQA Pipeline Configuration Test
+# ==================================================
+# 🔍 Testing OpenAI Configuration...
+# ✅ OpenAI API: Connected successfully
+# ✅ Model: gpt-4o-mini
+# 
+# 🔍 Testing GroundingDINO Configuration...
+# ✅ GroundingDINO model loaded successfully
+# 
+# 🎯 Overall Status: ✅ READY
+```
+
+### 4. Test Run
+```bash
+# Quick test (10 questions)
+python main.py --config configs/vivqax_config.yaml --backend openai --test
+```
+
+## 🔧 Detailed Configuration
+
+### Backend Selection
+
+**Option 1: OpenAI (Recommended)**
+- ✅ No local server setup required
+- ✅ Reliable and stable
+- ✅ CPU-friendly
+- ❌ Requires API key and costs tokens
+
+**Option 2: vLLM (Advanced)**
+- ✅ Local inference
+- ✅ No API costs
+- ❌ Requires GPU and server setup
+- ❌ More complex configuration
+
+### Component Configuration
+
+Edit `configs/vivqax_config.yaml`:
+
+```yaml
+agents_config:
+  responder:
+    model_name: "gpt-4o-mini"           # Or "Qwen/Qwen2.5-VL-7B-Instruct" for vLLM
+    groundingdino_docker: false        # Native mode (CPU/GPU)
+    enable_dam: false                   # Disable for simplicity
+    temperature: 0.7
+    max_tokens: 1000
+
+data_config:
+  num_questions: 10                     # Test with 10, use -1 for full dataset
+```
+
+## 🏗️ Component Setup
+
+### GroundingDINO (Native Mode)
+```bash
+# Verify GroundingDINO is working
 cd GroundingDINO
-pip install -e .
-cd ..
+python -c "
+from groundingdino.util.inference import load_model, load_image, predict, annotate
+print('✅ GroundingDINO imported successfully')
+"
+
+# Check required files
+ls groundingdino/config/GroundingDINO_SwinT_OGC.py
+ls weights/groundingdino_swint_ogc.pth
 ```
 
-### 3. Start vLLM Server
+### DAM (Optional)
 ```bash
-# Start in background (adjust memory if needed)
-vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
-    --host 0.0.0.0 \
-    --port 9100 \
-    --api-key dummy-key \
-    --served-model-name Qwen/Qwen2.5-VL-7B-Instruct \
-    --trust-remote-code \
-    --max-model-len 8192 \
-    --max-num-batched-tokens 8192 \
-    > vllm.log 2>&1 &
-
-# Wait for server to start (check log)
-tail -f vllm.log
+# Test DAM import (disabled by default)
+python -c "
+import sys
+sys.path.append('DAM')
+from dam.describe_anything_model import DescribeAnythingModel
+print('✅ DAM imported successfully')
+"
 ```
 
-### 4. Test Connection
+## 🧪 Testing & Verification
+
+### Configuration Test
 ```bash
-# Test vLLM server
-curl -X POST "http://localhost:9100/v1/chat/completions" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer dummy-key" \
-  -d '{"model": "Qwen/Qwen2.5-VL-7B-Instruct", "messages": [{"role": "user", "content": "Hello"}]}'
+# Comprehensive test
+python tools/test_config.py
+
+# Individual component tests
+python -c "from utils.backend_manager import BackendManager; print('✅ Backend OK')"
 ```
 
-### 5. Configure Dataset
+### Pipeline Test
 ```bash
-# Edit dataset configuration
-nano Top-Down/configs/vivqa_config.yaml
+# Minimal test
+python main.py --config configs/vivqax_config.yaml --backend openai --test
 
-# Update paths to your dataset:
-dataset_paths:
-  questions_file: "/absolute/path/to/your/questions.json"
-  images_dir: "/absolute/path/to/your/images/"
+# Check outputs
+ls output/vivqax_*.json
+ls output/vivqax_*.txt
 ```
 
-### 6. Run Quick Test
+## 🐛 Troubleshooting
+
+### OpenAI API Issues
 ```bash
-# Test with 5 questions
-python Top-Down/main.py --config Top-Down/configs/vllm_test_config.yaml
-
-# Check results
-ls -la Top-Down/output/
-cat Top-Down/output/siri_summary.txt
+# Test API key manually
+python -c "
+from openai import OpenAI
+client = OpenAI(api_key='sk-your-key-here')
+print(client.models.list())
+"
 ```
 
-## 🛠️ Common Issues
-
-### GPU Memory Error
+### GroundingDINO Issues
 ```bash
-# Reduce model memory usage
-vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
-    --max-model-len 4096 \
-    --max-num-batched-tokens 4096
+# CPU mode warning (normal)
+# "Failed to load custom C++ ops. Running on CPU mode Only!"
+# This is expected and fine for CPU usage
+
+# Memory issues
+export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
 ```
 
-### GroundingDINO Compilation Error
+### Import Path Issues
 ```bash
-# Reinstall with proper CUDA
-cd GroundingDINO
-pip uninstall groundingdino
-pip install -e .
+# Fix Python path
+export PYTHONPATH="/home/huynq/VQA:$PYTHONPATH"
 ```
 
-### vLLM Server Not Starting
+## 🔄 Fallback Configurations
+
+### CPU-Only Mode
+```yaml
+# In vivqax_config.yaml
+agents_config:
+  responder:
+    groundingdino_docker: false  # Native CPU mode
+    enable_dam: false            # Disable GPU-heavy components
+```
+
+### Minimal Mode
+```yaml
+# For testing with minimal resources
+data_config:
+  num_questions: 1               # Single question test
+
+agents_config:
+  responder:
+    enable_groundingdino: false  # Skip object detection
+    enable_dam: false            # Skip detailed analysis
+```
+
+## 📊 Performance Tuning
+
+### Memory Optimization
+```yaml
+agents_config:
+  responder:
+    max_tokens: 500              # Reduce for memory
+    temperature: 0.1             # More deterministic
+```
+
+### Speed Optimization
 ```bash
-# Check GPU status
-nvidia-smi
-
-# Check available models
-vllm models | grep Qwen
+# Use smaller models if available
+# Reduce number of test questions
+# Enable only essential components
 ```
 
-## 📈 Performance Tips
+## 🎯 Production Deployment
 
-- **GPU Memory**: Monitor with `nvidia-smi`
-- **Processing Speed**: Start with `num_questions: 1` for testing
-- **Quality vs Speed**: Adjust detection thresholds in agents.py
+### Environment Variables
+```bash
+# Production environment
+export OPENAI_API_KEY="your-production-key"
+export PYTHONPATH="/path/to/vqa:$PYTHONPATH"
+export CUDA_VISIBLE_DEVICES="0"  # If using GPU
+```
 
-## 🆘 Need Help?
+### Logging Configuration
+```python
+# In main.py
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('output/pipeline.log'),
+        logging.StreamHandler()
+    ]
+)
+```
 
-- Check `Top-Down/docs/TROUBLESHOOTING.md` for detailed solutions
-- Review logs in `vllm.log` for server issues
-- Use `--backend openai` as fallback (requires OpenAI API key)
+## 🔍 Next Steps
 
-## ✅ Verification Checklist
+1. **Basic Testing**: Run test_config.py
+2. **Small Dataset**: Test with 1-10 questions  
+3. **Full Pipeline**: Run with complete dataset
+4. **Custom Configuration**: Adapt for your use case
 
-- [ ] Conda environment activated
-- [ ] GroundingDINO weights downloaded (693MB)
-- [ ] vLLM server running on port 9100
-- [ ] Dataset paths configured correctly
-- [ ] Test run completes successfully
-- [ ] Results saved to `Top-Down/output/`
+## 📚 References
 
-## 🚀 Next Steps
+- [Architecture Guide](ARCHITECTURE.md) - System design details
+- [Troubleshooting](TROUBLESHOOTING.md) - Common issues and solutions
+- [Contributing](CONTRIBUTING.md) - Development guidelines
 
-Once basic setup works:
-1. Configure your own dataset
-2. Adjust parameters for your use case
-3. Scale up to full dataset processing
-4. Explore advanced features in documentation
+---
 
-Happy questioning! 🎯 
+**Note**: This setup prioritizes simplicity and CPU compatibility. GPU acceleration is available but optional. 

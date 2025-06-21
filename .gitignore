@@ -58,3 +58,4 @@ model_outputs_cache/
 
 # GroundingDINO submodule (use Docker instead)
 GroundingDINO/
+.cursor

@@ -10,10 +10,10 @@ data_config:
 
 agents_config:
   responder:
-    enable_dam: false  # Disable DAM temporarily due to timm dependency issue
+    enable_dam: true  # Enabled with robust initialization strategies
     enable_groundingdino: true
-    groundingdino_docker: true  # Force Docker due to native _C compilation issue
-    model_name: "Qwen/Qwen2.5-VL-7B-Instruct"
+    groundingdino_docker: false  # Use native GroundingDINO instead of Docker
+    model_name: "gpt-4o-mini"  # Switch to OpenAI model or Qwen/Qwen2.5-VL-7B-Instruct
     temperature: 0.7
     max_tokens: 1000
 

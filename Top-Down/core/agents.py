@@ -93,10 +93,18 @@ class ResponderAgent:
             model_checkpoint_path = Path(__file__).parent.parent.parent / "GroundingDINO" / "weights" / "groundingdino_swint_ogc.pth"
             
             if model_config_path.exists() and model_checkpoint_path.exists():
-                self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path))
+                # Use GPU 0 for GroundingDINO
+                import torch
+                original_device = torch.cuda.current_device()
+                torch.cuda.set_device(0)
+                
+                self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device="cuda:0")
                 self.groundingdino_enabled = True
                 self.groundingdino_docker = False
-                logging.info("✅ GroundingDINO native installation loaded")
+                logging.info("✅ GroundingDINO native installation loaded on GPU 0")
+                
+                # Restore original device
+                torch.cuda.set_device(original_device)
                 return
                 
         except Exception as e:
@@ -133,31 +141,119 @@ class ResponderAgent:
         self.groundingdino_model = None
     
     def _initialize_dam(self):
-        """Initialize DAM exactly like /DAM/single_inference.py"""
+        """Robust DAM initialization with multiple fallback strategies"""
         if not self.enable_dam:
             logging.info("🔄 DAM disabled")
             self.dam = None
             return
             
+        import torch
+        from transformers import AutoModel
+        
+        # Multiple strategies: GPU shared → CPU optimized
+        strategies = [
+            {
+                "name": "GPU_SHARED",
+                "device": "cuda:0",  # Share with GroundingDINO
+                "dtype": torch.float16,
+                "dtype_str": "torch.float16"
+            },
+            {
+                "name": "CPU_OPTIMIZED", 
+                "device": "cpu",
+                "dtype": torch.float32,
+                "dtype_str": "torch.float32"
+            }
+        ]
+        
+        for strategy in strategies:
+            try:
+                logging.info(f"🔥 Trying DAM strategy: {strategy['name']} on {strategy['device']}")
+                
+                # Clear GPU cache before loading
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+                    available_memory = torch.cuda.memory_reserved(0) - torch.cuda.memory_allocated(0)
+                    logging.info(f"Available GPU memory: {available_memory / 1024**2:.1f} MB")
+                
+                # Load model with exact official pattern
+                
+                device = torch.device(strategy["device"])
+                
+                logging.info(f"Loading DAM model with dtype: {strategy['dtype_str']}")
+                model = AutoModel.from_pretrained(
+                    'nvidia/DAM-3B-Self-Contained',
+                    trust_remote_code=True,
+                    torch_dtype=strategy["dtype_str"]  # Use string format like official
+                )
+                
+                # Force dtype consistency for CPU
+                if strategy["device"] == "cpu":
+                    logging.info("Converting all model weights to float32 for CPU compatibility")
+                    model = model.float()  # Ensure all weights are float32
+                
+                # Move to device
+                model = model.to(device)
+                
+                # Initialize DAM
+                dam = model.init_dam(conv_mode='v1', prompt_mode='full+focal_crop')
+                
+                # Test inference to verify compatibility
+                logging.info(f"Testing DAM inference on {strategy['device']}...")
+                test_success = self._test_dam_inference(dam, device)
+                
+                if test_success:
+                    self.dam = dam
+                    self.dam_device = device
+                    logging.info(f"✅ DAM successfully initialized with {strategy['name']} strategy")
+                    return
+                else:
+                    logging.warning(f"❌ DAM test inference failed with {strategy['name']}")
+                    
+            except Exception as e:
+                logging.warning(f"❌ DAM strategy {strategy['name']} failed: {str(e)[:100]}...")
+                # Clean up failed attempt
+                if torch.cuda.is_available():
+                    torch.cuda.empty_cache()
+                continue
+        
+        # All strategies failed
+        logging.error("❌ All DAM initialization strategies failed")
+        self.dam = None
+    
+    def _test_dam_inference(self, dam, device):
+        """Test DAM inference to verify functionality"""
         try:
-            from transformers import AutoModel
+            from PIL import Image
             import torch
             
-            device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+            # Create minimal test inputs
+            test_image = Image.new('RGB', (224, 224), color='red')
+            test_mask = Image.new('L', (224, 224), 255)
+            test_prompt = '<image>What color?'
             
-            logging.info("🔥 Initializing DAM model like /DAM/single_inference.py")
-            model = AutoModel.from_pretrained(
-                'nvidia/DAM-3B-Self-Contained',
-                trust_remote_code=True,
-                torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32
-            ).to(device)
-            
-            self.dam = model.init_dam(conv_mode='v1', prompt_mode='full+focal_crop')
-            logging.info("✅ DAM initialized successfully (same as single_inference.py)")
-            
+            # Try inference with timeout
+            with torch.cuda.device(device) if device.type == 'cuda' else torch.no_grad():
+                tokens = []
+                for i, token in enumerate(dam.get_description(
+                    test_image, 
+                    test_mask, 
+                    test_prompt,
+                    streaming=True, 
+                    temperature=0.1, 
+                    max_new_tokens=5
+                )):
+                    tokens.append(token)
+                    if i >= 3:  # Limit test tokens
+                        break
+                
+                result = ''.join(tokens).strip()
+                logging.info(f"DAM test result: '{result[:20]}...'")
+                return len(result) > 0  # Success if got any output
+                
         except Exception as e:
-            logging.error(f"DAM initialization failed: {e}")
-            self.dam = None
+            logging.warning(f"DAM test inference failed: {e}")
+            return False
     
     def transform_question_to_detection_prompt(self, question: str) -> str:
         """Transform VQA question into object detection keywords for GroundingDINO"""
@@ -190,18 +286,19 @@ Detection keywords (format: object1 . object2 . object3):"""
         logging.debug(f"Transformed '{question}' to detection prompt: '{detection_prompt}'")
         return detection_prompt
     
-    def detect_and_visualize_with_groundingdino(self, image_path: str, detection_prompt: str) -> Optional[str]:
-        """Run GroundingDINO detection - supports both native and Docker"""
+    def detect_and_visualize_with_groundingdino(self, image_path: str, detection_prompt: str) -> Optional[tuple]:
+        """Run GroundingDINO detection - supports both native and Docker - returns (annotated_path, boxes_xyxy)"""
         if not self.groundingdino_enabled:
             logging.warning("GroundingDINO not available")
             return None
         
         try:
             if self.groundingdino_docker:
-                # Use Docker service
-                return self._run_groundingdino_docker(image_path, detection_prompt)
+                # Use Docker service (only returns annotated image, no boxes)
+                annotated_path = self._run_groundingdino_docker(image_path, detection_prompt)
+                return (annotated_path, None) if annotated_path else None
             else:
-                # Use native installation
+                # Use native installation (returns both image and boxes)
                 return self._run_groundingdino_native(image_path, detection_prompt)
                 
         except Exception as e:
@@ -287,24 +384,38 @@ except Exception as e:
             logging.error(f"GroundingDINO Docker service error: {e}")
             return None
     
-    def _run_groundingdino_native(self, image_path: str, detection_prompt: str) -> Optional[str]:
-        """Run GroundingDINO using native installation"""
+    def _run_groundingdino_native(self, image_path: str, detection_prompt: str) -> Optional[tuple]:
+        """Run GroundingDINO using native installation - returns (annotated_path, boxes_xyxy)"""
         try:
             sys.path.append(str(Path(__file__).parent.parent.parent / "GroundingDINO"))
             from groundingdino.util.inference import load_image, predict, annotate
+            from torchvision.ops import box_convert
             import cv2
+            import torch
             
-            # Load image
-            image_source, image = load_image(image_path)
-            
-            # Run detection
-            boxes, logits, phrases = predict(
-                model=self.groundingdino_model,
-                image=image,
-                caption=detection_prompt,
-                box_threshold=0.3,
-                text_threshold=0.25
-            )
+            # Ensure we're using GPU 0 for GroundingDINO
+            with torch.cuda.device(0):
+                # Load image
+                image_source, image = load_image(image_path)
+                
+                # Run detection
+                boxes, logits, phrases = predict(
+                    model=self.groundingdino_model,
+                    image=image,
+                    caption=detection_prompt,
+                    box_threshold=0.3,
+                    text_threshold=0.25,
+                    device="cuda:0"
+                )
+                
+                # Convert boxes to DAM format (absolute xyxy coordinates)
+                boxes_xyxy = None
+                if len(boxes) > 0:
+                    h, w = image_source.shape[:2]
+                    # Convert from normalized cxcywh to absolute xyxy for DAM
+                    boxes_abs = boxes * torch.tensor([w, h, w, h])
+                    boxes_xyxy = box_convert(boxes_abs, in_fmt='cxcywh', out_fmt='xyxy')
+                    logging.debug(f"GroundingDINO detected {len(boxes_xyxy)} objects")
             
             # Annotate image
             annotated_frame = annotate(image_source=image_source, boxes=boxes, logits=logits, phrases=phrases)
@@ -316,14 +427,14 @@ except Exception as e:
             cv2.imwrite(output_path, annotated_frame)
             
             logging.info(f"✅ GroundingDINO native: {output_path}")
-            return output_path
+            return (output_path, boxes_xyxy)
             
         except Exception as e:
             logging.error(f"GroundingDINO native error: {e}")
             return None
     
-    def analyze_with_dam(self, image_path: str, question: str) -> Dict[str, Any]:
-        """Analyze image with local DAM model - supports both nvidia and local implementations"""
+    def analyze_with_dam_and_boxes(self, image_path: str, question: str, boxes_xyxy=None) -> Dict[str, Any]:
+        """Analyze image with DAM using detected bounding boxes for focused analysis"""
         if not self.dam:
             return {
                 "answer_candidates": ["Error: DAM model not initialized"],
@@ -332,73 +443,124 @@ except Exception as e:
             
         try:
             from PIL import Image
+            import torch
             
             # Load image
             image = Image.open(image_path).convert('RGB')
             
-            # Check which DAM implementation we're using
-            if hasattr(self.dam, 'get_description'):
-                # Using nvidia DAM-3B-Self-Contained API
-                return self._analyze_with_nvidia_dam(image, question)
+            if boxes_xyxy is not None and len(boxes_xyxy) > 0:
+                # Move boxes to CPU for processing
+                if hasattr(boxes_xyxy, 'cpu'):
+                    boxes_xyxy = boxes_xyxy.cpu()
+                
+                # Use first detected box for focused analysis
+                box = boxes_xyxy[0].int().tolist()  # [x1, y1, x2, y2]
+                
+                # Create mask from bounding box (like DAM examples)
+                mask = Image.new('L', image.size, 0)  # Black background
+                from PIL import ImageDraw
+                draw = ImageDraw.Draw(mask)
+                draw.rectangle(box, fill=255)  # White rectangle for detected region
+                
+                logging.info(f"🎯 DAM analyzing focused region: {box}")
             else:
-                # Using local DAM implementation
-                return self._analyze_with_local_dam(image, question)
+                # Fallback to full image analysis
+                mask = Image.new('L', image.size, 255)  # White mask = full image
+                logging.info("🔄 DAM analyzing full image (no boxes detected)")
+            
+            return self._analyze_with_nvidia_dam_focused(image, mask, question)
                 
         except Exception as e:
-            logging.error(f"DAM analysis failed: {e}")
+            logging.error(f"DAM with boxes analysis failed: {e}")
             return {
                 "answer_candidates": ["Error: DAM analysis failed"],
                 "caption": f"Error: {str(e)}"
             }
     
-    def _analyze_with_nvidia_dam(self, image, question: str) -> Dict[str, Any]:
-        """Analyze with DAM exactly like /DAM/single_inference.py"""
+    def _analyze_with_nvidia_dam_focused(self, image, mask, question: str) -> Dict[str, Any]:
+        """Analyze with DAM using focused mask from GroundingDINO"""
         try:
-            # Create full white mask for whole image analysis (like /DAM/single_inference.py)
-            from PIL import Image
-            if isinstance(image, str):
-                image = Image.open(image).convert('RGB')
+            import torch
             
-            # Create white mask covering entire image
-            mask = Image.new('L', image.size, 255)  # White mask = analyze full image
+            # Ensure inputs are on the correct device and dtype
+            if hasattr(self, 'dam_device') and hasattr(self, 'dam_dtype'):
+                # Move computation to DAM's device context
+                with torch.cuda.device(self.dam_device) if self.dam_device.type == 'cuda' else torch.no_grad():
+                    
+                    # Generate caption for masked region
+                    caption_prompt = '<image>\nDescribe the highlighted/masked region in detail. Focus on objects, colors, actions, and spatial relationships.'
+                    
+                    caption_tokens = []
+                    for token in self.dam.get_description(
+                        image, 
+                        mask,
+                        caption_prompt,
+                        streaming=True, 
+                        temperature=0.2, 
+                        top_p=0.5,
+                        num_beams=1, 
+                        max_new_tokens=256
+                    ):
+                        caption_tokens.append(token)
+                    
+                    caption_text = ''.join(caption_tokens).strip()
+                    
+                    # Generate VQA candidates focusing on detected objects
+                    vqa_prompt = f'<image>\nFocus on the highlighted region. Question: {question.strip()}\n\nBased on the detected objects and their properties, provide 3 candidate answers:\nAnswers:'
+                    
+                    answer_tokens = []
+                    for token in self.dam.get_description(
+                        image, 
+                        mask,
+                        vqa_prompt,
+                        streaming=True, 
+                        temperature=0.3, 
+                        top_p=0.6,
+                        num_beams=1, 
+                        max_new_tokens=128
+                    ):
+                        answer_tokens.append(token)
+                    
+                    answer_text = ''.join(answer_tokens).strip()
+            else:
+                # Fallback - original implementation
+                # Generate caption for masked region
+                caption_prompt = '<image>\nDescribe the highlighted/masked region in detail. Focus on objects, colors, actions, and spatial relationships.'
+                
+                caption_tokens = []
+                for token in self.dam.get_description(
+                    image, 
+                    mask,
+                    caption_prompt,
+                    streaming=True, 
+                    temperature=0.2, 
+                    top_p=0.5,
+                    num_beams=1, 
+                    max_new_tokens=256
+                ):
+                    caption_tokens.append(token)
+                
+                caption_text = ''.join(caption_tokens).strip()
+                
+                # Generate VQA candidates focusing on detected objects
+                vqa_prompt = f'<image>\nFocus on the highlighted region. Question: {question.strip()}\n\nBased on the detected objects and their properties, provide 3 candidate answers:\nAnswers:'
+                
+                answer_tokens = []
+                for token in self.dam.get_description(
+                    image, 
+                    mask,
+                    vqa_prompt,
+                    streaming=True, 
+                    temperature=0.3, 
+                    top_p=0.6,
+                    num_beams=1, 
+                    max_new_tokens=128
+                ):
+                    answer_tokens.append(token)
+                
+                answer_text = ''.join(answer_tokens).strip()
             
-            # Generate caption first
-            caption_prompt = '<image>\nProvide a comprehensive description of the image in 2-3 sentences. Focus on objects, colors, positions, actions, and relationships.'
-            
-            caption_tokens = []
-            for token in self.dam.get_description(
-                image, 
-                mask,  # Must provide mask, not None
-                caption_prompt,
-                streaming=True, 
-                temperature=0.2, 
-                top_p=0.5,
-                num_beams=1, 
-                max_new_tokens=256
-            ):
-                caption_tokens.append(token)
-            
-            caption_text = ''.join(caption_tokens).strip()
-            
-            # Generate VQA candidates 
-            vqa_prompt = f'<image>\nQuestion: {question.strip()}\n\nProvide 3 candidate answers in format: answer1, answer2, answer3\nAnswers:'
-            
-            answer_tokens = []
-            for token in self.dam.get_description(
-                image, 
-                mask,  # Must provide mask, not None
-                vqa_prompt,
-                streaming=True, 
-                temperature=0.3, 
-                top_p=0.6,
-                num_beams=1, 
-                max_new_tokens=128
-            ):
-                answer_tokens.append(token)
-            
-            answer_text = ''.join(answer_tokens).strip()
-            
-            # Simple parsing - split by comma
+            # Parse answers
             if ',' in answer_text:
                 answer_candidates = [ans.strip() for ans in answer_text.split(',')[:3]]
             else:
@@ -414,51 +576,9 @@ except Exception as e:
             }
             
         except Exception as e:
-            logging.error(f"DAM analysis failed: {e}")
+            logging.error(f"DAM focused analysis failed: {e}")
             return {
-                "answer_candidates": ["Error: DAM analysis failed"],
-                "caption": f"Error: {str(e)}"
-            }
-    
-    def _analyze_with_local_dam(self, image, question: str) -> Dict[str, Any]:
-        """Analyze with local DAM implementation"""
-        try:
-            # Create conversation template
-            conv = self.conv_templates[self.dam.conv_mode].copy()
-            
-            # Generate caption
-            caption_prompt = "Please describe this image in detail."
-            caption_generator = self.dam.get_description_from_prompt_iterator(
-                [image], [None], caption_prompt, conv,
-                streaming=False, temperature=0.2, top_p=0.5
-            )
-            caption_text = ''.join(caption_generator)
-            
-            # Generate answer candidates
-            answer_prompt = f"""Based on this image, answer the following question with 3 possible answers.
-Question: {question}
-
-Provide exactly 3 short answers, one per line."""
-            
-            answer_generator = self.dam.get_description_from_prompt_iterator(
-                [image], [None], answer_prompt, conv,
-                streaming=False, temperature=0.5, top_p=0.7
-            )
-            answer_text = ''.join(answer_generator)
-            
-            # Parse answers
-            answer_lines = [line.strip() for line in answer_text.split('\n') if line.strip()]
-            answer_candidates = answer_lines[:3] if len(answer_lines) >= 3 else answer_lines + ["uncertain"] * (3 - len(answer_lines))
-            
-            return {
-                "answer_candidates": answer_candidates,
-                "caption": caption_text
-            }
-            
-        except Exception as e:
-            logging.error(f"Local DAM analysis failed: {e}")
-            return {
-                "answer_candidates": ["Error: Local DAM analysis failed"],
+                "answer_candidates": ["Error: DAM focused analysis failed"],
                 "caption": f"Error: {str(e)}"
             }
 
@@ -477,16 +597,13 @@ Provide exactly 3 short answers, one per line."""
             
             # Step 2: GroundingDINO.generate(BBox) from VLM description
             logging.info("🎯 Step 2: GroundingDINO.generate(BBox)")
-            annotated_image_path = self._groundingdino_from_description(image_path, vlm_description, question)
+            annotated_image_path, boxes_xyxy = self._groundingdino_from_description(image_path, vlm_description, question)
             
-            # Step 3: DAM.process() - Analyze with DAM
+            # Step 3: DAM.process() - Analyze with DAM using detected boxes
             if self.dam:
                 logging.info("🔍 Step 3: DAM.process()")
-                from PIL import Image
-                # Use annotated image if available, otherwise original
-                image_to_process = annotated_image_path if annotated_image_path else image_path
-                image = Image.open(image_to_process).convert('RGB')
-                dam_results = self._analyze_with_nvidia_dam(image, question)
+                # Use original image for DAM analysis, but with bounding boxes for focus
+                dam_results = self.analyze_with_dam_and_boxes(image_path, question, boxes_xyxy)
                 
                 if dam_results and dam_results.get("answer_candidates"):
                     logging.info("✅ Step 4: Seeker.receive() - Ready for MVKB")
@@ -540,24 +657,28 @@ Provide a clear, factual description in 2-3 sentences:
         logging.debug(f"VLM Description: {description}")
         return description
     
-    def _groundingdino_from_description(self, image_path: str, description: str, question: str) -> Optional[str]:
-        """Step 2: Use description to guide GroundingDINO object detection"""
+    def _groundingdino_from_description(self, image_path: str, description: str, question: str) -> tuple:
+        """Step 2: Use description to guide GroundingDINO object detection - returns (annotated_path, boxes_xyxy)"""
         if not self.groundingdino_enabled:
             logging.warning("GroundingDINO not available for Step 2")
-            return None
+            return (None, None)
             
         # Create detection prompt from VLM description
         detection_keywords = self._extract_detection_keywords_from_description(description, question)
         
         # Use GroundingDINO with the extracted keywords
-        annotated_path = self.detect_and_visualize_with_groundingdino(image_path, detection_keywords)
+        result = self.detect_and_visualize_with_groundingdino(image_path, detection_keywords)
         
-        if annotated_path:
-            logging.info(f"✅ GroundingDINO created annotated image: {annotated_path}")
+        if result:
+            annotated_path, boxes_xyxy = result
+            if annotated_path:
+                logging.info(f"✅ GroundingDINO created annotated image: {annotated_path}")
+            if boxes_xyxy is not None:
+                logging.info(f"✅ GroundingDINO detected {len(boxes_xyxy)} bounding boxes")
+            return (annotated_path, boxes_xyxy)
         else:
             logging.warning("GroundingDINO failed to create annotated image")
-            
-        return annotated_path
+            return (None, None)
     
     def _extract_detection_keywords_from_description(self, description: str, question: str) -> str:
         """Extract object detection keywords from VLM description"""
