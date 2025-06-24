@@ -57,5 +57,4 @@ model_outputs_cache/
 *.safetensors
 
 # GroundingDINO submodule (use Docker instead)
-GroundingDINO/
 .cursor
