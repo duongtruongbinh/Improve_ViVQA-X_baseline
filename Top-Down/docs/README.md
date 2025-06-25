@@ -1,6 +1,6 @@
-# SIRI Framework Documentation
+# FDR Framework Documentation
 
-Welcome to the SIRI VQA Framework documentation! This directory contains comprehensive guides to help you understand, setup, and use the framework.
+Welcome to the FDR VQA Framework documentation! This directory contains comprehensive guides to help you understand, setup, and use the framework.
 
 ## 📚 Documentation Index
 
@@ -34,7 +34,7 @@ Welcome to the SIRI VQA Framework documentation! This directory contains compreh
 
 ## 🔧 Framework Overview
 
-The SIRI framework implements:
+The FDR framework implements:
 - **100% Local Processing**: No external API dependencies
 - **Visual Object Detection**: GroundingDINO integration
 - **Multi-Agent Reasoning**: Responder, Seeker, Integrator
@@ -61,7 +61,7 @@ python main.py --backend openai
 ```
 
 ### Key Components
-- `core/agents.py` - SIRI agent implementations
+- `core/agents.py` - FDR agent implementations
 - `core/pipeline.py` - Main pipeline orchestration
 - `utils/vllm_client.py` - vLLM integration
 - `utils/config_loader.py` - Configuration management
@@ -82,4 +82,4 @@ python main.py --backend openai
 
 ## 🎉 Happy VQA!
 
-The SIRI framework enables sophisticated visual question answering with explainable AI. Explore the documentation to unlock its full potential! 
+The FDR framework enables sophisticated visual question answering with explainable AI. Explore the documentation to unlock its full potential! 
