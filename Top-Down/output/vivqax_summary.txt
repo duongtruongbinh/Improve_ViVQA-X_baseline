@@ -1,4 +1,4 @@
-SIRI Pipeline Final Summary
+FDR Pipeline Final Summary
 ========================================
 Dataset: ViVQA-X
 Backend: vLLM
