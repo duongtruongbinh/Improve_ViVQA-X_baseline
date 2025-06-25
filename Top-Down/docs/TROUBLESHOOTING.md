@@ -1,6 +1,6 @@
-# SIRI Framework Troubleshooting Guide
+# FDR Framework Troubleshooting Guide
 
-This guide covers common issues and their solutions when working with the SIRI VQA framework.
+This guide covers common issues and their solutions when working with the FDR VQA framework.
 
 ## 🚨 Common Issues & Solutions
 
