@@ -1,4 +1,4 @@
-SIRI Pipeline Final Summary
+FDR Pipeline Final Summary
 ========================================
 Processed 10 questions.
 Evaluated 0 questions with annotations.
