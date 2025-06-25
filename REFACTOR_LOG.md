@@ -45,7 +45,7 @@
 - ✅ Various exploration and test files
 
 ### Core Structure Preserved
-- ✅ `Top-Down/` - Main SIRI framework
+- ✅ `Top-Down/` - Main FDR framework
 - ✅ `GroundingDINO/` - Core model and Docker setup
 - ✅ `DAM/` - Core DAM model
 - ✅ Configuration and essential files
