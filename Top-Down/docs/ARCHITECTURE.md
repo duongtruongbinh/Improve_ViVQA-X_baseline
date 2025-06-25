@@ -1,10 +1,10 @@
-# SIRI Framework Architecture
+# FDR Framework Architecture
 
-This document provides a detailed technical overview of the SIRI (Seeker, Integrator, Responder) VQA framework architecture.
+This document provides a detailed technical overview of the FDR (Seeker, Integrator, Responder) VQA framework architecture.
 
 ## 🏗️ System Overview
 
-The SIRI framework implements a **visualize-then-analyze** pipeline that combines object detection, image analysis, and multi-agent reasoning for enhanced Visual Question Answering.
+The FDR framework implements a **visualize-then-analyze** pipeline that combines object detection, image analysis, and multi-agent reasoning for enhanced Visual Question Answering.
 
 ### High-Level Flow
 ```mermaid
