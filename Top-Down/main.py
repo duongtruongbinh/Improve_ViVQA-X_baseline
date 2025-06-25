@@ -22,14 +22,14 @@ def main():
     )
 
     parser = argparse.ArgumentParser(
-        description="Run the SIRI framework for VQA using a Top-Down Reasoning approach."
+        description="Run the FDR framework for VQA using a Top-Down Reasoning approach."
     )
     
     parser.add_argument(
         "--config", 
         type=str, 
         default="Top-Down/configs/vivqax_config.yaml", 
-        help="Path to the configuration YAML file for the SIRI pipeline."
+        help="Path to the configuration YAML file for the FDR pipeline."
     )
     
     parser.add_argument(
@@ -45,6 +45,12 @@ def main():
         action="store_true",
         help="Test mode: Run refactored pipeline with 10 questions"
     )
+    
+    parser.add_argument(
+        "--evaluate", 
+        action="store_true",
+        help="Enable G-Eval automatic evaluation using GPT-4o-mini"
+    )
 
     args = parser.parse_args()
     
@@ -59,10 +65,10 @@ def main():
         if args.test:
             # Test mode: Run refactored pipeline with 10 questions
             logging.info("🧪 Test mode: Running refactored pipeline with 10 questions")
-            run_siri_pipeline(args.config, use_vllm=use_vllm)
+            run_siri_pipeline(args.config, use_vllm=use_vllm, enable_evaluation=args.evaluate)
         else:
             # Full pipeline mode
-            run_siri_pipeline(args.config, use_vllm=use_vllm)
+            run_siri_pipeline(args.config, use_vllm=use_vllm, enable_evaluation=args.evaluate)
     except FileNotFoundError as e:
         logging.error(f"FATAL: A required file was not found. Please check your paths in the config file.")
         logging.error(f"Details: {e}")
