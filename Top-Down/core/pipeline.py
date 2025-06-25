@@ -7,6 +7,7 @@ from openai import OpenAI
 from tqdm import tqdm
 
 from .agents import ResponderAgent, SeekerAgent, IntegratorAgent
+from core.g_evaluator import GEvaluator
 
 # --- Helper Functions ---
 
@@ -103,12 +104,16 @@ def load_vivqax_dataset(config):
     logging.info(f"Loaded {len(questions_data)} ViVQA-X questions with answers")
     return questions_data, annotations
 
-# --- Main SIRI Pipeline ---
+# --- Main FDR Pipeline ---
 
-def run_siri_pipeline(config_path: str, use_vllm: bool = True):
+def run_siri_pipeline(config_path: str, use_vllm: bool = True, enable_evaluation: bool = False):
     """
-    Orchestrates the full SIRI (Seeker, Integrator, Responder) pipeline.
-    Now supports both OpenAI and local vLLM backends.
+    Run the FDR VQA pipeline with optional G-Eval evaluation
+    
+    Args:
+        config_path: Path to configuration file
+        use_vllm: Whether to use vLLM backend
+        enable_evaluation: Whether to enable G-Eval evaluation
     """
     config = load_config(config_path)
     
@@ -119,9 +124,9 @@ def run_siri_pipeline(config_path: str, use_vllm: bool = True):
     # Continue with original format for backward compatibility
     # 1. Initialize Agents with simple backend selection
     if use_vllm:
-        logging.info("🚀 Initializing SIRI agents with local vLLM backend...")
+        logging.info("🚀 Initializing FDR agents with local vLLM backend...")
     else:
-        logging.info("🌐 Initializing SIRI agents with OpenAI backend...")
+        logging.info("🌐 Initializing FDR agents with OpenAI backend...")
     
     # Use the simplified backend manager
     responder = ResponderAgent(use_vllm=use_vllm)
@@ -151,12 +156,22 @@ def run_siri_pipeline(config_path: str, use_vllm: bool = True):
         else:
             raise ValueError(f"Could not determine image directory for split: {split}")
 
+    # Initialize G-Evaluator if enabled
+    g_evaluator = None
+    if enable_evaluation:
+        try:
+            g_evaluator = GEvaluator(model_name="gpt-4o-mini")
+            logging.info("🔬 G-Evaluator enabled for automatic evaluation")
+        except Exception as e:
+            logging.warning(f"⚠️ G-Evaluator initialization failed: {e}")
+            g_evaluator = None
+
     # 3. Run Pipeline
     all_results = []
     correct_count = 0
     evaluated_count = 0
     
-    for item in tqdm(questions, desc="SIRI Pipeline Processing"):
+    for item in tqdm(questions, desc="FDR Pipeline Processing"):
         question_id = item['question_id']
         question_text = item['question']
         
@@ -205,6 +220,34 @@ def run_siri_pipeline(config_path: str, use_vllm: bool = True):
         }
         all_results.append(result_entry)
 
+        # At the end of processing each question, add evaluation
+        if g_evaluator and final_answer:
+            try:
+                # Prepare data for evaluation
+                image_description = getattr(responder, 'last_vlm_description', None)
+                
+                # Evaluate the response
+                eval_result = g_evaluator.evaluate_single(
+                    question=question_text,
+                    answer=final_answer,
+                    image_description=image_description,
+                    criteria="overall"
+                )
+                
+                # Add evaluation to results
+                result_entry['g_eval'] = eval_result
+                overall_score = eval_result.get('overall_score', 'N/A')
+                
+                logging.info(f"📊 G-Eval Score: {overall_score}/5")
+                
+                # Log detailed evaluation if debug mode
+                if hasattr(config, 'debug') and config.debug:
+                    logging.info(f"📋 G-Eval Analysis: {eval_result.get('analysis', 'No analysis')}")
+                    
+            except Exception as e:
+                logging.error(f"❌ G-Evaluation failed: {e}")
+                result_entry['g_eval'] = {"error": str(e)}
+
     # 5. Save Outputs
     output_dir = os.path.dirname(config['inference']['output_file'])
     os.makedirs(output_dir, exist_ok=True)
@@ -217,7 +260,7 @@ def run_siri_pipeline(config_path: str, use_vllm: bool = True):
     # Write summary
     accuracy = (correct_count / evaluated_count) * 100 if evaluated_count > 0 else 0
     with open(config['inference']['summary_file'], 'w') as f:
-        f.write("SIRI Pipeline Final Summary\n")
+        f.write("FDR Pipeline Final Summary\n")
         f.write("="*40 + "\n")
         f.write(f"Processed {len(questions)} questions.\n")
         f.write(f"Evaluated {evaluated_count} questions with annotations.\n")
@@ -241,9 +284,9 @@ def run_refactored_pipeline(config, use_vllm: bool = True):
     
     # 1. Initialize Agents with config-driven parameters
     if use_vllm:
-        logging.info("🚀 Initializing SIRI agents with local vLLM backend...")
+        logging.info("🚀 Initializing FDR agents with local vLLM backend...")
     else:
-        logging.info("🌐 Initializing SIRI agents with OpenAI backend...")
+        logging.info("🌐 Initializing FDR agents with OpenAI backend...")
     
     # Get agent config
     agent_config = config.get('agents_config', {}).get('responder', {})
@@ -292,7 +335,7 @@ def run_refactored_pipeline(config, use_vllm: bool = True):
     correct_count = 0
     evaluated_count = 0
     
-    for item in tqdm(questions_data, desc="SIRI Pipeline Processing"):
+    for item in tqdm(questions_data, desc="FDR Pipeline Processing"):
         question_id = item['question_id']
         question_text = item['question']
         
@@ -352,7 +395,7 @@ def run_refactored_pipeline(config, use_vllm: bool = True):
     # Write summary
     accuracy = (correct_count / evaluated_count) * 100 if evaluated_count > 0 else 0
     with open(output_config['summary_file'], 'w') as f:
-        f.write("SIRI Pipeline Final Summary\n")
+        f.write("FDR Pipeline Final Summary\n")
         f.write("="*40 + "\n")
         f.write(f"Dataset: {data_config['dataset_name']}\n")
         f.write(f"Backend: {'vLLM' if use_vllm else 'OpenAI'}\n")
