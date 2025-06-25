@@ -1,6 +1,6 @@
-# Contributing to SIRI VQA Framework
+# Contributing to FDR VQA Framework
 
-Thank you for your interest in contributing to the SIRI VQA Framework! This guide will help you get started with development and contributions.
+Thank you for your interest in contributing to the FDR VQA Framework! This guide will help you get started with development and contributions.
 
 ## 🛠️ Development Setup
 
@@ -47,7 +47,7 @@ ls DAM/
    - Aggregates results from multiple hypotheses
 
 4. **Pipeline** (`core/pipeline.py`)
-   - Orchestrates the entire SIRI workflow
+   - Orchestrates the entire FDR workflow
    - Manages data loading and result saving
 
 ### Configuration System
@@ -286,4 +286,4 @@ Contributors will be recognized in:
 - Release notes
 - Project documentation
 
-Thank you for contributing to the SIRI VQA Framework! 🎉 
+Thank you for contributing to the FDR VQA Framework! 🎉 
