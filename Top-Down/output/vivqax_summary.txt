@@ -1,9 +1,0 @@
-FDR Pipeline Final Summary
-========================================
-Dataset: ViVQA-X
-Backend: vLLM
-DAM: Disabled
-GroundingDINO: Docker
-Processed 10 questions.
-Evaluated 10 questions with annotations.
-Final Accuracy: 20.00% (2/10)

@@ -1,5 +1,0 @@
-FDR Pipeline Final Summary
-========================================
-Processed 10 questions.
-Evaluated 0 questions with annotations.
-Accuracy not calculated (no annotations found for the processed questions).
