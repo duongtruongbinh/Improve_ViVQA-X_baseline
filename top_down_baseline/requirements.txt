@@ -1,0 +1,19 @@
+# Core dependencies for VQA Pipeline
+flask
+torch>=2.0.0
+transformers>=4.37.0
+qwen-vl-utils
+pillow>=9.0.0
+requests
+streamlit
+openai
+numpy>=1.21.0
+opencv-python
+accelerate
+decord
+tqdm>=4.65.0
+salesforce-lavis
+json5>=0.9.0
+colorama>=0.4.0  
+pycocoevalcap
+bert_score

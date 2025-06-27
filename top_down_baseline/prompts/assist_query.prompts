@@ -1,0 +1,57 @@
+Bạn là một chuyên gia trong việc đặt câu hỏi. Để xác định được câu trả lời cho một câu hỏi, bạn cần tạo ra các câu hỏi hỗ trợ dựa trên câu hỏi gốc và các câu trả lời ứng viên. Những câu hỏi hỗ trợ này nên liên quan đến các tín hiệu thị giác. Những câu hỏi hỗ trợ này cần có khả năng phân biệt rõ ràng giữa các câu trả lời ứng viên khi kết hợp với câu trả lời của chúng. Vui lòng trả lời bằng tiếng Việt. Đảm bảo rằng các câu trả lời của bạn tuân thủ nghiêm ngặt cấu trúc được nêu dưới đây. Vui lòng cung cấp các câu trả lời trực tiếp trong <list></list>, không bao gồm bất kỳ nội dung bổ sung nào khác.
+
+Câu hỏi: Bạn có thể rẽ phải hoặc rẽ trái trong đường hầm không?
+
+Chú thích ảnh: một chiếc ô tô đang chạy trên đường phố với biển dừng.
+
+Các câu trả lời ứng viên: Có, Không
+
+Câu hỏi hỗ trợ: <list>\["Có biển cấm rẽ nào không?"]</list>
+
+Câu hỏi: Cấu trúc kim loại phía sau là gì?
+
+Chú thích ảnh: một đoàn tàu đang chạy trên đường ray.
+
+Các câu trả lời ứng viên: nhà ga, sân ga
+
+Câu hỏi hỗ trợ: <list>\["Cấu trúc kim loại này dài hay ngắn?", "Có đường ray nào cạnh cấu trúc kim loại đó không?"]</list>
+
+Câu hỏi: Đây có phải là xe buýt du lịch không?
+
+Chú thích ảnh: một chiếc xe buýt đỗ trong bãi đậu xe.
+
+Các câu trả lời ứng viên: Không, Có
+
+Câu hỏi hỗ trợ: <list>\["Xe buýt này có cửa sổ lớn không?", "Có logo nào trên xe buýt này không?"]</list>
+
+Câu hỏi: Các phương tiện có đang đi về phía máy quay không?
+
+Chú thích ảnh: một người đi bộ đang băng qua con phố đông đúc ở một thành phố châu Á.
+
+Các câu trả lời ứng viên: Không, Có
+
+Câu hỏi hỗ trợ: <list>\["Bạn có thấy đèn pha đang bật không?", "Bạn có thấy phía trước của xe không?"]</list>
+
+Câu hỏi: Gió có đang thổi không?
+
+Chú thích ảnh: một người đang trượt tuyết.
+
+Các câu trả lời ứng viên: Có, Không
+
+Câu hỏi hỗ trợ: <list>\["Có cây cối hay thực vật nào đang chuyển động không?", "Có mảnh vụn nào đang bay không?"]</list>
+
+Câu hỏi: Đây có phải là máy bay phản lực lớn không?
+
+Chú thích ảnh: một chiếc máy bay đang đỗ trong nhà chứa.
+
+Các câu trả lời ứng viên: Có, Không
+
+Câu hỏi hỗ trợ: <list>\["Chiếc máy bay này có nhiều hơn một động cơ không?", "Chiếc máy bay này có đuôi chữ T hay đuôi xiên về phía sau không?"]</list>
+
+Câu hỏi: Những nam châm này sẽ hút nhau hay đẩy nhau?
+
+Chú thích ảnh: chữ "snn" trên nền xanh và trắng
+
+Các câu trả lời ứng viên: hút nhau, đẩy nhau
+
+Câu hỏi hỗ trợ: <list>\["Các nam châm có hướng 'N' hoặc 'S' đối nhau không?"]</list>
