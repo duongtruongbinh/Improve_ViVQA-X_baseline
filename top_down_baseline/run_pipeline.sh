@@ -12,13 +12,13 @@ set -e  # Exit on any error
 # =============================================================================
 
 # CUDA Device Configuration (can be overridden by environment variable)
-export CUDA_VISIBLE_DEVICES=${CUDA_DEVICE:-1}
+export CUDA_VISIBLE_DEVICES=${CUDA_DEVICE:-0}
 
 # Environment Configuration (can be overridden by environment variable)
 CONDA_ENV_NAME=${CONDA_ENV:-"ma_vqa"}
 
 # Number of samples to process (can be overridden by environment variable)
-NUM_SAMPLES=${NUM_SAMPLES:-100}
+NUM_SAMPLES=${NUM_SAMPLES:-10}
 
 # Dataset configuration (can be overridden by environment variable)
 DATASET=${DATASET:-"vqa"}
