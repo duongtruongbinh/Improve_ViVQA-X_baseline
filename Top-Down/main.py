@@ -5,7 +5,7 @@ import os
 import json
 import base64
 import warnings
-from core.pipeline import run_siri_pipeline
+from core.pipeline import run_fdr_pipeline
 
 # Suppress warnings for clean test output
 warnings.filterwarnings("ignore")
@@ -65,10 +65,10 @@ def main():
         if args.test:
             # Test mode: Run refactored pipeline with 10 questions
             logging.info("🧪 Test mode: Running refactored pipeline with 10 questions")
-            run_siri_pipeline(args.config, use_vllm=use_vllm, enable_evaluation=args.evaluate)
+            run_fdr_pipeline(args.config, use_vllm=use_vllm, enable_evaluation=args.evaluate)
         else:
             # Full pipeline mode
-            run_siri_pipeline(args.config, use_vllm=use_vllm, enable_evaluation=args.evaluate)
+            run_fdr_pipeline(args.config, use_vllm=use_vllm, enable_evaluation=args.evaluate)
     except FileNotFoundError as e:
         logging.error(f"FATAL: A required file was not found. Please check your paths in the config file.")
         logging.error(f"Details: {e}")

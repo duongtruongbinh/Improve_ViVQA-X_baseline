@@ -242,7 +242,7 @@ chmod 755 Top-Down/output
 df -h
 
 # Clear old results if needed
-rm -f Top-Down/output/siri_pipeline_results.json
+rm -f Top-Down/output/fdr_pipeline_results.json
 ```
 
 ### 6. Memory & Performance Issues
@@ -352,12 +352,12 @@ if __name__ == "__main__":
 ### Data Recovery
 ```bash
 # Backup current results
-cp Top-Down/output/siri_pipeline_results.json Top-Down/output/backup_$(date +%Y%m%d_%H%M%S).json
+cp Top-Down/output/fdr_pipeline_results.json Top-Down/output/backup_$(date +%Y%m%d_%H%M%S).json
 
 # Recover from partial results
 python -c "
 import json
-with open('Top-Down/output/siri_pipeline_results.json') as f:
+with open('Top-Down/output/fdr_pipeline_results.json') as f:
     data = json.load(f)
 print(f'Processed: {len(data)} questions')
 print(f'Last question ID: {data[-1].get(\"question_id\", \"unknown\")}')

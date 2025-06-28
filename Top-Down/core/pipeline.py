@@ -106,7 +106,7 @@ def load_vivqax_dataset(config):
 
 # --- Main FDR Pipeline ---
 
-def run_siri_pipeline(config_path: str, use_vllm: bool = True, enable_evaluation: bool = False):
+def run_fdr_pipeline(config_path: str, use_vllm: bool = True, enable_evaluation: bool = False):
     """
     Run the FDR VQA pipeline with optional G-Eval evaluation
     
