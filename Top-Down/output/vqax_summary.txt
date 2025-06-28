@@ -1,9 +1,0 @@
-FDR Pipeline Final Summary
-========================================
-Dataset: VQA-X
-Backend: Local Models
-DAM: Enabled
-GroundingDINO: Native
-Processed 1 questions.
-Evaluated 1 questions with annotations.
-Final Accuracy: 0.00% (0/1)
