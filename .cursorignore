@@ -1,7 +1,0 @@
-# Add directories or file patterns to ignore during indexing (e.g. foo/ or *.csv)
-FDR-MA
-Top-Down/app
-Top-Down/assets
-Top-Down/outputs
-Top-Down/outputs/
-Top-Down/outputs/
