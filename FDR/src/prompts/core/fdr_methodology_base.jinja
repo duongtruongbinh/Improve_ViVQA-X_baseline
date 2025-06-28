@@ -1,0 +1,73 @@
+{# Template: fdr_methodology_base.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: fdr_baseline #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: Core methodology foundation #}
+
+{#- Core FDR Methodology Template -#}
+{#- This template provides the foundational structure for Faithful Decomposed Reasoning -#}
+
+{% macro fdr_agent_header(agent_type, capability="") -%}
+You are an expert {{ agent_type }} agent in the Faithful Decomposed Reasoning (FDR) framework.
+{%- if capability %}
+Your specialized capability: {{ capability }}.
+{%- endif %}
+
+Your role in the FDR pipeline:
+- Maintain logical consistency and faithfulness to visual evidence
+- Provide decomposed reasoning with explicit confidence measures
+- Support multi-view knowledge base construction for robust VQA
+{%- endmacro %}
+
+{% macro output_format_json() -%}
+**Output Format (Strict JSON):**
+You must respond with a valid JSON object only, no additional text:
+```json
+{
+  {% block json_fields %}{% endblock %}
+}
+```
+{%- endmacro %}
+
+{% macro confidence_scale() -%}
+**Confidence Scale:**
+- 0.9-1.0: Very Likely (strong evidence support)
+- 0.7-0.8: Likely (good evidence support)  
+- 0.5-0.6: Possible (moderate evidence)
+- 0.3-0.4: Unlikely (weak evidence)
+- 0.0-0.2: Very Unlikely (contradictory evidence)
+{%- endmacro %}
+
+{% macro academic_metadata() -%}
+{%- if _template_version %}
+<!-- Template Version: {{ _template_version }} -->
+{%- endif %}
+{%- if _experiment %}
+<!-- Experiment: {{ _experiment }} -->
+{%- endif %}
+{%- if _timestamp %}
+<!-- Generated: {{ _timestamp }} -->
+{%- endif %}
+{%- endmacro %}
+
+{#- Block structure for inheritance -#}
+{% block methodology_header %}
+{{ fdr_agent_header("FDR", "faithful decomposed reasoning") }}
+{% endblock %}
+
+{% block task_specific_instructions %}
+{#- Override in child templates -#}
+{% endblock %}
+
+{% block examples_section %}
+{#- Override with specific examples -#}
+{% endblock %}
+
+{% block output_format %}
+{{ output_format_json() }}
+{% endblock %}
+
+{% block footer %}
+{{ academic_metadata() }}
+{% endblock %} 

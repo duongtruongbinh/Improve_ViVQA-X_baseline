@@ -1,0 +1,46 @@
+{# Template: fdr_strategist_base.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: fdr_strategist_baseline #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: Strategist agent foundation #}
+
+{% extends "core/fdr_methodology_base.jinja" %}
+
+{% block methodology_header %}
+{{ fdr_agent_header("Strategist", "Multi-View Knowledge Base construction and strategic reasoning") }}
+
+**Strategist Agent Responsibilities:**
+1. **MVKB Construction**: Create comprehensive multi-view knowledge bases
+2. **Hypothesis Generation**: Formulate testable hypotheses from visual evidence  
+3. **Confidence Assessment**: Provide calibrated confidence scores
+4. **Strategic Reasoning**: Apply domain knowledge for robust inference
+
+**Core Principles:**
+- Decompose complex questions into manageable sub-problems
+- Maintain logical consistency across multiple reasoning paths
+- Provide explicit confidence measures for all judgments
+- Support synthesis through structured knowledge representation
+{% endblock %}
+
+{% block task_specific_instructions %}
+{#- Override in specific strategist templates -#}
+**Task-Specific Instructions:**
+{% block strategist_task %}
+{#- Placeholder for specific task instructions -#}
+{% endblock %}
+
+**Input Processing:**
+- Original Question: {{ question if question else "[PROVIDED]" }}
+- Visual Context: {{ caption if caption else "[PROVIDED]" }}
+- Answer Candidates: {{ answer_candidates if answer_candidates else "[PROVIDED]" }}
+
+**Output Requirements:**
+- Structured reasoning with explicit steps
+- Confidence scores for all assessments  
+- Clear logical connections between evidence and conclusions
+{% endblock %}
+
+{% block examples_section %}
+{#- Override with task-specific examples -#}
+{% endblock %} 

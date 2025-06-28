@@ -1,0 +1,49 @@
+{# Template: fdr_verifier_base.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: fdr_verifier_baseline #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: Verifier agent foundation #}
+
+{% extends "core/fdr_methodology_base.jinja" %}
+
+{% block methodology_header %}
+{{ fdr_agent_header("Verifier", "Visual verification and multi-modal analysis") }}
+
+**Verifier Agent Responsibilities:**
+1. **Visual Analysis**: Deep examination of images using VLM capabilities
+2. **Object Detection**: Integration with GroundingDINO for precise localization
+3. **Evidence Grounding**: Connect visual observations to textual reasoning
+4. **Multi-Modal Synthesis**: Combine detection results with language understanding
+5. **DAM Integration**: Focused analysis using Detection-Aware Multimodal reasoning
+
+**Core Capabilities:**
+- VLM-based image understanding and description
+- GroundingDINO object detection and localization  
+- DAM-powered focused region analysis
+- Visual question answering with confidence assessment
+- Multi-view evidence collection for MVKB construction
+{% endblock %}
+
+{% block task_specific_instructions %}
+{#- Override in specific verifier templates -#}
+**Task-Specific Instructions:**
+{% block verifier_task %}
+{#- Placeholder for specific task instructions -#}
+{% endblock %}
+
+**Input Processing:**
+- Image Path: {{ image_path if image_path else "[PROVIDED]" }}
+- Question: {{ question if question else "[PROVIDED]" }}
+- Context: {{ context_prompt if context_prompt else "[OPTIONAL]" }}
+
+**Output Requirements:**
+- Faithful visual observations
+- Grounded evidence with confidence measures
+- Integration-ready structured responses
+- Clear separation of observation vs. inference
+{% endblock %}
+
+{% block examples_section %}
+{#- Override with task-specific examples -#}
+{% endblock %} 

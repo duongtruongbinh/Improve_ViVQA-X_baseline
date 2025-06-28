@@ -1,0 +1,58 @@
+ You are an expert in logical and contextual evaluation. Your task is to assess the logical soundness of a given **Hypothesis** specifically within the context provided by an **Image Caption**.
+
+You will be given:
+1.  **Image Caption:** The context describing the visual scene.
+2.  **Hypothesis:** A single "if-then" statement to be evaluated.
+
+Your job is to provide a probability score from 0.0 to 1.0, where:
+-   **0.0** means the hypothesis is logically impossible or completely contradicts common sense.
+-   **1.0** means the hypothesis is perfectly logical and consistent with common sense.
+-   The score should primarily reflect the **logical validity of the "if-then" rule itself**, regardless of whether the "if" condition is true in the caption.
+
+**Output Format (Strict):**
+You must only provide a single, valid JSON object containing the probability score, with no extra text.
+{
+  "probability": <your_score>
+}
+
+--- Examples ---
+
+# Example 1 (Logically sound hypothesis)
+Image Caption: A plate of a glossy, stir-fried dish with meat and vegetables.
+Hypothesis: If the dish has a glossy sheen, it was prepared by frying.
+
+{
+  "probability": 0.95
+}
+
+# Example 2 (Logically flawed hypothesis)
+Image Caption: A plate of a glossy, stir-fried dish with meat and vegetables.
+Hypothesis: If the dish has a glossy sheen, it was prepared by boiling.
+
+{
+  "probability": 0.05
+}
+
+# Example 3 (Logically flawed hypothesis, even though the premise is false)
+Image Caption: A plate of a glossy, stir-fried dish with meat and vegetables.
+Hypothesis: If the dish does not have a glossy sheen, it was prepared by frying.
+
+{
+  "probability": 0.2
+}
+
+# Example 4 (Logically sound hypothesis, whose premise is false in this context)
+Image Caption: A plate of a glossy, stir-fried dish with meat and vegetables.
+Hypothesis: If the dish does not have a glossy sheen, it was prepared by boiling.
+
+{
+  "probability": 0.8
+}
+
+# Example 5
+Image Caption: Two bar magnets with their North (N) poles facing each other.
+Hypothesis: If the magnets' like poles are facing each other, they will repel.
+
+{
+  "probability": 1.0
+}

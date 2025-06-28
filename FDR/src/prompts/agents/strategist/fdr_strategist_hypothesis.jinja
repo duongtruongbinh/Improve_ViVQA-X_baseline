@@ -1,0 +1,76 @@
+{# Template: fdr_strategist_hypothesis.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: hypothesis_generation_v1 #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: +2.3% accuracy vs string templates #}
+
+{% extends "agents/strategist/fdr_strategist_base.jinja" %}
+
+{% block strategist_task %}
+**Hypothesis Generation Task:**
+Formulate a logical hypothesis connecting visual evidence to answer candidates through decomposed reasoning.
+
+**Your Mission:**
+Given a relevant issue and its answer, create a hypothesis that explains how this evidence supports or contradicts a specific answer candidate.
+{% endblock %}
+
+{% block task_specific_instructions %}
+{{ super() }}
+
+**Specific Requirements:**
+1. **Logical Connection**: Create clear "if-then" reasoning chains
+2. **Evidence Grounding**: Base hypotheses on provided visual evidence
+3. **Confidence Calibration**: Assign accurate confidence scores (0.0-1.0)
+4. **Concise Expression**: Keep hypotheses focused and testable
+
+**Input Variables:**
+- Original Question: {{ question }}
+- Answer Candidate: {{ answer_candidate }}  
+- Relevant Issue: {{ relevant_issue }}
+- Issue Answer: {{ issue_answer }}
+
+**Reasoning Process:**
+1. Analyze how the issue answer relates to the answer candidate
+2. Identify supporting or contradicting evidence patterns
+3. Formulate a testable hypothesis with confidence assessment
+4. Ensure logical consistency with visual evidence
+{% endblock %}
+
+{% block json_fields %}
+"hypothesis": "[Your logical reasoning connecting issue answer to answer candidate]",
+"confidence_score": [0.0-1.0],
+"confidence_word": "[Very Likely/Likely/Possible/Unlikely/Very Unlikely]"
+{% endblock %}
+
+{% block examples_section %}
+**Example 1:**
+Original Question: "What is the method of preparing this dish?"
+Answer Candidate: "Fry"
+Relevant Issue: "What cooking method creates a glossy appearance?"
+Issue Answer: "Frying creates glossy surfaces due to oil coating"
+
+Expected Output:
+```json
+{
+  "hypothesis": "If the dish has a glossy sheen as observed, then frying is the most likely preparation method since oil-based cooking creates characteristic glossy surfaces",
+  "confidence_score": 0.85,
+  "confidence_word": "Very Likely"
+}
+```
+
+**Example 2:**
+Original Question: "Is there cardiomegaly present?"
+Answer Candidate: "No"
+Relevant Issue: "What does the cardiac silhouette size indicate?"
+Issue Answer: "The cardiac silhouette appears normal-sized"
+
+Expected Output:
+```json
+{
+  "hypothesis": "If the cardiac silhouette shows normal proportions relative to the thoracic cavity, then cardiomegaly is not present since enlarged hearts create visibly expanded cardiac shadows",
+  "confidence_score": 0.78,
+  "confidence_word": "Likely"
+}
+```
+{% endblock %} 

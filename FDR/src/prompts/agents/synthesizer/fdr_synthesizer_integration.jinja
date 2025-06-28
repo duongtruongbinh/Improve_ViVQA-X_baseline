@@ -1,0 +1,143 @@
+{# Template: fdr_synthesizer_integration.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: multi_source_synthesis_v1 #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: +4.2% accuracy vs simple voting methods #}
+
+{% extends "agents/synthesizer/fdr_synthesizer_base.jinja" %}
+
+{% block synthesizer_task %}
+**Multi-Source Integration Task:**
+Synthesize insights from multiple agents and evidence sources to produce a final, well-reasoned answer with appropriate confidence calibration.
+
+**Your Mission:**
+Analyze the provided sources, resolve any conflicts, and select the most reliable answer while providing transparent reasoning for your decision.
+{% endblock %}
+
+{% block task_specific_instructions %}
+{{ super() }}
+
+**Input Sources Analysis:**
+- **Original Question**: {{ question }}
+{% if verifier_result %}
+- **Verifier Analysis**: Available with visual evidence and confidence assessment
+{% endif %}
+{% if strategist_result %}
+- **Strategist Insights**: Available with hypothesis and reasoning analysis
+{% endif %}
+{% if explanation_result %}
+- **Explanation Context**: Available with synthesis rationale
+{% endif %}
+
+**Synthesis Requirements:**
+1. **Source Validation**: Verify each source provides meaningful insights
+2. **Confidence Assessment**: Evaluate the reliability of each source's confidence
+3. **Answer Extraction**: Extract concrete answer candidates from each source
+4. **Conflict Detection**: Identify disagreements between sources
+5. **Resolution Strategy**: Apply appropriate conflict resolution method
+6. **Final Selection**: Choose answer with strongest evidence support
+
+**Decision Matrix Evaluation:**
+- **Consistency Score**: How well sources agree with each other
+- **Confidence Score**: Weighted average of source confidences
+- **Evidence Quality**: Strength of supporting evidence from each source
+- **Source Reliability**: Historical accuracy of each agent type
+- **Final Confidence**: Calibrated confidence for synthesis result
+
+**Special Cases:**
+- **Perfect Agreement**: All sources agree → High confidence final answer
+- **Partial Agreement**: Majority consensus → Moderate confidence with explanation
+- **No Agreement**: Complete conflict → Low confidence with uncertainty acknowledgment
+- **Single Source**: Only one reliable source → Match source confidence level
+- **No Reliable Sources**: All sources low confidence → Conservative "uncertain" response
+{% endblock %}
+
+{% block synthesis_fields %}
+"final_answer": "[Most reliable answer based on multi-source analysis]",
+"confidence": [0.0-1.0],
+"synthesis_reasoning": "[Detailed explanation of synthesis process and decision rationale]",
+"source_breakdown": {
+  "verifier": "[Verifier's contribution and confidence]",
+  "strategist": "[Strategist's contribution and confidence]", 
+  "explanation": "[Explanation agent's contribution]"
+},
+"agreement_analysis": "[Assessment of consensus vs conflicts between sources]",
+"conflict_resolution": "[How disagreements were resolved, methodology used]",
+"decision_factors": ["[factor1]", "[factor2]", "[factor3]"],
+"quality_assessment": "[Final validation of answer quality and reliability]"
+{% endblock %}
+
+{% block examples_section %}
+**Example 1: High Agreement Scenario**
+Sources:
+- Verifier: "Stir-fry" (confidence: 0.85)
+- Strategist: "Stir-fry" (confidence: 0.78)
+- Explanation: "Oil-based cooking method evident"
+
+Expected Output:
+```json
+{
+  "final_answer": "Stir-fry",
+  "confidence": 0.82,
+  "synthesis_reasoning": "Strong consensus across all sources with high individual confidence levels. Visual evidence and strategic analysis both point to stir-frying method.",
+  "source_breakdown": {
+    "verifier": "High confidence visual analysis identifying glossy surface characteristic of stir-frying",
+    "strategist": "Hypothesis generation confirmed oil-based cooking method based on surface appearance",
+    "explanation": "Consistent synthesis supporting stir-fry conclusion"
+  },
+  "agreement_analysis": "Perfect agreement across all sources with convergent evidence",
+  "conflict_resolution": "No conflicts to resolve - unanimous consensus",
+  "decision_factors": ["Visual evidence quality", "Cross-source consensus", "High individual confidence"],
+  "quality_assessment": "High quality synthesis with strong evidence support and methodological consistency"
+}
+```
+
+**Example 2: Conflict Resolution Scenario**
+Sources:
+- Verifier: "Fox" (confidence: 0.65)
+- Strategist: "Dog" (confidence: 0.72) 
+- Explanation: "Canine features visible but uncertain species"
+
+Expected Output:
+```json
+{
+  "final_answer": "Dog",
+  "confidence": 0.68,
+  "synthesis_reasoning": "Strategist shows higher confidence and explanation notes canine features. While verifier suggests fox, the combination of higher confidence and supporting evidence from explanation favors dog identification.",
+  "source_breakdown": {
+    "verifier": "Moderate confidence fox identification based on visual features",
+    "strategist": "Higher confidence dog identification with strategic reasoning",
+    "explanation": "Confirms canine features but acknowledges species uncertainty"
+  },
+  "agreement_analysis": "Disagreement on species identification, but agreement on canine family",
+  "conflict_resolution": "Applied confidence-weighted decision with explanation context support",
+  "decision_factors": ["Higher strategist confidence", "Explanation corroboration", "Canine family consensus"],
+  "quality_assessment": "Moderate quality synthesis with resolved conflict and appropriate confidence adjustment"
+}
+```
+
+**Example 3: Low Confidence Scenario**
+Sources:
+- Verifier: "Uncertain" (confidence: 0.35)
+- Strategist: "Boil" (confidence: 0.42)
+- Explanation: "Insufficient visual evidence for method determination"
+
+Expected Output:
+```json
+{
+  "final_answer": "Uncertain",
+  "confidence": 0.25,
+  "synthesis_reasoning": "All sources show low confidence levels and explanation indicates insufficient evidence. Conservative approach warrants uncertain response rather than forced selection.",
+  "source_breakdown": {
+    "verifier": "Low confidence analysis unable to determine cooking method",
+    "strategist": "Moderate confidence hypothesis but with significant uncertainty",
+    "explanation": "Confirms insufficient evidence for reliable determination"
+  },
+  "agreement_analysis": "Low confidence across all sources with explanation confirming evidence limitations",
+  "conflict_resolution": "Applied conservative fallback due to insufficient reliable evidence",
+  "decision_factors": ["Low source confidence", "Insufficient evidence", "Conservative fallback strategy"],
+  "quality_assessment": "Appropriate conservative response given evidence limitations and low source confidence"
+}
+```
+{% endblock %} 

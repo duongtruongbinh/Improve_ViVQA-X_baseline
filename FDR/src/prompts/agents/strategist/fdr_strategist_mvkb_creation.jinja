@@ -1,0 +1,101 @@
+{# Template: fdr_strategist_mvkb_creation.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: mvkb_generation_v1 #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: +1.8% coverage vs hardcoded prompts #}
+
+{% extends "agents/strategist/fdr_strategist_base.jinja" %}
+
+{% block strategist_task %}
+**Multi-View Knowledge Base (MVKB) Creation Task:**
+Generate relevant sub-questions that enable comprehensive analysis of the visual question.
+
+**Your Mission:**
+Create 2-3 focused sub-questions that help distinguish between answer candidates by addressing different aspects of the visual scene.
+{% endblock %}
+
+{% block task_specific_instructions %}
+{{ super() }}
+
+**Sub-Question Generation Criteria:**
+1. **Discriminative Power**: Help distinguish between the provided answer candidates
+2. **Visual Grounding**: Can be answered by examining the image
+3. **Complementary Perspectives**: Address different aspects of the visual scene
+4. **Focused Scope**: Each sub-question should be specific and answerable
+
+**Input Analysis:**
+- Main Question: {{ question }}
+- Potential Answers: {{ answer_candidates | join(', ') }}
+- Visual Context: {{ caption }}
+
+**Generation Strategy:**
+1. Identify key visual elements relevant to the main question
+2. Consider what evidence would support each answer candidate
+3. Create sub-questions that probe those specific evidence types
+4. Ensure sub-questions are complementary, not redundant
+
+**Quality Constraints:**
+- Maximum 3 sub-questions for efficiency
+- Each sub-question should be self-contained
+- Focus on observable visual elements
+- Avoid subjective interpretations
+{% endblock %}
+
+{% block json_fields %}
+"relevant_issues": [
+  "[Sub-question 1: Focus on main objects/subjects]",
+  "[Sub-question 2: Focus on specific details/attributes]", 
+  "[Sub-question 3: Focus on context/relationships]"
+]
+{% endblock %}
+
+{% block examples_section %}
+**Example 1:**
+Main Question: "What is the method of preparing this dish?"
+Potential Answers: ["Fry", "Boil", "Grill", "Steam"]
+Image Description: "A plate of a glossy, stir-fried dish with meat and vegetables"
+
+Expected Output:
+```json
+{
+  "relevant_issues": [
+    "What surface texture and appearance does the dish have?",
+    "What cooking method would create the observed color and sheen?",
+    "What visual indicators suggest the cooking temperature used?"
+  ]
+}
+```
+
+**Example 2:**
+Main Question: "Is there cardiomegaly present?"
+Potential Answers: ["Yes", "No"]
+Image Description: "An x-ray image of a human chest, showing the ribs and lung fields"
+
+Expected Output:
+```json
+{
+  "relevant_issues": [
+    "What is the size of the cardiac silhouette relative to the thoracic cavity?",
+    "How does the heart shadow compare to normal proportions?",
+    "Are there any signs of cardiac enlargement in the chest x-ray?"
+  ]
+}
+```
+
+**Example 3:**
+Main Question: "What animal is shown in the image?"
+Potential Answers: ["Dog", "Cat", "Wolf", "Fox"]
+Image Description: "A four-legged animal with pointed ears standing in a forest"
+
+Expected Output:
+```json
+{
+  "relevant_issues": [
+    "What are the distinctive features of the animal's ears and tail?",
+    "What is the body size and proportions of the animal?",
+    "What behavioral posture or stance does the animal display?"
+  ]
+}
+```
+{% endblock %} 

@@ -1,0 +1,75 @@
+{# Template: fdr_synthesizer_base.jinja #}
+{# Version: 1.0.0 #}
+{# Experiment: fdr_synthesizer_baseline #}
+{# Author: FDR Research Team #}
+{# Paper: Faithful Decomposed Reasoning for Visual Question Answering #}
+{# Performance: Synthesizer agent foundation #}
+
+{% extends "core/fdr_methodology_base.jinja" %}
+
+{% block methodology_header %}
+{{ fdr_agent_header("Synthesizer", "Multi-source synthesis and final answer selection") }}
+
+**Synthesizer Agent Responsibilities:**
+1. **Multi-Source Integration**: Combine insights from multiple agents and perspectives
+2. **Consistency Analysis**: Identify and resolve conflicts between different sources
+3. **Confidence Calibration**: Assess overall confidence based on source agreement
+4. **Final Decision**: Select the most reliable answer based on synthesis analysis
+5. **Quality Assurance**: Validate final answer against all available evidence
+
+**Core Principles:**
+- **Synthesis Over Selection**: Combine evidence rather than simply choosing
+- **Consistency Weighting**: Prioritize answers with cross-source support
+- **Confidence-Based**: Use confidence scores to weight different sources
+- **Transparent Reasoning**: Provide clear justification for final selection
+- **Fallback Strategy**: Handle conflicting or low-confidence scenarios
+{% endblock %}
+
+{% block quality_standards %}
+{{ super() }}
+
+**Synthesizer-Specific Standards:**
+- Clear conflict resolution strategy
+- Appropriate confidence calibration
+- Transparent source weighting
+- Robust fallback mechanisms
+- Consistent answer formatting
+{% endblock %}
+
+{% block output_format %}
+```json
+{
+  {% block synthesis_fields %}
+  "final_answer": "[Selected final answer]",
+  "confidence": [0.0-1.0],
+  "synthesis_reasoning": "[Explanation of how final answer was selected]",
+  "source_agreement": "[Description of agreement/conflict between sources]",
+  "conflict_resolution": "[How conflicts were resolved, if any]"
+  {% endblock %}
+}
+```
+{% endblock %}
+
+{% block common_instructions %}
+**Synthesis Process:**
+1. **Source Analysis**: Examine all provided sources and their confidence levels
+2. **Agreement Assessment**: Identify areas of consensus and conflict
+3. **Confidence Weighting**: Weight sources based on their reported confidence
+4. **Conflict Resolution**: Apply resolution strategies for disagreements
+5. **Final Selection**: Choose answer with strongest overall evidence support
+6. **Quality Check**: Validate selection against FDR principles
+
+**Conflict Resolution Strategies:**
+- **High Confidence Precedence**: Favor high-confidence sources over low-confidence
+- **Multi-Source Consensus**: Prioritize answers supported by multiple sources
+- **Source Reliability**: Consider the reliability track record of different agents
+- **Evidence Strength**: Evaluate the quality of supporting evidence
+- **Conservative Fallback**: Default to "uncertain" when conflicts cannot be resolved
+
+**Quality Validation:**
+- Final answer must be supported by at least one source
+- Confidence should reflect synthesis certainty, not just highest individual source
+- Reasoning should be transparent and traceable
+- Conflicts should be acknowledged and explained
+- Fallback mechanisms should be clearly documented
+{% endblock %} 

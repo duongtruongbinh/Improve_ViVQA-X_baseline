@@ -1,0 +1,193 @@
+# MVKB-X Pipeline Unified Configuration
+# Paper: Faithful Visual Question Answering with decomposed reasoning Multi-Agent system
+
+experiment_name: "mvkb_x_unified"
+description: "MVKB-X pipeline with unified configuration"
+
+# Dataset Selection - Change this to switch datasets
+active_dataset: "vqax"  # Options: "vqax", "vivqax", "custom"
+
+# Multiple Dataset Configurations
+datasets:
+  vqax:
+    name: "VQA-X"
+    data_path: "/mnt/VLAI_data/VQA-X/vqaX_val.json"
+    image_dir: "/mnt/VLAI_data/COCO_Images/val2014"
+    format: "vqax"
+    language: "english"
+    split: "validation"
+    use_explanations: true
+    
+  vivqax:
+    name: "ViVQA-X"
+    data_path: "/mnt/VLAI_data/ViVQA-X/ViVQA-X_val.json"
+    image_dir: "/mnt/VLAI_data/COCO_Images/val2014"
+    format: "vivqax"
+    language: "vietnamese"
+    split: "validation"
+    use_explanations: true
+    
+  custom:
+    name: "Custom Dataset"
+    data_path: "/path/to/custom/data.json"
+    image_dir: "/path/to/custom/images"
+    format: "custom"
+    language: "english"
+    split: "custom"
+    use_explanations: false
+
+# Logging Configuration
+logging_config:
+  reduce_http_logs: true
+  level: "INFO"
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  log_to_file: true
+  log_file: "output/mvkb_x.log"
+
+# Agent Configuration
+agents_config:
+  verifier:  # VLM + GroundingDINO + DAM
+    temperature: 0.7
+    max_tokens: 1000
+    enable_dam: true
+    enable_groundingdino: true
+    groundingdino_docker: false  # Use native implementation
+    box_threshold: 0.35
+    text_threshold: 0.25
+  
+  strategist:  # MVKB construction
+    temperature: 0.3
+    max_tokens: 500
+    enable_mvkb: true
+    max_relevant_issues: 3
+    min_confidence_threshold: 0.1
+    hypothesis_filtering: true
+  
+  synthesizer:  # Weighted voting
+    voting_threshold: 0.1
+    confidence_normalization: true
+    algorithm: "weighted_voting"  # Algorithm 2 from paper
+    confidence_weighting: true
+    fallback_strategy: "first_candidate"
+  
+  explanation:  # Natural language explanation
+    temperature: 0.3
+    max_tokens: 256
+    explanation_style: "concise"  # Options: concise, detailed, academic
+    use_key_hypothesis: true
+    include_confidence: true
+    context_length: 200
+
+# Backend Configuration
+backend_config:
+  type: "openai"  # Options: "openai", "vllm"
+  model_name: "gpt-4o-mini"
+  
+  # OpenAI settings
+  openai_settings:
+    api_key_file: "openai_key.txt"
+    organization: null
+    max_retries: 3
+    timeout: 30
+  
+  # vLLM settings (for local inference)
+  vllm_settings:
+    gpu_memory_utilization: 0.85
+    max_model_len: 4096
+    tensor_parallel_size: 1
+    model_path: "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
+
+# Model Configuration
+model_config:
+  # VLM Configuration
+  vlm:
+    model_name: "gpt-4o-mini"
+    backend: "openai"
+    max_new_tokens: 200
+    temperature: 0.7
+    
+  # GroundingDINO Configuration
+  grounding_dino:
+    model_name: "IDEA-RESEARCH/grounding-dino-tiny"
+    box_threshold: 0.35
+    text_threshold: 0.25
+    device: "cuda:0"
+    
+  # DAM Configuration
+  dam:
+    model_name: "nvidia/DAM-3B-Self-Contained"
+    device: "cuda:0"
+    max_new_tokens: 50
+    temperature: 0.2
+
+# Processing Configuration
+processing_config:
+  num_samples: 50  # -1 for full dataset
+  batch_size: 1
+  max_workers: 1
+  skip_errors: true
+  enable_caching: true
+
+# Output Configuration
+output_config:
+  output_dir: "output"
+  output_file: "results.json"
+  save_intermediate_results: true
+  save_visualizations: false
+  save_detailed_logs: true
+  results_format: ["json", "csv"]
+
+# Evaluation Configuration
+evaluation_config:
+  enable_evaluation: true
+  compute_metrics: true
+  
+  # Answer evaluation metrics
+  answer_metrics:
+    - "exact_match"
+    - "semantic_similarity"
+    - "fuzzy_match"
+    
+  # Explanation evaluation metrics
+  explanation_metrics:
+    - "bleu"
+    - "rouge"
+    - "semantic_similarity"
+    
+  # Dataset-specific evaluation
+  vqax_evaluation:
+    compare_with_all_answers: true
+    compare_explanations: true
+    
+  vivqax_evaluation:
+    vietnamese_specific_metrics: true
+    compare_explanations: true
+
+# Hardware Configuration
+hardware_config:
+  use_gpu: true
+  gpu_device: "cuda:0"
+  mixed_precision: true
+  optimization_level: "O1"
+
+# Environment Configuration
+environment:
+  CUDA_VISIBLE_DEVICES: "0"
+  PYTORCH_CUDA_ALLOC_CONF: "max_split_size_mb:512"
+
+# Advanced Features
+advanced_config:
+  mvkb_construction:
+    max_hypotheses: 5
+    confidence_threshold: 0.5
+    dynamic_mvkb: false
+    
+  multimodal_explanations: false
+  self_correction: false
+  verifier_reanswering: false
+  structured_voting: false
+
+# Legacy Compatibility
+legacy_config:
+  support_old_formats: true
+  auto_migrate_configs: true 
