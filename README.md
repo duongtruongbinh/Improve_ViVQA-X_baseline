@@ -4,23 +4,6 @@
 
 **Production-ready Multi-Agent Vietnamese Visual Question Answering framework** with **FDR (Faithful Decomposed Reasoning)** architecture - achieving 90-95% effectiveness through faithful decomposed reasoning and explainable AI.
 
-### 🚀 Key Features
-- ✅ **4 Specialized Agents**: VerifierAgent, StrategistAgent, SynthesizerAgent, ExplanationAgent
-- ✅ **Faithful Reasoning**: Multi-view knowledge base with weighted voting
-- ✅ **Production Performance**: ~9-12s per question | 90-95% accuracy
-- ✅ **GPU-Optimized**: GroundingDINO native compilation (~2s inference)
-- ✅ **Vietnamese VQA**: Optimized for gpt-4o-mini with excellent Vietnamese understanding
-- ✅ **Flexible Backends**: OpenAI API and local vLLM support
-
-### 📊 Quick Performance Summary
-| Metric | Score | Description |
-|--------|-------|-------------|
-| **Processing Time** | 9-12s | End-to-end per question |
-| **Vietnamese VQA** | 90-95% | Overall accuracy |
-| **Object Detection** | 93-97% | GroundingDINO precision |
-| **GPU Memory** | 4-6GB | VRAM requirement |
-| **System RAM** | 8-12GB | Total memory usage |
-
 ## 🚀 Quick Start
 
 ### Prerequisites
