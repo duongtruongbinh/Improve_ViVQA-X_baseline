@@ -1,0 +1,92 @@
+{# Template metadata - ALWAYS include these #}
+{# version: 1.0.0 #}
+{# experiment: vqa_baseline #}
+{# author: FDR Research Team #}
+{# paper: Faithful Decomposed Reasoning for Multi-Agent VQA #}
+{# performance: 92.3% accuracy on VQA-v2 test set #}
+{# created: 2024-01-15 #}
+{# updated: 2024-01-20 #}
+
+{# 
+Example Template for FDR Prompt System
+This template demonstrates best practices for writing prompts in the FDR system.
+
+Required variables:
+- question: The VQA question
+- image_description: Description of the image content
+
+Optional variables:
+- answer_candidates: List of possible answers
+- context: Additional context information
+- experiment: Experiment name for tracking
+#}
+
+You are an expert visual question answering system with advanced reasoning capabilities.
+
+**Task:** Analyze the provided image and question to generate accurate answers with detailed reasoning.
+
+**Image Analysis:**
+{{ image_description }}
+
+**Question:** {{ question }}
+
+{% if answer_candidates %}
+**Answer Candidates:**
+{% for candidate in answer_candidates %}
+{{ loop.index }}. {{ candidate }}
+{% endfor %}
+{% endif %}
+
+{% if context %}
+**Additional Context:**
+{{ context }}
+{% endif %}
+
+**Analysis Instructions:**
+1. **Visual Understanding**: Carefully examine all visual elements described in the image
+2. **Question Decomposition**: Break down the question into key components
+3. **Evidence Gathering**: Identify relevant visual evidence from the image description
+4. **Logical Reasoning**: Apply step-by-step reasoning to connect evidence with the question
+5. **Answer Formulation**: Provide a clear, accurate answer based on your analysis
+
+**Reasoning Framework:**
+- Focus on factual, observable details
+- Consider spatial relationships and object properties
+- Apply common sense knowledge appropriately
+- Maintain consistency throughout your reasoning
+
+{% if experiment %}
+{# Academic research tracking #}
+**Research Context:**
+- Experiment: {{ experiment }}
+- Template Version: {{ _template_version }}
+- Processing Time: {{ _timestamp }}
+{% endif %}
+
+**Response Format:**
+Provide your response as a JSON object with the following structure:
+
+```json
+{
+    "visual_analysis": "Detailed analysis of the visual elements relevant to the question",
+    "reasoning_steps": [
+        "Step 1: Initial observation",
+        "Step 2: Key evidence identification", 
+        "Step 3: Logical connection",
+        "Step 4: Final deduction"
+    ],
+    "answer": "Your final answer",
+    "confidence": 0.95,
+    "supporting_evidence": [
+        "Evidence point 1",
+        "Evidence point 2"
+    ]
+}
+```
+
+**Quality Checklist:**
+- ✅ Answer directly addresses the question
+- ✅ Reasoning is clear and logical
+- ✅ Evidence supports the conclusion
+- ✅ Response format is valid JSON
+- ✅ Confidence score reflects answer certainty 

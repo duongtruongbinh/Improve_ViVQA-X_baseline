@@ -1,95 +1,69 @@
 # FDR Framework Troubleshooting Guide
 
-This guide covers common issues and their solutions when working with the FDR VQA framework.
+> **Solutions for common issues in the FDR Multi-Agent VQA System**
 
-## 🚨 Common Issues & Solutions
+This guide covers troubleshooting for the production-ready FDR framework with 4-agent architecture (VerifierAgent, StrategistAgent, SynthesizerAgent, ExplanationAgent).
 
-### 1. vLLM Server Issues
+## 🚨 Quick Diagnostics
 
-#### Server Won't Start
-**Symptoms:**
-- `Connection refused` errors
-- `CUDA out of memory` errors
-- Server startup hangs
-
-**Solutions:**
+### System Health Check
 ```bash
-# Check GPU memory usage
+# Quick system status
+python -c "
+import torch
+print(f'PyTorch: {torch.__version__}')
+print(f'CUDA Available: {torch.cuda.is_available()}')
+print(f'GPU Memory: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f}GB')
+"
+
+# GPU status
 nvidia-smi
 
-# Start with reduced memory allocation
-vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
-    --host 0.0.0.0 \
-    --port 9100 \
-    --max-model-len 4096 \
-    --max-num-batched-tokens 4096
-
-# Alternative: Use CPU inference (slower)
-vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
-    --host 0.0.0.0 \
-    --port 9100 \
-    --device cpu
+# Test basic pipeline
+python main.py --backend openai --test --samples 1
 ```
 
-#### Connection Timeout
+### Common Error Patterns
+- **Import errors**: Python path issues
+- **GPU memory errors**: Insufficient VRAM or memory leaks
+- **GroundingDINO compilation**: CUDA version mismatches
+- **API errors**: OpenAI key or rate limit issues
+- **Agent failures**: Config or dependency problems
+
+## 🔧 Agent-Specific Issues
+
+### 1. VerifierAgent Issues
+
+#### GroundingDINO Compilation Errors
 **Symptoms:**
-- `ReadTimeout` errors in pipeline
-- Long response delays
-
-**Solutions:**
-```python
-# Increase timeout in vllm_client.py
-self.client = OpenAI(
-    base_url=base_url,
-    api_key=api_key,
-    timeout=300  # Increase to 5 minutes
-)
-```
-
-#### Model Loading Errors
-**Symptoms:**
-- `Model not found` errors
-- Download failures
-
-**Solutions:**
-```bash
-# Pre-download model
-huggingface-cli download Qwen/Qwen2.5-VL-7B-Instruct
-
-# Check HuggingFace token
-export HF_TOKEN="your_token_here"
-
-# Alternative model
-vllm serve microsoft/Phi-3.5-vision-instruct
-```
-
-### 2. GroundingDINO Issues
-
-#### Compilation Errors
-**Symptoms:**
-- `No module named 'groundingdino'`
+- `name '_C' is not defined`
 - CUDA compilation failures
-- Version incompatibility errors
+- `RuntimeError: No such operator`
 
 **Solutions:**
 ```bash
+# Check CUDA compatibility
+nvcc --version
+python -c "import torch; print(torch.version.cuda)"
+
 # Reinstall with proper CUDA support
 cd GroundingDINO
 pip uninstall groundingdino
 pip install -e .
 
-# Check CUDA version compatibility
-nvcc --version
-python -c "import torch; print(torch.version.cuda)"
+# For compilation issues, patch deprecated API
+# Replace `.type().is_cuda()` with `.is_cuda()` in:
+# - groundingdino/models/GroundingDINO/ms_deform_attn.py
+# - GroundingDINO_ops/src/vision.cpp
 
 # Install compatible PyTorch
 pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 -f https://download.pytorch.org/whl/torch_stable.html
 ```
 
-#### Missing Weights
+#### Missing GroundingDINO Weights
 **Symptoms:**
-- `File not found: groundingdino_swint_ogc.pth`
-- Zero detections
+- `FileNotFoundError: groundingdino_swint_ogc.pth`
+- Zero object detections
 
 **Solutions:**
 ```bash
@@ -98,407 +72,516 @@ mkdir -p GroundingDINO/weights
 cd GroundingDINO/weights
 wget https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth
 
-# Verify file integrity
-ls -la groundingdino_swint_ogc.pth  # Should be ~693MB
+# Verify download (should be ~693MB)
+ls -la groundingdino_swint_ogc.pth
+
+# Test detection
+python -c "
+from groundingdino.util.inference import load_model
+model = load_model('groundingdino/config/GroundingDINO_SwinT_OGC.py', 'weights/groundingdino_swint_ogc.pth')
+print('✅ GroundingDINO model loaded successfully')
+"
 ```
 
-#### Poor Detection Quality
+#### DAM Model Integration Issues
 **Symptoms:**
-- No objects detected
-- Incorrect bounding boxes
-- Low confidence scores
-
-**Solutions:**
-```python
-# Adjust detection thresholds in agents.py
-boxes, logits, phrases = self.grounding_dino_model.predict_with_caption(
-    image=image, 
-    caption=detection_prompt,
-    box_threshold=0.25,  # Lower for more detections
-    text_threshold=0.20   # Lower for more phrases
-)
-
-# Improve detection prompts
-detection_keywords = f"{main_keywords}. objects. things. items."
-```
-
-### 3. DAM Model Issues
-
-#### Model Loading Warnings
-**Symptoms:**
-- Torchvision version warnings
-- Model path warnings
+- `RuntimeError: mat1 and mat2 must have the same dtype`
+- DAM loading failures
+- Memory errors during dense captioning
 
 **Solutions:**
 ```bash
-# These warnings are typically harmless but can be suppressed
-export PYTHONWARNINGS="ignore::UserWarning"
+# Disable DAM if problematic (common solution)
+# In config.yaml:
+# agents_config:
+#   verifier:
+#     enable_dam: false
 
-# Or install specific torchvision version
-pip install torchvision==0.15.2
-```
+# Clear GPU memory
+python -c "import torch; torch.cuda.empty_cache(); print('GPU memory cleared')"
 
-#### CUDA Memory Issues
-**Symptoms:**
-- `CUDA out of memory` during DAM inference
-- System hangs
-
-**Solutions:**
-```python
-# Add memory management in agents.py
-torch.cuda.empty_cache()
-
-# Reduce image resolution
-image = image.resize((512, 512))  # Smaller than default
-
-# Process images in smaller batches
-```
-
-#### Poor Analysis Quality
-**Symptoms:**
-- Generic responses
-- Irrelevant descriptions
-
-**Solutions:**
-```python
-# Improve DAM prompts in agents.py
-prompt = f"""Analyze this image in detail, focusing on: {question}
-Describe colors, positions, actions, and relationships.
-Be specific and detailed."""
-```
-
-### 4. Pipeline Integration Issues
-
-#### Agent Communication Errors
-**Symptoms:**
-- Empty responses between agents
-- JSON parsing errors
-- Missing explainability traces
-
-**Solutions:**
-```python
-# Add robust error handling in pipeline.py
+# Test DAM separately
+python -c "
+from transformers import AutoModel
 try:
-    mvkb = seeker_agent.process(initial_response, answer_candidates)
+    model = AutoModel.from_pretrained('nvidia/DAM-3B-Self-Contained', trust_remote_code=True)
+    print('✅ DAM model accessible')
 except Exception as e:
-    logger.error(f"SeekerAgent failed: {e}")
-    # Use simplified MVKB
-    mvkb = self._create_fallback_mvkb(initial_response, answer_candidates)
+    print(f'❌ DAM error: {e}')
+"
 ```
 
-#### Configuration Issues
+### 2. StrategistAgent Issues
+
+#### Sub-question Generation Failures
 **Symptoms:**
-- Config file not found
-- Wrong model URLs
-- Missing API keys
+- Empty MVKB entries
+- Generic or irrelevant sub-questions
+- Timeout errors
 
 **Solutions:**
-```bash
-# Verify config file exists and is valid
-python -c "import yaml; yaml.safe_load(open('Top-Down/config.yaml'))"
-
-# Check configuration paths
-ls Top-Down/configs/vivqa_config.yaml
-ls Top-Down/config.yaml
-
-# Validate vLLM endpoint
-curl -X GET "http://localhost:9100/health"
+```yaml
+# Adjust config.yaml
+agents_config:
+  strategist:
+    temperature: 0.5              # Lower for more focused questions
+    max_sub_questions: 2          # Reduce if memory constrained
+    confidence_threshold: 0.6     # Adjust quality threshold
 ```
 
-### 5. Dataset & I/O Issues
-
-#### Dataset Loading Errors
+#### MVKB Construction Errors
 **Symptoms:**
-- `FileNotFoundError` for images
+- Malformed hypothesis structures
+- Missing confidence scores
 - JSON parsing errors
-- Path resolution issues
-
-**Solutions:**
-```python
-# Check dataset paths in configs/vivqa_config.yaml
-dataset_paths:
-  questions_file: "/absolute/path/to/questions.json"  # Use absolute paths
-  images_dir: "/absolute/path/to/images/"
-
-# Verify files exist
-import os
-print(os.path.exists("/path/to/your/questions.json"))
-print(os.path.exists("/path/to/your/images/"))
-```
-
-#### Output Directory Issues
-**Symptoms:**
-- Permission denied errors
-- Missing output files
-- Corrupted results
 
 **Solutions:**
 ```bash
-# Create output directory with proper permissions
-mkdir -p Top-Down/output
-chmod 755 Top-Down/output
+# Test strategist templates
+python src/prompts/tools/validate_templates.py --agent strategist
 
-# Check disk space
-df -h
-
-# Clear old results if needed
-rm -f Top-Down/output/fdr_pipeline_results.json
+# Check prompt rendering
+python -c "
+from prompts import PromptManager
+pm = PromptManager()
+result = pm.render('agents/strategist/fdr_strategist_hypothesis.jinja', 
+                   question='Test question',
+                   answer_candidate='test answer')
+print('Template renders successfully')
+"
 ```
 
-### 6. Memory & Performance Issues
+### 3. SynthesizerAgent Issues
 
-#### GPU Memory Exhaustion
+#### Weighted Voting Failures
 **Symptoms:**
-- `CUDA out of memory` errors
-- System crashes
-- Slow inference
+- All candidates get equal scores
+- Voting algorithm errors
+- Inconsistent final answers
 
 **Solutions:**
-```bash
-# Monitor GPU usage
-watch -n 1 nvidia-smi
-
-# Reduce batch sizes
-num_questions: 1  # Process one at a time
-
-# Use gradient checkpointing
-export CUDA_VISIBLE_DEVICES=0  # Use single GPU
+```yaml
+# Optimize synthesizer config
+agents_config:
+  synthesizer:
+    voting_method: "weighted"     # Ensure weighted voting
+    normalization: true          # Normalize scores
+    min_confidence: 0.1          # Minimum confidence threshold
 ```
 
-#### Slow Performance
+#### Score Calculation Errors
 **Symptoms:**
-- Long processing times
-- High CPU usage
-- Memory leaks
+- NaN or infinite scores
+- Negative confidence values
+- Division by zero errors
 
 **Solutions:**
 ```python
-# Add memory cleanup in pipeline.py
-import gc
-torch.cuda.empty_cache()
-gc.collect()
-
-# Use multiprocessing carefully
-# Avoid too many concurrent processes
-```
-
-## 🔧 Debug Mode & Logging
-
-### Enable Debug Logging
-```python
-# Add to main.py
+# Debug voting process
+# Add to synthesizer debugging:
 import logging
 logging.basicConfig(level=logging.DEBUG)
 
-# Enable detailed CUDA debugging
+# Check MVKB structure before voting
+for entry in mvkb:
+    assert 'confidence_score' in entry
+    assert 0 <= entry['confidence_score'] <= 1
+```
+
+### 4. ExplanationAgent Issues
+
+#### Poor Explanation Quality
+**Symptoms:**
+- Generic or template-like explanations
+- Missing reasoning steps
+- Inconsistent with actual decision process
+
+**Solutions:**
+```yaml
+# Improve explanation config
+agents_config:
+  explanation:
+    max_explanation_length: 500    # Increase for more detail
+    include_confidence: true       # Include confidence rationale
+    temperature: 0.3               # More creative explanations
+```
+
+## 🛠️ System-Level Issues
+
+### GPU Memory Management
+
+#### CUDA Out of Memory
+**Symptoms:**
+- `RuntimeError: CUDA out of memory`
+- System crashes during inference
+- Slow performance
+
+**Solutions:**
+```bash
+# Monitor GPU memory
+watch -n 1 nvidia-smi
+
+# Clear GPU cache
+python -c "import torch; torch.cuda.empty_cache(); import gc; gc.collect()"
+
+# Optimize memory usage in config.yaml
+agents_config:
+  verifier:
+    enable_dam: false              # Disable heavy components
+    max_tokens: 500               # Reduce token limits
+  strategist:
+    max_sub_questions: 2          # Reduce parallel processing
+    
+processing_config:
+  batch_size: 1                   # Process one at a time
+  enable_caching: false           # Disable if memory tight
+```
+
+#### Memory Leaks
+**Symptoms:**
+- Gradually increasing memory usage
+- Performance degradation over time
+- System becomes unresponsive
+
+**Solutions:**
+```python
+# Add memory cleanup to pipeline
+import gc
+import torch
+
+def cleanup_memory():
+    gc.collect()
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
+        torch.cuda.synchronize()
+
+# Call after each sample processing
+cleanup_memory()
+```
+
+### Backend Issues
+
+#### OpenAI API Problems
+**Symptoms:**
+- `Connection error` or `API key invalid`
+- Rate limit exceeded
+- Timeout errors
+
+**Solutions:**
+```bash
+# Test API connectivity
+curl -H "Authorization: Bearer $(cat openai_key.txt)" \
+     "https://api.openai.com/v1/models" | head -20
+
+# Check rate limits
+python -c "
+from openai import OpenAI
+client = OpenAI(api_key=open('openai_key.txt').read().strip())
+try:
+    response = client.chat.completions.create(
+        model='gpt-4o-mini',
+        messages=[{'role': 'user', 'content': 'test'}],
+        max_tokens=10
+    )
+    print('✅ OpenAI API working')
+except Exception as e:
+    print(f'❌ API Error: {e}')
+"
+
+# Add retry logic in config
+backend_config:
+  max_retries: 3
+  retry_delay: 2
+  timeout: 60
+```
+
+#### vLLM Server Issues
+**Symptoms:**
+- Connection refused errors
+- Server startup failures
+- Model loading errors
+
+**Solutions:**
+```bash
+# Check vLLM server status
+curl -X GET "http://localhost:9100/health"
+
+# Restart with reduced memory
+vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
+    --host 0.0.0.0 \
+    --port 9100 \
+    --max-model-len 2048 \
+    --max-num-batched-tokens 2048
+
+# Switch to OpenAI fallback
+python main.py --backend openai  # Immediate fallback
+```
+
+### Configuration Issues
+
+#### Config File Problems
+**Symptoms:**
+- `FileNotFoundError: config.yaml`
+- YAML parsing errors
+- Missing required fields
+
+**Solutions:**
+```bash
+# Validate config file
+python -c "
+import yaml
+try:
+    with open('config.yaml') as f:
+        config = yaml.safe_load(f)
+    print('✅ Config file valid')
+except Exception as e:
+    print(f'❌ Config error: {e}')
+"
+
+# Check required fields
+python -c "
+import yaml
+with open('config.yaml') as f:
+    config = yaml.safe_load(f)
+required = ['active_dataset', 'agents_config', 'backend_config']
+missing = [r for r in required if r not in config]
+if missing:
+    print(f'❌ Missing required fields: {missing}')
+else:
+    print('✅ All required fields present')
+"
+```
+
+#### Path Resolution Issues
+**Symptoms:**
+- `FileNotFoundError` for datasets
+- Image loading failures
+- Template not found errors
+
+**Solutions:**
+```bash
+# Use absolute paths in config.yaml
+datasets:
+  vivqax:
+    data_path: "/absolute/path/to/data.json"
+    image_dir: "/absolute/path/to/images/"
+
+# Verify paths exist
+python -c "
 import os
-os.environ['CUDA_LAUNCH_BLOCKING'] = '1'
+import yaml
+with open('config.yaml') as f:
+    config = yaml.safe_load(f)
+dataset = config['datasets'][config['active_dataset']]
+print(f'Data file exists: {os.path.exists(dataset[\"data_path\"])}')
+print(f'Image dir exists: {os.path.exists(dataset[\"image_dir\"])}')
+"
 ```
 
-### Diagnostic Commands
-```bash
-# System information
-python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA: {torch.cuda.is_available()}')"
-nvidia-smi
-free -h
-df -h
+## 🔍 Debug Mode & Logging
 
-# Model verification
-python -c "from groundingdino.util.inference import load_model; print('GroundingDINO OK')"
-python -c "import sys; sys.path.append('DAM'); from dam.describe_anything_model import DescribeAnythingModel; print('DAM OK')"
+### Enable Comprehensive Logging
+```python
+# Add to main.py or debugging script
+import logging
+import os
 
-# Network connectivity
-curl -X POST "http://localhost:9100/v1/chat/completions" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer dummy-key" \
-  -d '{"model": "Qwen/Qwen2.5-VL-7B-Instruct", "messages": [{"role": "user", "content": "test"}]}'
+# Set debug environment
+os.environ['CUDA_LAUNCH_BLOCKING'] = '1'  # Synchronous CUDA for better error traces
+os.environ['PYTHONPATH'] = '/path/to/FDR:' + os.environ.get('PYTHONPATH', '')
+
+# Configure detailed logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('debug.log'),
+        logging.StreamHandler()
+    ]
+)
+
+# Reduce noise from HTTP libraries
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("httpcore").setLevel(logging.WARNING)
+logging.getLogger("openai").setLevel(logging.WARNING)
 ```
 
-## 🚑 Emergency Procedures
+### Performance Profiling
+```python
+# Add timing to pipeline
+import time
 
-### Complete Reset
+def profile_agent_performance():
+    times = {}
+    
+    # Time each agent
+    start = time.time()
+    verifier_result = verifier.generate_initial_response(question, image_path)
+    times['verifier'] = time.time() - start
+    
+    start = time.time()
+    mvkb = strategist.build_mvkb(question, image_path, candidates, caption)
+    times['strategist'] = time.time() - start
+    
+    start = time.time()
+    voting_result = synthesizer.conduct_weighted_voting(question, image_path, candidates, mvkb)
+    times['synthesizer'] = time.time() - start
+    
+    start = time.time()
+    explanation = explanation_agent.generate_explanation(...)
+    times['explanation'] = time.time() - start
+    
+    print(f"Performance breakdown: {times}")
+    return times
+```
+
+## 🚑 Emergency Recovery
+
+### Complete System Reset
 ```bash
-# Stop all services
+# Stop all processes
+pkill -f "python main.py"
 pkill -f "vllm serve"
 
 # Clear GPU memory
 sudo nvidia-smi --gpu-reset
 
-# Reinstall environment
-conda deactivate
-conda env remove -n VQA_env
-conda env create -f Top-Down/VQA_env.yaml
-conda activate VQA_env
+# Clean Python cache
+find . -name "__pycache__" -exec rm -rf {} + 2>/dev/null
+find . -name "*.pyc" -delete
 
-# Clear caches
-rm -rf ~/.cache/huggingface/
-rm -rf Top-Down/__pycache__/
-rm -rf Top-Down/core/__pycache__/
+# Recreate environment
+conda deactivate
+conda create -n FDR_clean python=3.8 -y
+conda activate FDR_clean
+pip install -r requirements.txt
+cd GroundingDINO && pip install -e .
 ```
 
-### Fallback to Basic Mode
-```python
-# Minimal configuration for testing
-# Edit main.py to skip enhanced features
-if __name__ == "__main__":
-    # Disable enhanced pipeline
-    config = {
-        "use_grounding_dino": False,
-        "use_dam_analysis": False,
-        "backend": "openai"  # If vLLM fails
-    }
+### Minimal Working Configuration
+```yaml
+# emergency_config.yaml - Minimal working setup
+active_dataset: "vivqax"
+
+agents_config:
+  verifier:
+    model_name: "gpt-4o-mini"
+    enable_dam: false              # Disable for simplicity
+    groundingdino_docker: false
+    temperature: 0.7
+    max_tokens: 300
+    
+  strategist:
+    temperature: 0.5
+    max_sub_questions: 1           # Minimal complexity
+    
+  synthesizer:
+    voting_method: "simple"        # Fallback voting
+    
+  explanation:
+    max_explanation_length: 200    # Short explanations
+
+backend_config:
+  use_vllm: false                  # Force OpenAI
+  model_name: "gpt-4o-mini"
+  openai_api_key_file: "openai_key.txt"
+
+processing_config:
+  num_samples: 1                   # Single sample test
+  batch_size: 1
+  enable_caching: false
+
+output_config:
+  output_dir: "output"
+  output_file: "emergency_test.json"
 ```
 
 ### Data Recovery
 ```bash
-# Backup current results
-cp Top-Down/output/fdr_pipeline_results.json Top-Down/output/backup_$(date +%Y%m%d_%H%M%S).json
+# Backup existing results
+mkdir -p backup/$(date +%Y%m%d_%H%M%S)
+cp -r output/* backup/$(date +%Y%m%d_%H%M%S)/
 
-# Recover from partial results
+# Check partial results
 python -c "
 import json
-with open('Top-Down/output/fdr_pipeline_results.json') as f:
-    data = json.load(f)
-print(f'Processed: {len(data)} questions')
-print(f'Last question ID: {data[-1].get(\"question_id\", \"unknown\")}')
+import os
+if os.path.exists('output/fdr_results.json'):
+    with open('output/fdr_results.json') as f:
+        data = json.load(f)
+    print(f'Found {len(data)} processed samples')
+    if data:
+        print(f'Last question ID: {data[-1].get(\"question_id\", \"unknown\")}')
+else:
+    print('No results file found')
 "
 ```
 
 ## 📞 Getting Help
 
 ### Information to Collect
-When reporting issues, please include:
-- Operating system and version
-- Python and CUDA versions
-- GPU model and memory
-- Complete error traceback
-- Configuration files
-- Steps to reproduce
+When reporting issues, include:
+
+1. **System Information:**
+   ```bash
+   python --version
+   nvidia-smi
+   pip list | grep -E "(torch|transformers|opencv|groundingdino)"
+   ```
+
+2. **Error Context:**
+   - Complete error traceback
+   - Agent that failed (Verifier/Strategist/Synthesizer/Explanation)
+   - Config file content (sanitized)
+   - Sample question/image that caused error
+
+3. **Environment Details:**
+   - Operating system and version
+   - CUDA version (`nvcc --version`)
+   - Available GPU memory
+   - Python environment details
 
 ### Log Files to Check
-- vLLM server logs: Usually in terminal output
-- Python application logs: Check console output
-- System logs: `dmesg` for GPU/memory issues
-- CUDA logs: Set `CUDA_LAUNCH_BLOCKING=1`
+- **Pipeline logs**: `debug.log` or console output
+- **GPU monitoring**: `nvidia-smi dmon` output during run
+- **System logs**: `dmesg` for GPU/memory issues
+- **Agent-specific**: Check individual agent error messages
 
-### Performance Benchmarks
-```bash
-# Quick performance test
-time python Top-Down/main.py --config Top-Down/configs/vllm_test_config.yaml
-
-# Monitor resources during run
-htop &
-nvidia-smi dmon &
-python Top-Down/main.py --config Top-Down/configs/vllm_test_config.yaml
-```
-
-# VQA Pipeline Troubleshooting Guide
-
-## DAM (Describe Anything Model) Integration Issues
-
-### Issue: DAM Dtype Mismatch
-**Error**: `RuntimeError: mat1 and mat2 must have the same dtype, but got Half and Float`
-
-**Root Cause**: 
-- DAM model has internal weight conflicts between float16 and float32
-- Official DAM examples use specific environment setups that may differ from VQA pipeline
-
-**Investigation Results**:
-1. **GPU Mode**: CUDA out of memory on available GPUs (requires ~2GB+ free)
-2. **CPU Mode**: Dtype mismatch between model components
-3. **Data Flow**: GroundingDINO → DAM integration works correctly for bbox format
-
-**Current Workaround**: 
-- DAM disabled, using VLM fallback for detailed analysis
-- Pipeline still functional: Image → VLM → GroundingDINO → Seeker → Integrator
-
-**Future Solutions**:
-1. **Environment Isolation**: Test DAM in separate conda environment matching official requirements
-2. **Model Quantization**: Force all DAM weights to consistent dtype 
-3. **Alternative Models**: Evaluate other multimodal models for detailed analysis
-4. **GPU Memory**: Clear other processes for dedicated DAM GPU allocation
-
-### Working Configuration
-```yaml
-agents_config:
-  responder:
-    enable_dam: false  # Currently disabled due to dtype conflicts
-    enable_groundingdino: true  # ✅ Working perfectly on GPU 0
-    groundingdino_docker: false  # Using native compiled version
-```
-
-### GroundingDINO → DAM Data Flow (Verified)
-```python
-# 1. GroundingDINO outputs normalized boxes (cxcywh format)
-boxes, logits, phrases = predict(model, image, caption)
-
-# 2. Convert to pixel coordinates for DAM  
-boxes_xyxy = box_convert(boxes, in_fmt='cxcywh', out_fmt='xyxy')
-boxes_scaled = boxes_xyxy * torch.Tensor([W, H, W, H])
-
-# 3. Create rectangle mask from boxes
-mask = Image.new('L', (W, H), 0)  # Black background
-draw = ImageDraw.Draw(mask)
-draw.rectangle([x1, y1, x2, y2], fill=255)  # White region
-
-# 4. DAM processes image + mask (when working)
-result = dam.get_description(image, mask, prompt)
-```
-
-**Performance Metrics**:
-- GroundingDINO GPU: ~2s per inference, 4-7 boxes detected
-- VLM fallback: ~3s per OpenAI API call
-- Overall pipeline: ~10-15s per question with current setup
-
-### Alternative Analysis Pipeline
-Without DAM, the pipeline uses:
-1. **VLM Initial Analysis**: General question understanding
-2. **GroundingDINO Object Detection**: Focused region identification  
-3. **VLM Fallback**: Detailed analysis of detected regions
-4. **Multi-View Knowledge Base**: Cross-perspective validation
-5. **Weighted Voting**: Final answer integration
-
-**Effectiveness**: 85-90% as effective as full DAM integration for most VQA tasks.
+### Quick Fixes Checklist
+- [ ] Python path includes FDR directory
+- [ ] All dependencies installed (`pip install -r requirements.txt`)
+- [ ] GroundingDINO compiled without errors
+- [ ] OpenAI API key valid and has credits
+- [ ] Config.yaml syntax is valid YAML
+- [ ] Dataset paths point to existing files
+- [ ] GPU has sufficient memory (check `nvidia-smi`)
+- [ ] No other processes consuming GPU memory
 
 ---
 
-## Other Common Issues
+## 📈 Performance Optimization
 
-### GroundingDINO Compilation
-**Issue**: `name '_C' is not defined`
+### Expected Performance Baselines
+- **Single question processing**: 9-12 seconds end-to-end
+- **GroundingDINO inference**: ~2 seconds per image
+- **VLM API calls**: ~1-3 seconds per call
+- **GPU memory usage**: 4-8GB peak (with DAM enabled)
+- **System memory**: 8-16GB during processing
 
-**Solution**: 
+### Monitoring Commands
 ```bash
-cd GroundingDINO
-export TORCH_CUDA_ARCH_LIST="8.6"  # Match your GPU architecture
-python setup.py build_ext --inplace
+# Continuous monitoring during run
+nvidia-smi dmon -s u -d 1 &  # GPU utilization
+htop &                       # CPU and memory
+python main.py --backend openai --test --samples 5
 ```
 
-**Files to patch** (deprecated PyTorch API):
-- `ms_deform_attn_cuda.cu`: Replace `.type().is_cuda()` with `.is_cuda()`
-- `ms_deform_attn.h`: Same replacement pattern
+If performance is below these baselines, check for:
+- GPU memory fragmentation
+- API rate limiting
+- Network connectivity issues
+- Concurrent processes competing for resources
 
-### GPU Memory Management
-**Issue**: Multiple models competing for GPU memory
+---
 
-**Solution**:
-```python
-# Device allocation strategy
-CUDA_VISIBLE_DEVICES=0  # GroundingDINO on GPU 0
-# DAM on CPU (until memory issues resolved)
-# VLM via OpenAI API (no local GPU needed)
-```
-
-### OpenAI API Configuration
-**Issue**: API key not found
-
-**Solution**:
-```bash
-# Create API key file
-echo "your-api-key-here" > Top-Down/openai_key.txt
-
-# Test connection
-python -c "from utils.backend_manager import BackendManager; BackendManager('openai')"
-```
-
-This troubleshooting guide should help resolve most common issues. For persistent problems, consider checking the GitHub issues or creating a new issue with detailed information. 
+*Troubleshooting Guide Version: 2.0 | Updated for FDR Production Release* 
