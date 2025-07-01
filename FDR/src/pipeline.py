@@ -111,11 +111,128 @@ def load_vivqax_dataset(config):
     logging.info(f"Loaded {len(questions_data)} ViVQA-X questions with answers")
     return questions_data, annotations
 
-# --- Main FDR Pipeline ---
+def convert_mvkb_to_synthesizer_format(mvkb, initial_response, question):
+    """
+    ADAPTER LAYER: Convert old MVKB format to evidence_set + hypothesis_set for new Synthesizer Logic Engine
+    
+    Args:
+        mvkb: Old format from StrategistAgent
+        initial_response: From VerifierAgent 
+        question: Original question
+    
+    Returns:
+        evidence_set, hypothesis_set: New format for SynthesizerEngine
+    """
+    logging.info("🔄 Converting MVKB to Synthesizer Logic Engine format...")
+    
+    evidence_set = []
+    hypothesis_set = []
+    evidence_id_counter = 1
+    
+    # Step 1: Create evidence from verifier's initial analysis
+    answer_candidates = initial_response.get('answer_candidates', [])
+    caption = initial_response.get('caption', '')
+    
+    # Evidence E01: Image caption provides context
+    if caption:
+        evidence_set.append({
+            "evidence_id": f"E{evidence_id_counter:02d}",
+            "issue_text": "Image analysis and context understanding",
+            "answer": "Available",
+            "confidence": 0.85,
+            "source": "VerifierAgent",
+            "details": caption
+        })
+        evidence_id_counter += 1
+    
+    # Step 2: Create evidence from MVKB entries
+    mvkb_evidence_map = {}  # Map answer_candidate -> evidence_id
+    
+    for entry in mvkb:
+        answer_candidate = entry.get('answer_candidate', '')
+        confidence_score = entry.get('confidence_score', 0.5)
+        hypothesis = entry.get('hypothesis', '')
+        
+        if answer_candidate and hypothesis:
+            evidence_id = f"E{evidence_id_counter:02d}"
+            
+            # Create evidence based on hypothesis confidence
+            evidence_answer = "Strong" if confidence_score > 0.7 else "Moderate" if confidence_score > 0.4 else "Weak"
+            
+            evidence_set.append({
+                "evidence_id": evidence_id,
+                "issue_text": f"Evidence supporting '{answer_candidate}': {hypothesis}",
+                "answer": evidence_answer,
+                "confidence": confidence_score,
+                "source": "StrategistAgent",
+                "answer_candidate": answer_candidate
+            })
+            
+            mvkb_evidence_map[answer_candidate] = evidence_id
+            evidence_id_counter += 1
+    
+    # Step 3: Create hypotheses with logical rules
+    for answer_candidate, evidence_id in mvkb_evidence_map.items():
+        # Find the corresponding MVKB entry
+        mvkb_entry = next((entry for entry in mvkb if entry.get('answer_candidate') == answer_candidate), None)
+        if mvkb_entry:
+            confidence = mvkb_entry.get('confidence_score', 0.5)
+            
+            # Create hypothesis based on confidence level
+            if confidence > 0.4:  # Only create hypothesis for reasonable confidence
+                conditions = []
+                
+                # Condition 1: Image context is available
+                if caption:
+                    conditions.append({"evidence_id": "E01", "answer_is": "Available"})
+                
+                # Condition 2: This answer has sufficient evidence
+                evidence_threshold = "Strong" if confidence > 0.7 else "Moderate"
+                conditions.append({"evidence_id": evidence_id, "answer_is": evidence_threshold})
+                
+                hypothesis_set.append({
+                    "hypothesis_id": f"H_{answer_candidate.replace(' ', '_')}",
+                    "IF": conditions,
+                    "THEN": {"final_answer": answer_candidate},
+                    "confidence_source": confidence,
+                    "reasoning": mvkb_entry.get('hypothesis', f"Evidence supports {answer_candidate}")
+                })
+    
+    # Step 4: Add fallback hypothesis if no strong candidates
+    strong_candidates = [h for h in hypothesis_set if any(entry.get('confidence_score', 0) > 0.6 for entry in mvkb if entry.get('answer_candidate') == h['THEN']['final_answer'])]
+    
+    if not strong_candidates and answer_candidates:
+        # Create fallback hypothesis for most likely candidate
+        fallback_candidate = answer_candidates[0]
+        evidence_id = f"E{evidence_id_counter:02d}"
+        
+        evidence_set.append({
+            "evidence_id": evidence_id,
+            "issue_text": "Fallback analysis when no strong evidence is available",
+            "answer": "Uncertain",
+            "confidence": 0.3,
+            "source": "FallbackLogic"
+        })
+        
+        hypothesis_set.append({
+            "hypothesis_id": "H_Fallback",
+            "IF": [{"evidence_id": evidence_id, "answer_is": "Uncertain"}],
+            "THEN": {"final_answer": fallback_candidate},
+            "confidence_source": 0.3,
+            "reasoning": f"Fallback to most likely candidate: {fallback_candidate}"
+        })
+    
+    logging.info(f"✅ Converted to {len(evidence_set)} evidence items and {len(hypothesis_set)} hypotheses")
+    logging.debug(f"Evidence set: {[e['evidence_id'] + ': ' + e['issue_text'] for e in evidence_set]}")
+    logging.debug(f"Hypothesis set: {[h['hypothesis_id'] + ' -> ' + h['THEN']['final_answer'] for h in hypothesis_set]}")
+    
+    return evidence_set, hypothesis_set
+
+# --- Main FDR Pipeline with Synthesizer Logic Engine ---
 
 def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, override_samples: int = None, config_path: str = None):
     """
-    Run the complete MVKB-X pipeline with explanation generation.
+    Run the complete MVKB-X pipeline with NEW Synthesizer Logic Engine.
     Uses unified config.yaml by default.
     
     Args:
@@ -138,7 +255,7 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
             logging.getLogger("httpcore").setLevel(logging.WARNING)
             logging.getLogger("openai").setLevel(logging.WARNING)
         
-        logging.info("🚀 Starting MVKB-X Pipeline")
+        logging.info("🚀 Starting MVKB-X Pipeline with Synthesizer Logic Engine")
         
         # Initialize agents
         agents_config = config.get('agents_config', {})
@@ -161,10 +278,10 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
             use_vllm=use_vllm
         )
         
-        # Synthesizer Agent (Algorithm 2 weighted voting)
+        # NEW Synthesizer Logic Engine
         synthesizer = SynthesizerAgent(verifier=verifier)
         
-        # Explanation Agent (Step 6 natural language explanation)
+        # Enhanced Explanation Agent
         explanation_config = agents_config.get('explanation', {})
         explanation = ExplanationAgent(use_vllm=use_vllm)
         
@@ -274,39 +391,49 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
                 answer_candidates = initial_response['answer_candidates']
                 caption = initial_response['caption']
                 
-                # Step 2: Strategist - MVKB construction
+                # Step 2: Strategist - MVKB construction (old format)
                 mvkb = strategist.build_mvkb(question, image_path, answer_candidates, caption)
                 
-                # Step 3: Synthesizer - Weighted voting (Algorithm 2)
-                voting_result = synthesizer.conduct_weighted_voting(
-                    question, image_path, answer_candidates, mvkb
-                )
+                # Step 3a: ADAPTER - Convert to new format
+                evidence_set, hypothesis_set = convert_mvkb_to_synthesizer_format(mvkb, initial_response, question)
                 
-                final_answer = voting_result['final_answer']
-                confidence_breakdown = voting_result['confidence_breakdown']
+                # Step 3b: NEW Synthesizer Logic Engine
+                synthesis_result = synthesizer.synthesize(evidence_set, hypothesis_set)
                 
-                # Step 4: Explanation - Generate natural language explanation
-                explanation_text = explanation.generate_explanation(
+                final_answer = synthesis_result.get('answer', answer_candidates[0] if answer_candidates else "Unknown")
+                synthesis_status = synthesis_result.get('status', 'UNKNOWN')
+                causal_trace = synthesis_result.get('causal_trace', [])
+                
+                # Step 4: Enhanced Explanation with Causal Trace
+                explanation_text = explanation.generate_explanation_from_synthesis(
                     question=question,
-                    final_answer=final_answer,
+                    synthesis_result=synthesis_result,
                     caption=caption,
-                    mvkb_entries=mvkb,
-                    confidence_breakdown=confidence_breakdown
+                    evidence_set=evidence_set
                 )
                 
-                # Store result
+                # Store result - CLEAN OUTPUT: answer + explanation
                 result = {
                     'question_id': question_id,
                     'sample_id': i,
                     'question': question,
                     'image_path': image_path,
-                    'initial_candidates': answer_candidates,
-                    'caption': caption,
-                    'mvkb_entries': len(mvkb),
+                    
+                    # MAIN OUTPUT
                     'final_answer': final_answer,
                     'explanation': explanation_text,
-                    'confidence_breakdown': confidence_breakdown,
-                    'ground_truth': ground_truth
+                    
+                    # METADATA
+                    'synthesis_status': synthesis_status,
+                    'causal_trace': causal_trace,
+                    'evidence_count': len(evidence_set),
+                    'hypothesis_count': len(hypothesis_set),
+                    'ground_truth': ground_truth,
+                    
+                    # DEBUG INFO (optional)
+                    'initial_candidates': answer_candidates,
+                    'caption': caption,
+                    'mvkb_entries_count': len(mvkb)
                 }
                 
                 # Add VQA-X specific fields if available
@@ -317,7 +444,7 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
                 
                 results.append(result)
                 
-                logging.info(f"✅ Sample {i+1} completed: {final_answer}")
+                logging.info(f"✅ Sample {i+1} completed: '{final_answer}' ({synthesis_status})")
                 
             except Exception as e:
                 logging.error(f"❌ Sample {i} failed: {e}")
@@ -340,7 +467,7 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
         logging.info(f"💾 Results saved to: {output_file}")
         
         # Quick accuracy calculation (always run)
-        accuracy_stats = calculate_quick_accuracy(results)
+        accuracy_stats = calculate_quick_accuracy_with_synthesis(results)
         
         # Run evaluation if enabled
         if enable_evaluation and results:
@@ -354,31 +481,33 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
             logging.info(f"📊 Evaluation results saved to: {eval_output_file}")
             
             # Print summary with full evaluation
-            print(f"\n🎯 MVKB-X Pipeline Summary:")
+            print(f"\n🎯 MVKB-X Pipeline with Synthesizer Logic Engine Summary:")
             print(f"Processed samples: {len(results)}")
             print(f"VQA Accuracy: {evaluation_results['vqa_accuracy']:.3f}")
             if 'explanation_quality' in evaluation_results:
                 print(f"Explanation Quality: {evaluation_results['explanation_quality']:.3f}")
         else:
             # Print summary with quick accuracy
-            print(f"\n🎯 MVKB-X Pipeline Summary:")
+            print(f"\n🎯 MVKB-X Pipeline with Synthesizer Logic Engine Summary:")
             print(f"Processed samples: {len(results)}")
             print(f"VQA Accuracy: {accuracy_stats['accuracy']:.1%}")
             print(f"Correct answers: {accuracy_stats['correct']}/{accuracy_stats['total']}")
-            print(f"MVKB voting effectiveness: {accuracy_stats['voting_effectiveness']:.1%}")
+            print(f"Synthesis effectiveness: {accuracy_stats['synthesis_effectiveness']:.1%}")
+            print(f"Status distribution: {accuracy_stats['status_distribution']}")
         
-        logging.info("🎉 MVKB-X Pipeline completed successfully!")
+        logging.info("🎉 MVKB-X Pipeline with Synthesizer Logic Engine completed successfully!")
         return results
         
     except Exception as e:
         logging.error(f"❌ MVKB-X Pipeline failed: {e}")
         raise
 
-def calculate_quick_accuracy(results):
-    """Calculate quick accuracy statistics from results"""
+def calculate_quick_accuracy_with_synthesis(results):
+    """Calculate accuracy statistics including synthesis status"""
     total = 0
     correct = 0
-    voting_worked = 0
+    synthesis_worked = 0
+    status_counts = {}
     
     for result in results:
         if result.get('ground_truth'):
@@ -390,20 +519,23 @@ def calculate_quick_accuracy(results):
             if final_answer == ground_truth or ground_truth in final_answer or final_answer in ground_truth:
                 correct += 1
             
-            # Check if voting mechanism worked
-            confidence_breakdown = result.get('confidence_breakdown', {})
-            total_votes = confidence_breakdown.get('total_votes', 0)
-            if total_votes > 0:
-                voting_worked += 1
+            # Track synthesis status
+            status = result.get('synthesis_status', 'UNKNOWN')
+            status_counts[status] = status_counts.get(status, 0) + 1
+            
+            # Check if synthesis mechanism worked
+            if status in ['CONCLUSIVE', 'CONTRADICTORY']:
+                synthesis_worked += 1
     
     accuracy = correct / total if total > 0 else 0
-    voting_effectiveness = voting_worked / total if total > 0 else 0
+    synthesis_effectiveness = synthesis_worked / total if total > 0 else 0
     
     return {
         'total': total,
         'correct': correct,
         'accuracy': accuracy,
-        'voting_effectiveness': voting_effectiveness
+        'synthesis_effectiveness': synthesis_effectiveness,
+        'status_distribution': status_counts
     }
 
 # Legacy function name for backward compatibility
