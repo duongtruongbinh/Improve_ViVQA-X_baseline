@@ -1,175 +1,265 @@
 """
-SynthesizerAgent for MVKB-X Pipeline
-The Synthesizer Agent (formerly IntegratorAgent), implementing Algorithm 2.
-Algorithmic agent for weighted voting, evidence synthesis, and final decision making.
+Synthesizer Logic Engine for MVKB-X Pipeline
+A deterministic, algorithmic engine for evidence synthesis and logical conclusion.
+
+Design Principles:
+1. Deterministic: Same input always produces same output
+2. Verifiable: Logic simple enough for manual audit
+3. Modular: Single responsibility - logical synthesis only
+4. Stateless: No memory between queries
 """
 
 import logging
-from typing import Dict, List, Any
-
-from .base import BaseAgent
+from typing import Dict, List, Any, Optional
 
 
-class SynthesizerAgent:
+class SynthesizerEngine:
     """
-    The Synthesizer Agent (formerly IntegratorAgent), implementing Algorithm 2.
-    Algorithmic agent for weighted voting, evidence synthesis, and final decision making.
+    Synthesizer Logic Engine - A deterministic algorithm for evidence synthesis.
+    
+    This is NOT an LLM. It's a pure logical engine that:
+    - Takes evidence_set and hypothesis_set as input
+    - Applies logical rules to derive conclusions
+    - Returns deterministic results with causal traces
     """
     
-    def __init__(self, verifier):
-        self.verifier = verifier
-
-    def conduct_weighted_voting(self, original_question: str, image_path: str, answer_candidates: list, mvkb: list) -> dict:
+    def __init__(self):
+        """Initialize the Synthesizer Engine."""
+        self.logger = logging.getLogger(__name__)
+    
+    def synthesize(self, evidence_set: List[Dict], hypothesis_set: List[Dict]) -> Dict[str, Any]:
         """
-        Algorithm 2: The Synthesizer Agent
-        Conducts weighted voting based on MVKB entries and returns result with explanation data.
+        Main synthesis function implementing the logical engine.
+        
+        Args:
+            evidence_set: List of evidence objects from Verifier
+                Format: [{"evidence_id": "E01", "issue_text": "...", "answer": "Yes", "confidence": 0.88}, ...]
+            
+            hypothesis_set: List of causal rules from Strategist  
+                Format: [{"hypothesis_id": "H1", "IF": [{"evidence_id": "E01", "answer_is": "Yes"}], "THEN": {"final_answer": "Fry"}}, ...]
+        
+        Returns:
+            Dict with keys: status, answer, causal_trace
+            status: "CONCLUSIVE" | "INCONCLUSIVE" | "CONTRADICTORY"
         """
-        logging.info("Synthesizer: Conducting weighted voting per Algorithm 2.")
-        logging.debug(f"Answer candidates: {answer_candidates}")
+        self.logger.info("Synthesizer Engine: Starting logical synthesis")
+        self.logger.debug(f"Evidence set: {evidence_set}")
+        self.logger.debug(f"Hypothesis set: {hypothesis_set}")
         
-        if not mvkb:
-            logging.warning("Synthesizer: MVKB is empty. Returning first answer candidate as fallback.")
-            return {
-                "final_answer": answer_candidates[0] if answer_candidates else "No answer determined",
-                "voting_pool": {},
-                "mvkb_entries": [],
-                "confidence_breakdown": {}
-            }
-
-        # Algorithm 2 Implementation
-        voting_pool = {candidate: [] for candidate in answer_candidates}
+        # Input validation
+        if not isinstance(evidence_set, list) or not isinstance(hypothesis_set, list):
+            self.logger.error("Invalid input types: evidence_set and hypothesis_set must be lists")
+            return self._create_error_response("Invalid input types")
         
-        # Step 2-8: Process each MVKB entry
-        for i, entry in enumerate(mvkb):
-            hypothesis = entry.get("hypothesis", "")
-            confidence_word = entry.get("confidence_word", "N/A")
-            issue_confidence = entry.get("issue_confidence", 0.5)
+        # Step 1: Convert evidence_set to map for fast lookup
+        evidence_map = self._build_evidence_map(evidence_set)
+        self.logger.debug(f"Evidence map: {evidence_map}")
+        
+        # Step 2: Process each hypothesis to check conditions
+        triggered_conclusions = []
+        causal_trace = []
+        
+        for hypothesis in hypothesis_set:
+            if not self._validate_hypothesis_format(hypothesis):
+                self.logger.warning(f"Invalid hypothesis format: {hypothesis}")
+                continue
+                
+            conditions_met = self._check_hypothesis_conditions(hypothesis, evidence_map)
             
-            logging.debug(f"Processing MVKB entry {i+1}: confidence={issue_confidence:.3f}")
-            
-            # Step 3: Concatenate H, Φ, I, Q for contextual question
-            context_prompt = f"""
-Hypothesis (Confidence: {confidence_word}): {hypothesis}
-"""
-            
-            # Step 4: Get Q* from Verifier (top-1 answer)
-            contextual_answer = self.verifier.answer_contextual_question(
-                question=original_question,
-                image_path=image_path,
-                context_prompt=context_prompt
-            )
-            
-            logging.debug(f"Contextual answer: '{contextual_answer}'")
-            
-            # Step 5-7: Improved matching logic for answer candidates
-            matched_candidate = self._match_answer_to_candidates(contextual_answer, answer_candidates)
-            
-            if matched_candidate:
-                voting_pool[matched_candidate].append(issue_confidence)
-                logging.debug(f"Synthesizer: Vote for '{matched_candidate}' with confidence {issue_confidence:.3f}")
+            if conditions_met:
+                conclusion = hypothesis['THEN']['final_answer']
+                triggered_conclusions.append(conclusion)
+                
+                trace_entry = {
+                    "hypothesis_id": hypothesis['hypothesis_id'],
+                    "triggered_by_evidence": [c['evidence_id'] for c in hypothesis['IF']]
+                }
+                causal_trace.append(trace_entry)
+                
+                self.logger.debug(f"Hypothesis {hypothesis['hypothesis_id']} triggered -> {conclusion}")
+        
+        # Step 3: Check consistency of conclusions
+        result = self._evaluate_conclusions(triggered_conclusions, causal_trace)
+        
+        self.logger.info(f"Synthesis complete. Status: {result['status']}, Answer: {result.get('answer', 'None')}")
+        return result
+    
+    def _build_evidence_map(self, evidence_set: List[Dict]) -> Dict[str, str]:
+        """Build a map from evidence_id to answer for fast lookup."""
+        evidence_map = {}
+        
+        for evidence in evidence_set:
+            if 'evidence_id' in evidence and 'answer' in evidence:
+                evidence_map[evidence['evidence_id']] = evidence['answer']
             else:
-                logging.debug(f"Synthesizer: No match found for contextual answer '{contextual_answer}' among candidates {answer_candidates}")
-
-        # Step 9: Vote final answer with highest score
-        vote_scores = {candidate: sum(scores) for candidate, scores in voting_pool.items()}
+                self.logger.warning(f"Invalid evidence format: {evidence}")
         
-        logging.debug(f"Vote scores: {vote_scores}")
+        return evidence_map
+    
+    def _validate_hypothesis_format(self, hypothesis: Dict) -> bool:
+        """Validate that hypothesis has required structure."""
+        required_keys = ['hypothesis_id', 'IF', 'THEN']
         
-        if not any(vote_scores.values()):
-            logging.warning("Synthesizer: No votes cast. Returning first candidate.")
-            final_answer = answer_candidates[0]
-        else:
-            final_answer = max(vote_scores, key=vote_scores.get)
+        if not all(key in hypothesis for key in required_keys):
+            return False
         
-        logging.info(f"Synthesizer: Final answer chosen: '{final_answer}' with score {vote_scores.get(final_answer, 0):.3f}")
+        if not isinstance(hypothesis['IF'], list):
+            return False
         
-        return {
-            "final_answer": final_answer,
-            "voting_pool": voting_pool,
-            "vote_scores": vote_scores,
-            "mvkb_entries": mvkb,
-            "confidence_breakdown": {
-                "total_votes": sum(vote_scores.values()),
-                "winning_score": vote_scores.get(final_answer, 0),
-                "score_distribution": vote_scores
+        if 'final_answer' not in hypothesis['THEN']:
+            return False
+        
+        # Validate each condition in IF clause
+        for condition in hypothesis['IF']:
+            if not isinstance(condition, dict):
+                return False
+            if 'evidence_id' not in condition or 'answer_is' not in condition:
+                return False
+        
+        return True
+    
+    def _check_hypothesis_conditions(self, hypothesis: Dict, evidence_map: Dict[str, str]) -> bool:
+        """Check if all conditions in hypothesis IF clause are met."""
+        conditions_met = True
+        
+        for condition in hypothesis['IF']:
+            evidence_id = condition['evidence_id']
+            required_answer = condition['answer_is']
+            
+            # Check if evidence exists and matches required answer
+            if evidence_id not in evidence_map:
+                self.logger.debug(f"Evidence {evidence_id} not found in evidence map")
+                conditions_met = False
+                break
+            
+            if evidence_map[evidence_id] != required_answer:
+                self.logger.debug(f"Evidence {evidence_id}: got '{evidence_map[evidence_id]}', required '{required_answer}'")
+                conditions_met = False
+                break
+        
+        return conditions_met
+    
+    def _evaluate_conclusions(self, triggered_conclusions: List[str], causal_trace: List[Dict]) -> Dict[str, Any]:
+        """Evaluate the consistency of triggered conclusions."""
+        unique_conclusions = set(triggered_conclusions)
+        
+        if len(unique_conclusions) == 0:
+            # No hypothesis was triggered
+            self.logger.info("No hypotheses triggered - INCONCLUSIVE")
+            return {
+                "status": "INCONCLUSIVE",
+                "answer": None,
+                "causal_trace": [],
+                "explanation": "No logical rules were satisfied by the available evidence"
             }
+        
+        elif len(unique_conclusions) > 1:
+            # Contradictory conclusions
+            self.logger.warning(f"Contradictory conclusions found: {unique_conclusions}")
+            return {
+                "status": "CONTRADICTORY", 
+                "answer": None,
+                "causal_trace": causal_trace,
+                "contradictory_answers": list(unique_conclusions),
+                "explanation": f"Multiple contradictory conclusions reached: {list(unique_conclusions)}"
+            }
+        
+        else:
+            # Single consistent conclusion
+            final_answer = unique_conclusions.pop()
+            self.logger.info(f"Conclusive result: {final_answer}")
+            return {
+                "status": "CONCLUSIVE",
+                "answer": final_answer,
+                "causal_trace": causal_trace,
+                "explanation": f"Logical conclusion reached: {final_answer}"
+            }
+    
+    def _create_error_response(self, error_message: str) -> Dict[str, Any]:
+        """Create standardized error response."""
+        return {
+            "status": "ERROR",
+            "answer": None,
+            "causal_trace": [],
+            "error": error_message
         }
 
-    def _match_answer_to_candidates(self, contextual_answer: str, answer_candidates: list) -> str:
+
+# Backward compatibility wrapper for existing codebase
+class SynthesizerAgent:
+    """
+    Backward compatibility wrapper for the new SynthesizerEngine.
+    Maintains the same interface as the old SynthesizerAgent.
+    """
+    
+    def __init__(self, verifier=None):
+        """Initialize with optional verifier (maintained for compatibility)."""
+        self.engine = SynthesizerEngine()
+        self.verifier = verifier  # Kept for compatibility but not used in new logic
+        self.logger = logging.getLogger(__name__)
+    
+    def conduct_weighted_voting(self, original_question: str, image_path: str, 
+                              answer_candidates: list, mvkb: list) -> dict:
         """
-        Improved matching logic to handle short answers accurately.
-        Returns the best matching candidate or None if no match found.
+        Legacy interface maintained for backward compatibility.
+        
+        Note: This method expects the new format in mvkb:
+        - evidence_set: List of evidence from Verifier
+        - hypothesis_set: List of logical rules from Strategist
         """
-        if not contextual_answer or not answer_candidates:
-            return None
+        self.logger.warning("Legacy conduct_weighted_voting called. Consider migrating to new synthesize() method.")
         
-        contextual_answer = contextual_answer.lower().strip()
-        logging.debug(f"Matching '{contextual_answer}' against candidates: {answer_candidates}")
+        # Extract evidence_set and hypothesis_set from mvkb
+        # This assumes Strategist has formatted mvkb correctly
+        evidence_set = []
+        hypothesis_set = []
         
-        # Method 1: Exact match (highest priority)
-        for candidate in answer_candidates:
-            if candidate.lower().strip() == contextual_answer:
-                logging.debug(f"Exact match found: '{candidate}'")
-                return candidate
+        if isinstance(mvkb, dict):
+            evidence_set = mvkb.get('evidence_set', [])
+            hypothesis_set = mvkb.get('hypothesis_set', [])
+        elif isinstance(mvkb, list) and len(mvkb) > 0:
+            # Handle case where mvkb is still in old format
+            self.logger.warning("Old MVKB format detected. Attempting conversion...")
+            # For now, return inconclusive - this needs Strategist to provide proper format
+            return {
+                "final_answer": answer_candidates[0] if answer_candidates else "Unknown",
+                "voting_pool": {},
+                "vote_scores": {},
+                "mvkb_entries": mvkb,
+                "confidence_breakdown": {},
+                "synthesizer_status": "LEGACY_FORMAT_ERROR",
+                "note": "Please update Strategist to provide evidence_set and hypothesis_set format"
+            }
         
-        # Method 2: Check if contextual answer starts with candidate (for short answers)
-        for candidate in answer_candidates:
-            candidate_lower = candidate.lower().strip()
-            if contextual_answer.startswith(candidate_lower):
-                # Additional check: make sure it's a word boundary
-                if len(contextual_answer) == len(candidate_lower) or contextual_answer[len(candidate_lower)] in [' ', '.', ',', '!', '?', ';', ':']:
-                    logging.debug(f"Start match found: '{candidate}'")
-                    return candidate
+        # Use new engine
+        result = self.engine.synthesize(evidence_set, hypothesis_set)
         
-        # Method 3: Word-level matching with priority for longer matches
-        best_match = None
-        best_score = 0
+        # Convert to legacy format for backward compatibility
+        return {
+            "final_answer": result.get("answer", answer_candidates[0] if answer_candidates else "Unknown"),
+            "voting_pool": {},  # Not applicable in new logic
+            "vote_scores": {},  # Not applicable in new logic
+            "mvkb_entries": evidence_set,
+            "confidence_breakdown": {
+                "synthesizer_status": result["status"],
+                "causal_trace": result.get("causal_trace", [])
+            },
+            "synthesizer_result": result  # Full new format result
+        }
+    
+    def synthesize(self, evidence_set: List[Dict], hypothesis_set: List[Dict]) -> Dict[str, Any]:
+        """
+        New interface for the logical synthesis engine.
         
-        for candidate in answer_candidates:
-            candidate_lower = candidate.lower().strip()
-            candidate_words = candidate_lower.split()
+        Args:
+            evidence_set: Evidence from Verifier in format:
+                [{"evidence_id": "E01", "issue_text": "...", "answer": "Yes", "confidence": 0.88}, ...]
             
-            # For single word candidates, check if it appears as a complete word
-            if len(candidate_words) == 1:
-                import re
-                # Use word boundary regex to find complete word matches
-                pattern = r'\b' + re.escape(candidate_lower) + r'\b'
-                if re.search(pattern, contextual_answer):
-                    # Score based on position (earlier matches get higher scores)
-                    match_pos = contextual_answer.find(candidate_lower)
-                    score = 10 - (match_pos / len(contextual_answer)) * 5  # Earlier = higher score
-                    if score > best_score:
-                        best_score = score
-                        best_match = candidate
-                        logging.debug(f"Word boundary match found: '{candidate}' (score: {score:.2f})")
-            else:
-                # Multi-word candidates: check how many words match
-                matching_words = 0
-                for word in candidate_words:
-                    if word in contextual_answer:
-                        matching_words += 1
-                
-                match_ratio = matching_words / len(candidate_words)
-                score = match_ratio * 5  # Multi-word scoring
-                
-                if score > best_score and match_ratio > 0.5:  # At least 50% of words must match
-                    best_score = score
-                    best_match = candidate
-                    logging.debug(f"Multi-word match found: '{candidate}' (score: {score:.2f}, ratio: {match_ratio:.2f})")
+            hypothesis_set: Logical rules from Strategist in format:
+                [{"hypothesis_id": "H1", "IF": [{"evidence_id": "E01", "answer_is": "Yes"}], 
+                  "THEN": {"final_answer": "Answer"}}, ...]
         
-        # Method 4: Fallback - simple substring match for very short answers
-        if not best_match:
-            for candidate in answer_candidates:
-                candidate_lower = candidate.lower().strip()
-                if len(candidate_lower) <= 3 and candidate_lower in contextual_answer:
-                    # But avoid false positives for common short words
-                    if candidate_lower not in ['a', 'an', 'the', 'is', 'are', 'it', 'in', 'on', 'at', 'to']:
-                        logging.debug(f"Substring match found: '{candidate}'")
-                        return candidate
-        
-        if best_match:
-            logging.debug(f"Best match selected: '{best_match}' (score: {best_score:.2f})")
-        else:
-            logging.debug(f"No match found for '{contextual_answer}'")
-        
-        return best_match 
+        Returns:
+            {"status": "CONCLUSIVE|INCONCLUSIVE|CONTRADICTORY", "answer": "...", "causal_trace": [...]}
+        """
+        return self.engine.synthesize(evidence_set, hypothesis_set) 
