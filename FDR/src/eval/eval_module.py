@@ -1,5 +1,5 @@
 """
-EvalModule for MVKB-X Pipeline
+EvalModule for FDR Pipeline
 Comprehensive evaluation metrics for VQA accuracy and explanation quality.
 """
 
@@ -33,7 +33,7 @@ except ImportError:
 
 class EvalModule:
     """
-    Comprehensive evaluation module for MVKB-X pipeline.
+    Comprehensive evaluation module for FDR pipeline.
     Evaluates both VQA accuracy and explanation quality using multiple metrics.
     """
     
@@ -58,7 +58,7 @@ class EvalModule:
     def evaluate_results(self, results: List[Dict[str, Any]], 
                         ground_truth_explanations: Optional[Dict[str, List[str]]] = None) -> Dict[str, Any]:
         """
-        Comprehensive evaluation of MVKB-X pipeline results.
+        Comprehensive evaluation of FDR pipeline results.
         
         Args:
             results: List of pipeline results with final_answer and generated_explanation
@@ -359,7 +359,7 @@ class EvalModule:
         vqa_metrics = evaluation_results["vqa_metrics"]
         
         logging.info("="*60)
-        logging.info("📊 MVKB-X EVALUATION SUMMARY")
+        logging.info("📊 FDR EVALUATION SUMMARY")
         logging.info("="*60)
         logging.info(f"Total Questions: {summary['total_questions']}")
         logging.info(f"Evaluated Questions: {summary['evaluated_questions']}")

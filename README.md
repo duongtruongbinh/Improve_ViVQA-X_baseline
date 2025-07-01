@@ -122,10 +122,10 @@ CUDA_VISIBLE_DEVICES=0 python3 FDR/main.py --backend openai
 ### Programmatic Usage
 ```python
 # Direct pipeline access for research
-from FDR.src.pipeline import run_mvkb_x_pipeline
+from FDR.src.pipeline import run_fdr_pipeline
 
 # Run with custom parameters
-results = run_mvkb_x_pipeline(
+results = run_fdr_pipeline(
     use_vllm=False,          # Use OpenAI
     enable_evaluation=True,   # Full evaluation
     override_samples=100     # Custom sample size
@@ -232,8 +232,8 @@ config['processing_config']['num_samples'] = 100
 config['agents_config']['verifier']['enable_dam'] = True
 
 # Run experiments
-from FDR.src.pipeline import run_mvkb_x_pipeline
-results = run_mvkb_x_pipeline()
+from FDR.src.pipeline import run_fdr_pipeline
+results = run_fdr_pipeline()
 ```
 
 ### Evaluation Framework

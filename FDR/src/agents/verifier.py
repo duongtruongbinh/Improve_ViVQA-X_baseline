@@ -1,5 +1,5 @@
 """
-VerifierAgent for MVKB-X Pipeline
+VerifierAgent for FDR Pipeline
 The Verifier Agent (formerly ResponderAgent), based on a VLM.
 Multi-role agent handling visual verification, object detection, and image analysis.
 Enhanced with GroundingDINO and DAM integration for comprehensive visual understanding.
@@ -104,17 +104,15 @@ class VerifierAgent(BaseAgent):
             model_checkpoint_path = Path(__file__).parent.parent.parent.parent / "GroundingDINO" / "weights" / "groundingdino_swint_ogc.pth"
             
             if model_config_path.exists() and model_checkpoint_path.exists():
-                # Use GPU 0 for GroundingDINO
-                original_device = torch.cuda.current_device()
-                torch.cuda.set_device(0)
+                # Use GPU 2 for GroundingDINO
+                logging.info("Attempting to load GroundingDINO on GPU 2")
+                device_str = "cuda:2"
                 
-                self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device="cuda:0")
+                self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device=device_str)
                 self.groundingdino_enabled = True
                 self.groundingdino_docker = False
-                logging.info("✅ GroundingDINO native installation loaded on GPU 0")
+                logging.info(f"✅ GroundingDINO native installation loaded on {device_str}")
                 
-                # Restore original device
-                torch.cuda.set_device(original_device)
                 return
             else:
                 logging.warning("GroundingDINO model files not found. Checking paths...")
@@ -179,77 +177,55 @@ class VerifierAgent(BaseAgent):
         import torch
         from transformers import AutoModel
         
-        # Multiple strategies: GPU shared → CPU optimized
-        strategies = [
-            {
-                "name": "GPU_SHARED",
-                "device": "cuda:0",  # Share with GroundingDINO
-                "dtype": torch.float16,
-                "dtype_str": "torch.float16"
-            },
-            {
-                "name": "CPU_OPTIMIZED", 
-                "device": "cpu",
-                "dtype": torch.float32,
-                "dtype_str": "torch.float32"
-            }
-        ]
+        # Define specific strategy for GPU 2 to avoid ambiguity
+        strategy = {
+            "name": "GPU_2_ONLY",
+            "device": "cuda:2",
+            "dtype": torch.float16,
+            "dtype_str": "torch.float16"
+        }
         
-        for strategy in strategies:
-            try:
-                logging.info(f"🔥 Trying DAM strategy: {strategy['name']} on {strategy['device']}")
+        try:
+            logging.info(f"🔥 Forcing DAM strategy: {strategy['name']} on {strategy['device']}")
+            
+            # Clear target GPU cache before loading
+            device = torch.device(strategy["device"])
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            
+            # Load model with exact official pattern
+            logging.info(f"Loading DAM model with dtype: {strategy['dtype_str']}")
+            model = AutoModel.from_pretrained(
+                'nvidia/DAM-3B-Self-Contained',
+                trust_remote_code=True,
+                torch_dtype=strategy["dtype_str"]
+            )
+            
+            # Move to the specified device
+            model = model.to(device)
+            
+            # Initialize DAM
+            dam = model.init_dam(conv_mode='v1', prompt_mode='full+focal_crop')
+            
+            # Test inference to verify compatibility
+            logging.info(f"Testing DAM inference on {strategy['device']}...")
+            test_success = self._test_dam_inference(dam, device)
+            
+            if test_success:
+                self.dam = dam
+                self.dam_device = device
+                self.dam_dtype = strategy["dtype"]
+                logging.info(f"✅ DAM successfully initialized with {strategy['name']} strategy on {strategy['device']}")
+                return
+            else:
+                logging.error(f"❌ DAM test inference failed with {strategy['name']}. DAM will be disabled.")
+                self.dam = None
                 
-                # Clear GPU cache before loading
-                if torch.cuda.is_available():
-                    torch.cuda.empty_cache()
-                    available_memory = torch.cuda.memory_reserved(0) - torch.cuda.memory_allocated(0)
-                    logging.info(f"Available GPU memory: {available_memory / 1024**2:.1f} MB")
-                
-                # Load model with exact official pattern
-                
-                device = torch.device(strategy["device"])
-                
-                logging.info(f"Loading DAM model with dtype: {strategy['dtype_str']}")
-                model = AutoModel.from_pretrained(
-                    'nvidia/DAM-3B-Self-Contained',
-                    trust_remote_code=True,
-                    torch_dtype=strategy["dtype_str"]  # Use string format like official
-                )
-                
-                # Force dtype consistency for CPU
-                if strategy["device"] == "cpu":
-                    logging.info("Converting all model weights to float32 for CPU compatibility")
-                    model = model.float()  # Ensure all weights are float32
-                
-                # Move to device
-                model = model.to(device)
-                
-                # Initialize DAM
-                dam = model.init_dam(conv_mode='v1', prompt_mode='full+focal_crop')
-                
-                # Test inference to verify compatibility
-                logging.info(f"Testing DAM inference on {strategy['device']}...")
-                test_success = self._test_dam_inference(dam, device)
-                
-                if test_success:
-                    self.dam = dam
-                    self.dam_device = device
-                    self.dam_dtype = strategy["dtype"]  # Fix: Save dtype for later use
-                    logging.info(f"✅ DAM successfully initialized with {strategy['name']} strategy")
-                    return
-                else:
-                    logging.warning(f"❌ DAM test inference failed with {strategy['name']}")
-                    
-            except Exception as e:
-                logging.warning(f"❌ DAM strategy {strategy['name']} failed: {str(e)[:100]}...")
-                # Clean up failed attempt
-                if torch.cuda.is_available():
-                    torch.cuda.empty_cache()
-                continue
-        
-        # All strategies failed
-        logging.error("❌ All DAM initialization strategies failed")
-        self.dam = None
+        except Exception as e:
+            logging.error(f"❌ DAM strategy {strategy['name']} failed catastrophically: {e}")
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
+            self.dam = None
     
     def _test_dam_inference(self, dam, device):
         """Test DAM inference to verify functionality"""
@@ -452,8 +428,8 @@ except Exception as e:
             import cv2
             import torch
             
-            # Ensure we're using GPU 0 for GroundingDINO
-            with torch.cuda.device(0):
+            # Ensure we're using GPU 2 for GroundingDINO
+            with torch.cuda.device(2):
                 # Load image
                 image_source, image = load_image(image_path)
                 
@@ -464,7 +440,7 @@ except Exception as e:
                     caption=detection_prompt,
                     box_threshold=0.3,
                     text_threshold=0.25,
-                    device="cuda:0"
+                    device="cuda:2"
                 )
                 
                 # Convert boxes to DAM format (absolute xyxy coordinates)
@@ -844,73 +820,21 @@ Extract 2-4 key objects/nouns, separated by periods (format: object1 . object2 .
             }
 
     def _create_short_answer_prompt(self, question: str) -> str:
-        """Create a prompt optimized for generating short, concise answers"""
-        # Detect question type for optimized prompting
-        question_lower = question.lower()
-        
-        if any(word in question_lower for word in ['does', 'is', 'are', 'can', 'will', 'would', 'should', 'has', 'have']):
-            # Yes/No questions
-            return f"""Look at this image and answer the question with ONLY "yes" or "no".
+        """
+        Create a single, robust prompt to generate a short, direct answer for any question type.
+        This approach simplifies logic and relies on the LLM's ability to understand context.
+        """
+        return f"""You are an expert Visual Question Answering system. Your task is to answer the following question about the image with a very short and direct response.
+
+- If the question is a "yes/no" question, answer with only "yes" or "no".
+- If the question asks "how many", answer with only a number.
+- For all other questions, provide the most direct and concise answer possible (ideally 1-3 words).
+
+Do not provide explanations or full sentences.
 
 Question: {question}
 
-Answer (yes or no only):"""
-        
-        elif question_lower.startswith('what') and any(word in question_lower for word in ['doing', 'playing', 'activity']):
-            # Action questions
-            return f"""Look at this image and identify the main activity or action being performed.
-
-Question: {question}
-
-Answer with the specific action/activity (1-2 words):"""
-        
-        elif question_lower.startswith('what') and any(word in question_lower for word in ['room', 'place', 'location']):
-            # Room/place questions
-            return f"""Look at this image and identify what type of room or place this is.
-
-Question: {question}
-
-Answer with the room/place name (1-2 words):"""
-        
-        elif question_lower.startswith('what') and any(word in question_lower for word in ['sport', 'game']):
-            # Sport/game questions
-            return f"""Look at this image and identify what sport or game is being played.
-
-Question: {question}
-
-Answer with the sport/game name (1-2 words):"""
-        
-        elif question_lower.startswith('what') and any(word in question_lower for word in ['flower', 'plant', 'animal', 'object', 'item', 'food']):
-            # Object identification questions
-            return f"""Look at this image and identify the specific object, item, or thing being asked about.
-
-Question: {question}
-
-Answer with the specific name (1-3 words):"""
-        
-        elif any(word in question_lower for word in ['what', 'which', 'who', 'where', 'when']):
-            # General WH questions - extract specific information
-            return f"""Look at this image and answer the question with specific, factual information.
-
-Question: {question}
-
-Answer with specific details (1-3 words maximum):"""
-        
-        elif any(word in question_lower for word in ['how many', 'count']):
-            # Counting questions
-            return f"""Look at this image and count what is asked in the question. Answer with just the number.
-
-Question: {question}
-
-Answer (number only):"""
-        
-        else:
-            # General questions - still encourage brevity
-            return f"""Look at this image and answer the question as briefly as possible (1-3 words maximum).
-
-Question: {question}
-
-Answer (very brief):"""
+Answer:"""
 
     def _generate_short_answer_candidates(self, image_b64: str, vqa_prompt: str, question: str) -> list:
         """Generate multiple short answer candidates with different approaches"""
@@ -928,7 +852,7 @@ Answer (very brief):"""
                     ]
                 }],
                 temperature=0.1,
-                max_tokens=10  # Force very short responses
+                max_tokens=5  # Force very short responses
             )
             
             primary_answer = response.choices[0].message.content.strip()
@@ -1004,10 +928,14 @@ Answer (very brief):"""
                 answer = answer[len(prefix):].strip()
                 break
         
-        # Keep only the first few words if still too long
+        # Keep only the first word if still too long
         words = answer.split()
-        if len(words) > 3:
-            answer = ' '.join(words[:3])
+        if len(words) > 1:
+            # For numerical answers, allow joining if it seems intentional
+            if all(word.isdigit() for word in words):
+                 answer = "".join(words)
+            else:
+                 answer = words[0] # Take only the first word
         
         return answer
     

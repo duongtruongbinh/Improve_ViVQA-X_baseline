@@ -1,5 +1,5 @@
 """
-Synthesizer Logic Engine for MVKB-X Pipeline
+Synthesizer Logic Engine for FDR Pipeline
 A deterministic, algorithmic engine for evidence synthesis and logical conclusion.
 
 Design Principles:
@@ -27,59 +27,32 @@ class SynthesizerEngine:
         """Initialize the Synthesizer Engine."""
         self.logger = logging.getLogger(__name__)
     
-    def synthesize(self, evidence_set: List[Dict], hypothesis_set: List[Dict]) -> Dict[str, Any]:
+    def synthesize(self, evidence_set: List[Dict], hypothesis_set: List[Dict], answer_candidates: List[str]) -> Dict[str, Any]:
         """
-        Main synthesis function implementing the logical engine.
+        Main synthesis function with multi-tiered decision logic to always return an answer.
         
         Args:
-            evidence_set: List of evidence objects from Verifier
-                Format: [{"evidence_id": "E01", "issue_text": "...", "answer": "Yes", "confidence": 0.88}, ...]
-            
-            hypothesis_set: List of causal rules from Strategist  
-                Format: [{"hypothesis_id": "H1", "IF": [{"evidence_id": "E01", "answer_is": "Yes"}], "THEN": {"final_answer": "Fry"}}, ...]
+            evidence_set: List of evidence objects from Verifier.
+            hypothesis_set: List of causal rules from Strategist.
+            answer_candidates: List of initial answer candidates from Verifier for fallback.
         
         Returns:
             Dict with keys: status, answer, causal_trace
-            status: "CONCLUSIVE" | "INCONCLUSIVE" | "CONTRADICTORY"
         """
-        self.logger.info("Synthesizer Engine: Starting logical synthesis")
-        self.logger.debug(f"Evidence set: {evidence_set}")
-        self.logger.debug(f"Hypothesis set: {hypothesis_set}")
+        self.logger.info("Synthesizer Engine: Starting multi-tiered logical synthesis")
         
-        # Input validation
-        if not isinstance(evidence_set, list) or not isinstance(hypothesis_set, list):
-            self.logger.error("Invalid input types: evidence_set and hypothesis_set must be lists")
-            return self._create_error_response("Invalid input types")
-        
-        # Step 1: Convert evidence_set to map for fast lookup
+        # Step 1: Build evidence map for fast lookup
         evidence_map = self._build_evidence_map(evidence_set)
-        self.logger.debug(f"Evidence map: {evidence_map}")
         
-        # Step 2: Process each hypothesis to check conditions
-        triggered_conclusions = []
-        causal_trace = []
-        
+        # Step 2: Evaluate all hypotheses
+        triggered_hypotheses = []
         for hypothesis in hypothesis_set:
-            if not self._validate_hypothesis_format(hypothesis):
-                self.logger.warning(f"Invalid hypothesis format: {hypothesis}")
-                continue
-                
-            conditions_met = self._check_hypothesis_conditions(hypothesis, evidence_map)
-            
-            if conditions_met:
-                conclusion = hypothesis['THEN']['final_answer']
-                triggered_conclusions.append(conclusion)
-                
-                trace_entry = {
-                    "hypothesis_id": hypothesis['hypothesis_id'],
-                    "triggered_by_evidence": [c['evidence_id'] for c in hypothesis['IF']]
-                }
-                causal_trace.append(trace_entry)
-                
-                self.logger.debug(f"Hypothesis {hypothesis['hypothesis_id']} triggered -> {conclusion}")
+            if self._validate_hypothesis_format(hypothesis) and self._check_hypothesis_conditions(hypothesis, evidence_map):
+                triggered_hypotheses.append(hypothesis)
+                self.logger.debug(f"Hypothesis {hypothesis['hypothesis_id']} triggered -> {hypothesis['THEN']['final_answer']}")
         
-        # Step 3: Check consistency of conclusions
-        result = self._evaluate_conclusions(triggered_conclusions, causal_trace)
+        # Step 3: Multi-tiered decision making
+        result = self._evaluate_and_decide(triggered_hypotheses, answer_candidates)
         
         self.logger.info(f"Synthesis complete. Status: {result['status']}, Answer: {result.get('answer', 'None')}")
         return result
@@ -139,42 +112,75 @@ class SynthesizerEngine:
         
         return conditions_met
     
-    def _evaluate_conclusions(self, triggered_conclusions: List[str], causal_trace: List[Dict]) -> Dict[str, Any]:
-        """Evaluate the consistency of triggered conclusions."""
-        unique_conclusions = set(triggered_conclusions)
+    def _evaluate_and_decide(self, triggered_hypotheses: List[Dict], answer_candidates: List[str]) -> Dict[str, Any]:
+        """
+        Multi-tiered decision logic to always produce an answer.
+        Tier 1: Pure Logic -> Tier 2: Conflict Resolution -> Tier 3: Best-Guess Fallback
         
-        if len(unique_conclusions) == 0:
-            # No hypothesis was triggered
-            self.logger.info("No hypotheses triggered - INCONCLUSIVE")
-            return {
-                "status": "INCONCLUSIVE",
-                "answer": None,
-                "causal_trace": [],
-                "explanation": "No logical rules were satisfied by the available evidence"
+        Enhanced for Design V2: Includes reasoning_description and evidence details in causal_trace.
+        """
+        # Build enhanced causal trace with metadata for explanation generation
+        causal_trace = []
+        for h in triggered_hypotheses:
+            trace_entry = {
+                "hypothesis_id": h['hypothesis_id'],
+                "reasoning_description": h.get('reasoning_description', 'Logical reasoning based on evidence'),
+                "triggered_by_evidence": [c['evidence_id'] for c in h['IF']],
+                "confidence_source": h.get('confidence_source', 0.5)
             }
+            causal_trace.append(trace_entry)
         
-        elif len(unique_conclusions) > 1:
-            # Contradictory conclusions
-            self.logger.warning(f"Contradictory conclusions found: {unique_conclusions}")
-            return {
-                "status": "CONTRADICTORY", 
-                "answer": None,
-                "causal_trace": causal_trace,
-                "contradictory_answers": list(unique_conclusions),
-                "explanation": f"Multiple contradictory conclusions reached: {list(unique_conclusions)}"
-            }
+        # --- Tier 1: Pure Logic ---
+        if len(triggered_hypotheses) > 0:
+            unique_conclusions = {h['THEN']['final_answer'] for h in triggered_hypotheses}
+            if len(unique_conclusions) == 1:
+                final_answer = unique_conclusions.pop()
+                self.logger.info(f"Tier 1 (CONCLUSIVE): Single logical conclusion found: {final_answer}")
+                return {"status": "CONCLUSIVE", "answer": final_answer, "causal_trace": causal_trace}
         
-        else:
-            # Single consistent conclusion
-            final_answer = unique_conclusions.pop()
-            self.logger.info(f"Conclusive result: {final_answer}")
+            # --- Tier 2: Conflict Resolution using Confidence ---
+            self.logger.warning(f"Tier 2 (CONFLICT RESOLUTION): Multiple conclusions triggered: {unique_conclusions}. Resolving with confidence.")
+            best_hypothesis = max(triggered_hypotheses, key=lambda h: h.get('confidence_source', 0))
+            final_answer = best_hypothesis['THEN']['final_answer']
+            max_confidence = best_hypothesis.get('confidence_source', 0)
+            
+            # Check for a true tie in confidence
+            ties = [h for h in triggered_hypotheses if h.get('confidence_source', 0) == max_confidence]
+            if len({h['THEN']['final_answer'] for h in ties}) > 1:
+                self.logger.error(f"Unresolvable conflict with tied confidence {max_confidence}. Falling back.")
+                # Fall through to Tier 3
+            else:
+                self.logger.info(f"Conflict resolved. Answer '{final_answer}' chosen with confidence {max_confidence:.2f}.")
+                
+                # Enhanced causal trace for conflict resolution - only include winning hypothesis
+                winning_trace = [trace for trace in causal_trace 
+                               if trace["hypothesis_id"] == best_hypothesis['hypothesis_id']]
+                
+                return {
+                    "status": "CONCLUSIVE_AFTER_CONFLICT",
+                    "answer": final_answer,
+                    "causal_trace": winning_trace
+                }
+
+        # --- Tier 3: Best-Guess Fallback ---
+        if answer_candidates:
+            final_answer = answer_candidates[0]
+            self.logger.warning(f"Tier 3 (FALLBACK): Using first answer candidate '{final_answer}'.")
             return {
-                "status": "CONCLUSIVE",
+                "status": "CONCLUSIVE_BY_FALLBACK",
                 "answer": final_answer,
-                "causal_trace": causal_trace,
-                "explanation": f"Logical conclusion reached: {final_answer}"
+                "causal_trace": []
             }
-    
+        else:
+            # Absolute last resort
+            final_answer = "Unavailable"
+            self.logger.error("Tier 3 (FALLBACK): No answer candidates available. Returning 'Unavailable'.")
+            return {
+                "status": "CONCLUSIVE_BY_FALLBACK",
+                "answer": final_answer,
+                "causal_trace": []
+            }
+
     def _create_error_response(self, error_message: str) -> Dict[str, Any]:
         """Create standardized error response."""
         return {
@@ -232,7 +238,7 @@ class SynthesizerAgent:
             }
         
         # Use new engine
-        result = self.engine.synthesize(evidence_set, hypothesis_set)
+        result = self.engine.synthesize(evidence_set, hypothesis_set, answer_candidates)
         
         # Convert to legacy format for backward compatibility
         return {
@@ -247,19 +253,18 @@ class SynthesizerAgent:
             "synthesizer_result": result  # Full new format result
         }
     
-    def synthesize(self, evidence_set: List[Dict], hypothesis_set: List[Dict]) -> Dict[str, Any]:
+    def synthesize(self, evidence_set: List[Dict], hypothesis_set: List[Dict], answer_candidates: List[str] = None) -> Dict[str, Any]:
         """
         New interface for the logical synthesis engine.
         
         Args:
-            evidence_set: Evidence from Verifier in format:
-                [{"evidence_id": "E01", "issue_text": "...", "answer": "Yes", "confidence": 0.88}, ...]
-            
-            hypothesis_set: Logical rules from Strategist in format:
-                [{"hypothesis_id": "H1", "IF": [{"evidence_id": "E01", "answer_is": "Yes"}], 
-                  "THEN": {"final_answer": "Answer"}}, ...]
+            evidence_set: Evidence from Verifier.
+            hypothesis_set: Logical rules from Strategist.
+            answer_candidates: List of initial answer candidates for fallback.
         
         Returns:
-            {"status": "CONCLUSIVE|INCONCLUSIVE|CONTRADICTORY", "answer": "...", "causal_trace": [...]}
+            A dictionary with status, answer, and causal_trace.
         """
-        return self.engine.synthesize(evidence_set, hypothesis_set) 
+        if answer_candidates is None:
+            answer_candidates = [] # Ensure it's a list
+        return self.engine.synthesize(evidence_set, hypothesis_set, answer_candidates) 

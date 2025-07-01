@@ -1,10 +1,10 @@
-# FDR/main.py - MVKB-X Central Control Point
+# FDR/main.py - FDR Central Control Point
 import argparse
 import logging
 import os
 import json
 import warnings
-from src.pipeline import run_mvkb_x_pipeline
+from src.pipeline import run_fdr_pipeline
 
 # Suppress warnings for clean output
 warnings.filterwarnings("ignore")
@@ -74,8 +74,8 @@ def main():
         logging.info("🧪 Test mode: Running with test configuration")
 
     try:
-        # Run MVKB-X Pipeline with unified config
-        results = run_mvkb_x_pipeline(
+        # Run FDR Pipeline with unified config
+        results = run_fdr_pipeline(
             use_vllm=use_vllm, 
             enable_evaluation=args.evaluate,
             override_samples=args.samples

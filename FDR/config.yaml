@@ -1,8 +1,8 @@
-# MVKB-X Pipeline Unified Configuration
+# FDR Pipeline Unified Configuration
 # Paper: Faithful Visual Question Answering with decomposed reasoning Multi-Agent system
 
-experiment_name: "mvkb_x_unified"
-description: "MVKB-X pipeline with unified configuration"
+experiment_name: "fdr_unified"
+description: "FDR pipeline with unified configuration"
 
 # Dataset Selection - Change this to switch datasets
 active_dataset: "vqax"  # Options: "vqax", "vivqax", "custom"
@@ -42,7 +42,7 @@ logging_config:
   level: "INFO"
   format: "%(asctime)s - %(levelname)s - %(message)s"
   log_to_file: true
-  log_file: "output/mvkb_x.log"
+  log_file: "output/fdr.log"
 
 # Agent Configuration
 agents_config:
@@ -111,12 +111,12 @@ model_config:
     model_name: "IDEA-RESEARCH/grounding-dino-tiny"
     box_threshold: 0.35
     text_threshold: 0.25
-    device: "cuda:0"
+    device: "cuda:2"
     
   # DAM Configuration
   dam:
     model_name: "nvidia/DAM-3B-Self-Contained"
-    device: "cuda:0"
+    device: "cuda:2"
     max_new_tokens: 50
     temperature: 0.2
 
@@ -167,12 +167,12 @@ evaluation_config:
 hardware_config:
   use_gpu: true
   gpu_device: "cuda:0"
-  mixed_precision: true
+  mixed_precision: false
   optimization_level: "O1"
 
 # Environment Configuration
 environment:
-  CUDA_VISIBLE_DEVICES: "0"
+  CUDA_VISIBLE_DEVICES: "0,1,2"
   PYTORCH_CUDA_ALLOC_CONF: "max_split_size_mb:512"
 
 # Advanced Features

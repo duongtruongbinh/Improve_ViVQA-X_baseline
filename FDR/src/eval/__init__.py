@@ -1,5 +1,5 @@
 """
-MVKB-X Evaluation Module
+FDR Evaluation Module
 Comprehensive evaluation metrics for VQA accuracy and explanation quality.
 """
 

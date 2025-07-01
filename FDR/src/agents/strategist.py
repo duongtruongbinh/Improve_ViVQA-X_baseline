@@ -1,14 +1,17 @@
 """
-StrategistAgent for MVKB-X Pipeline
+StrategistAgent for FDR Pipeline
 The Strategist Agent (formerly SeekerAgent), based on an LLM.
 Strategic reasoning agent responsible for Multi-View Knowledge Base (MVKB) construction,
-hypothesis generation, and confidence assessment.
+hypothesis generation, confidence assessment, and explanation generation.
+
+Enhanced for Design V2: Integrated explanation generation capabilities.
 """
 
 import logging
 from typing import Dict, List, Any, Optional
 from openai import OpenAI
 from retrying import retry
+import json
 
 from .base import BaseAgent
 
@@ -29,11 +32,16 @@ class StrategistAgent(BaseAgent):
     """
     The Strategist Agent (formerly SeekerAgent), based on an LLM.
     Strategic reasoning agent responsible for Multi-View Knowledge Base (MVKB) construction,
-    hypothesis generation, and confidence assessment.
+    hypothesis generation, confidence assessment, and explanation generation.
+    
+    Enhanced for Design V2: Integrated explanation generation capabilities.
     """
     
     def __init__(self, client: OpenAI = None, model_name: str = None, verifier=None, use_vllm: bool = True):
         super().__init__(use_vllm, model_name)
+        
+        # Initialize logger
+        self.logger = logging.getLogger(__name__)
         
         # Initialize backend
         self._initialize_backend()
@@ -57,48 +65,342 @@ class StrategistAgent(BaseAgent):
 
     def build_mvkb(self, question: str, image_path: str, answer_candidates: list, caption: str) -> list:
         """
-        Builds the complete Multi-View Knowledge Base by orchestrating strategic reasoning.
-        Returns MVKB entries with structured format for Synthesizer.
-        """
-        logging.info(f"Strategist: Building MVKB for question '{question}'")
-        mvkb = []
-
-        relevant_issues = self._create_relevant_issues(question, answer_candidates, caption)
-        logging.debug(f"Strategist: Generated relevant issues: {relevant_issues}")
-
-        for issue in relevant_issues:
-            # Use verifier to get answer for sub-question
-            issue_response = self.verifier.generate_initial_response(issue, image_path)
-            issue_answer = issue_response['answer_candidates'][0]
-            
-            # Calculate issue confidence based on answer quality and consistency
-            issue_confidence = self._calculate_issue_confidence(issue, issue_answer, issue_response)
-            logging.debug(f"Strategist: Answer for issue '{issue}' is '{issue_answer}' (confidence: {issue_confidence:.3f})")
-            
-            for candidate in answer_candidates:
-                hypothesis_data = self._formulate_hypotheses_and_confidence(question, candidate, issue, issue_answer)
-                if hypothesis_data:
-                    # Use hypothesis confidence_score as the primary confidence metric
-                    # This is more accurate than generic issue_confidence
-                    primary_confidence = hypothesis_data.get("confidence_score", 0.5)
-                    
-                    # Combine issue confidence with hypothesis confidence for more robust scoring
-                    combined_confidence = (primary_confidence + issue_confidence) / 2.0
-                    
-                    mvkb_entry = {
-                        "original_question": question,
-                        "answer_candidate": candidate,
-                        "relevant_issue": issue,
-                        "issue_answer": issue_answer,
-                        "issue_confidence": combined_confidence,  # Use calculated confidence
-                        "hypothesis": hypothesis_data.get("hypothesis"),
-                        "confidence_score": primary_confidence,  # Keep original hypothesis confidence
-                        "confidence_word": hypothesis_data.get("confidence_word")
-                    }
-                    mvkb.append(mvkb_entry)
+        Builds a Multi-View Knowledge Base (MVKB) by decomposing the question,
+        formulating hypotheses, and gathering evidence. This version is guided
+        by a structured reasoning process learned from dataset examples.
         
-        logging.info(f"Strategist: MVKB built with {len(mvkb)} entries.")
-        return mvkb
+        Returns the enhanced format with reasoning_description and issue_description
+        as per Design V2 for improved explanation generation.
+        """
+        logging.info("Strategist: Building MVKB with structured reasoning.")
+        
+        # Step 1: Generate a structured reasoning plan (issues + hypothesis) from the LLM
+        reasoning_plan = self._generate_reasoning_plan(question, caption, answer_candidates)
+        
+        if not reasoning_plan:
+            logging.error("Strategist: Failed to generate a reasoning plan.")
+            return []
+
+        # Step 2: Verify each relevant issue using the VerifierAgent
+        evidence_set = []
+        relevant_issues = reasoning_plan.get("relevant_issues", [])
+        
+        for issue in relevant_issues:
+            issue_id = issue.get("issue_id", "unknown_issue")
+            issue_text = issue.get("question_text", "")
+            
+            if not issue_text:
+                continue
+
+            # Verifier answers the sub-question
+            issue_answer = self.verifier.answer_contextual_question(
+                question=issue_text,
+                image_path=image_path,
+                context_prompt="Answer this question based on the image:"
+            )
+            
+            # Enhanced evidence format with issue_description for better explanation generation
+            evidence_set.append({
+                "evidence_id": issue_id,
+                "issue_text": issue_text,
+                "issue_description": self._generate_issue_description(issue_text, issue_answer),
+                "answer": issue_answer.strip(),
+                "confidence": 0.85,  # Default confidence for verified evidence
+                "source": "VerifierAgent"
+            })
+            logging.debug(f"Strategist: Verified issue '{issue_id}' -> Answer: '{issue_answer.strip()}'")
+
+        # Step 3: Enhanced hypothesis with reasoning_description
+        hypothesis = reasoning_plan.get("hypothesis", {})
+        if hypothesis:
+            # Add reasoning_description for explanation generation
+            hypothesis["reasoning_description"] = self._generate_reasoning_description(
+                hypothesis, question, answer_candidates
+            )
+            hypothesis["confidence_source"] = 0.8  # Default confidence for generated hypotheses
+        
+        # Step 4: Combine the evidence and hypothesis into the final format for the Synthesizer
+        mvkb_payload = {
+            "evidence_set": evidence_set,
+            "hypothesis_set": [hypothesis] if hypothesis else []
+        }
+        
+        logging.info("Strategist: Successfully built enhanced MVKB payload with descriptions.")
+        return mvkb_payload
+
+    def generate_explanation(self, question: str, synthesis_result: dict, caption: str, evidence_set: list) -> str:
+        """
+        Generate natural language explanation from synthesis results.
+        This integrates explanation generation directly into the Strategist.
+        """
+        if not synthesis_result:
+            return "Unable to generate explanation due to synthesis failure."
+        
+        try:
+            # Step 1: Build narrative context from synthesis result
+            context = self._build_narrative_context(synthesis_result, evidence_set)
+            
+            # Step 2: Create narrative template
+            template = self._create_narrative_template(question, synthesis_result, context)
+            
+            # Step 3: Generate natural explanation using LLM
+            explanation = self._generate_with_llm(template, question, synthesis_result, caption)
+            
+            self.logger.debug(f"Strategist explanation generated: {explanation}")
+            return explanation
+            
+        except Exception as e:
+            self.logger.error(f"Strategist explanation generation failed: {e}")
+            
+            # Fallback to simple explanation
+            status = synthesis_result.get('status', 'UNKNOWN')
+            answer = synthesis_result.get('answer', 'unknown')
+            
+            if status == 'CONCLUSIVE':
+                return f"The answer is {answer} based on logical analysis of the image."
+            elif status == 'CONCLUSIVE_AFTER_CONFLICT':
+                return f"The answer is {answer} after resolving multiple possibilities from the visual evidence."
+            elif status == 'CONCLUSIVE_BY_FALLBACK':
+                return f"The answer is {answer} based on initial visual analysis."
+            else:
+                return f"The answer is {answer} based on image analysis."
+
+    def _build_narrative_context(self, synthesis_result: Dict[str, Any], evidence_set: List[Dict]) -> Dict[str, Any]:
+        """
+        Build narrative context from causal trace and evidence.
+        """
+        causal_trace = synthesis_result.get('causal_trace', [])
+        status = synthesis_result.get('status', 'UNKNOWN')
+        answer = synthesis_result.get('answer')
+        
+        context = {
+            'answer': answer,
+            'status': status,
+            'reasoning_description': None,
+            'evidence_descriptions': [],
+            'confidence_level': 'moderate'
+        }
+        
+        # Extract reasoning from causal trace
+        if causal_trace:
+            # Get the first (or winning) hypothesis
+            winning_hypothesis = causal_trace[0]
+            context['reasoning_description'] = winning_hypothesis.get('reasoning_description', '')
+            
+            # Get evidence descriptions
+            triggered_evidence_ids = winning_hypothesis.get('triggered_by_evidence', [])
+            evidence_map = {e.get('evidence_id'): e for e in evidence_set}
+            
+            for evidence_id in triggered_evidence_ids:
+                if evidence_id in evidence_map:
+                    evidence = evidence_map[evidence_id]
+                    description = evidence.get('issue_description', evidence.get('issue_text', ''))
+                    context['evidence_descriptions'].append(description)
+            
+            # Determine confidence level
+            confidence = winning_hypothesis.get('confidence_source', 0.5)
+            if confidence >= 0.8:
+                context['confidence_level'] = 'high'
+            elif confidence >= 0.6:
+                context['confidence_level'] = 'moderate'
+            else:
+                context['confidence_level'] = 'low'
+        
+        return context
+    
+    def _create_narrative_template(self, question: str, synthesis_result: Dict[str, Any], context: Dict[str, Any]) -> str:
+        """
+        Create a narrative template based on synthesis status.
+        """
+        status = synthesis_result.get('status')
+        answer = context['answer']
+        reasoning = context['reasoning_description']
+        evidence_descriptions = context['evidence_descriptions']
+        
+        if status == 'CONCLUSIVE':
+            # Strong logical conclusion
+            if reasoning and evidence_descriptions:
+                evidence_text = "; ".join(evidence_descriptions)
+                template = f"The answer is '{answer}' based on logical reasoning: {reasoning}. " + \
+                          f"This conclusion is supported by evidence: {evidence_text}."
+            else:
+                template = f"The answer is '{answer}' based on clear logical analysis of the image."
+                
+        elif status == 'CONCLUSIVE_AFTER_CONFLICT':
+            # Resolved conflict  
+            template = f"The answer is '{answer}' after resolving multiple possibilities. " + \
+                      f"The reasoning: {reasoning or 'visual analysis confirms this as the most likely answer'}."
+                      
+        elif status == 'CONCLUSIVE_BY_FALLBACK':
+            # Best guess fallback
+            template = f"The answer is '{answer}' based on initial visual analysis, " + \
+                      "as a definitive logical conclusion could not be reached from the available evidence."
+                      
+        else:
+            # Generic template
+            template = f"The answer is '{answer}' based on analysis of the image."
+        
+        return template
+    
+    def _generate_with_llm(self, template: str, question: str, synthesis_result: Dict[str, Any], caption: str) -> str:
+        """
+        Use LLM to transform template into natural, fluent explanation.
+        """
+        if not self.client:
+            return template
+            
+        status = synthesis_result.get('status', 'UNKNOWN')
+        answer = synthesis_result.get('answer')
+        
+        # Build prompt for LLM
+        prompt = f"""You are an expert at explaining visual question answering results. Transform the following logical explanation into a natural, conversational explanation.
+
+ORIGINAL QUESTION: {question}
+
+IMAGE CONTEXT: {caption}
+
+LOGICAL ANALYSIS RESULT: {template}
+
+REASONING STATUS: {status}
+
+YOUR TASK:
+- Rewrite the explanation to be natural and conversational
+- Remove any robotic or template-like language
+- Keep the explanation concise (1-2 sentences maximum)
+- Maintain the logical reasoning but make it sound human
+- Use appropriate confidence language based on the reasoning status
+
+Now transform this explanation:
+{template}
+
+Natural explanation:"""
+
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.3,  # Low temperature for consistent, focused explanations
+                max_tokens=100,   # Keep explanations concise
+            )
+            
+            explanation = response.choices[0].message.content.strip()
+            
+            # Ensure the explanation starts appropriately
+            if not any(explanation.lower().startswith(phrase) for phrase in 
+                      ['the answer', 'this', 'the image', 'based on', 'the']):
+                explanation = f"The answer is {answer}. {explanation}"
+            
+            return explanation
+            
+        except Exception as e:
+            self.logger.error(f"LLM explanation generation failed: {e}")
+            # Fallback to template
+            return template
+
+    @retry(stop_max_attempt_number=3, wait_fixed=2000)
+    def _generate_reasoning_plan(self, question: str, caption: str, answer_candidates: list) -> Optional[Dict]:
+        """
+        Generates a structured reasoning plan (issues, hypothesis) using a dedicated prompt.
+        This is the core of the new "Learning-Guided" strategy.
+        """
+        if not self.client:
+            logging.error("Strategist: LLM client not available.")
+            return None
+        
+        prompt = self._build_reasoning_prompt(question, caption, answer_candidates)
+        
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.2,
+                max_tokens=800,
+                response_format={"type": "json_object"} # Force JSON output
+            )
+            
+            content = response.choices[0].message.content.strip()
+            plan = json.loads(content)
+            
+            logging.info("Strategist: Successfully generated reasoning plan.")
+            logging.debug(f"Reasoning Plan: {plan}")
+            return plan
+
+        except Exception as e:
+            logging.error(f"Strategist: Failed to generate or parse reasoning plan: {e}")
+            return None
+
+    def _build_reasoning_prompt(self, question: str, caption: str, answer_candidates: list) -> str:
+        """Builds the prompt for the LLM to generate a reasoning plan."""
+        
+        return f"""You are an expert reasoning agent for Visual Question Answering. Your task is to create a logical plan to answer a question based on an image.
+
+Follow this two-step process:
+
+**Step 1: Decompose the Main Question**
+Break down the main question into 2-3 smaller, factual, and verifiable sub-questions ("Relevant Issues"). These issues should act as building blocks of evidence. Each issue must have a unique `issue_id`.
+
+**Step 2: Formulate a Logical Hypothesis**
+Create a single, clear logical rule ("Hypothesis"). This rule must use the answers to your "Relevant Issues" to logically deduce the final answer. The hypothesis should be in an IF-THEN format, where the IF part checks the answers to the relevant issues.
+
+**EXAMPLE 1:**
+- **Main Question**: "What does the weather seem to be like?"
+- **Image Caption**: "A photo shows people in heavy coats walking on a snowy sidewalk."
+- **Answer Candidates**: ["Sunny", "Rainy", "Cold", "Warm"]
+- **Your Output (JSON Object):**
+{{
+  "relevant_issues": [
+    {{"issue_id": "issue_01", "question_text": "Are the people in the photo wearing heavy coats or winter jackets?"}},
+    {{"issue_id": "issue_02", "question_text": "Is there visible snow or ice on the ground?"}}
+  ],
+  "hypothesis": {{
+    "hypothesis_id": "H_Weather_Cold",
+    "IF": [
+      {{"issue_id": "issue_01", "answer_is": "Yes"}},
+      {{"issue_id": "issue_02", "answer_is": "Yes"}}
+    ],
+    "THEN": {{"final_answer": "Cold"}}
+  }}
+}}
+
+**EXAMPLE 2:**
+- **Main Question**: "What room is this?"
+- **Image Caption**: "A room with two sinks, two mirrors, and a bathtub visible in the reflection."
+- **Answer Candidates**: ["Kitchen", "Bedroom", "Bathroom"]
+- **Your Output (JSON Object):**
+{{
+  "relevant_issues": [
+    {{"issue_id": "issue_01", "question_text": "How many sinks are visible in the room?"}},
+    {{"issue_id": "issue_02", "question_text": "Is a bathtub or shower present in the room?"}}
+  ],
+  "hypothesis": {{
+    "hypothesis_id": "H_Room_Bathroom",
+    "IF": [
+      {{"issue_id": "issue_01", "answer_is": "2"}},
+      {{"issue_id": "issue_02", "answer_is": "Yes"}}
+    ],
+    "THEN": {{"final_answer": "Bathroom"}}
+  }}
+}}
+
+---
+
+**YOUR TASK:**
+Apply this reasoning process to the following task. Provide your output as a single JSON object.
+
+- **Main Question**: "{question}"
+- **Image Caption**: "{caption}"
+- **Answer Candidates**: {json.dumps(answer_candidates)}
+
+**Your JSON Output:**
+"""
+
+    def _formulate_hypotheses_and_confidence(self, question: str, answer_candidate: str, relevant_issue: str, issue_answer: str) -> dict:
+        """DEPRECATED - Replaced by _generate_reasoning_plan"""
+        pass
+
+    def _get_issue_confidence(self, issue_response: dict) -> float:
+        """DEPRECATED - Replaced by structured reasoning plan"""
+        pass
 
     @retry(stop_max_attempt_number=3, wait_fixed=2000)
     def _create_relevant_issues(self, question: str, answer_candidates: list, caption: str) -> list:
@@ -175,117 +477,6 @@ Format: Return only the sub-questions, one per line."""
             return ["What objects are visible?", "What is the main subject?", "What are the key details?"]
 
     @retry(stop_max_attempt_number=3, wait_fixed=2000)
-    def _formulate_hypotheses_and_confidence(self, question: str, answer_candidate: str, relevant_issue: str, issue_answer: str) -> dict:
-        """Formulate hypothesis and confidence for a specific answer candidate using templates."""
-        if not self.client:
-            logging.error("No working backend available for hypothesis formulation")
-            return {}
-        
-        try:
-            # Try template-based approach first
-            if self.use_templates and self.prompt_manager:
-                prompt = self.prompt_manager.render(
-                    'agents/strategist/fdr_strategist_hypothesis.jinja',
-                    question=question,
-                    answer_candidate=answer_candidate,
-                    relevant_issue=relevant_issue,
-                    issue_answer=issue_answer
-                )
-                logging.debug("✅ Using template-based prompt for hypothesis formulation")
-            else:
-                # Fallback to hardcoded prompt
-                prompt = f"""Given this information, formulate a hypothesis about whether the answer candidate is correct.
-
-Original Question: {question}
-Answer Candidate: {answer_candidate}
-Relevant Issue: {relevant_issue}
-Issue Answer: {issue_answer}
-
-Task:
-1. Create a logical hypothesis connecting the issue answer to the answer candidate
-2. Assign a confidence score (0.0 to 1.0) based on how well the issue answer supports the candidate
-3. Provide a confidence word (Very Likely, Likely, Possible, Unlikely)
-
-Format your response as:
-Hypothesis: [Your logical reasoning]
-Confidence Score: [0.0-1.0]
-Confidence Word: [Very Likely/Likely/Possible/Unlikely]"""
-                logging.debug("⚠️ Using fallback hardcoded prompt for hypothesis formulation")
-
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.1,
-                max_tokens=150
-            )
-            
-            content = response.choices[0].message.content.strip()
-            
-            # Parse JSON response if using templates
-            if self.use_templates and self.prompt_manager and content.startswith('{'):
-                import json
-                try:
-                    parsed = json.loads(content)
-                    result = {
-                        "hypothesis": parsed.get("hypothesis", ""),
-                        "confidence_score": float(parsed.get("confidence_score", 0.5)),
-                        "confidence_word": parsed.get("confidence_word", "Possible")
-                    }
-                    logging.debug("✅ Successfully parsed JSON response from hypothesis template")
-                    return result
-                except (json.JSONDecodeError, ValueError) as e:
-                    logging.warning(f"⚠️ Failed to parse JSON hypothesis response: {e}")
-                    # Fall through to legacy parsing
-            
-            # Legacy parsing for fallback mode
-            hypothesis = ""
-            confidence_score = 0.5
-            confidence_word = "Possible"
-            
-            for line in content.split('\n'):
-                line = line.strip()
-                if line.startswith('Hypothesis:'):
-                    hypothesis = line.replace('Hypothesis:', '').strip()
-                elif line.startswith('Confidence Score:'):
-                    try:
-                        score_str = line.replace('Confidence Score:', '').strip()
-                        confidence_score = float(score_str)
-                        confidence_score = max(0.0, min(1.0, confidence_score))  # Clamp to [0, 1]
-                    except ValueError:
-                        confidence_score = 0.5
-                elif line.startswith('Confidence Word:'):
-                    confidence_word = line.replace('Confidence Word:', '').strip()
-            
-            # Validate confidence word
-            valid_words = ["Very Likely", "Likely", "Possible", "Unlikely"]
-            if confidence_word not in valid_words:
-                # Map confidence score to word
-                if confidence_score >= 0.8:
-                    confidence_word = "Very Likely"
-                elif confidence_score >= 0.6:
-                    confidence_word = "Likely"
-                elif confidence_score >= 0.4:
-                    confidence_word = "Possible"
-                else:
-                    confidence_word = "Unlikely"
-            
-            result = {
-                "hypothesis": hypothesis or f"The issue answer '{issue_answer}' suggests that '{answer_candidate}' may be correct.",
-                "confidence_score": confidence_score,
-                "confidence_word": confidence_word
-            }
-            
-            logging.debug(f"Hypothesis for '{answer_candidate}': {result}")
-            return result
-            
-        except Exception as e:
-            logging.error(f"Hypothesis formulation failed: {e}")
-            return {
-                "hypothesis": f"Analysis suggests '{answer_candidate}' as a potential answer.",
-                "confidence_score": 0.5,
-                "confidence_word": "Possible"
-            } 
-
     def _calculate_issue_confidence(self, issue: str, issue_answer: str, issue_response: dict) -> float:
         """Calculate confidence for an issue answer based on various factors"""
         confidence = 0.5  # Base confidence
@@ -336,3 +527,60 @@ Confidence Word: [Very Likely/Likely/Possible/Unlikely]"""
             confidence = 0.5
         
         return confidence 
+
+    def _generate_issue_description(self, issue_text: str, issue_answer: str) -> str:
+        """
+        Generate a human-readable description of what the issue is checking for.
+        This enhances explanation generation by providing context.
+        """
+        # Extract key concepts from the issue text for description
+        if "how many" in issue_text.lower():
+            return f"Counting the number of objects or elements in the image: {issue_answer}"
+        elif "what color" in issue_text.lower():
+            return f"Identifying the color of the specified object: {issue_answer}"
+        elif "is there" in issue_text.lower() or "are there" in issue_text.lower():
+            return f"Verifying the presence of specific elements: {issue_answer}"
+        elif "what room" in issue_text.lower() or "where" in issue_text.lower():
+            return f"Determining the location or setting: {issue_answer}"
+        elif "what method" in issue_text.lower() or "how" in issue_text.lower():
+            return f"Identifying the method or process: {issue_answer}"
+        else:
+            # General case
+            key_words = [word for word in issue_text.split() if len(word) > 3 and word.lower() not in 
+                        ['what', 'where', 'when', 'how', 'which', 'does', 'are', 'is', 'the', 'this', 'that']]
+            if key_words:
+                focus = " ".join(key_words[:3])  # Take first 3 meaningful words
+                return f"Analyzing {focus} in the image: {issue_answer}"
+            else:
+                return f"Visual analysis question: {issue_answer}"
+
+    def _generate_reasoning_description(self, hypothesis: dict, question: str, answer_candidates: list) -> str:
+        """
+        Generate a natural language description of the logical reasoning behind the hypothesis.
+        This provides context for the explanation generator.
+        """
+        if not hypothesis or 'IF' not in hypothesis or 'THEN' not in hypothesis:
+            return "Logical reasoning based on visual evidence analysis"
+        
+        if_conditions = hypothesis['IF']
+        then_result = hypothesis['THEN'].get('final_answer', 'unknown')
+        
+        # Build reasoning description
+        if len(if_conditions) == 1:
+            condition = if_conditions[0]
+            issue_id = condition.get('issue_id', 'evidence')
+            expected_answer = condition.get('answer_is', 'confirmed')
+            return f"If the visual analysis confirms {expected_answer}, then the answer is {then_result}"
+        
+        elif len(if_conditions) == 2:
+            cond1 = if_conditions[0]
+            cond2 = if_conditions[1]
+            ans1 = cond1.get('answer_is', 'confirmed')
+            ans2 = cond2.get('answer_is', 'confirmed')
+            return f"If both visual checks confirm {ans1} and {ans2}, then the answer is {then_result}"
+        
+        else:
+            # Multiple conditions
+            answers = [cond.get('answer_is', 'confirmed') for cond in if_conditions]
+            conditions_text = ", ".join(answers)
+            return f"If multiple visual analyses confirm {conditions_text}, then the answer is {then_result}" 

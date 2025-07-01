@@ -258,10 +258,10 @@ class ExplanationAgent(BaseAgent):
 
 ### Main Pipeline Flow
 ```python
-def run_mvkb_x_pipeline(use_vllm=True, enable_evaluation=False, 
+def run_fdr_pipeline(use_vllm=True, enable_evaluation=False, 
                         override_samples=None, config_path=None):
     """
-    Complete MVKB-X pipeline orchestration
+    Complete FDR pipeline orchestration
     """
     
     # Step 1: Initialize all agents

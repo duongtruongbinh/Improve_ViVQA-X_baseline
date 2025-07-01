@@ -95,17 +95,17 @@ Output (Answer + Reasoning trace)
 ### For Researchers
 ```python
 # Direct pipeline access for experiments
-from src.pipeline import run_mvkb_x_pipeline
+from src.pipeline import run_fdr_pipeline
 
 # Standard research run
-results = run_mvkb_x_pipeline(
+results = run_fdr_pipeline(
     use_vllm=True, 
     enable_evaluation=True,
     override_samples=100
 )
 
 # Custom configuration
-results = run_mvkb_x_pipeline(
+results = run_fdr_pipeline(
     config_path="custom_config.yaml",
     enable_evaluation=True
 )

@@ -51,7 +51,7 @@ explanation = explanation.generate_explanation(question, final_answer, caption, 
 Tạo **adapter layer** trong pipeline để convert format và tận dụng cả cũ + mới:
 
 ```python
-def run_mvkb_x_pipeline_with_new_synthesizer():
+def run_fdr_pipeline_with_new_synthesizer():
     # Steps 1-2: Giữ nguyên Verifier + Strategist
     initial_response = verifier.generate_initial_response(question, image_path)
     mvkb = strategist.build_mvkb(question, image_path, answer_candidates, caption)

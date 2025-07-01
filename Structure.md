@@ -197,7 +197,7 @@ class ExplanationAgent:
 
 **Main Pipeline Function:**
 ```python
-def run_mvkb_x_pipeline(
+def run_fdr_pipeline(
     use_vllm: bool = True,
     enable_evaluation: bool = True, 
     override_samples: int = -1

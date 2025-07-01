@@ -1,5 +1,5 @@
 """
-Base module for MVKB-X agents
+Base module for FDR agents
 Contains common imports, helper functions, and base classes.
 """
 
@@ -31,7 +31,7 @@ def encode_image_to_base64(image_path: str) -> str | None:
         return None
 
 class BaseAgent:
-    """Base class for all MVKB-X agents with common functionality."""
+    """Base class for all FDR agents with common functionality."""
     
     def __init__(self, use_vllm: bool = True, model_name: str = None):
         self.use_vllm = use_vllm

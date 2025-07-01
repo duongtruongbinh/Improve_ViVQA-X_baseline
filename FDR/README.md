@@ -4,7 +4,7 @@
 
 ## 🏗️ Architecture
 
-MVKB-X is a modular VQA pipeline with explainable reasoning capabilities using a multi-agent approach:
+FDR is a modular VQA pipeline with explainable reasoning capabilities using a multi-agent approach:
 
 - **VerifierAgent**: VLM + GroundingDINO + DAM for visual verification and initial analysis
 - **StrategistAgent**: LLM for MVKB construction and hypothesis generation  
@@ -67,15 +67,15 @@ python3 main.py --backend openai --test --evaluate --samples 10
 
 ```bash
 # Direct pipeline import for research
-python3 -c "from src.pipeline import run_mvkb_x_pipeline; run_mvkb_x_pipeline()"
+python3 -c "from src.pipeline import run_fdr_pipeline; run_fdr_pipeline()"
 
 # With custom parameters for experiments
-python3 -c "from src.pipeline import run_mvkb_x_pipeline; run_mvkb_x_pipeline(use_vllm=False, enable_evaluation=True)"
+python3 -c "from src.pipeline import run_fdr_pipeline; run_fdr_pipeline(use_vllm=False, enable_evaluation=True)"
 
 # For research scripting
 python3 -c "
-from src.pipeline import run_mvkb_x_pipeline
-results = run_mvkb_x_pipeline(enable_evaluation=True, override_samples=10)
+from src.pipeline import run_fdr_pipeline
+results = run_fdr_pipeline(enable_evaluation=True, override_samples=10)
 print(f'Processed {len(results)} samples for research')
 "
 ```
@@ -175,7 +175,7 @@ class GEvaluator:
 #### Pipeline Functions (`src/pipeline.py`)
 
 ```python
-def run_mvkb_x_pipeline(config_path: str, use_vllm: bool = True, enable_evaluation: bool = False, override_samples: int = None) -> list
+def run_fdr_pipeline(config_path: str, use_vllm: bool = True, enable_evaluation: bool = False, override_samples: int = None) -> list
 def run_fdr_pipeline(*args, **kwargs)  # Legacy compatibility alias
 def load_config(config_path: str) -> dict
 def setup_agents(config: dict, use_vllm: bool) -> tuple
@@ -201,7 +201,7 @@ def setup_agents(config: dict, use_vllm: bool) -> tuple
    - Follow existing patterns for metric calculation
 
 3. **Pipeline Modifications**: 
-   - Edit `run_mvkb_x_pipeline()` function in `src/pipeline.py`
+   - Edit `run_fdr_pipeline()` function in `src/pipeline.py`
    - Maintain agent interaction patterns
 
 4. **New CLI Options**: 
@@ -259,6 +259,6 @@ pip install transformers openai pyyaml tqdm retrying pillow opencv-python numpy
 ## 📄 Legacy Compatibility
 
 The pipeline maintains backward compatibility:
-- `run_fdr_pipeline()` → `run_mvkb_x_pipeline()`
+- `run_fdr_pipeline()` → `run_fdr_pipeline()`
 - Old config formats are automatically migrated
 - All functions accessible via `src.pipeline` imports
