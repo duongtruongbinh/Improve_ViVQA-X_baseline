@@ -108,10 +108,10 @@ class VerifierAgent(BaseAgent):
                 original_device = torch.cuda.current_device()
                 torch.cuda.set_device(0)
                 
-                self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device="cuda:0")
+                self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device="cuda:1")
                 self.groundingdino_enabled = True
                 self.groundingdino_docker = False
-                logging.info("✅ GroundingDINO native installation loaded on GPU 0")
+                logging.info("✅ GroundingDINO native installation loaded on GPU 1")
                 
                 # Restore original device
                 torch.cuda.set_device(original_device)
@@ -183,7 +183,7 @@ class VerifierAgent(BaseAgent):
         strategies = [
             {
                 "name": "GPU_SHARED",
-                "device": "cuda:0",  # Share with GroundingDINO
+                "device": "cuda:1",  # Share with GroundingDINO
                 "dtype": torch.float16,
                 "dtype_str": "torch.float16"
             },
@@ -848,7 +848,7 @@ Extract 2-4 key objects/nouns, separated by periods (format: object1 . object2 .
         # Detect question type for optimized prompting
         question_lower = question.lower()
         
-        if any(word in question_lower for word in ['does', 'is', 'are', 'can', 'will', 'would', 'should', 'has', 'have']):
+        if question_lower.startswith(('does', 'is', 'are', 'can', 'will', 'would', 'should', 'has', 'have')):
             # Yes/No questions
             return f"""Look at this image and answer the question with ONLY "yes" or "no".
 
@@ -928,7 +928,7 @@ Answer (very brief):"""
                     ]
                 }],
                 temperature=0.1,
-                max_tokens=10  # Force very short responses
+                max_tokens=50  # Force very short responses
             )
             
             primary_answer = response.choices[0].message.content.strip()
@@ -957,7 +957,7 @@ Answer (very brief):"""
                             ]
                         }],
                         temperature=0.5,
-                        max_tokens=10
+                        max_tokens=50
                     )
                     
                     alt_answer = alt_response.choices[0].message.content.strip()
@@ -976,7 +976,7 @@ Answer (very brief):"""
             logging.error(f"Short answer generation failed: {e}")
             candidates = ["error"]
         
-        return candidates[:3]  # Limit to 3 candidates maximum
+        return candidates[:2]  # Limit to 3 candidates maximum
 
     def _clean_short_answer(self, answer: str) -> str:
         """Clean and normalize short answers"""
