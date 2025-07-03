@@ -34,8 +34,10 @@ class ExplanationAgent(BaseAgent):
         # Find key hypothesis with highest confidence for final answer
         key_hypothesis = self._find_key_hypothesis(mvkb_entries, final_answer)
         
+        confidence_level = self._map_confidence_level(key_hypothesis['confidence_score'])
+        hypothesis = f"{key_hypothesis['hypothesis']} ({confidence_level})"
         # Build explanation prompt
-        explanation_prompt = self._build_explanation_prompt()
+        explanation_prompt = self._build_explanation_prompt(question, caption, hypothesis, final_answer)
         
         # Generate explanation
         user_input = f"Question: {question}\n"
@@ -53,8 +55,7 @@ class ExplanationAgent(BaseAgent):
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {"role": "system", "content": explanation_prompt},
-                    {"role": "user", "content": user_input}
+                    {"role": "user", "content": explanation_prompt}
                 ],
                 temperature=0.3,
                 max_tokens=256
@@ -99,19 +100,25 @@ class ExplanationAgent(BaseAgent):
         else:
             return "Unlikely"
 
-    def _build_explanation_prompt(self) -> str:
+    def _build_explanation_prompt(self, question: str, caption: str, key_hypothesis: str, final_answer: str) -> str:
         """Build system prompt for explanation generation"""
-        return """You are a reasoning and explanation generation expert. Your task is to craft a single, concise sentence that synthesizes all provided information to explain WHY a specific answer was chosen for a visual question.
+        return f"""You are an expert at explaining visual question answering results. Your task is to synthesize the following information into a natural, conversational explanation.
 
-You will be given:
-1. **Question:** The original question.
-2. **Image Caption:** The visual context.
-3. **Key Hypothesis:** The core logical rule that was applied.
-4. **Final Answer:** The chosen answer.
+--- PROVIDED INFORMATION ---
 
-Your explanation must be a single, fluid sentence that directly answers "Why was this answer chosen?". It should seamlessly weave together the visual evidence from the caption and the logic from the hypothesis.
+ORIGINAL QUESTION: {question}
 
-**Output Format:**
-Provide only the explanation sentence, starting with "The answer is..."
+IMAGE CONTEXT: {caption}
 
-Example: The answer is "Fry" because the dish's glossy appearance, as seen in the image, directly matches the very likely hypothesis that a glossy sheen indicates a frying preparation method.""" 
+KEY REASONING: {key_hypothesis}
+
+FINAL ANSWER: {final_answer}
+
+--- YOUR TASK ---
+- Create an explanation that is natural and conversational.
+- Remove any robotic or template-like language from the Key Reasoning.
+- Keep the explanation concise (1-2 sentences maximum).
+- Maintain the core logic from the Key Reasoning but make it sound human.
+- Use appropriate confidence language based on the reasoning (e.g., "(Likely)" might become "suggests that...", while "(Very Likely)" might become "clearly shows...").
+
+Natural explanation:"""  
