@@ -337,10 +337,15 @@ Natural explanation:"""
 Follow this two-step process:
 
 **Step 1: Decompose the Main Question**
-Break down the main question into 2-3 smaller, factual, and verifiable sub-questions ("Relevant Issues"). These issues should act as building blocks of evidence. Each issue must have a unique `issue_id`.
+Break down the main question into 2-3 smaller, factual, and verifiable sub-questions ("Relevant Issues"). These issues should act as building blocks of evidence. Each issue must have a unique `issue_id` and a `question_text`.
 
 **Step 2: Formulate a Logical Hypothesis**
-Create a single, clear logical rule ("Hypothesis"). This rule must use the answers to your "Relevant Issues" to logically deduce the final answer. The hypothesis should be in an IF-THEN format, where the IF part checks the answers to the relevant issues.
+Create a single, clear logical rule ("Hypothesis"). This rule must use the answers to your "Relevant Issues" to logically deduce the final answer.
+
+**IMPORTANT: JSON Structure Rules**
+- The `IF` clause in the hypothesis **MUST** contain a list of objects.
+- Each object in the `IF` list **MUST** have two keys: `issue_id` (matching an ID from "Relevant Issues") and `answer_is` (the expected answer for that issue).
+- The `THEN` clause **MUST** contain an object with a single key: `final_answer`.
 
 **EXAMPLE 1:**
 - **Main Question**: "What does the weather seem to be like?"
@@ -362,30 +367,10 @@ Create a single, clear logical rule ("Hypothesis"). This rule must use the answe
   }}
 }}
 
-**EXAMPLE 2:**
-- **Main Question**: "What room is this?"
-- **Image Caption**: "A room with two sinks, two mirrors, and a bathtub visible in the reflection."
-- **Answer Candidates**: ["Kitchen", "Bedroom", "Bathroom"]
-- **Your Output (JSON Object):**
-{{
-  "relevant_issues": [
-    {{"issue_id": "issue_01", "question_text": "How many sinks are visible in the room?"}},
-    {{"issue_id": "issue_02", "question_text": "Is a bathtub or shower present in the room?"}}
-  ],
-  "hypothesis": {{
-    "hypothesis_id": "H_Room_Bathroom",
-    "IF": [
-      {{"issue_id": "issue_01", "answer_is": "2"}},
-      {{"issue_id": "issue_02", "answer_is": "Yes"}}
-    ],
-    "THEN": {{"final_answer": "Bathroom"}}
-  }}
-}}
-
 ---
 
 **YOUR TASK:**
-Apply this reasoning process to the following task. Provide your output as a single JSON object.
+Apply this reasoning process to the following task. Provide your output as a single, strictly formatted JSON object that follows all the rules.
 
 - **Main Question**: "{question}"
 - **Image Caption**: "{caption}"

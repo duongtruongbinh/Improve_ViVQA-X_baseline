@@ -8,7 +8,7 @@ This guide covers setting up the FDR (Faithful Decomposed Reasoning) framework -
 
 ## 📋 Prerequisites
 
-- **Python**: 3.8+
+- **Python**: 3.9+
 - **Conda**: Package manager (recommended)
 - **GPU**: NVIDIA GPU with CUDA support (recommended, 8GB+ VRAM)
 - **System Memory**: 16GB+ RAM recommended
@@ -94,13 +94,16 @@ export OPENAI_API_KEY="sk-your-actual-api-key-here"
 
 ### 4. Test Installation
 ```bash
-# Quick test with OpenAI backend
-python main.py --backend openai --test --samples 1
+# Quick test with OpenAI backend (uses 2 samples by default)
+python main.py --backend openai --test
+
+# Test with a single sample
+python main.py --backend openai --test 1
 
 # Expected output:
-# 🚀 Starting MVKB-X Pipeline
+# 🚀 Starting FDR Pipeline
 # 🔍 VerifierAgent analyzing: [question]
-# 🧠 StrategistAgent building MVKB...
+# 🧠 StrategistAgent building FDR...
 # ⚖️ SynthesizerAgent conducting weighted voting...
 # 📝 ExplanationAgent generating explanation...
 # ✅ Pipeline completed successfully!
@@ -190,7 +193,7 @@ backend_config:
 pip install vllm
 
 # Start vLLM server
-vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
+vllm serve /mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct \
     --host 0.0.0.0 \
     --port 9100 \
     --max-model-len 4096

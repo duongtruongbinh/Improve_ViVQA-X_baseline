@@ -85,7 +85,7 @@ backend_config:
   
   # OpenAI settings
   openai_settings:
-    api_key_file: "openai_key.txt"
+    api_key_file: "/home/huynq/VQA/FDR/openai_key.txt"
     organization: null
     max_retries: 3
     timeout: 30
@@ -100,9 +100,9 @@ backend_config:
 # Model Configuration
 model_config:
   # VLM Configuration
-  vlm:
-    model_name: "gpt-4o-mini"
-    backend: "openai"
+  vllm:
+    model_name: "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
+    backend: "vllm"
     max_new_tokens: 200
     temperature: 0.7
     
@@ -131,7 +131,7 @@ processing_config:
 # Output Configuration
 output_config:
   output_dir: "output"
-  output_file: "results.json"
+  output_file: "fdr_results.json"
   save_intermediate_results: true
   save_visualizations: false
   save_detailed_logs: true

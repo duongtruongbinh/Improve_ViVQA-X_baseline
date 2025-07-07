@@ -4,35 +4,130 @@ Uses GPT-4o-mini to evaluate VQA answers based on multiple criteria
 """
 
 import logging
+import json
+import numpy as np
 from openai import OpenAI
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
+from collections import defaultdict
 
 
 class GEvaluator:
     """
-    G-Eval style evaluator for VQA responses using GPT-4o-mini
-    Evaluates answers based on accuracy, relevance, and completeness
+    G-Eval style evaluator for VQA responses and explanations using GPT-4o-mini.
     """
     
-    def __init__(self, model_name: str = "gpt-4o-mini", api_key_file: str = "openai_key.txt"):
+    def __init__(self, client: OpenAI, model_name: str = "gpt-4o-mini"):
         """
-        Initialize the G-Evaluator
+        Initialize the G-Evaluator.
         
         Args:
-            model_name: The model to use for evaluation (default: gpt-4o-mini)
-            api_key_file: Path to the OpenAI API key file
+            client: An initialized OpenAI client.
+            model_name: The model to use for evaluation.
         """
+        self.client = client
         self.model_name = model_name
-        
-        # Setup OpenAI client
-        try:
-            with open(api_key_file, 'r') as f:
-                api_key = f.read().strip()
-            self.client = OpenAI(api_key=api_key)
+        if self.client:
             logging.info(f"🔬 G-Evaluator initialized with {model_name}")
+        else:
+            logging.warning("G-Evaluator initialized without an OpenAI client. Explanation evaluation will be skipped.")
+    
+    def evaluate_explanation_batch(self, results: List[Dict[str, Any]], ground_truth_explanations: Dict[str, List[str]]) -> Dict[str, Any]:
+        """
+        Run G-Eval on a sample of results for deeper, qualitative metrics on explanations.
+        """
+        if not self.client:
+            return {}
+
+        logging.info("Running G-Eval for qualitative assessment of explanations...")
+        all_scores = defaultdict(list)
+        
+        sample_size = min(len(results), 10)
+        # Using list directly since np.random.choice requires a 1-D array-like
+        indices = np.random.choice(len(results), sample_size, replace=False)
+        sampled_results = [results[i] for i in indices]
+
+        for result in sampled_results:
+            question_id = result.get("question_id")
+            if not question_id or question_id not in ground_truth_explanations:
+                continue
+
+            generated_explanation = result.get("explanation", "") # Changed from generated_explanation to explanation
+            if not generated_explanation:
+                continue
+            
+            eval_pack = {
+                "question": result.get("question", ""),
+                "generated_explanation": generated_explanation,
+                "reference_explanations": ground_truth_explanations[question_id]
+            }
+
+            scores = self._compute_explanation_metrics(eval_pack)
+            if scores:
+                for key, value in scores.items():
+                    all_scores[key].append(value)
+
+        if not all_scores:
+            return {"evaluated_samples": 0}
+
+        avg_scores = {f"avg_{key}": np.mean(values) for key, values in all_scores.items()}
+        avg_scores["evaluated_samples"] = len(all_scores["relevance"])
+        
+        logging.info(f"G-Eval for explanations completed on {avg_scores['evaluated_samples']} samples.")
+        return avg_scores
+
+    def _compute_explanation_metrics(self, eval_pack: Dict[str, Any]) -> Optional[Dict[str, float]]:
+        """
+        Calls GPT-4o-mini to get scores for relevance, coherence, and faithfulness for an explanation.
+        """
+        ref_explanations_formatted = "\n".join([f"- {ref}" for ref in eval_pack['reference_explanations']])
+        
+        prompt = f"""
+You are an expert evaluator for a Visual Question Answering (VQA) system. Your task is to evaluate the generated explanation for a given question based on a set of reference explanations. Provide scores on a scale of 1 to 5 for the following criteria:
+
+1.  **Relevance**: Does the explanation directly address the question and the visual content (even though you can't see the image)? Is it on-topic? (1=irrelevant, 5=highly relevant)
+2.  **Coherence**: Is the explanation easy to understand, logical, and well-structured? (1=incoherent, 5=highly coherent)
+3.  **Faithfulness**: How well does the generated explanation align with the information provided in the reference explanations? Does it contradict the references? (1=contradictory/unfaithful, 5=highly faithful)
+
+**Input Data:**
+- **Question**: "{eval_pack['question']}"
+- **Generated Explanation**: "{eval_pack['generated_explanation']}"
+- **Reference Explanations**: 
+{ref_explanations_formatted}
+
+**Instructions**:
+Return your evaluation as a JSON object with the keys "relevance", "coherence", and "faithfulness". Do not include any other text or markdown.
+
+**JSON Output Format:**
+{{
+  "relevance": <score_1_to_5>,
+  "coherence": <score_1_to_5>,
+  "faithfulness": <score_1_to_5>
+}}
+"""
+        try:
+            response = self.client.chat.completions.create(
+                model=self.model_name,
+                messages=[
+                    {"role": "system", "content": "You are an expert AI evaluator. Your response must be a single, clean JSON object."},
+                    {"role": "user", "content": prompt}
+                ],
+                temperature=0.1,
+                response_format={"type": "json_object"}
+            )
+            
+            content = response.choices[0].message.content
+            scores = json.loads(content)
+
+            for key in ["relevance", "coherence", "faithfulness"]:
+                if not (isinstance(scores.get(key), (int, float)) and 1 <= scores.get(key, 0) <= 5):
+                    logging.warning(f"G-Eval returned an invalid or out-of-range score for {key}: {scores.get(key)}. Skipping.")
+                    return None
+            
+            return scores
+
         except Exception as e:
-            logging.error(f"❌ Failed to initialize G-Evaluator: {e}")
-            raise
+            logging.error(f"An unexpected error occurred during G-Eval for explanation: {e}", exc_info=True)
+            return None
     
     def evaluate_single(self, 
                        question: str, 

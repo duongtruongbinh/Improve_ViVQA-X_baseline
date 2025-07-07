@@ -307,7 +307,7 @@ backend_config:
 curl -X GET "http://localhost:9100/health"
 
 # Restart with reduced memory
-vllm serve Qwen/Qwen2.5-VL-7B-Instruct \
+vllm serve /mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct \
     --host 0.0.0.0 \
     --port 9100 \
     --max-model-len 2048 \

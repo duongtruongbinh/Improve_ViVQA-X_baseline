@@ -48,17 +48,20 @@ python3 FDR/main.py
 # Recommended: Use OpenAI backend
 python3 FDR/main.py --backend openai
 
-# Quick test with limited samples
+# Quick test with default samples (2)
 python3 FDR/main.py --backend openai --test
+
+# Quick test with 1 sample
+python3 FDR/main.py --backend openai --test 1
 
 # Enable comprehensive evaluation
 python3 FDR/main.py --backend openai --evaluate
 
-# Custom sample count
+# Process a specific number of samples
 python3 FDR/main.py --backend openai --samples 10
 ```
 
-## 📁 Project Structure
+## �� Project Structure
 
 ```
 VQA/

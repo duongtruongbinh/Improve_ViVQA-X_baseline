@@ -4,12 +4,16 @@ import json
 import yaml
 import logging
 from collections import Counter
-from openai import OpenAI
 from tqdm import tqdm
+import sys
+from pathlib import Path
+
+# Add project root to path to allow for utils import
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from src.agents import VerifierAgent, StrategistAgent, SynthesizerAgent
-from src.eval import EvalModule
-from src.g_evaluator import GEvaluator
+from src.eval import EvalModule, GEvaluator
+from utils.backend_manager import BackendManager
 
 # --- Helper Functions ---
 
@@ -24,96 +28,13 @@ def load_config(config_path=None):
     with open(config_path, 'r') as f:
         return yaml.safe_load(f)
 
-def setup_api_client(config):
-    """Sets up and validates the OpenAI client from a key file specified in the config."""
-    key_file_path = config['model'].get('api_key_file')
-    if not key_file_path:
-        raise ValueError("Config error: 'api_key_file' not specified in the model configuration.")
-    
-    try:
-        with open(key_file_path, 'r') as f:
-            api_key = f.read().strip()
-        if not api_key:
-            raise ValueError(f"API key file '{key_file_path}' is empty.")
-        return OpenAI(api_key=api_key)
-    except FileNotFoundError:
-        raise FileNotFoundError(f"API key file not found at path: {key_file_path}")
-
-def load_dataset(config):
-    """Loads the questions and annotations based on the configured split."""
-    # Check if this is ViVQA-X format
-    if config.get('vivqax', {}).get('format') == 'vivqax':
-        return load_vivqax_dataset(config)
-    
-    # Original VQA-v2 format
-    split = config['inference']['dataset_split']
-    paths = config['dataset_paths']
-    
-    key_prefix = split.replace('-', '_')
-    q_file = paths[f'{key_prefix}_questions_file']
-    a_file = paths.get(f'{key_prefix}_annotations_file') # Annotations might not exist for test splits
-
-    logging.info(f"Loading questions for split '{split}' from {q_file}...")
-    with open(q_file, 'r') as f:
-        questions_data = json.load(f)['questions']
-    
-    annotations = {}
-    if a_file and os.path.exists(a_file):
-        logging.info(f"Loading annotations for split '{split}' from {a_file}...")
-        with open(a_file, 'r') as f:
-            data = json.load(f)
-            # Handle cases where the JSON root is the list itself, or it's wrapped in a dict
-            annotations_data = data.get('annotations')
-            if annotations_data is None and isinstance(data, list):
-                annotations_data = data
-            elif annotations_data is None:
-                annotations_data = [] # Failed to find annotations
-                logging.warning(f"Could not find 'annotations' key in {a_file}. Proceeding without annotations.")
-
-        # Create a lookup map for question_id -> most common answer
-        for ann in annotations_data:
-            # Simple VQA eval: consider the most frequent answer as ground truth
-            answers = [ans['answer'] for ans in ann['answers']]
-            if answers:
-                annotations[ann['question_id']] = max(set(answers), key=answers.count)
-
-    return questions_data, annotations
-
-def load_vivqax_dataset(config):
-    """Loads ViVQA-X dataset with Vietnamese questions and answers."""
-    split = config['inference']['dataset_split']
-    paths = config['dataset_paths']
-    
-    # Get the appropriate file for the split
-    file_key = f'{split}_file'
-    data_file = paths[file_key]
-    
-    logging.info(f"Loading ViVQA-X data for split '{split}' from {data_file}...")
-    with open(data_file, 'r', encoding='utf-8') as f:
-        data = json.load(f)
-    
-    # Convert ViVQA-X format to pipeline format
-    questions_data = []
-    annotations = {}
-    
-    for item in data:
-        # Convert to pipeline format
-        question_entry = {
-            'question_id': item['question_id'],
-            'question': item['question'],
-            'image_id': int(item['image_id'])
-        }
-        questions_data.append(question_entry)
-        
-        # Store ground truth answer
-        annotations[item['question_id']] = item['answer']
-    
-    logging.info(f"Loaded {len(questions_data)} ViVQA-X questions with answers")
-    return questions_data, annotations
-
 # --- Main FDR Pipeline with Synthesizer Logic Engine ---
 
-def run_fdr_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, override_samples: int = None, config_path: str = None):
+def run_fdr_pipeline(use_vllm: bool = True, 
+                     enable_evaluation: bool = False, 
+                     override_samples: int = None, 
+                     config_path: str = None,
+                     active_dataset_override: str = None):
     """
     Run the complete FDR pipeline with NEW Synthesizer Logic Engine.
     Uses unified config.yaml by default.
@@ -123,6 +44,7 @@ def run_fdr_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, ove
         enable_evaluation: Whether to run comprehensive evaluation
         override_samples: Override config num_samples (for testing)
         config_path: Optional path to custom configuration file (uses config.yaml by default)
+        active_dataset_override: Override the active dataset from config
     """
     try:
         # Load configuration (defaults to config.yaml)
@@ -139,6 +61,20 @@ def run_fdr_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, ove
             logging.getLogger("openai").setLevel(logging.WARNING)
         
         logging.info("🚀 Starting FDR Pipeline with Synthesizer Logic Engine")
+        
+        # Setup API client for G-Eval if using OpenAI backend
+        openai_client = None
+        if not use_vllm:
+            try:
+                # Use BackendManager to ensure consistent client initialization
+                backend_manager = BackendManager(backend_type="openai")
+                if backend_manager.is_available():
+                    openai_client = backend_manager.client
+                    logging.info("✅ OpenAI client for G-Eval initialized via BackendManager.")
+                else:
+                    logging.warning("Could not initialize OpenAI client via BackendManager. G-Eval will be skipped.")
+            except Exception as e:
+                logging.warning(f"Could not initialize OpenAI client for G-Eval. It will be skipped. Reason: {e}")
         
         # Initialize agents
         agents_config = config.get('agents_config', {})
@@ -165,11 +101,11 @@ def run_fdr_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, ove
         synthesizer = SynthesizerAgent(verifier=verifier)
         
         # Load dataset from unified config
-        active_dataset = config.get('active_dataset', 'vqax')
+        active_dataset = active_dataset_override or config.get('active_dataset', 'vqax')
         datasets_config = config.get('datasets', {})
         
         if active_dataset not in datasets_config:
-            raise ValueError(f"Active dataset '{active_dataset}' not found in datasets config")
+            raise ValueError(f"Active dataset '{active_dataset}' not found in datasets config. Available: {list(datasets_config.keys())}")
         
         dataset_config = datasets_config[active_dataset]
         input_file = dataset_config.get('data_path')
@@ -357,45 +293,145 @@ def run_fdr_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, ove
         # Quick accuracy calculation (always run)
         accuracy_stats = calculate_quick_accuracy_with_synthesis(results)
         
-        # Run evaluation if enabled
-        if enable_evaluation and results:
-            eval_module = EvalModule()
-            evaluation_results = eval_module.evaluate_pipeline_results(results)
-            
-            eval_output_file = output_file.replace('.json', '_evaluation.json')
-            with open(eval_output_file, 'w') as f:
-                json.dump(evaluation_results, f, indent=2)
-            
-            logging.info(f"📊 Evaluation results saved to: {eval_output_file}")
-            
-            # Print summary with full evaluation
-            print(f"\n🎯 FDR Pipeline with Synthesizer Logic Engine Summary:")
-            print(f"Processed samples: {len(results)}")
-            print(f"VQA Accuracy: {evaluation_results['vqa_accuracy']:.3f}")
-            if 'explanation_quality' in evaluation_results:
-                print(f"Explanation Quality: {evaluation_results['explanation_quality']:.3f}")
-        else:
-            # Print summary with quick accuracy
-            print(f"\n🎯 FDR Pipeline with Synthesizer Logic Engine Summary:")
-            print(f"Processed samples: {len(results)}")
-            print(f"VQA Accuracy: {accuracy_stats['accuracy']:.1%}")
-            print(f"Correct answers: {accuracy_stats['correct']}/{accuracy_stats['total']}")
-            print(f"Status distribution: {accuracy_stats['status_distribution']}")
-            
-            # Add final explanation to summary
-            if results:
-                last_result = results[-1]
-                print("\n💡 Final Explanation:")
-                print(f"   Q: {last_result.get('question')}")
-                print(f"   A: {last_result.get('final_answer')} (Status: {last_result.get('synthesis_status')})")
-                print(f"   E: {last_result.get('explanation')}")
+        # Run evaluation if enabled - DEBUG ADDED
+        logging.info(f"🔍 Evaluation check: enable_evaluation={enable_evaluation}, results_count={len(results) if results else 0}")
         
-        logging.info("🎉 FDR Pipeline with Synthesizer Logic Engine completed successfully!")
+        if enable_evaluation and results:
+            logging.info("📊 Starting comprehensive evaluation...")
+            
+            try:
+                # Always try to get an OpenAI client for G-Eval, regardless of the main backend
+                g_eval_client = None
+                try:
+                    # Use BackendManager to robustly initialize an OpenAI client
+                    # This leverages the key loading logic from backend_manager
+                    from utils.backend_manager import BackendManager
+                    openai_backend_for_eval = BackendManager(backend_type="openai")
+                    if openai_backend_for_eval.is_available():
+                        g_eval_client = openai_backend_for_eval.client
+                        logging.info("✅ OpenAI client for G-Eval is available.")
+                    else:
+                        logging.warning("⚠️ OpenAI client for G-Eval is not available. G-Eval will be skipped.")
+                except Exception as e:
+                    logging.warning(f"⚠️ Failed to initialize OpenAI client for G-Eval: {e}. G-Eval will be skipped.")
+
+                eval_module = EvalModule(device="cpu")
+                logging.info("✅ EvalModule initialized successfully")
+                
+                g_evaluator = GEvaluator(client=g_eval_client) if g_eval_client else None
+                logging.info(f"G-Evaluator: {'✅ Initialized' if g_evaluator else '❌ Skipped (no OpenAI client)'}")
+
+                # Prepare ground truth explanations from the dataset
+                ground_truth_explanations = {}
+                if dataset_format == 'vqax':
+                    for sample in dataset:
+                        if 'explanation' in sample and sample.get('explanation'):
+                            # Ensure explanations are strings, not lists of strings
+                            gt_exps = sample['explanation']
+                            if isinstance(gt_exps, list) and all(isinstance(e, str) for e in gt_exps):
+                                ground_truth_explanations[sample['question_id']] = gt_exps
+                            elif isinstance(gt_exps, str):
+                                ground_truth_explanations[sample['question_id']] = [gt_exps]
+
+                logging.info(f"📝 Ground truth explanations prepared: {len(ground_truth_explanations)} samples")
+
+                # Run the new comprehensive evaluation
+                logging.info("🔬 Running comprehensive evaluation...")
+                evaluation_results = eval_module.evaluate_comprehensive(
+                    results=results,
+                    ground_truth_explanations=ground_truth_explanations if ground_truth_explanations else None,
+                    include_g_eval=g_evaluator is not None,
+                    g_evaluator=g_evaluator
+                )
+
+                logging.info("✅ Comprehensive evaluation completed!")
+
+                # Save the comprehensive report
+                eval_output_file = output_file.replace('.json', '_evaluation.json')
+                eval_module.save_evaluation_report(evaluation_results, eval_output_file)
+                logging.info(f"📊 Comprehensive evaluation report saved to: {eval_output_file}")
+
+                # The detailed summary is now logged inside _log_evaluation_summary, no need to log here.
+                
+            except Exception as eval_error:
+                logging.error(f"❌ Evaluation failed: {eval_error}")
+                import traceback
+                logging.error(f"Evaluation traceback: {traceback.format_exc()}")
+
+        else:
+            # If evaluation is disabled, print a simpler summary based on quick accuracy.
+            print(f"\n🎯 FDR Pipeline Summary (Evaluation Disabled):")
+            print(f"  - Processed samples: {len(results)}")
+            print(f"  - Quick VQA Accuracy: {accuracy_stats['accuracy']:.1%}")
+            print(f"  - Status distribution: {accuracy_stats['status_distribution']}")
+        
+        # This is the new centralized completion message.
+        logging.info("🎉 FDR Pipeline with Synthesizer Logic Engine completed.")
+        
+        # Display final evaluation table if evaluation was enabled
+        if enable_evaluation and 'evaluation_results' in locals():
+            _print_evaluation_table(evaluation_results)
+
         return results
         
     except Exception as e:
         logging.error(f"❌ FDR Pipeline failed: {e}")
         raise
+
+def _print_evaluation_table(results: dict):
+    """Prints a formatted summary table of the evaluation results with all major metrics."""
+    summary = results.get("summary", {})
+    vqa = results.get("vqa_metrics", {})
+    exp = results.get("explanation_metrics", {})
+    consistency = results.get("consistency_metrics", {})
+    geval = results.get("g_eval_metrics", {})
+
+    title = "📊 FDR Evaluation Summary"
+    bar = "=" * 100
+    print(f"\n{bar}")
+    print(f"{title:^100}")
+    print(f"{bar}\n")
+
+    # Overall Section
+    print(f"  OVERALL ASSESSMENT")
+    print(f"  {'-'*35}")
+    print(f"  {'Total Questions:':<30} {summary.get('total_questions', 'N/A')}")
+    print(f"  {'VQA Accuracy:':<30} {vqa.get('accuracy', 0.0):.2%}")
+    if geval:
+        avg_geval = (geval.get('avg_relevance', 0) + geval.get('avg_coherence', 0) + geval.get('avg_faithfulness', 0)) / 3
+        print(f"  {'G-Eval Score (Avg):':<30} {avg_geval:.2f} / 5.0")
+    print("-" * 100)
+
+    # Metrics Table Header
+    print(f"{'Metric':<12} | {'BLEU-1':^7} | {'BLEU-2':^7} | {'BLEU-3':^7} | {'BLEU-4':^7} | {'METEOR':^7} | {'ROUGE-L P':^9} | {'ROUGE-L R':^9} | {'ROUGE-L F1':^9} | {'CIDEr':^7} | {'SPICE':^7} | {'BERT-P':^7} | {'BERT-R':^7} | {'BERT-F1':^7} | {'SemScore':^7}")
+    print("-" * 100)
+
+    # Metrics Table Row
+    print(f"{'Explanation':<12} | "
+          f"{exp.get('bleu_1', 0.0):7.3f} | "
+          f"{exp.get('bleu_2', 0.0):7.3f} | "
+          f"{exp.get('bleu_3', 0.0):7.3f} | "
+          f"{exp.get('bleu_4', 0.0):7.3f} | "
+          f"{exp.get('meteor', 0.0):7.3f} | "
+          f"{exp.get('rouge_l_precision', 0.0):9.3f} | "
+          f"{exp.get('rouge_l_recall', 0.0):9.3f} | "
+          f"{exp.get('rouge_l_f1', 0.0):9.3f} | "
+          f"{exp.get('cider', 0.0):7.3f} | "
+          f"{exp.get('spice', 0.0):7.3f} | "
+          f"{exp.get('bert_precision', 0.0):7.3f} | "
+          f"{exp.get('bert_recall', 0.0):7.3f} | "
+          f"{exp.get('bert_f1', 0.0):7.3f} | "
+          f"{exp.get('semantic_similarity', 0.0):7.3f}")
+    print("-" * 100)
+
+    # G-Eval Metrics (if available)
+    if geval:
+        print(f"\n  G-Eval Breakdown:")
+        print(f"    {'Relevance:':<22} {geval.get('avg_relevance', 0):.2f} / 5.0")
+        print(f"    {'Coherence:':<22} {geval.get('avg_coherence', 0):.2f} / 5.0")
+        print(f"    {'Faithfulness:':<22} {geval.get('avg_faithfulness', 0):.2f} / 5.0")
+
+    print(f"\n{bar}")
 
 def calculate_quick_accuracy_with_synthesis(results):
     """Calculate accuracy statistics including synthesis status"""
@@ -429,24 +465,3 @@ def calculate_quick_accuracy_with_synthesis(results):
         'accuracy': accuracy,
         'status_distribution': status_counts
     }
-
-# Legacy function name for backward compatibility - REMOVED
-# This was causing a naming conflict and infinite recursion
-# The main run_fdr_pipeline function above handles all functionality
-
-
-if __name__ == "__main__":
-    import argparse
-    
-    parser = argparse.ArgumentParser(description="Run FDR Pipeline")
-    parser.add_argument("--config", required=True, help="Path to configuration file")
-    parser.add_argument("--use_openai", action="store_true", help="Use OpenAI instead of vLLM")
-    parser.add_argument("--enable_evaluation", action="store_true", help="Run evaluation after processing")
-    
-    args = parser.parse_args()
-    
-    run_fdr_pipeline(
-        config_path=args.config,
-        use_vllm=not args.use_openai,
-        enable_evaluation=args.enable_evaluation
-    )

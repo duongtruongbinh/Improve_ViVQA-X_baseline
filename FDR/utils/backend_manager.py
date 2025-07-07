@@ -20,7 +20,13 @@ try:
     from utils.config_loader import app_config
 except ImportError:
     app_config = None
-    logging.warning("Config loader not available")
+    # logging.warning("Config loader not available")
+
+try:
+    from utils.vllm_api import VllmAPI
+except ImportError:
+    VllmAPI = None
+    # logging.warning("vLLM API not available")
 
 class BackendManager:
     """Simple backend manager for vLLM or OpenAI API"""
@@ -60,7 +66,7 @@ class BackendManager:
                     api_key="dummy-key",
                     base_url="http://localhost:9100/v1"
                 )
-                self.model = "Qwen/Qwen2.5-VL-7B-Instruct"
+                self.model = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
                 logging.info(f"✅ Using vLLM with default settings: {self.model}")
                 
         except Exception as e:

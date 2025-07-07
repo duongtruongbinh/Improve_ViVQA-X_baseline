@@ -56,11 +56,14 @@ python3 main.py --backend openai
 # Enable comprehensive evaluation
 python3 main.py --evaluate
 
-# Test mode with limited samples
+# Test mode with default samples (2)
 python3 main.py --test
 
+# Test mode with 10 samples
+python3 main.py --test 10
+
 # Combine multiple options
-python3 main.py --backend openai --test --evaluate --samples 10
+python3 main.py --backend openai --evaluate --test 5
 ```
 
 ### **Research API Usage**

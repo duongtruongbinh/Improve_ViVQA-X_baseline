@@ -41,15 +41,36 @@ class SynthesizerEngine:
         """
         self.logger.info("Synthesizer Engine: Starting multi-tiered logical synthesis")
         
+        # DEBUG: Log input data
+        self.logger.debug(f"Evidence set received: {evidence_set}")
+        self.logger.debug(f"Hypothesis set received: {hypothesis_set}")
+        self.logger.debug(f"Answer candidates: {answer_candidates}")
+        
         # Step 1: Build evidence map for fast lookup
         evidence_map = self._build_evidence_map(evidence_set)
+        self.logger.debug(f"Built evidence map: {evidence_map}")
         
         # Step 2: Evaluate all hypotheses
         triggered_hypotheses = []
-        for hypothesis in hypothesis_set:
-            if self._validate_hypothesis_format(hypothesis) and self._check_hypothesis_conditions(hypothesis, evidence_map):
-                triggered_hypotheses.append(hypothesis)
-                self.logger.debug(f"Hypothesis {hypothesis['hypothesis_id']} triggered -> {hypothesis['THEN']['final_answer']}")
+        for i, hypothesis in enumerate(hypothesis_set):
+            self.logger.debug(f"Evaluating hypothesis {i}: {hypothesis}")
+            
+            is_valid = self._validate_hypothesis_format(hypothesis)
+            self.logger.debug(f"Hypothesis {i} format valid: {is_valid}")
+            
+            if is_valid:
+                conditions_met = self._check_hypothesis_conditions(hypothesis, evidence_map)
+                self.logger.debug(f"Hypothesis {i} conditions met: {conditions_met}")
+                
+                if conditions_met:
+                    triggered_hypotheses.append(hypothesis)
+                    self.logger.info(f"✅ Hypothesis {hypothesis.get('hypothesis_id', i)} triggered -> {hypothesis['THEN']['final_answer']}")
+                else:
+                    self.logger.warning(f"❌ Hypothesis {hypothesis.get('hypothesis_id', i)} conditions NOT met")
+            else:
+                self.logger.warning(f"❌ Hypothesis {i} has invalid format")
+        
+        self.logger.info(f"Total triggered hypotheses: {len(triggered_hypotheses)}")
         
         # Step 3: Multi-tiered decision making
         result = self._evaluate_and_decide(triggered_hypotheses, answer_candidates)
@@ -70,47 +91,92 @@ class SynthesizerEngine:
         return evidence_map
     
     def _validate_hypothesis_format(self, hypothesis: Dict) -> bool:
-        """Validate that hypothesis has required structure."""
-        required_keys = ['hypothesis_id', 'IF', 'THEN']
-        
-        if not all(key in hypothesis for key in required_keys):
+        """Validate that hypothesis has required structure with improved logging."""
+        if not isinstance(hypothesis, dict):
+            self.logger.warning("Hypothesis Validation FAIL: Input is not a dictionary.")
             return False
+
+        required_keys = ['hypothesis_id', 'IF', 'THEN']
+        for key in required_keys:
+            if key not in hypothesis:
+                self.logger.warning(f"Hypothesis Validation FAIL: Missing required key '{key}'. Found keys: {list(hypothesis.keys())}")
+                return False
         
         if not isinstance(hypothesis['IF'], list):
+            self.logger.warning("Hypothesis Validation FAIL: 'IF' clause is not a list.")
             return False
         
+        if not isinstance(hypothesis['THEN'], dict):
+            self.logger.warning("Hypothesis Validation FAIL: 'THEN' clause is not a dictionary.")
+            return False
+
         if 'final_answer' not in hypothesis['THEN']:
+            self.logger.warning("Hypothesis Validation FAIL: Missing 'final_answer' in 'THEN' clause.")
             return False
         
         # Validate each condition in IF clause
-        for condition in hypothesis['IF']:
+        for i, condition in enumerate(hypothesis['IF']):
             if not isinstance(condition, dict):
+                self.logger.warning(f"Hypothesis Validation FAIL: Condition {i} in 'IF' is not a dictionary.")
                 return False
-            if 'evidence_id' not in condition or 'answer_is' not in condition:
+            
+            # Flexible check for condition keys
+            id_key_found = 'evidence_id' in condition or 'issue_id' in condition
+            answer_key_found = 'answer_is' in condition or 'answer' in condition
+
+            if not id_key_found or not answer_key_found:
+                self.logger.warning(f"Hypothesis Validation FAIL: Condition {i} is missing ID ('evidence_id' or 'issue_id') or ANSWER ('answer_is' or 'answer'). Found keys: {list(condition.keys())}")
                 return False
         
+        self.logger.debug(f"Hypothesis {hypothesis.get('hypothesis_id')} format validation PASSED.")
         return True
     
     def _check_hypothesis_conditions(self, hypothesis: Dict, evidence_map: Dict[str, str]) -> bool:
-        """Check if all conditions in hypothesis IF clause are met."""
-        conditions_met = True
-        
-        for condition in hypothesis['IF']:
-            evidence_id = condition['evidence_id']
-            required_answer = condition['answer_is']
+        """
+        Check if all conditions in hypothesis IF clause are met.
+        This version is more robust against malformed conditions.
+        """
+        conditions = hypothesis.get('IF', [])
+        if not conditions:
+            self.logger.warning(f"Hypothesis {hypothesis.get('hypothesis_id')} has no IF conditions to check.")
+            return False
+
+        for i, condition in enumerate(conditions):
+            # --- Defensive Key Check ---
+            # Ensure the condition itself is a dictionary and has the required keys
+            if not isinstance(condition, dict):
+                self.logger.warning(f"Condition {i} in hypothesis {hypothesis.get('hypothesis_id')} is not a valid dictionary. Skipping.")
+                return False # A malformed condition invalidates the hypothesis
+
+            evidence_id = condition.get('evidence_id') or condition.get('issue_id')
+            required_answer_raw = condition.get('answer_is')
+
+            if not evidence_id or required_answer_raw is None:
+                self.logger.warning(
+                    f"Condition {i} in hypothesis {hypothesis.get('hypothesis_id')} is malformed. "
+                    f"Missing 'evidence_id'/'issue_id' or 'answer_is'. Keys found: {list(condition.keys())}. Skipping."
+                )
+                return False # A malformed condition invalidates the hypothesis
+
+            # --- Logic Check ---
+            required_answer = str(required_answer_raw).strip().lower()
             
-            # Check if evidence exists and matches required answer
             if evidence_id not in evidence_map:
-                self.logger.debug(f"Evidence {evidence_id} not found in evidence map")
-                conditions_met = False
-                break
+                self.logger.debug(f"Condition FAIL: Evidence '{evidence_id}' not found in evidence map for hypothesis {hypothesis.get('hypothesis_id')}.")
+                return False
             
-            if evidence_map[evidence_id] != required_answer:
-                self.logger.debug(f"Evidence {evidence_id}: got '{evidence_map[evidence_id]}', required '{required_answer}'")
-                conditions_met = False
-                break
+            actual_answer = str(evidence_map[evidence_id]).strip().lower()
+            
+            # Flexible matching logic
+            if actual_answer == required_answer or required_answer in actual_answer:
+                self.logger.debug(f"Condition PASS: Evidence '{evidence_id}' value ('{actual_answer}') matches required ('{required_answer}').")
+                continue # Go to the next condition
+            else:
+                self.logger.debug(f"Condition FAIL: Evidence '{evidence_id}' value mismatch. Got '{actual_answer}', required '{required_answer}'.")
+                return False # One failed condition invalidates the entire hypothesis
         
-        return conditions_met
+        # If the loop completes without returning False, all conditions were met
+        return True
     
     def _evaluate_and_decide(self, triggered_hypotheses: List[Dict], answer_candidates: List[str]) -> Dict[str, Any]:
         """
@@ -125,7 +191,7 @@ class SynthesizerEngine:
             trace_entry = {
                 "hypothesis_id": h['hypothesis_id'],
                 "reasoning_description": h.get('reasoning_description', 'Logical reasoning based on evidence'),
-                "triggered_by_evidence": [c['evidence_id'] for c in h['IF']],
+                "triggered_by_evidence": [c.get('evidence_id') or c.get('issue_id') for c in h['IF']],
                 "confidence_source": h.get('confidence_source', 0.5)
             }
             causal_trace.append(trace_entry)
