@@ -64,6 +64,7 @@ agents_config:
     hypothesis_filtering: true
   
   synthesizer:  # Weighted voting
+    engine_version: "v3"  # Options: "v2" (winner-takes-all), "v3" (weighted voting)
     voting_threshold: 0.1
     confidence_normalization: true
     algorithm: "weighted_voting"  # Algorithm 2 from paper
