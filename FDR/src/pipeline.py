@@ -61,6 +61,12 @@ def run_fdr_pipeline(use_vllm: bool = True,
             logging.getLogger("openai").setLevel(logging.WARNING)
         
         logging.info("🚀 Starting FDR Pipeline with Synthesizer Logic Engine")
+        logging.info(f"📋 Configuration loaded from: {config_path or 'config.yaml'}")
+        
+        # Load engine version for early logging
+        synthesizer_config = config.get('agents_config', {}).get('synthesizer', {})
+        engine_version = synthesizer_config.get('engine_version', 'v2')
+        logging.info(f"⚙️ Synthesizer Engine Version: {engine_version.upper()} ({'Weighted Voting' if engine_version == 'v3' else 'Winner-Takes-All'})")
         
         # Setup API client for G-Eval if using OpenAI backend
         openai_client = None
@@ -97,8 +103,10 @@ def run_fdr_pipeline(use_vllm: bool = True,
             use_vllm=use_vllm
         )
         
-        # Synthesizer Logic Engine
-        synthesizer = SynthesizerAgent(verifier=verifier)
+        # Synthesizer Logic Engine (V2 or V3)
+        synthesizer_config = agents_config.get('synthesizer', {})
+        engine_version = synthesizer_config.get('engine_version', 'v2')
+        synthesizer = SynthesizerAgent(verifier=verifier, engine_version=engine_version)
         
         # Load dataset from unified config
         active_dataset = active_dataset_override or config.get('active_dataset', 'vqax')
@@ -158,6 +166,8 @@ def run_fdr_pipeline(use_vllm: bool = True,
         
         # Results storage
         results = []
+        skipped_samples = []  # Track skipped samples
+        # KHÔNG tạo skipped_log_path ở đây nữa
         
         # Process each sample
         logging.info(f"Processing {len(dataset)} samples...")
@@ -165,7 +175,6 @@ def run_fdr_pipeline(use_vllm: bool = True,
             try:
                 # Extract sample data based on format
                 if dataset_format == 'vqax' or dataset_format == 'vivqax':
-                    # VQA-X or ViVQA-X format
                     image_name = sample['image_name']
                     image_dir = dataset_config.get('image_dir', '/mnt/VLAI_data/COCO_Images/val2014')
                     image_path = os.path.join(image_dir, image_name)
@@ -173,61 +182,78 @@ def run_fdr_pipeline(use_vllm: bool = True,
                     ground_truth = sample['answer']
                     question_id = sample['question_id']
                 else:
-                    # Standard format
                     if 'image_path' in sample:
                         image_path = sample['image_path']
                     elif 'image' in sample:
                         image_path = sample['image']
                     else:
                         logging.error(f"Sample {i}: No image path found")
+                        skipped_samples.append({
+                            'sample_id': i,
+                            'question_id': sample.get('question_id', f'sample_{i}'),
+                            'reason': 'No image path found'
+                        })
                         continue
-                    
                     question = sample.get('question', sample.get('question_text', ''))
                     ground_truth = sample.get('answer', sample.get('ground_truth', None))
                     question_id = sample.get('question_id', f"sample_{i}")
-                
                 if not question:
                     logging.error(f"Sample {i}: No question found")
+                    skipped_samples.append({
+                        'sample_id': i,
+                        'question_id': question_id,
+                        'reason': 'No question found'
+                    })
                     continue
-                
-                # Ensure absolute image path
                 if not os.path.isabs(image_path):
                     dataset_dir = os.path.dirname(input_file)
                     image_path = os.path.join(dataset_dir, image_path)
-                
                 if not os.path.exists(image_path):
                     logging.warning(f"Sample {i}: Image not found: {image_path}")
+                    skipped_samples.append({
+                        'sample_id': i,
+                        'question_id': question_id,
+                        'reason': f'Image not found: {image_path}'
+                    })
                     continue
-                
                 logging.info(f"Processing sample {i+1}/{len(dataset)}: {question[:50]}...")
-                
                 # Step 1: Verifier - Generate initial context (caption)
                 initial_response = verifier.generate_initial_response(question, image_path)
                 answer_candidates = initial_response['answer_candidates']
                 caption = initial_response['caption']
-                
                 # Step 2: Strategist - Decompose question and create reasoning plan (issues + hypothesis)
-                # The mvkb variable now holds a dict: {"evidence_set": [], "hypothesis_set": []}
                 mvkb_payload = strategist.build_mvkb(question, image_path, answer_candidates, caption)
-                
                 if not mvkb_payload:
                     logging.error(f"Sample {i}: Strategist failed to build MVKB. Skipping.")
+                    skipped_samples.append({
+                        'sample_id': i,
+                        'question_id': question_id,
+                        'reason': 'Strategist failed to build MVKB'
+                    })
                     continue
-
                 evidence_set = mvkb_payload.get("evidence_set", [])
                 hypothesis_set = mvkb_payload.get("hypothesis_set", [])
-                
                 # Step 3: Synthesizer - Execute the reasoning plan
-                synthesis_result = synthesizer.synthesize(
-                    evidence_set=evidence_set, 
-                    hypothesis_set=hypothesis_set,
-                    answer_candidates=answer_candidates
-                )
-                
+                try:
+                    synthesis_result = synthesizer.synthesize(
+                        evidence_set=evidence_set, 
+                        hypothesis_set=hypothesis_set,
+                        answer_candidates=answer_candidates
+                    )
+                except Exception as synth_ex:
+                    logging.error(f"Sample {i}: Synthesizer failed: {synth_ex}")
+                    skipped_samples.append({
+                        'sample_id': i,
+                        'question_id': question_id,
+                        'reason': f'Synthesizer failed: {synth_ex}'
+                    })
+                    continue
                 final_answer = synthesis_result.get('answer')
                 synthesis_status = synthesis_result.get('status', 'UNKNOWN')
                 causal_trace = synthesis_result.get('causal_trace', [])
-                
+                engine_version = synthesis_result.get('engine_version', 'unknown')
+                final_confidence = synthesis_result.get('final_confidence')
+                confidence_breakdown = synthesis_result.get('confidence_breakdown', {})
                 # Step 4: Enhanced Explanation with Causal Trace
                 explanation_text = strategist.generate_explanation(
                     question=question,
@@ -235,51 +261,46 @@ def run_fdr_pipeline(use_vllm: bool = True,
                     caption=caption,
                     evidence_set=evidence_set
                 )
-                
                 # Store result - CLEAN OUTPUT: answer + explanation
                 result = {
                     'question_id': question_id,
                     'sample_id': i,
                     'question': question,
                     'image_path': image_path,
-                    
-                    # MAIN OUTPUT
                     'final_answer': final_answer,
                     'explanation': explanation_text,
-                    
-                    # METADATA
                     'synthesis_status': synthesis_status,
+                    'engine_version': engine_version,
                     'causal_trace': causal_trace,
                     'evidence_count': len(evidence_set),
                     'hypothesis_count': len(hypothesis_set),
                     'ground_truth': ground_truth,
-                    
-                    # DEBUG INFO (optional)
+                    'final_confidence': final_confidence,
+                    'confidence_breakdown': confidence_breakdown,
                     'initial_candidates': answer_candidates,
                     'caption': caption,
                     'mvkb_entries_count': len(mvkb_payload)
                 }
-                
-                # Add VQA-X specific fields if available
                 if dataset_format == 'vqax':
                     result.update({
                         'ground_truth_explanations': sample.get('explanation', [])
                     })
-                
                 results.append(result)
-                
                 logging.info(f"✅ Sample {i+1} completed: '{final_answer}' ({synthesis_status})")
-                
             except Exception as e:
                 logging.error(f"❌ Sample {i} failed: {e}")
+                skipped_samples.append({
+                    'sample_id': i,
+                    'question_id': sample.get('question_id', f'sample_{i}'),
+                    'reason': f'Exception: {e}'
+                })
                 continue
         
         # Save results
         output_config = config.get('output_config', {})
         output_dir = output_config.get('output_dir', 'output')
         output_filename = output_config.get('output_file', 'fdr_results.json')
-        
-        # Ensure output directory exists
+        skipped_log_path = os.path.join(output_dir, 'skipped_samples.log')  # Đặt ở đây!
         os.makedirs(output_dir, exist_ok=True)
         
         # Combine directory and filename
@@ -288,7 +309,15 @@ def run_fdr_pipeline(use_vllm: bool = True,
         with open(output_file, 'w') as f:
             json.dump(results, f, indent=2)
         
+        # NEW: Save skipped samples log
+        if skipped_samples:
+            with open(skipped_log_path, 'w') as flog:
+                for entry in skipped_samples:
+                    flog.write(json.dumps(entry, ensure_ascii=False) + '\n')
+        
         logging.info(f"💾 Results saved to: {output_file}")
+        if skipped_samples:
+            logging.info(f"⚠️ Skipped {len(skipped_samples)} samples. Details in {skipped_log_path}")
         
         # Quick accuracy calculation (always run)
         accuracy_stats = calculate_quick_accuracy_with_synthesis(results)
