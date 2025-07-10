@@ -29,19 +29,23 @@ except ImportError:
     # logging.warning("vLLM API not available")
 
 class BackendManager:
-    """Simple backend manager for vLLM or OpenAI API"""
-    
-    def __init__(self, backend_type: str = "vllm"):
+    """Enhanced backend manager supporting dual-model architecture for VQA-X"""
+
+    def __init__(self, backend_type: str = "vllm", model_preference: str = "auto"):
         """
-        Initialize backend manager
-        
+        Initialize backend manager with dual-model support
+
         Args:
             backend_type: "vllm" or "openai"
+            model_preference: "vlm", "llm", or "auto" (smart routing)
         """
         self.backend_type = backend_type.lower()
+        self.model_preference = model_preference
         self.client = None
         self.model = None
-        
+        self.vlm_client = None  # Vision-Language Model client
+        self.llm_client = None  # Language Model client
+
         if self.backend_type == "vllm":
             self._setup_vllm()
         elif self.backend_type == "openai":
@@ -50,25 +54,34 @@ class BackendManager:
             raise ValueError(f"Unsupported backend: {backend_type}. Use 'vllm' or 'openai'")
     
     def _setup_vllm(self):
-        """Setup vLLM backend"""
+        """Setup vLLM backend with dual-model support"""
         try:
-            if app_config and "vllm_details" in app_config:
-                vllm_config = app_config["vllm_details"]
-                self.client = OpenAI(
-                    api_key=vllm_config["api_key"],
-                    base_url=vllm_config["vlm_url"]
-                )
-                self.model = vllm_config["vlm_model_name"]
-                logging.info(f"✅ Using vLLM: {self.model} at {vllm_config['vlm_url']}")
-            else:
-                # Fallback to default vLLM settings
-                self.client = OpenAI(
-                    api_key="dummy-key",
-                    base_url="http://localhost:9100/v1"
-                )
+            # Setup VLM client (Vision-Language Model) - Port 9100
+            self.vlm_client = OpenAI(
+                api_key="dummy-key",
+                base_url="http://localhost:9100/v1"
+            )
+
+            # Setup LLM client (Language Model) - Port 9200 (updated for current setup)
+            self.llm_client = OpenAI(
+                api_key="dummy-key",
+                base_url="http://localhost:9200/v1"
+            )
+
+            # Set default client based on preference
+            if self.model_preference == "vlm":
+                self.client = self.vlm_client
                 self.model = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
-                logging.info(f"✅ Using vLLM with default settings: {self.model}")
-                
+                logging.info(f"✅ Using VLM-only mode: {self.model}")
+            elif self.model_preference == "llm":
+                self.client = self.llm_client
+                self.model = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-7B-Instruct"
+                logging.info(f"✅ Using LLM-only mode: {self.model}")
+            else:  # auto mode
+                self.client = self.vlm_client  # Default to VLM
+                self.model = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
+                logging.info(f"✅ Using dual-model mode with smart routing")
+
         except Exception as e:
             logging.error(f"❌ Failed to setup vLLM: {e}")
             raise
@@ -139,6 +152,72 @@ class BackendManager:
     def is_available(self) -> bool:
         """Check if backend is available"""
         return self.client is not None
+
+    def _is_vision_task(self, messages: List[Dict[str, Any]]) -> bool:
+        """
+        Determine if the task requires vision capabilities.
+        Improved logic for better dual-model routing in VQA-X pipeline.
+        """
+        for message in messages:
+            content = message.get('content', '')
+            if isinstance(content, list):
+                # Check for image content in message
+                for item in content:
+                    if isinstance(item, dict) and item.get('type') == 'image_url':
+                        return True
+            elif isinstance(content, str):
+                content_lower = content.lower()
+
+                # Strong indicators for text-only tasks (should go to LLM)
+                text_only_indicators = [
+                    'reasoning plan', 'hypothesis', 'mvkb', 'evidence_set', 'hypothesis_set',
+                    'explanation generation', 'synthesis', 'logical reasoning', 'confidence',
+                    'json output', 'structured reasoning', 'causal trace', 'conflict resolution'
+                ]
+
+                if any(indicator in content_lower for indicator in text_only_indicators):
+                    return False
+
+                # Strong indicators for vision tasks (should go to VLM)
+                vision_indicators = [
+                    'analyze the image', 'describe the image', 'what do you see',
+                    'visual question answering', 'image analysis', 'caption generation',
+                    'object detection', 'visual grounding', 'image_url', 'base64'
+                ]
+
+                if any(indicator in content_lower for indicator in vision_indicators):
+                    return True
+
+                # Weak vision keywords (only count if no text indicators present)
+                weak_vision_keywords = ['image', 'visual', 'picture', 'photo']
+                if any(keyword in content_lower for keyword in weak_vision_keywords):
+                    # Check if it's in a reasoning context (should go to LLM)
+                    reasoning_context = [
+                        'given', 'based on', 'considering', 'analyze', 'reasoning',
+                        'hypothesis', 'evidence', 'conclusion', 'therefore'
+                    ]
+                    if any(ctx in content_lower for ctx in reasoning_context):
+                        return False
+                    return True
+
+        return False
+
+    def get_optimal_client(self, messages: List[Dict[str, Any]]):
+        """Get the optimal client based on task type with improved routing"""
+        if self.model_preference != "auto":
+            return self.client, self.model
+
+        # Smart routing for dual-model architecture
+        is_vision = self._is_vision_task(messages)
+
+        # Log routing decision for debugging
+        content_preview = str(messages[0].get('content', ''))[:100] if messages else 'No content'
+        logging.debug(f"Task routing: {'VLM' if is_vision else 'LLM'} - Content: {content_preview}...")
+
+        if is_vision:
+            return self.vlm_client, "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
+        else:
+            return self.llm_client, "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-7B-Instruct"
     
     def get_info(self) -> Dict[str, str]:
         """Get backend information"""
@@ -168,10 +247,13 @@ class BackendManager:
         if not self.is_available():
             logging.error(f"❌ {self.backend_type} backend not available")
             return None
-        
+
+        # Get optimal client for this task (dual-model routing)
+        optimal_client, optimal_model = self.get_optimal_client(messages)
+
         try:
-            response = self.client.chat.completions.create(
-                model=self.model,
+            response = optimal_client.chat.completions.create(
+                model=optimal_model,
                 messages=messages,
                 max_tokens=max_tokens,
                 temperature=temperature,
@@ -194,11 +276,13 @@ class BackendManager:
 # Global instance
 _backend_manager = None
 
-def get_backend_manager(backend_type: str = "vllm") -> BackendManager:
-    """Get or create backend manager"""
+def get_backend_manager(backend_type: str = "vllm", model_preference: str = "auto") -> BackendManager:
+    """Get or create backend manager with model preference"""
     global _backend_manager
-    if _backend_manager is None or _backend_manager.backend_type != backend_type:
-        _backend_manager = BackendManager(backend_type)
+    if (_backend_manager is None or
+        _backend_manager.backend_type != backend_type or
+        _backend_manager.model_preference != model_preference):
+        _backend_manager = BackendManager(backend_type, model_preference)
     return _backend_manager
 
 def switch_backend(backend_type: str):

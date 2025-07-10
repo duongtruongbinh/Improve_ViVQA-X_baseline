@@ -82,11 +82,14 @@ class GEvaluator:
         ref_explanations_formatted = "\n".join([f"- {ref}" for ref in eval_pack['reference_explanations']])
         
         prompt = f"""
-You are an expert evaluator for a Visual Question Answering (VQA) system. Your task is to evaluate the generated explanation for a given question based on a set of reference explanations. Provide scores on a scale of 1 to 5 for the following criteria:
+You are an expert evaluator for a Visual Question Answering (VQA) system. Your task is to evaluate the generated explanation for a given question based on a set of reference explanations. Provide scores on a scale of 1 to 10 for the following criteria:
 
-1.  **Relevance**: Does the explanation directly address the question and the visual content (even though you can't see the image)? Is it on-topic? (1=irrelevant, 5=highly relevant)
-2.  **Coherence**: Is the explanation easy to understand, logical, and well-structured? (1=incoherent, 5=highly coherent)
-3.  **Faithfulness**: How well does the generated explanation align with the information provided in the reference explanations? Does it contradict the references? (1=contradictory/unfaithful, 5=highly faithful)
+1.  **Relevance**: Does the explanation directly address the question and the visual content (even though you can't see the image)? Is it on-topic?
+    (1-2=completely irrelevant, 3-4=partially relevant, 5-6=moderately relevant, 7-8=highly relevant, 9-10=perfectly relevant and comprehensive)
+2.  **Coherence**: Is the explanation easy to understand, logical, and well-structured?
+    (1-2=incoherent/contradictory, 3-4=somewhat confusing, 5-6=generally clear, 7-8=well-structured, 9-10=exceptionally clear and logical)
+3.  **Faithfulness**: How well does the generated explanation align with the information provided in the reference explanations? Does it contradict the references?
+    (1-2=contradicts references, 3-4=partially aligned, 5-6=generally faithful, 7-8=highly faithful, 9-10=perfectly aligned with references)
 
 **Input Data:**
 - **Question**: "{eval_pack['question']}"
@@ -99,9 +102,9 @@ Return your evaluation as a JSON object with the keys "relevance", "coherence", 
 
 **JSON Output Format:**
 {{
-  "relevance": <score_1_to_5>,
-  "coherence": <score_1_to_5>,
-  "faithfulness": <score_1_to_5>
+  "relevance": <score_1_to_10>,
+  "coherence": <score_1_to_10>,
+  "faithfulness": <score_1_to_10>
 }}
 """
         try:
@@ -119,7 +122,7 @@ Return your evaluation as a JSON object with the keys "relevance", "coherence", 
             scores = json.loads(content)
 
             for key in ["relevance", "coherence", "faithfulness"]:
-                if not (isinstance(scores.get(key), (int, float)) and 1 <= scores.get(key, 0) <= 5):
+                if not (isinstance(scores.get(key), (int, float)) and 1 <= scores.get(key, 0) <= 10):
                     logging.warning(f"G-Eval returned an invalid or out-of-range score for {key}: {scores.get(key)}. Skipping.")
                     return None
             

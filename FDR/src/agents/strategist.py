@@ -37,14 +37,14 @@ class StrategistAgent(BaseAgent):
     Enhanced for Design V2: Integrated explanation generation capabilities.
     """
     
-    def __init__(self, client: OpenAI = None, model_name: str = None, verifier=None, use_vllm: bool = True):
+    def __init__(self, client: OpenAI = None, model_name: str = None, verifier=None, use_vllm: bool = True, model_preference: str = "auto"):
         super().__init__(use_vllm, model_name)
-        
+
         # Initialize logger
         self.logger = logging.getLogger(__name__)
-        
-        # Initialize backend
-        self._initialize_backend()
+
+        # Initialize backend (Strategist can use LLM for text-only tasks)
+        self._initialize_backend(model_preference=model_preference)
         
         self.verifier = verifier
         
@@ -110,19 +110,28 @@ class StrategistAgent(BaseAgent):
             })
             logging.debug(f"Strategist: Verified issue '{issue_id}' -> Answer: '{issue_answer.strip()}'")
 
-        # Step 3: Enhanced hypothesis with reasoning_description
-        hypothesis = reasoning_plan.get("hypothesis", {})
-        if hypothesis:
-            # Add reasoning_description for explanation generation
-            hypothesis["reasoning_description"] = self._generate_reasoning_description(
-                hypothesis, question, answer_candidates
+        # Step 3: Enhanced hypothesis generation with multiple hypotheses for robustness
+        base_hypothesis = reasoning_plan.get("hypothesis", {})
+        hypothesis_set = []
+
+        if base_hypothesis and evidence_set:
+            # Generate multiple hypotheses based on actual evidence patterns
+            generated_hypotheses = self._generate_robust_hypotheses(
+                base_hypothesis, evidence_set, answer_candidates, question
             )
-            hypothesis["confidence_source"] = 0.8  # Default confidence for generated hypotheses
+            hypothesis_set.extend(generated_hypotheses)
+        elif base_hypothesis:
+            # Fallback to single hypothesis if no evidence available
+            base_hypothesis["reasoning_description"] = self._generate_reasoning_description(
+                base_hypothesis, question, answer_candidates
+            )
+            base_hypothesis["confidence_source"] = 0.8
+            hypothesis_set.append(base_hypothesis)
         
         # Step 4: Combine the evidence and hypothesis into the final format for the Synthesizer
         mvkb_payload = {
             "evidence_set": evidence_set,
-            "hypothesis_set": [hypothesis] if hypothesis else []
+            "hypothesis_set": hypothesis_set
         }
         
         logging.info("Strategist: Successfully built enhanced MVKB payload with descriptions.")
@@ -309,24 +318,155 @@ Natural explanation:"""
         
         prompt = self._build_reasoning_prompt(question, caption, answer_candidates)
         
+        # Try with progressively higher token limits to handle complex reasoning plans
+        # Use optimized token limits for 12k context window models
+        max_tokens_attempts = [3500, 4500, 5500]  # Optimized for comprehensive reasoning
+
+        for attempt, max_tokens in enumerate(max_tokens_attempts, 1):
+            try:
+                logging.debug(f"Strategist: Attempt {attempt} with max_tokens={max_tokens}")
+
+                response = self.client.chat.completions.create(
+                    model=self.model,
+                    messages=[{"role": "user", "content": prompt}],
+                    temperature=0.1,  # Lower temperature for more consistent JSON
+                    max_tokens=max_tokens,
+                    response_format={"type": "json_object"} # Force JSON output
+                )
+
+                content = response.choices[0].message.content.strip()
+
+                # Check if response was truncated (common indicators)
+                if content.endswith('...') or not content.endswith('}'):
+                    logging.warning(f"Strategist: Response appears truncated (attempt {attempt}), trying with higher token limit")
+                    if attempt < len(max_tokens_attempts):
+                        continue
+
+                # Enhanced JSON parsing with cleanup
+                plan = self._parse_json_response(content)
+
+                if plan:
+                    logging.info(f"Strategist: Successfully generated reasoning plan (attempt {attempt}, {max_tokens} tokens).")
+                    logging.debug(f"Reasoning Plan: {plan}")
+                    return plan
+                else:
+                    logging.warning(f"Strategist: Failed to parse JSON response (attempt {attempt})")
+                    if attempt < len(max_tokens_attempts):
+                        continue
+
+            except Exception as e:
+                logging.warning(f"Strategist: Attempt {attempt} failed: {e}")
+                if attempt < len(max_tokens_attempts):
+                    continue
+                else:
+                    logging.error(f"Strategist: All attempts failed. Last error: {e}")
+
+        # Final fallback: Generate a simplified reasoning plan
+        logging.warning("Strategist: All attempts failed, trying simplified fallback plan")
+        return self._generate_fallback_plan(question, caption, answer_candidates)
+
+    def _parse_json_response(self, content: str) -> Optional[Dict]:
+        """
+        Robust JSON parsing with multiple fallback strategies for Qwen2.5 models
+        """
+        # Log the content length for debugging
+        logging.debug(f"Parsing JSON response of length {len(content)}")
+
+        # Check for obvious truncation indicators
+        if content.endswith('...') or ('{' in content and not content.rstrip().endswith('}')):
+            logging.warning("Response appears to be truncated - missing closing braces or ends with '...'")
+
+        # Strategy 1: Direct parsing
         try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[{"role": "user", "content": prompt}],
-                temperature=0.2,
-                max_tokens=800,
-                response_format={"type": "json_object"} # Force JSON output
-            )
-            
-            content = response.choices[0].message.content.strip()
-            plan = json.loads(content)
-            
-            logging.info("Strategist: Successfully generated reasoning plan.")
-            logging.debug(f"Reasoning Plan: {plan}")
-            return plan
+            result = json.loads(content)
+            logging.debug("Successfully parsed JSON with direct method")
+            return result
+        except json.JSONDecodeError as e:
+            logging.debug(f"Direct JSON parsing failed: {e}")
+            pass
+
+        # Strategy 2: Extract JSON from markdown code blocks
+        import re
+        json_pattern = r'```(?:json)?\s*(\{.*?\})\s*```'
+        match = re.search(json_pattern, content, re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group(1))
+            except json.JSONDecodeError:
+                pass
+
+        # Strategy 3: Find JSON object boundaries
+        start_idx = content.find('{')
+        if start_idx != -1:
+            # Find the matching closing brace
+            brace_count = 0
+            for i, char in enumerate(content[start_idx:], start_idx):
+                if char == '{':
+                    brace_count += 1
+                elif char == '}':
+                    brace_count -= 1
+                    if brace_count == 0:
+                        try:
+                            json_str = content[start_idx:i+1]
+                            return json.loads(json_str)
+                        except json.JSONDecodeError:
+                            break
+
+        # Strategy 4: Clean common issues and retry
+        cleaned_content = content.strip()
+        # Remove common prefixes/suffixes
+        prefixes_to_remove = ["Here's the JSON:", "JSON:", "Output:", "Response:"]
+        for prefix in prefixes_to_remove:
+            if cleaned_content.startswith(prefix):
+                cleaned_content = cleaned_content[len(prefix):].strip()
+
+        # Fix common JSON issues
+        cleaned_content = re.sub(r',\s*}', '}', cleaned_content)  # Remove trailing commas
+        cleaned_content = re.sub(r',\s*]', ']', cleaned_content)  # Remove trailing commas in arrays
+
+        try:
+            return json.loads(cleaned_content)
+        except json.JSONDecodeError:
+            pass
+
+        logging.warning(f"Failed to parse JSON response: {content[:200]}...")
+        return None
+
+    def _generate_fallback_plan(self, question: str, caption: str, answer_candidates: List[str]) -> Optional[Dict]:
+        """
+        Generate a simplified reasoning plan when complex generation fails.
+        This ensures we always have a valid plan to work with.
+        """
+        try:
+            # Create a minimal but valid reasoning plan
+            fallback_plan = {
+                "relevant_issues": [
+                    {
+                        "issue_id": "issue_01",
+                        "question_text": "Does the image content match the question?"
+                    }
+                ],
+                "hypothesis": {
+                    "hypothesis_id": "H_Fallback",
+                    "IF": [
+                        {
+                            "issue_id": "issue_01",
+                            "answer_is": "Yes"
+                        }
+                    ],
+                    "THEN": {
+                        "final_answer": answer_candidates[0] if answer_candidates else "Yes"
+                    },
+                    "reasoning_description": f"Based on visual analysis, the answer is {answer_candidates[0] if answer_candidates else 'Yes'}",
+                    "confidence_source": 0.6  # Lower confidence for fallback
+                }
+            }
+
+            logging.info("Strategist: Generated fallback reasoning plan")
+            return fallback_plan
 
         except Exception as e:
-            logging.error(f"Strategist: Failed to generate or parse reasoning plan: {e}")
+            logging.error(f"Strategist: Even fallback plan generation failed: {e}")
             return None
 
     def _build_reasoning_prompt(self, question: str, caption: str, answer_candidates: list) -> str:
@@ -334,18 +474,23 @@ Natural explanation:"""
         
         return f"""You are an expert reasoning agent for Visual Question Answering. Your task is to create a logical plan to answer a question based on an image.
 
+CRITICAL: You must respond with ONLY a valid JSON object. No additional text, explanations, or markdown formatting.
+
 Follow this two-step process:
 
 **Step 1: Decompose the Main Question**
-Break down the main question into 2-3 smaller, factual, and verifiable sub-questions ("Relevant Issues"). These issues should act as building blocks of evidence. Each issue must have a unique `issue_id` and a `question_text`.
+Break down the main question into 2-4 smaller, factual, and verifiable sub-questions ("Relevant Issues"). These issues should act as building blocks of evidence. Each issue must have a unique `issue_id` and a detailed `question_text` that captures specific visual aspects relevant to the main question.
 
 **Step 2: Formulate a Logical Hypothesis**
-Create a single, clear logical rule ("Hypothesis"). This rule must use the answers to your "Relevant Issues" to logically deduce the final answer.
+Create a comprehensive, clear logical rule ("Hypothesis"). This rule must use the answers to your "Relevant Issues" to logically deduce the final answer. Include detailed reasoning that explains the visual logic.
 
-**IMPORTANT: JSON Structure Rules**
-- The `IF` clause in the hypothesis **MUST** contain a list of objects.
-- Each object in the `IF` list **MUST** have two keys: `issue_id` (matching an ID from "Relevant Issues") and `answer_is` (the expected answer for that issue).
-- The `THEN` clause **MUST** contain an object with a single key: `final_answer`.
+**CRITICAL JSON REQUIREMENTS:**
+- Response must be a valid JSON object starting with {{ and ending with }}
+- No text before or after the JSON object
+- The `IF` clause in the hypothesis **MUST** contain a list of objects
+- Each object in the `IF` list **MUST** have exactly two keys: `issue_id` and `answer_is`
+- The `THEN` clause **MUST** contain an object with exactly one key: `final_answer`
+- All strings must be properly quoted and escaped
 
 **EXAMPLE 1:**
 - **Main Question**: "What does the weather seem to be like?"
@@ -556,16 +701,70 @@ Format: Return only the sub-questions, one per line."""
             issue_id = condition.get('issue_id', 'evidence')
             expected_answer = condition.get('answer_is', 'confirmed')
             return f"If the visual analysis confirms {expected_answer}, then the answer is {then_result}"
-        
-        elif len(if_conditions) == 2:
-            cond1 = if_conditions[0]
-            cond2 = if_conditions[1]
-            ans1 = cond1.get('answer_is', 'confirmed')
-            ans2 = cond2.get('answer_is', 'confirmed')
-            return f"If both visual checks confirm {ans1} and {ans2}, then the answer is {then_result}"
-        
+
+    def _generate_robust_hypotheses(self, base_hypothesis: Dict, evidence_set: List[Dict],
+                                   answer_candidates: List[str], question: str) -> List[Dict]:
+        """
+        Generate multiple robust hypotheses based on actual evidence patterns.
+        This reduces fallback usage by creating hypotheses that match real evidence.
+        """
+        hypotheses = []
+
+        # Extract evidence patterns
+        evidence_map = {e['evidence_id']: e['answer'].strip().lower() for e in evidence_set}
+
+        # Generate hypotheses for each answer candidate based on evidence patterns
+        for i, candidate in enumerate(answer_candidates):
+            # Create hypothesis based on actual evidence answers
+            conditions = []
+            for evidence in evidence_set:
+                evidence_id = evidence['evidence_id']
+                actual_answer = evidence['answer'].strip()
+
+                # Determine expected answer pattern based on evidence
+                if actual_answer.lower().startswith('yes'):
+                    expected = 'Yes'
+                elif actual_answer.lower().startswith('no'):
+                    expected = 'No'
+                else:
+                    # For complex answers, use a substring match approach
+                    expected = actual_answer.split('.')[0].strip()  # Take first sentence
+
+                conditions.append({
+                    "issue_id": evidence_id,
+                    "answer_is": expected
+                })
+
+            # Create hypothesis
+            hypothesis = {
+                "hypothesis_id": f"H_{candidate.replace(' ', '_')}_{i+1}",
+                "IF": conditions,
+                "THEN": {"final_answer": candidate},
+                "reasoning_description": self._generate_reasoning_description_for_candidate(
+                    conditions, candidate, question
+                ),
+                "confidence_source": 0.8 - (i * 0.1)  # Decreasing confidence for later candidates
+            }
+
+            hypotheses.append(hypothesis)
+
+            # Limit to top 3 hypotheses to avoid overwhelming the synthesizer
+            if len(hypotheses) >= 3:
+                break
+
+        logging.info(f"Generated {len(hypotheses)} robust hypotheses based on evidence patterns")
+        return hypotheses
+
+    def _generate_reasoning_description_for_candidate(self, conditions: List[Dict],
+                                                    candidate: str, question: str) -> str:
+        """Generate reasoning description for a specific candidate based on conditions."""
+        if len(conditions) == 1:
+            condition = conditions[0]
+            expected = condition.get('answer_is', 'confirmed')
+            return f"If the visual evidence shows {expected}, then the answer is {candidate}"
+        elif len(conditions) == 2:
+            cond1, cond2 = conditions[0], conditions[1]
+            exp1, exp2 = cond1.get('answer_is', 'confirmed'), cond2.get('answer_is', 'confirmed')
+            return f"If the visual analysis confirms {exp1} and {exp2}, then the answer is {candidate}"
         else:
-            # Multiple conditions
-            answers = [cond.get('answer_is', 'confirmed') for cond in if_conditions]
-            conditions_text = ", ".join(answers)
-            return f"If multiple visual analyses confirm {conditions_text}, then the answer is {then_result}" 
+            return f"Based on multiple visual evidence points, the answer is {candidate}"

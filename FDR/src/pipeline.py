@@ -13,9 +13,30 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 from src.agents import VerifierAgent, StrategistAgent, SynthesizerAgent
 from src.eval import EvalModule, GEvaluator
-from utils.backend_manager import BackendManager
+
+# Import BackendManager with error handling
+try:
+    from utils.backend_manager import BackendManager
+except ImportError as e:
+    logging.error(f"Failed to import BackendManager: {e}")
+    BackendManager = None
 
 # --- Helper Functions ---
+
+def _normalize_answer(answer: str) -> str:
+    """Normalize answer format for better evaluation accuracy."""
+    if not answer:
+        return answer
+
+    # Remove trailing punctuation and extra whitespace
+    normalized = answer.strip().rstrip('.!?').strip()
+
+    # Handle common format variations
+    if normalized.lower() in ['yes', 'no']:
+        return normalized.lower()
+
+    # For other answers, keep original case but remove trailing punctuation
+    return normalized
 
 def load_config(config_path=None):
     """Loads the YAML configuration file from unified config.yaml or specified path."""
@@ -30,11 +51,12 @@ def load_config(config_path=None):
 
 # --- Main FDR Pipeline with Synthesizer Logic Engine ---
 
-def run_fdr_pipeline(use_vllm: bool = True, 
-                     enable_evaluation: bool = False, 
-                     override_samples: int = None, 
+def run_fdr_pipeline(use_vllm: bool = True,
+                     enable_evaluation: bool = False,
+                     override_samples: int = None,
                      config_path: str = None,
-                     active_dataset_override: str = None):
+                     active_dataset_override: str = None,
+                     model_preference: str = "auto"):
     """
     Run the complete FDR pipeline with NEW Synthesizer Logic Engine.
     Uses unified config.yaml by default.
@@ -61,24 +83,21 @@ def run_fdr_pipeline(use_vllm: bool = True,
             logging.getLogger("openai").setLevel(logging.WARNING)
         
         logging.info("🚀 Starting FDR Pipeline with Synthesizer Logic Engine")
-        logging.info(f"📋 Configuration loaded from: {config_path or 'config.yaml'}")
-        
-        # Load engine version for early logging
-        synthesizer_config = config.get('agents_config', {}).get('synthesizer', {})
-        engine_version = synthesizer_config.get('engine_version', 'v2')
-        logging.info(f"⚙️ Synthesizer Engine Version: {engine_version.upper()} ({'Weighted Voting' if engine_version == 'v3' else 'Winner-Takes-All'})")
         
         # Setup API client for G-Eval if using OpenAI backend
         openai_client = None
         if not use_vllm:
             try:
                 # Use BackendManager to ensure consistent client initialization
-                backend_manager = BackendManager(backend_type="openai")
-                if backend_manager.is_available():
-                    openai_client = backend_manager.client
-                    logging.info("✅ OpenAI client for G-Eval initialized via BackendManager.")
+                if BackendManager is None:
+                    logging.warning("BackendManager not available. G-Eval will be skipped.")
                 else:
-                    logging.warning("Could not initialize OpenAI client via BackendManager. G-Eval will be skipped.")
+                    backend_manager = BackendManager(backend_type="openai")
+                    if backend_manager.is_available():
+                        openai_client = backend_manager.client
+                        logging.info("✅ OpenAI client for G-Eval initialized via BackendManager.")
+                    else:
+                        logging.warning("Could not initialize OpenAI client via BackendManager. G-Eval will be skipped.")
             except Exception as e:
                 logging.warning(f"Could not initialize OpenAI client for G-Eval. It will be skipped. Reason: {e}")
         
@@ -92,21 +111,21 @@ def run_fdr_pipeline(use_vllm: bool = True,
             max_tokens=verifier_config.get('max_tokens', 1000),
             use_vllm=use_vllm,
             enable_dam=verifier_config.get('enable_dam', True),
-            groundingdino_docker=verifier_config.get('groundingdino_docker', False)
+            groundingdino_docker=verifier_config.get('groundingdino_docker', False),
+            model_preference="vlm"  # Always use VLM for vision tasks
         )
-        
+
         # Strategist Agent (LLM for MVKB construction + explanation generation)
         strategist_config = agents_config.get('strategist', {})
         strategist = StrategistAgent(
             model_name=config.get('backend_config', {}).get('model_name'),
             verifier=verifier,
-            use_vllm=use_vllm
+            use_vllm=use_vllm,
+            model_preference="llm"  # Optimized: Use LLM for text-only reasoning tasks
         )
         
-        # Synthesizer Logic Engine (V2 or V3)
-        synthesizer_config = agents_config.get('synthesizer', {})
-        engine_version = synthesizer_config.get('engine_version', 'v2')
-        synthesizer = SynthesizerAgent(verifier=verifier, engine_version=engine_version)
+        # Synthesizer Logic Engine
+        synthesizer = SynthesizerAgent(verifier=verifier)
         
         # Load dataset from unified config
         active_dataset = active_dataset_override or config.get('active_dataset', 'vqax')
@@ -166,8 +185,6 @@ def run_fdr_pipeline(use_vllm: bool = True,
         
         # Results storage
         results = []
-        skipped_samples = []  # Track skipped samples
-        # KHÔNG tạo skipped_log_path ở đây nữa
         
         # Process each sample
         logging.info(f"Processing {len(dataset)} samples...")
@@ -175,6 +192,7 @@ def run_fdr_pipeline(use_vllm: bool = True,
             try:
                 # Extract sample data based on format
                 if dataset_format == 'vqax' or dataset_format == 'vivqax':
+                    # VQA-X or ViVQA-X format
                     image_name = sample['image_name']
                     image_dir = dataset_config.get('image_dir', '/mnt/VLAI_data/COCO_Images/val2014')
                     image_path = os.path.join(image_dir, image_name)
@@ -182,78 +200,65 @@ def run_fdr_pipeline(use_vllm: bool = True,
                     ground_truth = sample['answer']
                     question_id = sample['question_id']
                 else:
+                    # Standard format
                     if 'image_path' in sample:
                         image_path = sample['image_path']
                     elif 'image' in sample:
                         image_path = sample['image']
                     else:
                         logging.error(f"Sample {i}: No image path found")
-                        skipped_samples.append({
-                            'sample_id': i,
-                            'question_id': sample.get('question_id', f'sample_{i}'),
-                            'reason': 'No image path found'
-                        })
                         continue
+                    
                     question = sample.get('question', sample.get('question_text', ''))
                     ground_truth = sample.get('answer', sample.get('ground_truth', None))
                     question_id = sample.get('question_id', f"sample_{i}")
+                
                 if not question:
                     logging.error(f"Sample {i}: No question found")
-                    skipped_samples.append({
-                        'sample_id': i,
-                        'question_id': question_id,
-                        'reason': 'No question found'
-                    })
                     continue
+                
+                # Ensure absolute image path
                 if not os.path.isabs(image_path):
                     dataset_dir = os.path.dirname(input_file)
                     image_path = os.path.join(dataset_dir, image_path)
+                
                 if not os.path.exists(image_path):
                     logging.warning(f"Sample {i}: Image not found: {image_path}")
-                    skipped_samples.append({
-                        'sample_id': i,
-                        'question_id': question_id,
-                        'reason': f'Image not found: {image_path}'
-                    })
                     continue
+                
                 logging.info(f"Processing sample {i+1}/{len(dataset)}: {question[:50]}...")
+                
                 # Step 1: Verifier - Generate initial context (caption)
                 initial_response = verifier.generate_initial_response(question, image_path)
                 answer_candidates = initial_response['answer_candidates']
                 caption = initial_response['caption']
+                
                 # Step 2: Strategist - Decompose question and create reasoning plan (issues + hypothesis)
+                # The mvkb variable now holds a dict: {"evidence_set": [], "hypothesis_set": []}
                 mvkb_payload = strategist.build_mvkb(question, image_path, answer_candidates, caption)
+                
                 if not mvkb_payload:
                     logging.error(f"Sample {i}: Strategist failed to build MVKB. Skipping.")
-                    skipped_samples.append({
-                        'sample_id': i,
-                        'question_id': question_id,
-                        'reason': 'Strategist failed to build MVKB'
-                    })
                     continue
+
                 evidence_set = mvkb_payload.get("evidence_set", [])
                 hypothesis_set = mvkb_payload.get("hypothesis_set", [])
+                
                 # Step 3: Synthesizer - Execute the reasoning plan
-                try:
-                    synthesis_result = synthesizer.synthesize(
-                        evidence_set=evidence_set, 
-                        hypothesis_set=hypothesis_set,
-                        answer_candidates=answer_candidates
-                    )
-                except Exception as synth_ex:
-                    logging.error(f"Sample {i}: Synthesizer failed: {synth_ex}")
-                    skipped_samples.append({
-                        'sample_id': i,
-                        'question_id': question_id,
-                        'reason': f'Synthesizer failed: {synth_ex}'
-                    })
-                    continue
+                synthesis_result = synthesizer.synthesize(
+                    evidence_set=evidence_set, 
+                    hypothesis_set=hypothesis_set,
+                    answer_candidates=answer_candidates
+                )
+                
                 final_answer = synthesis_result.get('answer')
                 synthesis_status = synthesis_result.get('status', 'UNKNOWN')
                 causal_trace = synthesis_result.get('causal_trace', [])
-                engine_version = synthesis_result.get('engine_version', 'unknown')
-                final_confidence = synthesis_result.get('final_confidence')
-                confidence_breakdown = synthesis_result.get('confidence_breakdown', {})
+
+                # Normalize answer format for better evaluation accuracy
+                if final_answer:
+                    final_answer = _normalize_answer(final_answer)
+                
                 # Step 4: Enhanced Explanation with Causal Trace
                 explanation_text = strategist.generate_explanation(
                     question=question,
@@ -261,46 +266,51 @@ def run_fdr_pipeline(use_vllm: bool = True,
                     caption=caption,
                     evidence_set=evidence_set
                 )
+                
                 # Store result - CLEAN OUTPUT: answer + explanation
                 result = {
                     'question_id': question_id,
                     'sample_id': i,
                     'question': question,
                     'image_path': image_path,
+                    
+                    # MAIN OUTPUT
                     'final_answer': final_answer,
                     'explanation': explanation_text,
+                    
+                    # METADATA
                     'synthesis_status': synthesis_status,
-                    'engine_version': engine_version,
                     'causal_trace': causal_trace,
                     'evidence_count': len(evidence_set),
                     'hypothesis_count': len(hypothesis_set),
                     'ground_truth': ground_truth,
-                    'final_confidence': final_confidence,
-                    'confidence_breakdown': confidence_breakdown,
+                    
+                    # DEBUG INFO (optional)
                     'initial_candidates': answer_candidates,
                     'caption': caption,
                     'mvkb_entries_count': len(mvkb_payload)
                 }
+                
+                # Add VQA-X specific fields if available
                 if dataset_format == 'vqax':
                     result.update({
                         'ground_truth_explanations': sample.get('explanation', [])
                     })
+                
                 results.append(result)
+                
                 logging.info(f"✅ Sample {i+1} completed: '{final_answer}' ({synthesis_status})")
+                
             except Exception as e:
                 logging.error(f"❌ Sample {i} failed: {e}")
-                skipped_samples.append({
-                    'sample_id': i,
-                    'question_id': sample.get('question_id', f'sample_{i}'),
-                    'reason': f'Exception: {e}'
-                })
                 continue
         
         # Save results
         output_config = config.get('output_config', {})
         output_dir = output_config.get('output_dir', 'output')
         output_filename = output_config.get('output_file', 'fdr_results.json')
-        skipped_log_path = os.path.join(output_dir, 'skipped_samples.log')  # Đặt ở đây!
+        
+        # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)
         
         # Combine directory and filename
@@ -309,15 +319,7 @@ def run_fdr_pipeline(use_vllm: bool = True,
         with open(output_file, 'w') as f:
             json.dump(results, f, indent=2)
         
-        # NEW: Save skipped samples log
-        if skipped_samples:
-            with open(skipped_log_path, 'w') as flog:
-                for entry in skipped_samples:
-                    flog.write(json.dumps(entry, ensure_ascii=False) + '\n')
-        
         logging.info(f"💾 Results saved to: {output_file}")
-        if skipped_samples:
-            logging.info(f"⚠️ Skipped {len(skipped_samples)} samples. Details in {skipped_log_path}")
         
         # Quick accuracy calculation (always run)
         accuracy_stats = calculate_quick_accuracy_with_synthesis(results)
@@ -334,13 +336,15 @@ def run_fdr_pipeline(use_vllm: bool = True,
                 try:
                     # Use BackendManager to robustly initialize an OpenAI client
                     # This leverages the key loading logic from backend_manager
-                    from utils.backend_manager import BackendManager
-                    openai_backend_for_eval = BackendManager(backend_type="openai")
-                    if openai_backend_for_eval.is_available():
-                        g_eval_client = openai_backend_for_eval.client
-                        logging.info("✅ OpenAI client for G-Eval is available.")
+                    if BackendManager is None:
+                        logging.warning("⚠️ BackendManager not available. G-Eval will be skipped.")
                     else:
-                        logging.warning("⚠️ OpenAI client for G-Eval is not available. G-Eval will be skipped.")
+                        openai_backend_for_eval = BackendManager(backend_type="openai")
+                        if openai_backend_for_eval.is_available():
+                            g_eval_client = openai_backend_for_eval.client
+                            logging.info("✅ OpenAI client for G-Eval is available.")
+                        else:
+                            logging.warning("⚠️ OpenAI client for G-Eval is not available. G-Eval will be skipped.")
                 except Exception as e:
                     logging.warning(f"⚠️ Failed to initialize OpenAI client for G-Eval: {e}. G-Eval will be skipped.")
 
@@ -428,7 +432,7 @@ def _print_evaluation_table(results: dict):
     print(f"  {'VQA Accuracy:':<30} {vqa.get('accuracy', 0.0):.2%}")
     if geval:
         avg_geval = (geval.get('avg_relevance', 0) + geval.get('avg_coherence', 0) + geval.get('avg_faithfulness', 0)) / 3
-        print(f"  {'G-Eval Score (Avg):':<30} {avg_geval:.2f} / 5.0")
+        print(f"  {'G-Eval Score (Avg):':<30} {avg_geval:.2f} / 10.0")
     print("-" * 100)
 
     # Metrics Table Header
@@ -455,10 +459,10 @@ def _print_evaluation_table(results: dict):
 
     # G-Eval Metrics (if available)
     if geval:
-        print(f"\n  G-Eval Breakdown:")
-        print(f"    {'Relevance:':<22} {geval.get('avg_relevance', 0):.2f} / 5.0")
-        print(f"    {'Coherence:':<22} {geval.get('avg_coherence', 0):.2f} / 5.0")
-        print(f"    {'Faithfulness:':<22} {geval.get('avg_faithfulness', 0):.2f} / 5.0")
+        print(f"\n  G-Eval Breakdown (10-point scale):")
+        print(f"    {'Relevance:':<22} {geval.get('avg_relevance', 0):.2f} / 10.0")
+        print(f"    {'Coherence:':<22} {geval.get('avg_coherence', 0):.2f} / 10.0")
+        print(f"    {'Faithfulness:':<22} {geval.get('avg_faithfulness', 0):.2f} / 10.0")
 
     print(f"\n{bar}")
 
