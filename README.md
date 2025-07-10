@@ -40,25 +40,47 @@ echo "your-openai-api-key" > FDR/openai_key.txt
 export OPENAI_API_KEY="your-openai-api-key"
 ```
 
+### Model Serving Setup (VLLM)
+
+For local model inference using the dual-model VQA-X system architecture, start both the Vision-Language Model and Language Model servers:
+
+```bash
+# Start Qwen2.5-VL-7B-Instruct (Vision-Language Model) on GPU 0
+CUDA_VISIBLE_DEVICES=0 vllm serve /mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct \
+    --host 0.0.0.0 --port 9100 --max-model-len 12288
+
+# Start Qwen2.5-7B-Instruct (Language Model) on GPU 1
+CUDA_VISIBLE_DEVICES=1 vllm serve /mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-7B-Instruct \
+    --host 0.0.0.0 --port 9101 --max-model-len 12288
+```
+
+**Dual-Model Architecture Explanation:**
+- **VL Model (Port 9100)**: Handles vision-related tasks including image analysis, object detection verification, and visual reasoning
+- **LLM Model (Port 9101)**: Processes text-only tasks such as strategy planning, answer synthesis, and explanation generation
+- **GPU Allocation**: Uses separate GPUs to avoid memory conflicts and enable parallel processing
+- **Port Configuration**: Different ports (9100/9101) allow both models to run simultaneously
+
+> **Note**: Ensure both models are fully loaded before starting the VQA-X pipeline. The system will automatically route requests to the appropriate model based on task requirements.
+
 ### Basic Usage
 ```bash
 # Main pipeline - default configuration
 python3 FDR/main.py
 
 # Recommended: Use OpenAI backend
-python3 FDR/main.py --backend openai
+python3 FDR/main.py --backend vllm
 
 # Quick test with default samples (2)
-python3 FDR/main.py --backend openai --test
+python3 FDR/main.py --backend vllm --test
 
 # Quick test with 1 sample
-python3 FDR/main.py --backend openai --test 1
+python3 FDR/main.py --backend vllm --test 1
 
 # Enable comprehensive evaluation
-python3 FDR/main.py --backend openai --evaluate
+python3 FDR/main.py --backend vllm --evaluate
 
 # Process a specific number of samples
-python3 FDR/main.py --backend openai --samples 10
+python3 FDR/main.py --backend vllm --samples 10 --evaluate
 ```
 
 ## �� Project Structure
