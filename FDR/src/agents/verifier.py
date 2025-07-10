@@ -37,17 +37,17 @@ class VerifierAgent(BaseAgent):
     Enhanced with GroundingDINO and DAM integration for comprehensive visual understanding.
     """
     
-    def __init__(self, client: OpenAI = None, model_name: str = None, temperature: float = None, 
-                 max_tokens: int = None, use_vllm: bool = True, enable_dam: bool = True, 
-                 groundingdino_docker: bool = False):
+    def __init__(self, client: OpenAI = None, model_name: str = None, temperature: float = None,
+                 max_tokens: int = None, use_vllm: bool = True, enable_dam: bool = True,
+                 groundingdino_docker: bool = False, model_preference: str = "vlm"):
         super().__init__(use_vllm, model_name)
-        
+
         # Override with specific parameters
         self.temperature = temperature or 0.7
         self.max_tokens = max_tokens or 1000
-        
-        # Initialize backend
-        self._initialize_backend()
+
+        # Initialize backend (Verifier always needs VLM for vision tasks)
+        self._initialize_backend(model_preference="vlm")
         
         # Local components configuration
         self.groundingdino_enabled = False
