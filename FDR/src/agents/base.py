@@ -41,23 +41,23 @@ class BaseAgent:
         self.temperature = 0.7
         self.max_tokens = 1000
         
-    def _initialize_backend(self, backend_type: str = None):
-        """Initialize backend manager"""
+    def _initialize_backend(self, backend_type: str = None, model_preference: str = "auto"):
+        """Initialize backend manager with model preference"""
         if backend_type is None:
             backend_type = "vllm" if self.use_vllm else "openai"
-            
+
         try:
             sys.path.append(str(Path(__file__).parent.parent))
             from utils.backend_manager import get_backend_manager
-            
-            self.backend_manager = get_backend_manager(backend_type)
+
+            self.backend_manager = get_backend_manager(backend_type, model_preference)
             self.client = self.backend_manager.client
             self.model = self.backend_manager.model
-            
-            logging.info(f"✅ {self.__class__.__name__} initialized with {backend_type} backend")
-            
+
+            logging.info(f"✅ {self.__class__.__name__} initialized with {backend_type} backend (preference: {model_preference})")
+
         except Exception as e:
             logging.error(f"Failed to initialize backend: {e}, using fallback")
             self.client = None
             self.model = self.model_name
-            logging.warning("⚠️ No working backend available. Agent may not function properly.") 
+            logging.warning("⚠️ No working backend available. Agent may not function properly.")
