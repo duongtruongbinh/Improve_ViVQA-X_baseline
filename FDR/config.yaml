@@ -57,14 +57,13 @@ agents_config:
   
   strategist:  # MVKB construction
     temperature: 0.3
-    max_tokens: 500
+    max_tokens: 3500  # Optimized for 12k context window - allows comprehensive reasoning
     enable_mvkb: true
     max_relevant_issues: 3
     min_confidence_threshold: 0.1
     hypothesis_filtering: true
   
   synthesizer:  # Weighted voting
-    engine_version: "v3"  # Options: "v2" (winner-takes-all), "v3" (weighted voting)
     voting_threshold: 0.1
     confidence_normalization: true
     algorithm: "weighted_voting"  # Algorithm 2 from paper
@@ -73,16 +72,16 @@ agents_config:
   
   explanation:  # Natural language explanation
     temperature: 0.3
-    max_tokens: 256
+    max_tokens: 512  # Increased for better explanation quality
     explanation_style: "concise"  # Options: concise, detailed, academic
     use_key_hypothesis: true
     include_confidence: true
-    context_length: 200
+    context_length: 300  # More context for faithful explanations
 
 # Backend Configuration
 backend_config:
-  type: "openai"  # Options: "openai", "vllm"
-  model_name: "gpt-4o-mini"
+  type: "vllm"  # Options: "openai", "vllm"
+  model_name: "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
   
   # OpenAI settings
   openai_settings:
