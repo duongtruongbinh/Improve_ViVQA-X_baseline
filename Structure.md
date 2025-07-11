@@ -190,6 +190,166 @@ class ExplanationAgent:
     def _create_causal_explanation(question, evidence) -> str
 ```
 
+## 🌊 Luồng Hoạt Động Chi Tiết (Detailed Workflow)
+
+Phần này mô tả chi tiết luồng xử lý của hệ thống FDR từ đầu đến cuối, phân tích vai trò của từng agent và minh họa qua các ví dụ cụ thể.
+
+### 1. Tổng quan Luồng Hoạt Động
+
+Luồng hoạt động được điều phối bởi `FDR/src/pipeline.py` và tuân theo một chuỗi các bước logic được thiết kế để đảm bảo tính chính xác và có thể giải thích được.
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Pipeline
+    participant VerifierAgent
+    participant StrategistAgent
+    participant SynthesizerAgent
+    participant ExplanationAgent
+
+    User->>Pipeline: Cung cấp (Ảnh, Câu hỏi)
+    Pipeline->>VerifierAgent: 1. Yêu cầu phân tích hình ảnh
+    Pipeline->>StrategistAgent: 2. Yêu cầu xây dựng chiến lược
+    
+    VerifierAgent-->>Pipeline: 3. Trả kết quả (Câu trả lời ban đầu, Caption, Bounding Boxes, mô tả DAM)
+    StrategistAgent-->>Pipeline: 4. Trả MVKB (Các câu hỏi con, giả thuyết)
+    
+    Pipeline->>SynthesizerAgent: 5. Yêu cầu tổng hợp và bỏ phiếu
+    Note right of SynthesizerAgent: Sử dụng kết quả từ Verifier và Strategist
+    SynthesizerAgent-->>Pipeline: 6. Trả kết quả bỏ phiếu (Câu trả lời cuối cùng, điểm tin cậy)
+    
+    Pipeline->>ExplanationAgent: 7. Yêu cầu tạo giải thích
+    ExplanationAgent-->>Pipeline: 8. Trả chuỗi giải thích chi tiết
+    
+    Pipeline-->>User: Trả về (Câu trả lời cuối cùng, Giải thích)
+```
+
+**Quy trình xử lý:**
+1.  **Đầu vào**: Người dùng cung cấp một hình ảnh và một câu hỏi.
+2.  **Khởi tạo**: `pipeline.py` khởi tạo các agents (Verifier, Strategist, Synthesizer, Explanation) dựa trên file `config.yaml`.
+3.  **Xử lý song song ban đầu**:
+    *   `VerifierAgent` thực hiện phân tích đa chiều trên ảnh: tạo câu trả lời nhanh bằng VLM, phát hiện đối tượng bằng GroundingDINO, và mô tả chi tiết các vùng ảnh quan trọng bằng DAM.
+    *   `StrategistAgent` phân rã câu hỏi, xác định các khía cạnh cần điều tra và tạo ra một tập các giả thuyết (Multi-View Knowledge Base - MVKB).
+4.  **Tổng hợp (Synthesize)**: `SynthesizerAgent` nhận tất cả thông tin từ Verifier và Strategist. Nó thực hiện một thuật toán bỏ phiếu có trọng số để đối chiếu các bằng chứng, so sánh các giả thuyết và chọn ra câu trả lời cuối cùng có độ tin cậy cao nhất.
+5.  **Tạo giải thích (Explain)**: `ExplanationAgent` nhận câu trả lời cuối cùng và toàn bộ bằng chứng đã được thu thập. Nó tạo ra một lời giải thích bằng ngôn ngữ tự nhiên, diễn giải lại quá trình suy luận của hệ thống.
+6.  **Đầu ra**: Hệ thống trả về câu trả lời cuối cùng và lời giải thích chi tiết cho người dùng.
+
+### 2. Phân Tích Chi Tiết Từng Module
+
+#### VerifierAgent
+- **Mục tiêu**: Trích xuất bằng chứng trực quan từ hình ảnh.
+- **Input**:
+    - `image_path`: Đường dẫn đến file ảnh.
+    - `question`: Câu hỏi của người dùng.
+- **Hoạt động**:
+    1.  **Phân tích VLM ban đầu**: Gửi ảnh và câu hỏi đến VLM (ví dụ: gpt-4o-mini) để có một câu trả lời và caption ngắn gọn.
+    2.  **Phát hiện đối tượng**: Sử dụng câu hỏi và caption để tạo truy vấn cho GroundingDINO, xác định các đối tượng liên quan và lấy bounding box của chúng.
+    3.  **Mô tả tăng cường (DAM)**: Cắt các vùng ảnh từ bounding box và gửi đến Describe Anything Model (DAM) để có mô tả chi tiết cho từng đối tượng.
+- **Output**: Một dictionary chứa:
+    - `initial_answer`: Câu trả lời nhanh từ VLM.
+    - `caption`: Mô tả ngắn gọn về ảnh.
+    - `boxes`: Danh sách các bounding box của đối tượng.
+    - `dam_descriptions`: Mô tả chi tiết từ DAM cho mỗi box.
+
+#### StrategistAgent
+- **Mục tiêu**: Xây dựng một "không gian vấn đề" có cấu trúc (MVKB).
+- **Input**:
+    - `question`: Câu hỏi của người dùng.
+    - `answer_candidates`: Các câu trả lời tiềm năng từ Verifier.
+    - `caption`: Mô tả ảnh từ Verifier.
+- **Hoạt động**:
+    1.  **Phân rã câu hỏi**: Dựa vào câu hỏi chính, tạo ra các câu hỏi phụ hoặc các "vấn đề" (issues) liên quan cần được xác minh. Ví dụ: "Người đàn ông đang làm gì?" -> "Có người đàn ông trong ảnh không?", "Hành động của người đó là gì?".
+    2.  **Tạo giả thuyết**: Đối với mỗi "vấn đề", tạo ra một giả thuyết (hypothesis) bằng cách sử dụng VLM để trả lời câu hỏi phụ đó. Mỗi giả thuyết có một câu trả lời và một điểm tin cậy.
+- **Output**:
+    - `mvkb`: Một danh sách các giả thuyết, mỗi giả thuyết là một dictionary chứa `issue`, `hypothesis_answer`, và `confidence_score`.
+
+#### SynthesizerAgent
+- **Mục tiêu**: Tổng hợp tất cả bằng chứng để đưa ra quyết định cuối cùng.
+- **Input**:
+    - `question`: Câu hỏi gốc.
+    - `candidates`: Các câu trả lời tiềm năng.
+    - `mvkb`: Knowledge base từ Strategist.
+- **Hoạt động**:
+    1.  **Thuật toán bỏ phiếu có trọng số**: Lặp qua từng câu trả lời ứng viên.
+    2.  **Đối chiếu bằng chứng**: So sánh mỗi ứng viên với các giả thuyết trong MVKB. Mức độ tương đồng (semantic similarity) được dùng để tính điểm.
+    3.  **Tính điểm tin cậy**: Tổng hợp điểm từ các giả thuyết, có thể có trọng số dựa trên độ tin cậy của từng giả thuyết.
+    4.  **Lựa chọn cuối cùng**: Chọn ứng viên có điểm số cao nhất làm câu trả lời cuối cùng.
+- **Output**: Một dictionary chứa:
+    - `final_answer`: Câu trả lời được lựa chọn.
+    - `confidence`: Điểm tin cậy tổng hợp.
+    - `voting_details`: Chi tiết quá trình bỏ phiếu cho việc debug.
+
+#### ExplanationAgent
+- **Mục tiêu**: Diễn giải quá trình suy luận thành ngôn ngữ tự nhiên.
+- **Input**:
+    - `question`: Câu hỏi gốc.
+    - `answer`: Câu trả lời cuối cùng.
+    - `mvkb`: Knowledge base đã sử dụng.
+    - `voting_result`: Kết quả từ Synthesizer.
+- **Hoạt động**:
+    1.  **Xây dựng chuỗi suy luận**: Dựa vào các giả thuyết trong MVKB đã "bỏ phiếu" cho câu trả lời cuối cùng, sắp xếp chúng thành một chuỗi logic.
+    2.  **Tạo văn bản**: Sử dụng một prompt template để chuyển chuỗi suy luận thành một đoạn văn giải thích mạch lạc, dễ hiểu. Lời giải thích sẽ trích dẫn các bằng chứng trực quan đã được xác minh.
+- **Output**:
+    - `explanation`: Một chuỗi văn bản (string) là lời giải thích hoàn chỉnh.
+
+### 3. Ví dụ Minh Họa (Illustrative Examples)
+
+#### Ví dụ 1: Câu hỏi Nhận dạng Đối tượng Đơn giản
+- **Ảnh**: Một bức ảnh có một con mèo đang nằm trên ghế sofa.
+- **Câu hỏi**: "Vật thể trên ghế sofa là gì?"
+- **Luồng xử lý**:
+    1.  **VerifierAgent**:
+        - *VLM*: "Đó là một con mèo."
+        - *GroundingDINO*: Phát hiện và khoanh vùng "con mèo".
+        - *DAM*: Mô tả vùng được khoanh: "ảnh cận cảnh một con mèo tam thể đang cuộn tròn, mắt nhắm".
+        - *Output*: `initial_answer`: "con mèo", `boxes`: [...], `dam_descriptions`: "con mèo tam thể...".
+    2.  **StrategistAgent**:
+        - *MVKB*: Tạo một issue duy nhất: "Xác định vật thể trên ghế sofa". Giả thuyết: "Vật thể là một con mèo", confidence: 0.95.
+    3.  **SynthesizerAgent**:
+        - So sánh ứng viên "con mèo" với giả thuyết "Vật thể là một con mèo". Độ tương đồng cao.
+        - *Output*: `final_answer`: "con mèo", `confidence`: 0.95.
+    4.  **ExplanationAgent**:
+        - *Output*: "Câu trả lời là 'con mèo' vì hệ thống đã xác định được một vật thể trong ảnh và mô tả chi tiết của nó là 'một con mèo tam thể đang cuộn tròn', khớp với câu hỏi."
+
+#### Ví dụ 2: Câu hỏi Suy luận Phức tạp
+- **Ảnh**: Một người phụ nữ đang chỉ tay vào một biểu đồ trên màn hình laptop, bên cạnh có một tách cà phê.
+- **Câu hỏi**: "Người phụ nữ đang làm gì trong bối cảnh công việc hay giải trí?"
+- **Luồng xử lý**:
+    1.  **VerifierAgent**:
+        - *VLM*: "Người phụ nữ đang làm việc."
+        - *GroundingDINO*: Khoanh vùng "người phụ nữ", "laptop", "biểu đồ", "tách cà phê".
+        - *DAM*: Mô tả "biểu đồ đường đang hiển thị xu hướng tăng", "người phụ nữ mặc áo sơ mi".
+    2.  **StrategistAgent**:
+        - *MVKB Issues*:
+            1. "Trang phục của người phụ nữ là gì?" -> Giả thuyết: "áo sơ mi", confidence: 0.9.
+            2. "Đối tượng trên màn hình laptop là gì?" -> Giả thuyết: "một biểu đồ công việc", confidence: 0.95.
+            3. "Hành động của người phụ nữ là gì?" -> Giả thuyết: "đang thuyết trình hoặc phân tích dữ liệu", confidence: 0.88.
+    3.  **SynthesizerAgent**:
+        - Ứng viên "làm việc" nhận được điểm cao từ cả 3 giả thuyết. Ứng viên "giải trí" không khớp với bằng chứng nào.
+        - *Output*: `final_answer`: "làm việc", `confidence`: 0.92.
+    4.  **ExplanationAgent**:
+        - *Output*: "Câu trả lời là 'làm việc' vì người phụ nữ đang mặc trang phục công sở (áo sơ mi), tương tác với một biểu đồ dữ liệu trên laptop, và hành động chỉ tay cho thấy sự phân tích hoặc thuyết trình. Những yếu tố này đều liên quan đến môi trường công việc."
+
+#### Ví dụ 3: Trường hợp VLM Sai và Hệ thống Tự sửa lỗi
+- **Ảnh**: Một sân tennis có hai người đang chơi, nhưng một người bị che khuất một phần bởi lưới.
+- **Câu hỏi**: "Có bao nhiêu người trong ảnh?"
+- **Luồng xử lý**:
+    1.  **VerifierAgent**:
+        - *VLM*: "Có một người trong ảnh." (Do người thứ hai bị che khuất).
+        - *GroundingDINO*: Truy vấn "người" và phát hiện được 2 vùng bounding box riêng biệt cho hai người.
+        - *DAM*: Mô tả box 1: "người đàn ông mặc áo trắng đang vung vợt". Mô tả box 2: "một người khác đứng sau lưới".
+    2.  **StrategistAgent**:
+        - *MVKB Issues*:
+            1. "Đếm số người trong ảnh." -> Giả thuyết (từ VLM): "có một người", confidence: 0.6 (thấp).
+            2. "Có bằng chứng về người thứ hai không?" -> Giả thuyết (từ DAM/DINO): "có, một người khác được phát hiện sau lưới", confidence: 0.9.
+    3.  **SynthesizerAgent**:
+        - Ứng viên "1" (từ VLM) được hỗ trợ bởi giả thuyết 1.
+        - Ứng viên "2" (suy ra từ DINO/DAM) được hỗ trợ mạnh mẽ bởi giả thuyết 2.
+        - Do độ tin cậy của giả thuyết 2 cao hơn, hệ thống nghiêng về câu trả lời "2".
+        - *Output*: `final_answer`: "2", `confidence`: 0.85.
+    4.  **ExplanationAgent**:
+        - *Output*: "Câu trả lời là '2'. Mặc dù chỉ có một người nhìn rõ, hệ thống đã phát hiện được một người thứ hai đứng phía sau lưới. Bằng chứng từ việc phát hiện đối tượng đã xác nhận sự hiện diện của cả hai người."
+
 ## 🔧 Technical Implementation Details
 
 ### Pipeline Orchestration
@@ -408,4 +568,4 @@ FDR/src/prompts/
 - ✅ **Robust Processing**: Multiple fallback mechanisms
 - ✅ **Research-Friendly**: Clear agent interactions for analysis
 
-**The FDR architecture successfully addresses the limitations of the original Top-Down approach while maintaining production-ready performance and reliability.** 
+**The FDR architecture successfully addresses the limitations of the original Top-Down approach while maintaining production-ready performance and reliability.**
