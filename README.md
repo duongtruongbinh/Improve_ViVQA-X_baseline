@@ -51,14 +51,14 @@ CUDA_VISIBLE_DEVICES=0 vllm serve /mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B
 
 # Start Qwen2.5-7B-Instruct (Language Model) on GPU 1
 CUDA_VISIBLE_DEVICES=1 vllm serve /mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-7B-Instruct \
-    --host 0.0.0.0 --port 9101 --max-model-len 12288
+    --host 0.0.0.0 --port 9200 --max-model-len 12288
 ```
 
 **Dual-Model Architecture Explanation:**
 - **VL Model (Port 9100)**: Handles vision-related tasks including image analysis, object detection verification, and visual reasoning
-- **LLM Model (Port 9101)**: Processes text-only tasks such as strategy planning, answer synthesis, and explanation generation
+- **LLM Model (Port 9200)**: Processes text-only tasks such as strategy planning, answer synthesis, and explanation generation
 - **GPU Allocation**: Uses separate GPUs to avoid memory conflicts and enable parallel processing
-- **Port Configuration**: Different ports (9100/9101) allow both models to run simultaneously
+- **Port Configuration**: Different ports (9100/9200) allow both models to run simultaneously
 
 > **Note**: Ensure both models are fully loaded before starting the VQA-X pipeline. The system will automatically route requests to the appropriate model based on task requirements.
 
