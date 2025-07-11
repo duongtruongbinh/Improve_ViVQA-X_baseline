@@ -117,14 +117,14 @@ model_config:
   dam:
     model_name: "nvidia/DAM-3B-Self-Contained"
     device: "cuda:2"
-    max_new_tokens: 50
+    max_new_tokens: 100
     temperature: 0.2
 
 # Processing Configuration
 processing_config:
-  num_samples: 50  # -1 for full dataset
-  batch_size: 1
-  max_workers: 1
+  num_samples: -1  # -1 for full dataset
+  batch_size: 5
+  max_workers: 5
   skip_errors: true
   enable_caching: true
 
