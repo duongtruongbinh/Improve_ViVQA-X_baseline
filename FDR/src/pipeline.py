@@ -345,7 +345,23 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
         # Run evaluation if enabled
         if enable_evaluation and results:
             eval_module = EvalModule()
-            evaluation_results = eval_module.evaluate_pipeline_results(results)
+            # evaluation_results = eval_module.evaluate_results(results)
+            
+                # 🔧 Extract ground_truth_explanations from results
+            ground_truth_explanations = {}
+            for result in results:
+                question_id = result.get('question_id')
+                gt_explanations = result.get('ground_truth_explanations', [])
+                if question_id and gt_explanations:
+                    ground_truth_explanations[question_id] = gt_explanations
+            
+            # 🔧 Pass ground_truth_explanations to evaluation
+            if ground_truth_explanations:
+                logging.info(f"📚 Found ground truth explanations for {len(ground_truth_explanations)} questions")
+                evaluation_results = eval_module.evaluate_results(results, ground_truth_explanations)
+            else:
+                logging.warning("⚠️ No ground truth explanations found in results")
+                evaluation_results = eval_module.evaluate_results(results)
             
             eval_output_file = output_file.replace('.json', '_evaluation.json')
             with open(eval_output_file, 'w') as f:
@@ -356,9 +372,22 @@ def run_mvkb_x_pipeline(use_vllm: bool = True, enable_evaluation: bool = False, 
             # Print summary with full evaluation
             print(f"\n🎯 MVKB-X Pipeline Summary:")
             print(f"Processed samples: {len(results)}")
-            print(f"VQA Accuracy: {evaluation_results['vqa_accuracy']:.3f}")
-            if 'explanation_quality' in evaluation_results:
-                print(f"Explanation Quality: {evaluation_results['explanation_quality']:.3f}")
+            
+            # Use quick accuracy stats instead of evaluation_results for accuracy
+            print(f"VQA Accuracy: {accuracy_stats['accuracy']:.3f}")
+            
+            # Check for explanation metrics
+            exp_metrics = evaluation_results.get('explanation_metrics', {})
+            if exp_metrics.get('evaluated_explanations', 0) > 0:
+                if 'bleu_4' in exp_metrics:
+                    print(f"BLEU-4 Score: {exp_metrics['bleu_4']:.3f}")
+                if 'semantic_similarity' in exp_metrics:
+                    print(f"Semantic Similarity: {exp_metrics['semantic_similarity']:.3f}")
+            
+            # Confidence metrics
+            conf_metrics = evaluation_results.get('confidence_metrics', {})
+            if conf_metrics:
+                print(f"Average Confidence: {conf_metrics.get('avg_confidence', 0.0):.3f}")
         else:
             # Print summary with quick accuracy
             print(f"\n🎯 MVKB-X Pipeline Summary:")
@@ -381,14 +410,21 @@ def calculate_quick_accuracy(results):
     voting_worked = 0
     
     for result in results:
-        if result.get('ground_truth'):
+        ground_truth = result.get('ground_truth')
+        if ground_truth is not None and ground_truth != "":  # Check for None and empty string
             total += 1
-            final_answer = result.get('final_answer', '').lower().strip()
-            ground_truth = result.get('ground_truth', '').lower().strip()
+            final_answer = str(result.get('final_answer', '')).lower().strip()
+            ground_truth_str = str(ground_truth).lower().strip()
+            
+            # Debug logging
+            print(f"DEBUG: Comparing final_answer='{final_answer}' vs ground_truth='{ground_truth_str}'")
             
             # Simple string matching for accuracy
-            if final_answer == ground_truth or ground_truth in final_answer or final_answer in ground_truth:
+            if final_answer == ground_truth_str:
                 correct += 1
+                print(f"DEBUG: ✅ Match found!")
+            else:
+                print(f"DEBUG: ❌ No match")
             
             # Check if voting mechanism worked
             confidence_breakdown = result.get('confidence_breakdown', {})
@@ -398,6 +434,8 @@ def calculate_quick_accuracy(results):
     
     accuracy = correct / total if total > 0 else 0
     voting_effectiveness = voting_worked / total if total > 0 else 0
+    
+    print(f"DEBUG: Final stats - total: {total}, correct: {correct}, accuracy: {accuracy}")
     
     return {
         'total': total,

@@ -38,6 +38,7 @@ class EvalModule:
     """
     
     def __init__(self, device: str = "cuda" if torch.cuda.is_available() else "cpu"):
+        global TRANSFORMERS_AVAILABLE
         self.device = device
         self.semantic_model = None
         self.semantic_tokenizer = None
@@ -69,6 +70,20 @@ class EvalModule:
         """
         logging.info(f"🔬 Evaluating {len(results)} results...")
         
+        # 🔧 Auto-extract ground_truth_explanations if not provided
+        if ground_truth_explanations is None:
+            ground_truth_explanations = {}
+            for result in results:
+                question_id = result.get('question_id')
+                gt_explanations = result.get('ground_truth_explanations', [])
+                if question_id and gt_explanations:
+                    ground_truth_explanations[question_id] = gt_explanations
+            
+            if ground_truth_explanations:
+                logging.info(f"📚 Auto-extracted ground truth explanations for {len(ground_truth_explanations)} questions")
+            else:
+                logging.warning("⚠️ No ground truth explanations found in results")
+        
         # VQA Accuracy Metrics
         vqa_metrics = self._evaluate_vqa_accuracy(results)
         
@@ -76,6 +91,9 @@ class EvalModule:
         explanation_metrics = {}
         if ground_truth_explanations:
             explanation_metrics = self._evaluate_explanation_quality(results, ground_truth_explanations)
+            logging.info(f"📝 Evaluated explanations for {explanation_metrics.get('evaluated_explanations', 0)} questions")
+        else:
+            logging.info("📝 Skipping explanation evaluation (no ground truth explanations)")
         
         # Consistency Metrics (answer-explanation alignment)
         consistency_metrics = self._evaluate_consistency(results)
@@ -111,7 +129,7 @@ class EvalModule:
         error_analysis = defaultdict(list)
         
         for result in results:
-            ground_truth = result.get("ground_truth_answer")
+            ground_truth = result.get("ground_truth")
             final_answer = result.get("final_answer", "")
             
             if ground_truth is not None:
@@ -148,6 +166,8 @@ class EvalModule:
     def _evaluate_explanation_quality(self, results: List[Dict[str, Any]], 
                                     ground_truth_explanations: Dict[str, List[str]]) -> Dict[str, Any]:
         """Evaluate explanation quality using multiple metrics"""
+        global TRANSFORMERS_AVAILABLE, NLTK_AVAILABLE
+        
         bleu_scores = []
         semantic_scores = []
         length_stats = []
@@ -156,7 +176,7 @@ class EvalModule:
         
         for result in results:
             question_id = result.get("question_id")
-            generated_explanation = result.get("generated_explanation", "")
+            generated_explanation = result.get("explanation", "")
             
             if question_id in ground_truth_explanations and generated_explanation:
                 reference_explanations = ground_truth_explanations[question_id]
@@ -203,7 +223,7 @@ class EvalModule:
         
         for result in results:
             final_answer = result.get("final_answer", "")
-            explanation = result.get("generated_explanation", "")
+            explanation = result.get("explanation", "")
             
             if final_answer and explanation:
                 # Simple consistency check: does explanation mention the answer?
@@ -252,6 +272,8 @@ class EvalModule:
 
     def _compute_bleu_score(self, generated: str, references: List[str]) -> Dict[str, float]:
         """Compute BLEU scores"""
+        global NLTK_AVAILABLE
+        
         if not NLTK_AVAILABLE:
             return {"bleu_1": 0.0, "bleu_2": 0.0, "bleu_3": 0.0, "bleu_4": 0.0}
         
@@ -273,6 +295,8 @@ class EvalModule:
 
     def _compute_semantic_similarity(self, generated: str, references: List[str]) -> float:
         """Compute semantic similarity using sentence embeddings"""
+        global TRANSFORMERS_AVAILABLE
+        
         if not TRANSFORMERS_AVAILABLE or not self.semantic_model:
             return 0.0
         

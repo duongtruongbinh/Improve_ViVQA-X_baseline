@@ -7,6 +7,7 @@ Supports 2 options:
 
 import os
 import logging
+import yaml
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 
@@ -46,21 +47,37 @@ class BackendManager:
     def _setup_vllm(self):
         """Setup vLLM backend"""
         try:
-            if app_config and "vllm_details" in app_config:
-                vllm_config = app_config["vllm_details"]
+            # Load config from the unified config.yaml
+            config_path = Path(__file__).parent.parent / "config.yaml"
+            if config_path.exists():
+                import yaml
+                with open(config_path, 'r') as f:
+                    config = yaml.safe_load(f)
+                
+                vllm_config = config.get("backend_config", {}).get("vllm_settings", {})
+                host = vllm_config.get("host", "localhost")
+                port = vllm_config.get("port", 9100)
+                api_key = vllm_config.get("api_key", "dummy-key")
+                model_path = vllm_config.get("model_path", "")
+                
+                base_url = f"http://{host}:{port}/v1"
+                
                 self.client = OpenAI(
-                    api_key=vllm_config["api_key"],
-                    base_url=vllm_config["vlm_url"]
+                    api_key=api_key,
+                    base_url=base_url
                 )
-                self.model = vllm_config["vlm_model_name"]
-                logging.info(f"✅ Using vLLM: {self.model} at {vllm_config['vlm_url']}")
+                
+                # Use full model path as model name for vLLM API calls
+                self.model = model_path if model_path else "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
+                
+                logging.info(f"✅ Using vLLM: {self.model} at {base_url}")
             else:
                 # Fallback to default vLLM settings
                 self.client = OpenAI(
                     api_key="dummy-key",
                     base_url="http://localhost:9100/v1"
                 )
-                self.model = "Qwen/Qwen2.5-VL-7B-Instruct"
+                self.model = "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
                 logging.info(f"✅ Using vLLM with default settings: {self.model}")
                 
         except Exception as e:

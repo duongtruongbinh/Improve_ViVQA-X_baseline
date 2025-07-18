@@ -106,7 +106,7 @@ class VerifierAgent(BaseAgent):
             if model_config_path.exists() and model_checkpoint_path.exists():
                 # Use GPU 0 for GroundingDINO
                 original_device = torch.cuda.current_device()
-                torch.cuda.set_device(0)
+                torch.cuda.set_device(1)
                 
                 self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device="cuda:1")
                 self.groundingdino_enabled = True
@@ -453,7 +453,7 @@ except Exception as e:
             import torch
             
             # Ensure we're using GPU 0 for GroundingDINO
-            with torch.cuda.device(0):
+            with torch.cuda.device(1):
                 # Load image
                 image_source, image = load_image(image_path)
                 
@@ -464,7 +464,7 @@ except Exception as e:
                     caption=detection_prompt,
                     box_threshold=0.3,
                     text_threshold=0.25,
-                    device="cuda:0"
+                    device="cuda:1"
                 )
                 
                 # Convert boxes to DAM format (absolute xyxy coordinates)
