@@ -110,7 +110,8 @@ def run_fdr_pipeline(use_vllm: bool = True,
             temperature=verifier_config.get('temperature', 0.7),
             max_tokens=verifier_config.get('max_tokens', 1000),
             use_vllm=use_vllm,
-            enable_dam=verifier_config.get('enable_dam', True),
+            enable_dam=verifier_config.get('enable_dam', False),
+            enable_groundingdino=verifier_config.get('enable_groundingdino', True),
             groundingdino_docker=verifier_config.get('groundingdino_docker', False),
             model_preference="vlm"  # Always use VLM for vision tasks
         )

@@ -11,7 +11,7 @@ active_dataset: "vqax"  # Options: "vqax", "vivqax", "custom"
 datasets:
   vqax:
     name: "VQA-X"
-    data_path: "/mnt/VLAI_data/VQA-X/vqaX_val.json"
+    data_path: "/mnt/VLAI_data/VQA-X/vqaX_test.json"
     image_dir: "/mnt/VLAI_data/COCO_Images/val2014"
     format: "vqax"
     language: "english"
@@ -49,7 +49,7 @@ agents_config:
   verifier:  # VLM + GroundingDINO + DAM
     temperature: 0.7
     max_tokens: 1000
-    enable_dam: true
+    enable_dam: true # Disable DAM to avoid CUDA device issues
     enable_groundingdino: true
     groundingdino_docker: false  # Use native implementation
     box_threshold: 0.35
@@ -122,7 +122,7 @@ model_config:
 
 # Processing Configuration
 processing_config:
-  num_samples: -1  # -1 for full dataset
+  num_samples: 100  # -1 for full dataset
   batch_size: 5
   max_workers: 5
   skip_errors: true

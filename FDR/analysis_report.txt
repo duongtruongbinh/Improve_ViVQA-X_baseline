@@ -1,0 +1,106 @@
+FDR vs ReRe: Detailed Analysis Report
+==================================================
+
+SUMMARY STATISTICS:
+  Total common samples: 100
+  FDR-only samples: 0
+  ReRe-only samples: 0
+
+DETAILED BREAKDOWN:
+  Both Correct: 45 samples
+  Both Wrong: 6 samples
+  FDR Better: 44 samples
+  ReRe Better: 5 samples
+
+PERFORMANCE METRICS:
+  FDR Accuracy: 0.8900 (89.00%)
+  ReRe Accuracy: 0.5000 (50.00%)
+  Agreement Rate: 0.5100 (51.00%)
+
+GENERATED FILES:
+  Summary visualization: fdr_vs_rere_summary.png
+  Individual comparisons: detailed_comparisons/ (20 files)
+
+BOTH MODELS CORRECT:
+  1. Question ID: 761004
+     Question: Is anyone wearing a blue shirt?...
+     Ground Truth: yes
+     FDR Answer: yes
+     ReRe Answer: yes
+
+  2. Question ID: 525344001
+     Question: Does this plane bear the American Airlines logo?...
+     Ground Truth: no
+     FDR Answer: no
+     ReRe Answer: no
+
+  3. Question ID: 527248005
+     Question: Is this event indoor or outdoor?...
+     Ground Truth: outdoor
+     FDR Answer: outdoor
+     ReRe Answer: outdoor
+
+  ... and 42 more samples
+
+BOTH MODELS WRONG:
+  1. Question ID: 527215000
+     Question: What is the person in the white shirt doing?...
+     Ground Truth: flying kite
+     FDR Answer: Flying
+     ReRe Answer: eating
+
+  2. Question ID: 503293003
+     Question: What bank is sponsoring this event?...
+     Ground Truth: bank of america
+     FDR Answer: Bank
+     ReRe Answer: sponsor
+
+  3. Question ID: 526359003
+     Question: What type of room is this?...
+     Ground Truth: living room
+     FDR Answer: living
+     ReRe Answer: tennis
+
+  ... and 3 more samples
+
+FDR CORRECT, RERE WRONG:
+  1. Question ID: 3694001
+     Question: What sport is this?...
+     Ground Truth: skateboarding
+     FDR Answer: Skateboarding
+     ReRe Answer: soccer
+
+  2. Question ID: 528136020
+     Question: What kind of vehicle is shown?...
+     Ground Truth: van
+     FDR Answer: Van
+     ReRe Answer: train
+
+  3. Question ID: 432993000
+     Question: What sport is this?...
+     Ground Truth: skateboarding
+     FDR Answer: Skateboarding
+     ReRe Answer: soccer
+
+  ... and 41 more samples
+
+FDR WRONG, RERE CORRECT:
+  1. Question ID: 132001001
+     Question: Is the mouse wireless?...
+     Ground Truth: yes
+     FDR Answer: no
+     ReRe Answer: yes
+
+  2. Question ID: 135613003
+     Question: Is this a hotel?...
+     Ground Truth: yes
+     FDR Answer: no
+     ReRe Answer: no
+
+  3. Question ID: 135319000
+     Question: Is this a residential area?...
+     Ground Truth: yes
+     FDR Answer: no
+     ReRe Answer: no
+
+  ... and 2 more samples

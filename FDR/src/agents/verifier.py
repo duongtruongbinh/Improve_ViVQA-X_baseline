@@ -39,7 +39,8 @@ class VerifierAgent(BaseAgent):
     
     def __init__(self, client: OpenAI = None, model_name: str = None, temperature: float = None,
                  max_tokens: int = None, use_vllm: bool = True, enable_dam: bool = True,
-                 groundingdino_docker: bool = False, model_preference: str = "vlm"):
+                 enable_groundingdino: bool = True, groundingdino_docker: bool = False,
+                 model_preference: str = "vlm"):
         super().__init__(use_vllm, model_name)
 
         # Override with specific parameters
@@ -50,15 +51,16 @@ class VerifierAgent(BaseAgent):
         self._initialize_backend(model_preference="vlm")
         
         # Local components configuration
-        self.groundingdino_enabled = False
+        self.groundingdino_enabled = enable_groundingdino
         self.groundingdino_model = None
         self.image_storage_dir = None
         self.enable_dam = enable_dam
         self.dam = None
         self._force_groundingdino_docker = groundingdino_docker
-        
+
         # Initialize local components
-        self._initialize_groundingdino()
+        if enable_groundingdino:
+            self._initialize_groundingdino()
         self._initialize_dam()
         
         # Initialize prompt manager

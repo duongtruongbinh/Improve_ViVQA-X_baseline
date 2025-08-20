@@ -87,11 +87,20 @@ def show_sample(output_dir, sample_type, sample_id):
     # Show images if available
     input_image = os.path.join(sample_dir, "input_image.jpg")
     output_image = os.path.join(sample_dir, "output_visualization.png")
-    
+    groundingdino_image = os.path.join(sample_dir, "groundingdino_annotated.jpg")
+
     if os.path.exists(input_image):
         print(f"  Input Image: {input_image}")
+    if os.path.exists(groundingdino_image):
+        print(f"  GroundingDINO Annotated: {groundingdino_image}")
     if os.path.exists(output_image):
         print(f"  Output Visualization: {output_image}")
+
+    # Show GroundingDINO status
+    if os.path.exists(groundingdino_image):
+        print(f"  GroundingDINO: ✅ Available")
+    else:
+        print(f"  GroundingDINO: ❌ Not available")
 
 def show_images(output_dir, sample_type, sample_id):
     """Display images for a specific sample"""
@@ -99,36 +108,63 @@ def show_images(output_dir, sample_type, sample_id):
     if not os.path.exists(sample_dir):
         print(f"❌ Sample not found: {sample_dir}")
         return
-    
+
     # Load sample info
     info = load_sample_info(sample_dir)
     if not info:
         print(f"❌ Could not load sample info")
         return
-    
+
     # Check for images
     input_image_path = os.path.join(sample_dir, "input_image.jpg")
     output_image_path = os.path.join(sample_dir, "output_visualization.png")
-    
+    groundingdino_path = os.path.join(sample_dir, "groundingdino_annotated.jpg")
+
     if not os.path.exists(input_image_path) or not os.path.exists(output_image_path):
         print(f"❌ Images not found in {sample_dir}")
         return
-    
-    # Display images
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
-    
-    # Input image
-    img1 = Image.open(input_image_path)
-    ax1.imshow(img1)
-    ax1.set_title(f"Input Image - Sample {sample_id} ({sample_type})", fontsize=12)
-    ax1.axis('off')
-    
-    # Output visualization
-    img2 = Image.open(output_image_path)
-    ax2.imshow(img2)
-    ax2.set_title(f"Output Visualization - Sample {sample_id}", fontsize=12)
-    ax2.axis('off')
-    
+
+    # Check if GroundingDINO image exists
+    has_groundingdino = os.path.exists(groundingdino_path)
+
+    if has_groundingdino:
+        # 3-panel layout: Input, GroundingDINO, Output
+        fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(24, 8))
+
+        # Input image
+        img1 = Image.open(input_image_path)
+        ax1.imshow(img1)
+        ax1.set_title(f"Input Image", fontsize=12)
+        ax1.axis('off')
+
+        # GroundingDINO annotated image
+        img2 = Image.open(groundingdino_path)
+        ax2.imshow(img2)
+        ax2.set_title(f"GroundingDINO Detection", fontsize=12)
+        ax2.axis('off')
+
+        # Output visualization
+        img3 = Image.open(output_image_path)
+        ax3.imshow(img3)
+        ax3.set_title(f"Output Visualization", fontsize=12)
+        ax3.axis('off')
+
+    else:
+        # 2-panel layout: Input, Output
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 8))
+
+        # Input image
+        img1 = Image.open(input_image_path)
+        ax1.imshow(img1)
+        ax1.set_title(f"Input Image", fontsize=12)
+        ax1.axis('off')
+
+        # Output visualization
+        img2 = Image.open(output_image_path)
+        ax2.imshow(img2)
+        ax2.set_title(f"Output Visualization", fontsize=12)
+        ax2.axis('off')
+
     plt.suptitle(f"Sample {sample_id} ({sample_type.upper()}) - {info['question'][:50]}...", fontsize=14)
     plt.tight_layout()
     plt.show()
@@ -176,7 +212,7 @@ def main():
     parser.add_argument("output_dir", nargs="?", default="auto_output", help="Output directory to analyze")
     parser.add_argument("--list", action="store_true", help="List all samples")
     parser.add_argument("--show", help="Show specific sample (format: type:id, e.g., correct:1)")
-    parser.add_argument("--images", help="Show images for specific sample (format: type:id, e.g., correct:1)")
+    parser.add_argument("--images", help="Show images for specific sample including GroundingDINO (format: type:id, e.g., correct:1)")
     parser.add_argument("--analyze", action="store_true", help="Analyze results and show statistics")
     
     args = parser.parse_args()
