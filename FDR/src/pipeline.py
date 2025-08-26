@@ -165,6 +165,19 @@ def run_fdr_pipeline(use_vllm: bool = True,
                 dataset.append(sample)
             
             logging.info(f"Loaded VQA-X format: {len(dataset)} samples")
+        elif dataset_format == 'gqa_rex':
+            # GQA-REX format: Use specialized loader
+            from gqa_rex_pipeline.gqa_rex_loader import GQAREXLoader
+            
+            loader = GQAREXLoader(
+                gqa_data_path=dataset_config['data_path'],
+                rex_data_path=dataset_config['rex_path'],
+                image_dir=dataset_config['image_dir'],
+                scene_graph_path=dataset_config.get('scene_graph_path')
+            )
+            
+            dataset = loader.get_samples()
+            logging.info(f"Loaded GQA-REX format: {len(dataset)} samples")
         else:
             # Standard format: [{question, image_path, answer}]
             if isinstance(raw_data, dict) and 'data' in raw_data:
@@ -199,6 +212,15 @@ def run_fdr_pipeline(use_vllm: bool = True,
                     question = sample['question']
                     ground_truth = sample['answer']
                     question_id = sample['question_id']
+                elif dataset_format == 'gqa_rex':
+                    # GQA-REX format (already processed by loader)
+                    image_path = sample['image_path']
+                    question = sample['question']
+                    ground_truth = sample['answer']
+                    question_id = sample['question_id']
+                    # Additional GQA-REX context
+                    rex_explanation = sample.get('explanation', '')
+                    question_type = sample.get('semantic_type', 'unknown')
                 else:
                     # Standard format
                     if 'image_path' in sample:

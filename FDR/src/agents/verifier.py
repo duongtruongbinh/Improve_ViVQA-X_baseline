@@ -1,3 +1,4 @@
+import os
 """
 VerifierAgent for FDR Pipeline
 The Verifier Agent (formerly ResponderAgent), based on a VLM.
@@ -106,7 +107,7 @@ class VerifierAgent(BaseAgent):
             if model_config_path.exists() and model_checkpoint_path.exists():
                 # Use GPU 2 for GroundingDINO
                 logging.info("Attempting to load GroundingDINO on GPU 2")
-                device_str = "cuda:2"
+                device_str = "cuda:0"
                 
                 self.groundingdino_model = load_model(str(model_config_path), str(model_checkpoint_path), device=device_str)
                 self.groundingdino_enabled = True
@@ -180,7 +181,7 @@ class VerifierAgent(BaseAgent):
         # Define specific strategy for GPU 2 to avoid ambiguity
         strategy = {
             "name": "GPU_2_ONLY",
-            "device": "cuda:2",
+            "device": "cuda:0",
             "dtype": torch.float16,
             "dtype_str": "torch.float16"
         }
@@ -196,7 +197,8 @@ class VerifierAgent(BaseAgent):
             # Load model with exact official pattern
             logging.info(f"Loading DAM model with dtype: {strategy['dtype_str']}")
             model = AutoModel.from_pretrained(
-                'nvidia/DAM-3B-Self-Contained',
+                '/mnt/dataset1/pretrained_fm/DAM-3B-Self-Contained', 
+                token=os.getenv("HUGGINGFACE_HUB_TOKEN"),
                 trust_remote_code=True,
                 torch_dtype=strategy["dtype_str"]
             )
@@ -427,9 +429,8 @@ except Exception as e:
             from torchvision.ops import box_convert
             import cv2
             import torch
-            
-            # Ensure we're using GPU 2 for GroundingDINO
-            with torch.cuda.device(2):
+            # Ensure we're using GPU 0 for GroundingDINO
+            with torch.cuda.device(0):
                 # Load image
                 image_source, image = load_image(image_path)
                 
@@ -440,7 +441,7 @@ except Exception as e:
                     caption=detection_prompt,
                     box_threshold=0.3,
                     text_threshold=0.25,
-                    device="cuda:2"
+                    device="cuda:0"
                 )
                 
                 # Convert boxes to DAM format (absolute xyxy coordinates)
@@ -453,7 +454,12 @@ except Exception as e:
                     logging.debug(f"GroundingDINO detected {len(boxes_xyxy)} objects")
             
             # Annotate image
-            annotated_frame = annotate(image_source=image_source, boxes=boxes, logits=logits, phrases=phrases)
+            annotated_frame = annotate(
+                image_source=image_source, 
+                boxes=boxes, 
+                logits=logits,
+                phrases=phrases
+            )
             
             # Save annotated image
             output_dir = os.path.dirname(image_path)

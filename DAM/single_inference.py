@@ -1,3 +1,4 @@
+import os
 import torch
 import numpy as np
 from PIL import Image
@@ -6,6 +7,9 @@ import cv2
 import requests
 import os
 from io import BytesIO
+
+os.environ['CUDA_VISIBLE_DEVICES'] = '2'
+torch.cuda.set_device(0)
 
 
 def apply_sam(image, input_points=None, input_boxes=None, input_labels=None):
@@ -59,20 +63,33 @@ if __name__ == '__main__':
     # response = requests.get(image_url)
     # img = Image.open(BytesIO(response.content)).convert('RGB')
     
+    device = torch.device("cuda:0")
+    torch.cuda.empty_cache()
+    
     img_path = 'images/vlai_logo_example.png'
     img = Image.open(img_path).convert('RGB')
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    sam_model = SamModel.from_pretrained("facebook/sam-vit-base").to(device)
-    sam_processor = SamProcessor.from_pretrained("facebook/sam-vit-base")
+    sam_model = SamModel.from_pretrained(
+        "facebook/sam-vit-base", 
+        token=os.getenv("HUGGINGFACE_HUB_TOKEN")
+    ).to(device)
+    sam_processor = SamProcessor.from_pretrained(
+        "facebook/sam-vit-base", 
+        token=os.getenv("HUGGINGFACE_HUB_TOKEN")
+    )
     image_size = img.size  # (width, height)
 
     # Initialize DAM model once
     model = AutoModel.from_pretrained(
-        'nvidia/DAM-3B-Self-Contained',
+        '/mnt/dataset1/pretrained_fm/DAM-3B-Self-Contained',
         trust_remote_code=True,
-        torch_dtype='torch.float16'
+        torch_dtype=torch.float16,
+        token=os.getenv('HUGGINGFACE_HUB_TOKEN'),
     ).to(device)
+    
+    torch.cuda.empty_cache()
+    
     dam = model.init_dam(conv_mode='v1', prompt_mode='full+focal_crop')
 
     # Define two runs: one with points, one with box

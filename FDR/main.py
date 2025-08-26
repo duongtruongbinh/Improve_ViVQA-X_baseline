@@ -61,9 +61,9 @@ def main():
     parser.add_argument(
         "--dataset",
         type=str,
-        choices=["vqax", "vivqax"],
+        choices=["vqax", "vivqax", "clevrx", "gqa_rex_train", "gqa_rex_val"],
         default=None,
-        help="Override active dataset from config (e.g., VQAX, VIVQAX)"
+        help="Override active dataset from config (e.g., VQAX, VIVQAX, CLEVRX, GQA_REX)"
     )
 
     parser.add_argument(

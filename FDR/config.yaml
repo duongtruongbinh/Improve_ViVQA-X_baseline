@@ -5,7 +5,7 @@ experiment_name: "fdr_unified"
 description: "FDR pipeline with unified configuration"
 
 # Dataset Selection - Change this to switch datasets
-active_dataset: "vqax"  # Options: "vqax", "vivqax", "custom"
+active_dataset: "clevrx"  # Options: "vqax", "vivqax", "clevrx", "gqa_rex_val", "gqa_rex_train", "custom"
 
 # Multiple Dataset Configurations
 datasets:
@@ -35,6 +35,39 @@ datasets:
     language: "english"
     split: "custom"
     use_explanations: false
+    
+  clevrx:
+    name: "CLEVR-X"
+    data_path: "/mnt/VLAI_data/CLEVR-X/CLEVR_val_explanations_v0.7.10.json"
+    image_dir: "/mnt/VLAI_data/CLEVR/CLEVR_v1.0/images/val"
+    format: "clevrx"
+    language: "english"
+    split: "validation"
+    use_explanations: true
+
+  gqa_rex_train:
+    name: "GQA-REX Training Set"
+    data_path: "/mnt/VLAI_data/GQA/train_balanced_questions.json"
+    rex_path: "/mnt/VLAI_data/GQA-REX/converted_explanation_train.json"
+    scene_graph_path: "/mnt/VLAI_data/GQA/train_sceneGraphs.json"
+    image_dir: "/mnt/VLAI_data/GQA/images"
+    format: "gqa_rex"
+    language: "english"
+    split: "train"
+    use_explanations: true
+    use_scene_graphs: true
+    
+  gqa_rex_val:
+    name: "GQA-REX Validation Set"
+    data_path: "/mnt/VLAI_data/GQA/val_balanced_questions.json"
+    rex_path: "/mnt/VLAI_data/GQA-REX/converted_explanation_val.json"
+    scene_graph_path: "/mnt/VLAI_data/GQA/val_sceneGraphs.json"
+    image_dir: "/mnt/VLAI_data/GQA/images"
+    format: "gqa_rex"
+    language: "english"
+    split: "validation"
+    use_explanations: true
+    use_scene_graphs: true
 
 # Logging Configuration
 logging_config:
@@ -47,8 +80,10 @@ logging_config:
 # Agent Configuration
 agents_config:
   verifier:  # VLM + GroundingDINO + DAM
+    model_preference: "vlm"
+    gpu_device: "cuda:0"
     temperature: 0.7
-    max_tokens: 1000
+    max_tokens: 1024
     enable_dam: true
     enable_groundingdino: true
     groundingdino_docker: false  # Use native implementation
@@ -56,14 +91,18 @@ agents_config:
     text_threshold: 0.25
   
   strategist:  # MVKB construction
+    model_preference: "llm"
+    gpu_device: "cuda:0"
     temperature: 0.3
-    max_tokens: 3500  # Optimized for 12k context window - allows comprehensive reasoning
+    max_tokens: 4096  # Optimized for 12k context window - allows comprehensive reasoning
     enable_mvkb: true
     max_relevant_issues: 3
     min_confidence_threshold: 0.1
     hypothesis_filtering: true
   
   synthesizer:  # Weighted voting
+    model_preference: "llm"
+    gpu_device: "cuda:0"
     voting_threshold: 0.1
     confidence_normalization: true
     algorithm: "weighted_voting"  # Algorithm 2 from paper
@@ -92,10 +131,19 @@ backend_config:
   
   # vLLM settings (for local inference)
   vllm_settings:
-    gpu_memory_utilization: 0.85
-    max_model_len: 4096
+    gpu_memory_utilization: 0.95
+    gpu_device: "cuda:0"
+    port: 9100
+    max_model_len: 8192
     tensor_parallel_size: 1
     model_path: "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-VL-7B-Instruct"
+
+  llm_settings:
+    model_path: "/mnt/dataset1/pretrained_fm/Qwen_Qwen2.5-7B-Instruct"
+    gpu_device: "cuda:1"
+    port: 9200
+    gpu_memory_utilization: 0.8
+    max_model_len: 12288
 
 # Model Configuration
 model_config:
@@ -111,12 +159,12 @@ model_config:
     model_name: "IDEA-RESEARCH/grounding-dino-tiny"
     box_threshold: 0.35
     text_threshold: 0.25
-    device: "cuda:2"
+    device: "cuda:0"
     
   # DAM Configuration
   dam:
-    model_name: "nvidia/DAM-3B-Self-Contained"
-    device: "cuda:2"
+    model_name: "/mnt/dataset1/pretrained_fm/DAM-3B-Self-Contained"
+    device: "cuda:0"
     max_new_tokens: 100
     temperature: 0.2
 

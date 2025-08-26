@@ -1,3 +1,4 @@
+import os
 # Copyright 2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -141,8 +142,8 @@ if __name__ == '__main__':
     img = Image.open(args.image_path).convert('RGB')
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    sam_model = SamModel.from_pretrained("facebook/sam-vit-huge").to(device)
-    sam_processor = SamProcessor.from_pretrained("facebook/sam-vit-huge")
+    sam_model = SamModel.from_pretrained("facebook/sam-vit-huge", token=os.getenv("HUGGINGFACE_HUB_TOKEN")).to(device)
+    sam_processor = SamProcessor.from_pretrained("facebook/sam-vit-huge", token=os.getenv("HUGGINGFACE_HUB_TOKEN"))
 
     image_size = img.size  # (width, height)
 
@@ -177,7 +178,7 @@ if __name__ == '__main__':
         "focal_prompt": "full+focal_crop",
     }
 
-    model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True, torch_dtype='torch.float16').to(device)
+    model = AutoModel.from_pretrained(args.model_path, trust_remote_code=True, torch_dtype='torch.float16', token=os.getenv("HUGGINGFACE_HUB_TOKEN")).to(device)
     dam = model.init_dam(conv_mode=args.conv_mode, prompt_mode=prompt_modes.get(args.prompt_mode, args.prompt_mode))
 
     # Get description

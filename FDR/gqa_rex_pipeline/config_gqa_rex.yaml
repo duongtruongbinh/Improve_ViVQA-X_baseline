@@ -1,0 +1,193 @@
+# GQA-REX FDR Pipeline Configuration
+# Specialized configuration for running FDR pipeline with GQA-REX dataset
+
+experiment_name: "fdr_gqa_rex"
+description: "FDR pipeline optimized for GQA-REX visual question answering with explanations"
+
+# Dataset Selection - GQA-REX specific  
+active_dataset: "gqa_rex_val"  # Default: validation set for evaluation
+
+# GQA-REX Dataset Configurations
+datasets:
+  gqa_rex_train:
+    name: "GQA-REX Training Set"
+    data_path: "/mnt/VLAI_data/GQA/train_balanced_questions.json"
+    rex_path: "/mnt/VLAI_data/GQA-REX/converted_explanation_train.json"
+    scene_graph_path: "/mnt/VLAI_data/GQA/train_sceneGraphs.json"
+    image_dir: "/mnt/VLAI_data/GQA/images"
+    format: "gqa_rex"
+    language: "english"
+    split: "train"
+    use_explanations: true
+    use_scene_graphs: true
+    description: "GQA training set with GQA-REX reasoning explanations"
+    
+  gqa_rex_val:
+    name: "GQA-REX Validation Set"
+    data_path: "/mnt/VLAI_data/GQA/val_balanced_questions.json"
+    rex_path: "/mnt/VLAI_data/GQA-REX/converted_explanation_val.json"
+    scene_graph_path: "/mnt/VLAI_data/GQA/val_sceneGraphs.json"
+    image_dir: "/mnt/VLAI_data/GQA/images"
+    format: "gqa_rex"
+    language: "english"
+    split: "validation"
+    use_explanations: true
+    use_scene_graphs: true
+    description: "GQA validation set with GQA-REX reasoning explanations"
+
+# Processing Configuration optimized for GQA-REX
+processing_config:
+  # Number of samples to process (0 for all, set to small number for testing)
+  num_samples: 100  # Default: 100 samples for validation testing
+  
+  # Enable detailed logging for GQA-REX analysis
+  detailed_logging: true
+  
+  # Batch processing settings
+  batch_size: 4  # Increased for better throughput (adjust based on GPU memory)
+  
+  # Scene graph integration (GQA strength)
+  use_scene_graphs: true
+  
+  # Explanation processing
+  max_explanation_length: 500
+  preprocess_explanations: true
+  
+  # GQA-REX specific preprocessing
+  parse_rex_references: true  # Parse #N references in explanations
+
+# Logging Configuration
+logging_config:
+  level: "INFO"
+  reduce_http_logs: true
+  log_file: "logs/gqa_rex_pipeline.log"
+  enable_file_logging: true
+
+# Backend Configuration optimized for visual reasoning
+backend_config:
+  # Model settings optimized for GQA-REX reasoning
+  model_name: "qwen2.5-vl-7b-instruct"
+  temperature: 0.1  # Low temperature for consistent reasoning
+  max_tokens: 2048
+  timeout: 60
+  
+  # Vision model preferences for complex visual reasoning
+  vision_model_preference: "vl"  # Use VL model for visual understanding
+  language_model_preference: "llm"  # Use LLM for text-only reasoning
+  
+  # vLLM specific settings
+  vllm_config:
+    vision_model_url: "http://localhost:9100/v1"
+    language_model_url: "http://localhost:9200/v1"
+    max_retries: 3
+    retry_delay: 2
+
+# Agent Configuration for GQA-REX
+# Agent Configuration for GQA-REX
+agents_config:
+  # Verifier Agent - handles visual verification tasks
+  verifier:
+    model_preference: "vlm"
+    gpu_device: "cuda:0"
+    temperature: 0.7
+    max_tokens: 1024
+    enable_dam: true
+    enable_groundingdino: true
+    groundingdino_docker: false  # Use native implementation
+    box_threshold: 0.35
+    text_threshold: 0.25
+    enable_scene_graph_analysis: true
+    use_object_detection: true
+    confidence_threshold: 0.7
+    
+  # Strategist Agent - plans reasoning approach
+  strategist:
+    model_preference: "llm"
+    gpu_device: "cuda:0"
+    temperature: 0.3
+    max_tokens: 2048
+    enable_gqa_reasoning_strategies: true
+    use_semantic_operations: true  # Leverage GQA semantic operations
+    max_reasoning_steps: 5
+    
+  # Synthesizer Agent - generates final explanations
+  synthesizer:
+    temperature: 0.2
+    max_tokens: 1024
+    compare_with_rex_explanations: true
+    generate_detailed_explanations: true
+    explanation_style: "detailed"  # "concise", "detailed", "step_by_step"
+
+agent_config:
+  # Verifier Agent - handles visual verification tasks
+  verifier:
+    enable_scene_graph_analysis: true
+    use_object_detection: true
+    confidence_threshold: 0.7
+    
+  # Strategist Agent - plans reasoning approach
+  strategist:
+    enable_gqa_reasoning_strategies: true
+    use_semantic_operations: true  # Leverage GQA semantic operations
+    max_reasoning_steps: 5
+    
+  # Synthesizer Agent - generates final explanations
+  synthesizer:
+    compare_with_rex_explanations: true
+    generate_detailed_explanations: true
+    explanation_style: "detailed"  # "concise", "detailed", "step_by_step"
+
+# Evaluation Configuration for GQA-REX
+evaluation_config:
+  # Enable comprehensive evaluation
+  enable_evaluation: true
+  
+  # GQA-REX specific metrics
+  enable_gqa_rex_metrics: true
+  evaluate_explanations: true
+  compare_explanations: true
+  
+  # Visual reasoning evaluation
+  evaluate_scene_graph_reasoning: true
+  evaluate_spatial_reasoning: true
+  evaluate_object_recognition: true
+  
+  # Answer accuracy
+  evaluate_answer_accuracy: true
+  
+  # Explanation quality metrics
+  explanation_metrics:
+    - "bleu"
+    - "rouge"
+    - "bertscore"
+    - "semantic_similarity"
+
+# Output Configuration
+output_config:
+  # Results directory
+  results_dir: "output/gqa_rex_results"
+  
+  # Save detailed results
+  save_individual_results: true
+  save_summary_stats: true
+  save_error_analysis: true
+  
+  # Visualization
+  generate_visualizations: true
+  save_sample_visualizations: 5  # Save first 5 results with images
+  
+  # Export formats
+  export_formats: ["json", "csv"]
+
+# Performance Configuration
+performance_config:
+  # Memory management
+  clear_cache_interval: 10  # Clear cache every N samples
+  
+  # GPU settings
+  gpu_memory_fraction: 0.8
+  enable_mixed_precision: true
+  
+  # Parallel processing
+  enable_parallel_processing: false  # Disable for debugging
+  max_workers: 2
